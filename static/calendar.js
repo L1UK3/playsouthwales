@@ -4,6 +4,8 @@ let eventsByDate = {};
 let filteredEventsByDate = {};
 let selectedDateKey = null;
 let currentTab = 'calendar';
+let leagues = [];
+let types = [];
 
 async function loadEvents() {
     try {
@@ -22,6 +24,28 @@ async function loadEvents() {
         renderCalendar();
     } catch (error) {
         console.error('Error fetching events:', error);
+    }
+}
+
+async function loadLeagues() {
+    try {
+        const response = await fetch('/api/leagues');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching leagues:', error);
+        return [];
+    }
+}
+
+async function loadTypes() {
+    try {
+        const response = await fetch('/api/types');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching types:', error);
+        return [];
     }
 }
 
