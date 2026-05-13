@@ -3,7 +3,7 @@ let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
 let eventsByDate = {};
 let filteredEventsByDate = {};
 let selectedDateKey = null;
-let currentView = 'calendar'; // 'calendar' or 'list'
+let currentTab = 'calendar';
 
 async function loadEvents() {
     try {
@@ -67,9 +67,9 @@ function applyFilters() {
         hideSelectedDaySection();
     }
 
-    if (currentView === 'list') {
+    if (currentTab === 'list') {
         renderListView();
-    } else {
+    } else if (currentTab === 'calendar') {
         renderCalendar();
     }
 }
@@ -78,6 +78,35 @@ function clearFilters() {
     document.getElementById('store-filter').value = '';
     document.getElementById('type-filter').value = '';
     applyFilters();
+}
+
+function switchTab(tabName) {
+    currentTab = tabName;
+
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    // Remove active state from all buttons
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Show selected tab content
+    document.getElementById(tabName + '-view').classList.add('active');
+    document.getElementById('tab-' + tabName).classList.add('active');
+
+    // Render the appropriate content
+    if (tabName === 'calendar') {
+        renderCalendar();
+    } else if (tabName === 'list') {
+        renderListView();
+    } else if (tabName === 'venues') {
+        renderVenues();
+    } else if (tabName === 'map') {
+        renderMap();
+    }
 }
 
 function renderListView() {
@@ -134,22 +163,38 @@ function renderListView() {
     });
 }
 
-function toggleViewMode() {
-    if (currentView === 'calendar') {
-        currentView = 'list';
-        document.getElementById('calendar-view').classList.add('hidden');
-        document.getElementById('list-view').classList.add('active');
-        document.getElementById('viewToggleBtn').textContent = 'Calendar View';
-        document.getElementById('viewToggleBtn').classList.add('active');
-        renderListView();
-    } else {
-        currentView = 'calendar';
-        document.getElementById('calendar-view').classList.remove('hidden');
-        document.getElementById('list-view').classList.remove('active');
-        document.getElementById('viewToggleBtn').textContent = 'List View';
-        document.getElementById('viewToggleBtn').classList.remove('active');
-        renderCalendar();
+function renderVenues() {
+    const container = document.getElementById('venues-container');
+    container.innerHTML = '';
+
+    // Get unique venues from filtered events
+    const venues = new Set();
+    Object.values(filteredEventsByDate).forEach(eventList => {
+        eventList.forEach(event => {
+            venues.add(event.store);
+        });
+    });
+
+    if (venues.size === 0) {
+        const noVenuesDiv = document.createElement('div');
+        noVenuesDiv.className = 'no-venues';
+        noVenuesDiv.textContent = 'No venues found.';
+        container.appendChild(noVenuesDiv);
+        return;
     }
+
+    const venuesList = Array.from(venues).sort();
+    venuesList.forEach(venue => {
+        const venueCard = document.createElement('div');
+        venueCard.className = 'venue-card';
+        venueCard.innerHTML = `<div class="venue-name">${venue}</div>`;
+        container.appendChild(venueCard);
+    });
+}
+
+function renderMap() {
+    const container = document.getElementById('map-container');
+    container.innerHTML = '<div style="padding: 40px; color: #6b7280; font-size: 16px;">Map functionality coming soon</div>';
 }
 
 function renderCalendar() {
@@ -306,7 +351,7 @@ function nextMonth() {
 window.goToToday = goToToday;
 window.previousMonth = previousMonth;
 window.nextMonth = nextMonth;
-window.toggleViewMode = toggleViewMode;
+window.switchTab = switchTab;
 
 document.getElementById('prevBtn').addEventListener('click', previousMonth);
 document.getElementById('nextBtn').addEventListener('click', nextMonth);

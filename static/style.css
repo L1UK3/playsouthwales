@@ -74,6 +74,48 @@ body {
     border: none;
 }
 
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    padding: 10px 18px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
+.tab-button.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -242,6 +284,130 @@ body {
     padding: 14px;
     border-radius: 12px;
     background: #f8fafc;
+}
+
+.list-events-container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+}
+
+.list-events-group {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.list-events-group:last-child {
+    border-bottom: none;
+}
+
+.list-group-date {
+    background: #f8fafc;
+    padding: 16px 20px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.list-events-in-group {
+    padding: 12px 0;
+}
+
+.list-event-card {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.list-event-card:hover {
+    background: #f8fafc;
+}
+
+.list-event-card:last-child {
+    border-bottom: none;
+}
+
+.list-event-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.list-event-store {
+    font-weight: 700;
+    color: #111827;
+    font-size: 16px;
+}
+
+.list-event-type {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.list-event-date {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.list-no-events {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.venues-container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+}
+
+.venue-card {
+    padding: 18px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
+}
+
+.venue-card:hover {
+    background: #f8fafc;
+}
+
+.venue-card:last-child {
+    border-bottom: none;
+}
+
+.venue-name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 16px;
+}
+
+.no-venues {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.map-container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    padding: 40px 20px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 16px;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 900px) {

@@ -22,13 +22,19 @@
                 <select id="type-filter" onchange="applyFilters()">
                     <option value="">All Event Types</option>
                 </select>
-                <button type="button" class="view-toggle" id="viewToggleBtn" onclick="toggleViewMode()">List View</button>
                 <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
             </div>
         </header>
 
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('calendar')" id="tab-calendar">Calendar View</button>
+            <button class="tab-button" onclick="switchTab('list')" id="tab-list">List View</button>
+            <button class="tab-button" onclick="switchTab('venues')" id="tab-venues">Venues</button>
+            <button class="tab-button" onclick="switchTab('map')" id="tab-map">Venue Map</button>
+        </div>
+
         <main id="calendar-swipe-area" class="calendar-container">
-            <div class="calendar-view" id="calendar-view">
+            <div class="tab-content active" id="calendar-view">
                 <div class="calendar-header">
                     <h2 id="month-title"></h2>
                     <div class="controls">
@@ -58,8 +64,16 @@
                 </div>
             </div>
 
-            <div class="list-view" id="list-view">
+            <div class="tab-content" id="list-view">
                 <div id="list-events-container" class="list-events-container"></div>
+            </div>
+
+            <div class="tab-content" id="venues-view">
+                <div id="venues-container" class="venues-container"></div>
+            </div>
+
+            <div class="tab-content" id="map-view">
+                <div id="map-container" class="map-container">Map coming soon</div>
             </div>
         </main>
     </div>
