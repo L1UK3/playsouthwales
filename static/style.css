@@ -175,6 +175,7 @@ body {
 
 .calendar-cell {
     min-height: 120px;
+    min-width: 120px;
     padding: 14px;
     background: #ffffff;
     cursor: pointer;
@@ -276,6 +277,12 @@ body {
     font-size: 16px;
     font-weight: 700;
     color: #0f172a;
+}
+
+.event-card-date {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 4px;
 }
 
 .no-events {

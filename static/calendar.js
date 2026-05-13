@@ -5,6 +5,7 @@ let filteredEventsByDate = {};
 let selectedDateKey = null;
 let currentTab = 'calendar';
 let leagues = [];
+let leagueMap = {};
 let types = [];
 
 async function loadEvents() {
@@ -13,7 +14,8 @@ async function loadEvents() {
         const data = await response.json();
 
         eventsByDate = data.reduce((acc, event) => {
-            const dateKey = event.event_date;
+            const dateKey = event.date ? event.date.slice(0, 10) : null;
+            if (!dateKey) return acc;
             if (!acc[dateKey]) acc[dateKey] = [];
             acc[dateKey].push(event);
             return acc;
@@ -21,6 +23,7 @@ async function loadEvents() {
 
         filteredEventsByDate = { ...eventsByDate };
         await loadLeaguesAndTypes();
+        populateFilters(data);
         renderCalendar();
     } catch (error) {
         console.error('Error fetching events:', error);
@@ -34,41 +37,59 @@ async function loadLeaguesAndTypes() {
             fetch('/api/types')
         ]);
         leagues = await leaguesResponse.json();
-        types = await typesResponse.json();
+        const fetchedTypes = await typesResponse.json();
+        types = Array.isArray(fetchedTypes) ? fetchedTypes : (fetchedTypes.types || []);
+        leagueMap = leagues.reduce((map, league) => {
+            map[league.leagueId] = league;
+            return map;
+        }, {});
     } catch (error) {
         console.error('Error fetching leagues/types:', error);
     }
 }
 
 function populateFilters(events) {
-    const storeFilter = document.getElementById('store-filter');
+    const leagueFilter = document.getElementById('league-filter');
     const typeFilter = document.getElementById('type-filter');
 
-    const stores = [...new Set(events.map(event => event.store))].sort();
-    const types = [...new Set(events.map(event => event.type))].sort();
+    leagueFilter.innerHTML = '<option value="">All Leagues</option>';
+    typeFilter.innerHTML = '<option value="">All Event Types</option>';
 
-    stores.forEach(store => {
+    const leagueOptions = [...leagues].sort((a, b) => a.name.localeCompare(b.name));
+    const hasNoLeague = events.some(event => event.leagueId === null || event.leagueId === undefined);
+
+    leagueOptions.forEach(league => {
         const option = document.createElement('option');
-        option.value = store;
-        option.textContent = store;
-        storeFilter.appendChild(option);
+        option.value = String(league.leagueId);
+        option.textContent = league.name;
+        leagueFilter.appendChild(option);
     });
 
-    types.forEach(type => {
+    if (hasNoLeague) {
         const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
+        option.value = 'none';
+        option.textContent = 'No League';
+        leagueFilter.appendChild(option);
+    }
+
+    const typeOptions = types.length ? types : [...new Set(events.map(event => event.type))].sort();
+    typeOptions.forEach(typeValue => {
+        const option = document.createElement('option');
+        option.value = typeValue;
+        option.textContent = typeValue;
         typeFilter.appendChild(option);
     });
 }
 
 function applyFilters() {
-    const store = document.getElementById('store-filter').value;
+    const league = document.getElementById('league-filter').value;
     const type = document.getElementById('type-filter').value;
 
     filteredEventsByDate = Object.entries(eventsByDate).reduce((acc, [dateKey, eventList]) => {
         const filtered = eventList.filter(event => {
-            return (!store || event.store === store) && (!type || event.type === type);
+            const leagueMatch = !league || (league === 'none' ? (event.leagueId === null || event.leagueId === undefined) : String(event.leagueId) === league);
+            const typeMatch = !type || event.type === type;
+            return leagueMatch && typeMatch;
         });
 
         if (filtered.length > 0) {
@@ -90,7 +111,7 @@ function applyFilters() {
 }
 
 function clearFilters() {
-    document.getElementById('store-filter').value = '';
+    document.getElementById('league-filter').value = '';
     document.getElementById('type-filter').value = '';
     applyFilters();
 }
@@ -141,7 +162,7 @@ function renderListView() {
 
     sortedDates.forEach(dateKey => {
         const events = filteredEventsByDate[dateKey];
-        
+
         // Create group container
         const groupDiv = document.createElement('div');
         groupDiv.className = 'list-events-group';
@@ -161,13 +182,14 @@ function renderListView() {
 
         // Add event cards
         events.forEach(event => {
+            const leagueName = event.leagueId ? (leagueMap[event.leagueId]?.name || 'Unknown League') : 'No League';
             const card = document.createElement('div');
             card.className = 'list-event-card';
             card.innerHTML = `
                 <div class="list-event-info">
-                    <div class="list-event-store">${event.store}</div>
+                    <div class="list-event-store">${event.name}</div>
                     <div class="list-event-type">${event.type}</div>
-                    <div class="list-event-date">${dateKey}</div>
+                    <div class="list-event-date">${leagueName} • ${event.startTime || ''}</div>
                 </div>
             `;
             eventsDiv.appendChild(card);
@@ -182,15 +204,8 @@ function renderVenues() {
     const container = document.getElementById('venues-container');
     container.innerHTML = '';
 
-    // Get unique venues from filtered events
-    const venues = new Set();
-    Object.values(filteredEventsByDate).forEach(eventList => {
-        eventList.forEach(event => {
-            venues.add(event.store);
-        });
-    });
-
-    if (venues.size === 0) {
+    const venueList = leagues.length ? leagues.slice() : [];
+    if (venueList.length === 0) {
         const noVenuesDiv = document.createElement('div');
         noVenuesDiv.className = 'no-venues';
         noVenuesDiv.textContent = 'No venues found.';
@@ -198,11 +213,11 @@ function renderVenues() {
         return;
     }
 
-    const venuesList = Array.from(venues).sort();
-    venuesList.forEach(venue => {
+    venueList.sort((a, b) => a.name.localeCompare(b.name));
+    venueList.forEach(venue => {
         const venueCard = document.createElement('div');
         venueCard.className = 'venue-card';
-        venueCard.innerHTML = `<div class="venue-name">${venue}</div>`;
+        venueCard.innerHTML = `<div class="venue-name">${venue.name}</div>`;
         container.appendChild(venueCard);
     });
 }
@@ -279,7 +294,7 @@ function createDayCell(day, month, year, isOtherMonth) {
         events.slice(0, 2).forEach(event => {
             const eventEl = document.createElement('div');
             eventEl.className = 'event';
-            eventEl.innerHTML = `<span>${event.store}</span><span class="type">${event.type}</span>`;
+            eventEl.innerHTML = `<span>${event.leagueName}</span><span class="type">${event.type}</span>`;
             eventList.appendChild(eventEl);
         });
 
@@ -324,11 +339,15 @@ function showSelectedDay(dateKey) {
         eventsContainer.appendChild(emptyMessage);
     } else {
         events.forEach(event => {
+            const leagueName = event.leagueId ? (leagueMap[event.leagueId]?.name || 'Unknown League') : 'No League';
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `
-                <div class="event-card-store">${event.store}</div>
-                <div class="event-card-type">${event.type}</div>
+                <div>
+                    <div class="event-card-store">${event.name}</div>
+                    <div class="event-card-type">${event.type}</div>
+                    <div class="event-card-date">${leagueName} • ${event.startTime || ''}</div>
+                </div>
             `;
             eventsContainer.appendChild(card);
         });

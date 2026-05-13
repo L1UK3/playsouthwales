@@ -5,6 +5,7 @@
         "date": "2026-04-26T00:00:00.000Z",
         "startTime": "09:00:00",
         "leagueId": 1,
+        "leagueName": "Test League 1",
         "ticketLink": "http://example.com/tickets/1",
         "type": "CHALLENGE",
         "description": "An exciting spring challenge event."
@@ -15,6 +16,7 @@
         "date": "2026-04-27T00:00:00.000Z",
         "startTime": "10:00:00",
         "leagueId": 2,
+        "leagueName": "Test League 2",
         "ticketLink": null,
         "type": "CUP",
         "description": "Compete for the summer cup!"
@@ -25,6 +27,7 @@
         "date": "2026-04-28T00:00:00.000Z",
         "startTime": "11:00:00",
         "leagueId": 3,
+        "leagueName": "Test League 3",
         "ticketLink": "http://example.com/tickets/3",
         "type": "CHALLENGE",
         "description": null
@@ -35,6 +38,7 @@
         "date": "2026-04-29T00:00:00.000Z",
         "startTime": "12:00:00",
         "leagueId": 4,
+        "leagueName": "Test League 4",
         "ticketLink": null,
         "type": "PRE-RELEASE",
         "description": "Be the first to play with the new set."
@@ -45,6 +49,7 @@
         "date": "2026-05-01T00:00:00.000Z",
         "startTime": "14:00:00",
         "leagueId": 1,
+        "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "CUP",
         "description": "Qualify for the championship."
@@ -55,6 +60,7 @@
         "date": "2026-05-05T00:00:00.000Z",
         "startTime": "18:00:00",
         "leagueId": 2,
+        "leagueName": "Test League 2",
         "ticketLink": "http://example.com/tickets/6",
         "type": "CUP",
         "description": "The ultimate showdown!"
@@ -64,7 +70,8 @@
         "name": "Casual Play Day",
         "date": "2026-05-10T00:00:00.000Z",
         "startTime": "10:00:00",
-        "leagueId": null,
+        "leagueId": 1,
+        "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "CASUAL",
         "description": "Relaxed day of gaming."
@@ -74,7 +81,8 @@
         "name": "New Set Pre-Release",
         "date": "2026-05-15T00:00:00.000Z",
         "startTime": "19:00:00",
-        "leagueId": null,
+        "leagueId": 1,
+        "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "PRE-RELEASE",
         "description": "Be the first to play with the new set."

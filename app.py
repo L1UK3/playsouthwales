@@ -4,9 +4,9 @@ from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
-API_EVENTS = os.path.join(os.path.dirname(__file__), 'events.json')
-API_LEAGUES = os.path.join(os.path.dirname(__file__), 'leagues.json')
-API_TYPES = os.path.join(os.path.dirname(__file__), 'types.json')
+API_EVENTS = os.path.join(os.path.dirname(__file__), 'data', 'events.json')
+API_LEAGUES = os.path.join(os.path.dirname(__file__), 'data', 'leagues.json')
+API_TYPES = os.path.join(os.path.dirname(__file__), 'data', 'types.json')
 
 
 def load_events():
@@ -36,7 +36,10 @@ def api_leagues():
 
 @app.route('/api/types')
 def api_types():
-    return jsonify(load_types())
+    types_data = load_types()
+    if isinstance(types_data, dict) and 'types' in types_data:
+        return jsonify(types_data['types'])
+    return jsonify(types_data)
 
 
 if __name__ == '__main__':
