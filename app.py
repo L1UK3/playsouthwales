@@ -3,22 +3,23 @@ import os
 from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
-DATA_FILE = os.path.join(app.root_path, 'events.json')
+
+API_EVENTS = os.path.join(os.path.dirname(__file__), 'events.json')
+API_LEAGUES = os.path.join(os.path.dirname(__file__), 'leagues.json')
+API_TYPES = os.path.join(os.path.dirname(__file__), 'types.json')
 
 
 def load_events():
-    with open(DATA_FILE, 'r', encoding='utf-8') as f:
+    with open(API_EVENTS, 'r', encoding='utf-8') as f:
         return json.load(f)
-    
+
 def load_leagues():
-    events = load_events()
-    leagues = set(event['league'] for event in events)
-    return sorted(leagues)
+    with open(API_LEAGUES, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
 def load_types():
-    events = load_events()
-    types = set(event['type'] for event in events)
-    return sorted(types)
+    with open(API_TYPES, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
 
 @app.route('/')

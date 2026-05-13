@@ -20,32 +20,23 @@ async function loadEvents() {
         }, {});
 
         filteredEventsByDate = { ...eventsByDate };
-        populateFilters(data);
+        await loadLeaguesAndTypes();
         renderCalendar();
     } catch (error) {
         console.error('Error fetching events:', error);
     }
 }
 
-async function loadLeagues() {
+async function loadLeaguesAndTypes() {
     try {
-        const response = await fetch('/api/leagues');
-        const data = await response.json();
-        return data;
+        const [leaguesResponse, typesResponse] = await Promise.all([
+            fetch('/api/leagues'),
+            fetch('/api/types')
+        ]);
+        leagues = await leaguesResponse.json();
+        types = await typesResponse.json();
     } catch (error) {
-        console.error('Error fetching leagues:', error);
-        return [];
-    }
-}
-
-async function loadTypes() {
-    try {
-        const response = await fetch('/api/types');
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching types:', error);
-        return [];
+        console.error('Error fetching leagues/types:', error);
     }
 }
 
