@@ -110,6 +110,7 @@ body {
 
 .tab-content {
     display: none;
+    padding: 20px;
 }
 
 .tab-content.active {
@@ -235,10 +236,9 @@ body {
 }
 
 .selected-day-section {
-    background: #ffffff;
-    border-top: 1px solid #e5e7eb;
     padding: 20px;
     display: none;
+    margin-top: 18px;
 }
 
 .selected-day-section.active {
