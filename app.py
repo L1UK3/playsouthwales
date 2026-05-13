@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 DATA_FILE = os.path.join(app.root_path, 'events.json')
@@ -14,6 +14,11 @@ def load_events():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/api/events')
+def api_events():
+    return jsonify(load_events())
 
 
 if __name__ == '__main__':

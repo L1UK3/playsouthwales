@@ -1,45 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play! South Wales</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Play! Wales: Schedule</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+    <div class="app-container">
+        <header class="top-nav">
+            <div class="logo-area">
+                <h1>Play! Wales</h1>
+                <span class="subtitle">Schedule</span>
+            </div>
+            <div class="filters">
+                <select id="store-filter" onchange="applyFilters()">
+                    <option value="">All Stores</option>
+                </select>
+                <select id="type-filter" onchange="applyFilters()">
+                    <option value="">All Event Types</option>
+                </select>
+                <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
+            </div>
+        </header>
 
-    <div class="container">
-        <h1>Play! South Wales | </h1>
-        <h2 id="monthYear" class="month-header">May 2026</h2>
+        <main id="calendar-swipe-area" class="calendar-container">
+            <div class="calendar-header">
+                <h2 id="month-title"></h2>
+                <div class="controls">
+                    <button type="button" id="todayBtn">Today</button>
+                    <button type="button" id="prevBtn">&larr;</button>
+                    <button type="button" id="nextBtn">&rarr;</button>
+                </div>
+            </div>
 
-        <div class="calendar-controls">
-            <button id="prevBtn" class="nav-btn">←</button>
-            
-            <button id="nextBtn" class="nav-btn">→</button>
-            <button id="todayBtn" class="today-btn">Today</button>
-        </div>
+            <div class="calendar">
+                <div class="days-of-week">
+                    <div class="day-name">Mon</div>
+                    <div class="day-name">Tue</div>
+                    <div class="day-name">Wed</div>
+                    <div class="day-name">Thu</div>
+                    <div class="day-name">Fri</div>
+                    <div class="day-name">Sat</div>
+                    <div class="day-name">Sun</div>
+                </div>
 
-        <div class="weekdays">
-            <div class="weekday">MON</div>
-            <div class="weekday">TUE</div>
-            <div class="weekday">WED</div>
-            <div class="weekday">THU</div>
-            <div class="weekday">FRI</div>
-            <div class="weekday">SAT</div>
-            <div class="weekday">SUN</div>
-        </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
 
-        <div class="calendar-grid" id="calendarGrid"></div>
-
-        <div class="legend">
-            <strong>Legend:</strong><br>
-            <span>S = Standard / Casual Weekly Play</span><br>
-            <span>PR = Pre-Release Event</span><br>
-            <span>🥇 = Local Tournament / Store Championship</span><br>
-            <span>🏆 = Premium / Regional Qualifier</span>
-        </div>
+                <div id="selected-day-section" class="selected-day-section">
+                    <div id="selected-day-title" class="selected-day-title"></div>
+                    <div id="selected-day-events" class="selected-day-events"></div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script src="{{ url_for('static', filename='calendar.js') }}"></script>
 </body>
+
 </html>
