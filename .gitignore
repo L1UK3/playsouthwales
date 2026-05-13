@@ -1,11 +1,4 @@
-
 *.pyc
 __pycache__/
 
-.venv/
-.env
-bin/
-include/
-lib/
-share/
-pyvenv.cfg
+env/
