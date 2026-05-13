@@ -1,0 +1,15 @@
+{
+    "types": [
+        "CASUAL",
+        "STANDARD",
+        "CHALLENGE",
+        "CUP",
+        "TOURNAMENT",
+        "PRE-RELEASE",
+        "SPECIAL",
+        "REGIONAL",
+        "INTERNATIONAL",
+        "RELEASE",
+        "LEGAL"
+    ]
+}

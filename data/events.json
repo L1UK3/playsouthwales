@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "name": "Spring Challenge",
+        "date": "2026-04-26T00:00:00.000Z",
+        "startTime": "09:00:00",
+        "leagueId": 1,
+        "ticketLink": "http://example.com/tickets/1",
+        "type": "CHALLENGE",
+        "description": "An exciting spring challenge event."
+    },
+    {
+        "id": 2,
+        "name": "Summer Cup",
+        "date": "2026-04-27T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 2,
+        "ticketLink": null,
+        "type": "CUP",
+        "description": "Compete for the summer cup!"
+    },
+    {
+        "id": 3,
+        "name": "Annual Tournament",
+        "date": "2026-04-28T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 3,
+        "ticketLink": "http://example.com/tickets/3",
+        "type": "CHALLENGE",
+        "description": null
+    },
+    {
+        "id": 4,
+        "name": "New Set Pre-Release",
+        "date": "2026-04-29T00:00:00.000Z",
+        "startTime": "12:00:00",
+        "leagueId": 4,
+        "ticketLink": null,
+        "type": "PRE-RELEASE",
+        "description": "Be the first to play with the new set."
+    },
+    {
+        "id": 5,
+        "name": "Autumn Qualifier",
+        "date": "2026-05-01T00:00:00.000Z",
+        "startTime": "14:00:00",
+        "leagueId": 1,
+        "ticketLink": null,
+        "type": "CUP",
+        "description": "Qualify for the championship."
+    },
+    {
+        "id": 6,
+        "name": "Grand Final",
+        "date": "2026-05-05T00:00:00.000Z",
+        "startTime": "18:00:00",
+        "leagueId": 2,
+        "ticketLink": "http://example.com/tickets/6",
+        "type": "CUP",
+        "description": "The ultimate showdown!"
+    },
+    {
+        "id": 7,
+        "name": "Casual Play Day",
+        "date": "2026-05-10T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": null,
+        "ticketLink": null,
+        "type": "CASUAL",
+        "description": "Relaxed day of gaming."
+    },
+    {
+        "id": 8,
+        "name": "New Set Pre-Release",
+        "date": "2026-05-15T00:00:00.000Z",
+        "startTime": "19:00:00",
+        "leagueId": null,
+        "ticketLink": null,
+        "type": "PRE-RELEASE",
+        "description": "Be the first to play with the new set."
+    }
+]

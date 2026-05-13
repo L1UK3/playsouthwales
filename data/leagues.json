@@ -1,0 +1,50 @@
+[
+    {
+        "leagueId": 1,
+        "name": "Test League",
+        "logo": null,
+        "website": null,
+        "socialLink": null,
+        "pokemonLink": null,
+        "brandColor": "#dd4b50",
+        "webLink": null,
+        "location": null,
+        "description": null
+    },
+    {
+        "leagueId": 2,
+        "name": "Test League 2",
+        "logo": null,
+        "website": null,
+        "socialLink": null,
+        "pokemonLink": null,
+        "brandColor": "#dd4b50",
+        "webLink": null,
+        "location": null,
+        "description": null
+    },
+    {
+        "leagueId": 3,
+        "name": "Test League 3",
+        "logo": null,
+        "website": null,
+        "socialLink": null,
+        "pokemonLink": null,
+        "brandColor": "#dd4b50",
+        "webLink": null,
+        "location": null,
+        "description": null
+    },
+    {
+        "leagueId": 4,
+        "name": "Test League 4",
+        "logo": null,
+        "website": null,
+        "socialLink": null,
+        "pokemonLink": null,
+        "brandColor": "#dd4b50",
+        "webLink": null,
+        "location": null,
+        "description": null
+    }
+]
