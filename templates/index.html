@@ -1,18 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play! Wales</title>
-    <style rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></style>
+    <title>Play! South Wales</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-    <header class="header">
-        <h1>Play! Wales Schedule </h1>
-    </header>
 
-    
+    <div class="container">
+        <h1>Play! South Wales | </h1>
+        <h2 id="monthYear" class="month-header">May 2026</h2>
+
+        <div class="calendar-controls">
+            <button id="prevBtn" class="nav-btn">←</button>
+            
+            <button id="nextBtn" class="nav-btn">→</button>
+            <button id="todayBtn" class="today-btn">Today</button>
+        </div>
+
+        <div class="weekdays">
+            <div class="weekday">MON</div>
+            <div class="weekday">TUE</div>
+            <div class="weekday">WED</div>
+            <div class="weekday">THU</div>
+            <div class="weekday">FRI</div>
+            <div class="weekday">SAT</div>
+            <div class="weekday">SUN</div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <div class="legend">
+            <strong>Legend:</strong><br>
+            <span>S = Standard / Casual Weekly Play</span><br>
+            <span>PR = Pre-Release Event</span><br>
+            <span>🥇 = Local Tournament / Store Championship</span><br>
+            <span>🏆 = Premium / Regional Qualifier</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='calendar.js') }}"></script>
 </body>
 </html>
