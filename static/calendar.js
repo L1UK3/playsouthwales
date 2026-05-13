@@ -3,6 +3,7 @@ let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
 let eventsByDate = {};
 let filteredEventsByDate = {};
 let selectedDateKey = null;
+let currentView = 'calendar'; // 'calendar' or 'list'
 
 async function loadEvents() {
     try {
@@ -66,13 +67,89 @@ function applyFilters() {
         hideSelectedDaySection();
     }
 
-    renderCalendar();
+    if (currentView === 'list') {
+        renderListView();
+    } else {
+        renderCalendar();
+    }
 }
 
 function clearFilters() {
     document.getElementById('store-filter').value = '';
     document.getElementById('type-filter').value = '';
     applyFilters();
+}
+
+function renderListView() {
+    const container = document.getElementById('list-events-container');
+    container.innerHTML = '';
+
+    // Get all events sorted by date
+    const sortedDates = Object.keys(filteredEventsByDate).sort();
+
+    if (sortedDates.length === 0) {
+        const noEventsDiv = document.createElement('div');
+        noEventsDiv.className = 'list-no-events';
+        noEventsDiv.textContent = 'No events found.';
+        container.appendChild(noEventsDiv);
+        return;
+    }
+
+    sortedDates.forEach(dateKey => {
+        const events = filteredEventsByDate[dateKey];
+        
+        // Create group container
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'list-events-group';
+
+        // Create date header
+        const date = new Date(dateKey + 'T00:00:00');
+        const dateHeader = document.createElement('div');
+        dateHeader.className = 'list-group-date';
+        dateHeader.textContent = date.toLocaleDateString(undefined, {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+        groupDiv.appendChild(dateHeader);
+
+        // Create events container
+        const eventsDiv = document.createElement('div');
+        eventsDiv.className = 'list-events-in-group';
+
+        // Add event cards
+        events.forEach(event => {
+            const card = document.createElement('div');
+            card.className = 'list-event-card';
+            card.innerHTML = `
+                <div class="list-event-info">
+                    <div class="list-event-store">${event.store}</div>
+                    <div class="list-event-type">${event.type}</div>
+                    <div class="list-event-date">${dateKey}</div>
+                </div>
+            `;
+            eventsDiv.appendChild(card);
+        });
+
+        groupDiv.appendChild(eventsDiv);
+        container.appendChild(groupDiv);
+    });
+}
+
+function toggleViewMode() {
+    if (currentView === 'calendar') {
+        currentView = 'list';
+        document.getElementById('calendar-view').classList.add('hidden');
+        document.getElementById('list-view').classList.add('active');
+        document.getElementById('viewToggleBtn').textContent = 'Calendar View';
+        document.getElementById('viewToggleBtn').classList.add('active');
+        renderListView();
+    } else {
+        currentView = 'calendar';
+        document.getElementById('calendar-view').classList.remove('hidden');
+        document.getElementById('list-view').classList.remove('active');
+        document.getElementById('viewToggleBtn').textContent = 'List View';
+        document.getElementById('viewToggleBtn').classList.remove('active');
+        renderCalendar();
+    }
 }
 
 function renderCalendar() {
@@ -104,7 +181,7 @@ function renderCalendar() {
     }
 
     const totalCells = calendarGrid.children.length;
-    const remainingCells = 42 - totalCells;
+    const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells;
     for (let day = 1; day <= remainingCells; day++) {
         const cell = createDayCell(day, month + 1, year, true);
         calendarGrid.appendChild(cell);
@@ -229,6 +306,7 @@ function nextMonth() {
 window.goToToday = goToToday;
 window.previousMonth = previousMonth;
 window.nextMonth = nextMonth;
+window.toggleViewMode = toggleViewMode;
 
 document.getElementById('prevBtn').addEventListener('click', previousMonth);
 document.getElementById('nextBtn').addEventListener('click', nextMonth);

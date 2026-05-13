@@ -22,37 +22,44 @@
                 <select id="type-filter" onchange="applyFilters()">
                     <option value="">All Event Types</option>
                 </select>
+                <button type="button" class="view-toggle" id="viewToggleBtn" onclick="toggleViewMode()">List View</button>
                 <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
             </div>
         </header>
 
         <main id="calendar-swipe-area" class="calendar-container">
-            <div class="calendar-header">
-                <h2 id="month-title"></h2>
-                <div class="controls">
-                    <button type="button" id="todayBtn">Today</button>
-                    <button type="button" id="prevBtn">&larr;</button>
-                    <button type="button" id="nextBtn">&rarr;</button>
+            <div class="calendar-view" id="calendar-view">
+                <div class="calendar-header">
+                    <h2 id="month-title"></h2>
+                    <div class="controls">
+                        <button type="button" id="todayBtn">Today</button>
+                        <button type="button" id="prevBtn">&larr;</button>
+                        <button type="button" id="nextBtn">&rarr;</button>
+                    </div>
+                </div>
+
+                <div class="calendar">
+                    <div class="days-of-week">
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                        <div class="day-name">Sun</div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar-grid"></div>
+
+                    <div id="selected-day-section" class="selected-day-section">
+                        <div id="selected-day-title" class="selected-day-title"></div>
+                        <div id="selected-day-events" class="selected-day-events"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="calendar">
-                <div class="days-of-week">
-                    <div class="day-name">Mon</div>
-                    <div class="day-name">Tue</div>
-                    <div class="day-name">Wed</div>
-                    <div class="day-name">Thu</div>
-                    <div class="day-name">Fri</div>
-                    <div class="day-name">Sat</div>
-                    <div class="day-name">Sun</div>
-                </div>
-
-                <div class="calendar-grid" id="calendar-grid"></div>
-
-                <div id="selected-day-section" class="selected-day-section">
-                    <div id="selected-day-title" class="selected-day-title"></div>
-                    <div id="selected-day-events" class="selected-day-events"></div>
-                </div>
+            <div class="list-view" id="list-view">
+                <div id="list-events-container" class="list-events-container"></div>
             </div>
         </main>
     </div>
