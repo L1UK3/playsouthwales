@@ -10,25 +10,35 @@ let types = [];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
 
+
+
 async function loadEvents() {
     try {
         const response = await fetch('/api/events');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch events: ${response.status} ${response.statusText}`);
+        }
         const data = await response.json();
 
-        eventsByDate = data.reduce((acc, event) => {
+        eventsByDate = data.reduce((eventsByDateMap, event) => {
             const dateKey = event.date ? event.date.slice(0, 10) : null;
-            if (!dateKey) return acc;
-            if (!acc[dateKey]) acc[dateKey] = [];
-            acc[dateKey].push(event);
-            return acc;
+            if (!dateKey) return eventsByDateMap;
+            if (!eventsByDateMap[dateKey]) eventsByDateMap[dateKey] = [];
+            eventsByDateMap[dateKey].push(event);
+            return eventsByDateMap;
         }, {});
 
         filteredEventsByDate = { ...eventsByDate };
         await loadLeaguesAndTypes();
         populateFilters(data);
         renderCalendar();
+
     } catch (error) {
-        console.error('Error fetching events:', error);
+        if (error instanceof Error && error.message.includes('Failed to fetch events')) {
+            console.error(`Error fetching events: ${error.message}`);
+        } else {
+            console.error('Unexpected error in loadEvents:', error);
+        }
     }
 }
 
@@ -38,6 +48,7 @@ async function loadLeaguesAndTypes() {
             fetch('/api/leagues'),
             fetch('/api/types')
         ]);
+
         leagues = await leaguesResponse.json();
         const fetchedTypes = await typesResponse.json();
         types = Array.isArray(fetchedTypes) ? fetchedTypes : (fetchedTypes.types || []);
@@ -125,6 +136,26 @@ function clearFilters() {
 
 
 
+function loadTabMenu() {
+        const tabMenu = document.getElementById('tab-menu');
+        const tabs = [
+            { id: 'calendar', label: 'Calendar View' },
+            { id: 'list', label: 'List View' },
+            { id: 'venues', label: 'Venues' },
+            { id: 'map', label: 'Venue Map' }
+        ];
+
+        tabs.forEach(tab => {
+            const button = document.createElement('button');
+            button.className = 'tab-button';
+            button.id = 'tab-' + tab.id;
+            button.textContent = tab.label;
+            button.addEventListener('click', () => switchTab(tab.id));
+            tabMenu.appendChild(button);
+        });
+
+        switchTab('calendar');
+}
 
 
 function switchTab(tabName) {
@@ -160,11 +191,9 @@ function switchTab(tabName) {
 
 
 
-function renderListView() {
+function renderListView(month, year) {
     const container = document.getElementById('list-events-container');
     container.innerHTML = '';
-
-    document.getElementById('month-title').textContent = `${monthNames[month]} ${year}`;
 
     // Get all events sorted by date
     const sortedDates = Object.keys(filteredEventsByDate).sort();
@@ -247,13 +276,6 @@ function renderVenues() {
 
 
 
-function renderMap() {
-    const container = document.getElementById('map-container');
-    container.innerHTML = '<div style="padding: 40px; color: #6b7280; font-size: 16px;">Map functionality coming soon</div>';
-}
-
-
-
 
 
 
@@ -289,6 +311,9 @@ function renderCalendar() {
         calendarGrid.appendChild(cell);
     }
 }
+
+
+
 
 function createDayCell(day, month, year, isOtherMonth) {
     const cell = document.createElement('div');
@@ -338,6 +363,10 @@ function createDayCell(day, month, year, isOtherMonth) {
     cell.addEventListener('click', () => selectDay(dateKey));
     return cell;
 }
+
+
+
+
 
 function selectDay(dateKey) {
     selectedDateKey = dateKey;
