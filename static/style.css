@@ -403,20 +403,6 @@ body {
     font-size: 16px;
 }
 
-.map-container {
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    padding: 40px 20px;
-    text-align: center;
-    color: #6b7280;
-    font-size: 16px;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 @media (max-width: 900px) {
     .top-nav,
     .calendar-header {

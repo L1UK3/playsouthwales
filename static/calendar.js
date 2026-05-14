@@ -137,24 +137,24 @@ function clearFilters() {
 
 
 function loadTabMenu() {
-        const tabMenu = document.getElementById('tab-menu');
-        const tabs = [
-            { id: 'calendar', label: 'Calendar View' },
-            { id: 'list', label: 'List View' },
-            { id: 'venues', label: 'Venues' },
-            { id: 'map', label: 'Venue Map' }
-        ];
+    const tabMenu = document.getElementById('tab-menu');
+    const tabs = [
+        { id: 'calendar', label: 'Calendar View' },
+        { id: 'list', label: 'List View' },
+        { id: 'venues', label: 'Venues' },
+        { id: 'map', label: 'Venue Map' }
+    ];
 
-        tabs.forEach(tab => {
-            const button = document.createElement('button');
-            button.className = 'tab-button';
-            button.id = 'tab-' + tab.id;
-            button.textContent = tab.label;
-            button.addEventListener('click', () => switchTab(tab.id));
-            tabMenu.appendChild(button);
-        });
+    tabs.forEach(tab => {
+        const button = document.createElement('button');
+        button.className = 'tab-button';
+        button.id = 'tab-' + tab.id;
+        button.textContent = tab.label;
+        button.addEventListener('click', () => switchTab(tab.id));
+        tabMenu.appendChild(button);
+    });
 
-        switchTab('calendar');
+    switchTab('calendar');
 }
 
 
@@ -171,6 +171,14 @@ function switchTab(tabName) {
         btn.classList.remove('active');
     });
 
+    // Show/hide calendar header based on tab
+    const calendarHeader = document.querySelector('.calendar-header');
+    if (tabName === 'venues') {
+        calendarHeader.style.display = 'none';
+    } else {
+        calendarHeader.style.display = 'flex';
+    }
+
     // Show selected tab content
     document.getElementById(tabName + '-view').classList.add('active');
     document.getElementById('tab-' + tabName).classList.add('active');
@@ -182,8 +190,6 @@ function switchTab(tabName) {
         renderListView();
     } else if (tabName === 'venues') {
         renderVenues();
-    } else if (tabName === 'map') {
-        renderMap();
     }
 }
 

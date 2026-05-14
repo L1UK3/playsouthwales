@@ -9,63 +9,81 @@
 </head>
 
 <body>
-    <div class="top-nav" id="top-nav">
-        <h1>Play! Wales | Schedule </h1>
-        <button class="menu-toggle" id="menu-toggle" onclick="showTabs()">☰</button>
-    </div>
+    <header>
+        <div class="top-nav" id="top-nav">
+            <h1>Play! Wales | Schedule </h1>
+            <button class="menu-toggle" id="menu-toggle" onclick="showTabs()">☰</button>
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('calendar')" id="tab-calendar">Calendar
+                    View</button>
+                <button class="tab-button" onclick="switchTab('list')" id="tab-list">List View</button>
+                <button class="tab-button" onclick="switchTab('venues')" id="tab-venues">Venues</button>
+            </div>
+        </div>
+    </header>
 
 
     <div class="app-container">
 
-        <div class="filters" id="view-filters">
-            <select id="league-filter" onchange="applyFilters()">
-                <option value="">All Leagues</option>
-            </select>
-            <select id="type-filter" onchange="applyFilters()">
-                <option value="">All Event Types</option>
-            </select>
-            <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
-        </div>
-
-        <div class="calendar-container">
-            <div class="calendar-header">
-                <h2 id="month-title"></h2>
-                <div class="controls">
-                    <button type="button" id="todayBtn">Today</button>
-                    <button type="button" id="prevBtn">&larr;</button>
-                    <button type="button" id="nextBtn">&rarr;</button>
-                </div>
-            </div>
-
-            <div class="calendar">
-                <div class="days-of-week">
-                    <div class="day-name">Mon</div>
-                    <div class="day-name">Tue</div>
-                    <div class="day-name">Wed</div>
-                    <div class="day-name">Thu</div>
-                    <div class="day-name">Fri</div>
-                    <div class="day-name">Sat</div>
-                    <div class="day-name">Sun</div>
-                </div>
-
-                <div class="calendar-grid" id="calendar-grid"></div>
-            </div>
-
-            <div id="selected-day-section" class="selected-day-section">
-                <div id="selected-day-title" class="selected-day-title"></div>
-                <div id="selected-day-events" class="selected-day-events"></div>
+        <div class="calendar-header">
+            <h2 id="month-title"></h2>
+            <div class="controls">
+                <button type="button" id="todayBtn">Today</button>
+                <button type="button" id="prevBtn">&larr;</button>
+                <button type="button" id="nextBtn">&rarr;</button>
             </div>
         </div>
 
+        <div class="tab-content active" id="calendar-view">
+            <div class="filters" id="view-filters">
+                <select id="league-filter" onchange="applyFilters()">
+                    <option value="">All Leagues</option>
+                </select>
+                <select id="type-filter" onchange="applyFilters()">
+                    <option value="">All Event Types</option>
+                </select>
+                <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
+            </div>
+
+            <div class="calendar-container">
+                <div class="calendar">
+                    <div class="days-of-week">
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                        <div class="day-name">Sun</div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar-grid"></div>
+                </div>
+
+                <div id="selected-day-section" class="selected-day-section">
+                    <div id="selected-day-title" class="selected-day-title"></div>
+                    <div id="selected-day-events" class="selected-day-events"></div>
+                </div>
+            </div>
+        </div>
 
         <div class="tab-content" id="list-view">
+            <div class="filters" id="view-filters">
+                <select id="league-filter" onchange="applyFilters()">
+                    <option value="">All Leagues</option>
+                </select>
+                <select id="type-filter" onchange="applyFilters()">
+                    <option value="">All Event Types</option>
+                </select>
+                <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
+            </div>
             <div id="list-events-container" class="list-events-container"></div>
         </div>
 
-    </div>
+        <div class="tab-content" id="venues-view">
+            <div id="venues-container" class="venues-container"></div>
+        </div>
 
-    <div class="tab-content" id="venues-view">
-        <div id="venues-container" class="venues-container"></div>
     </div>
 
     <script src="{{ url_for('static', filename='calendar.js') }}"></script>

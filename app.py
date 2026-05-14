@@ -26,6 +26,7 @@ def load_types():
 def index():
     return render_template('index.html')
 
+
 @app.route('/api/events')
 def api_events():
     return jsonify(load_events())
@@ -40,6 +41,15 @@ def api_types():
     if isinstance(types_data, dict) and 'types' in types_data:
         return jsonify(types_data['types'])
     return jsonify(types_data)
+
+
+@app.route('/admin-login')
+def admin_login():
+    return render_template('admin-login.html')
+
+@app.route('/admin')
+def admin_dashboard():
+    return render_template('admin-dashboard.html')
 
 
 if __name__ == '__main__':
