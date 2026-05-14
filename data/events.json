@@ -66,6 +66,17 @@
         "description": "The ultimate showdown!"
     },
     {
+        "id": 9,
+        "name": "Casual Play Day",
+        "date": "2026-05-05T00:00:00.000Z",
+        "startTime": "18:00:00",
+        "leagueId": 1,
+        "leagueName": "Test League 1",
+        "ticketLink": null,
+        "type": "CASUAL",
+        "description": "Relaxed day of gaming."
+    },
+    {
         "id": 7,
         "name": "Casual Play Day",
         "date": "2026-05-10T00:00:00.000Z",

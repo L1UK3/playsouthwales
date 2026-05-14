@@ -1,15 +1,11 @@
 {
-    "types": [
-        "CASUAL",
-        "STANDARD",
-        "CHALLENGE",
-        "CUP",
-        "TOURNAMENT",
-        "PRE-RELEASE",
-        "SPECIAL",
-        "REGIONAL",
-        "INTERNATIONAL",
-        "RELEASE",
-        "LEGAL"
-    ]
+    "CASUAL": "C",
+    "STANDARD": "S",
+    "CHALLENGE": "🏅",
+    "CUP": "🏆",
+    "PRE-RELEASE": "PR",
+    "SPECIAL": "📍",
+    "REGIONAL": "📍",
+    "INTERNATIONAL": "INT",
+    "WORLDS": "🌍"
 }

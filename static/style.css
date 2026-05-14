@@ -75,7 +75,8 @@ body {
 }
 
 .tabs {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 8px;
     margin-bottom: 20px;
     background: #ffffff;
@@ -217,7 +218,6 @@ body {
 
 .event {
     background: #e0f2fe;
-    border-left: 4px solid #0ea5e9;
     padding: 8px 10px;
     border-radius: 10px;
     font-size: 12px;
@@ -265,7 +265,6 @@ body {
     padding: 16px 18px;
     border-radius: 16px;
     background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
-    border-left: 4px solid #0ea5e9;
 }
 
 .event-card-store {

@@ -7,6 +7,8 @@ let currentTab = 'calendar';
 let leagues = [];
 let leagueMap = {};
 let types = [];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
 
 async function loadEvents() {
     try {
@@ -47,6 +49,11 @@ async function loadLeaguesAndTypes() {
         console.error('Error fetching leagues/types:', error);
     }
 }
+
+
+
+
+
 
 function populateFilters(events) {
     const leagueFilter = document.getElementById('league-filter');
@@ -116,6 +123,10 @@ function clearFilters() {
     applyFilters();
 }
 
+
+
+
+
 function switchTab(tabName) {
     currentTab = tabName;
 
@@ -145,9 +156,15 @@ function switchTab(tabName) {
     }
 }
 
+
+
+
+
 function renderListView() {
     const container = document.getElementById('list-events-container');
     container.innerHTML = '';
+
+    document.getElementById('month-title').textContent = `${monthNames[month]} ${year}`;
 
     // Get all events sorted by date
     const sortedDates = Object.keys(filteredEventsByDate).sort();
@@ -190,6 +207,7 @@ function renderListView() {
                     <div class="list-event-store">${event.name}</div>
                     <div class="list-event-type">${event.type}</div>
                     <div class="list-event-date">${leagueName} • ${event.startTime || ''}</div>
+
                 </div>
             `;
             eventsDiv.appendChild(card);
@@ -199,6 +217,9 @@ function renderListView() {
         container.appendChild(groupDiv);
     });
 }
+
+
+
 
 function renderVenues() {
     const container = document.getElementById('venues-container');
@@ -222,17 +243,23 @@ function renderVenues() {
     });
 }
 
+
+
+
+
 function renderMap() {
     const container = document.getElementById('map-container');
     container.innerHTML = '<div style="padding: 40px; color: #6b7280; font-size: 16px;">Map functionality coming soon</div>';
 }
 
+
+
+
+
+
 function renderCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'];
 
     document.getElementById('month-title').textContent = `${monthNames[month]} ${year}`;
 
@@ -328,7 +355,7 @@ function showSelectedDay(dateKey) {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-    title.textContent = `Events for ${dateText}`;
+    title.textContent = `${dateText}`;
     eventsContainer.innerHTML = '';
 
     const events = filteredEventsByDate[dateKey] || [];
