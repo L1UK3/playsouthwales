@@ -1,7 +1,3 @@
-class LeaguesView {
-
-
-}
 
 
 function renderLeagueView() {

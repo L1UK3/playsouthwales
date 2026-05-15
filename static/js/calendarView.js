@@ -14,16 +14,6 @@ let selectedMonth = null;
 let filters = {leagueName: null, eventType: null};
 
 
-class CalendarView {
-    // an OOP implementation of the calendar
-    // will make a tree of days then events.
-    // 
-}
-
-// need to find a way to implement this so that all of the event data is fetched for that month
-// and that month only
-
-
 
 
 
