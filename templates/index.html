@@ -12,6 +12,12 @@
     <header>
         <div class="top-nav" id="top-nav">
             <h1>Play! Wales | Schedule </h1>
+
+            <!-- TODO: This needs to beocome a proper toggle switch and the script needs to update the webapp's displayed
+             data to reflect this -->
+            <button class="game-toggle" id="game-toggle" onclick="switchGame()">Switch Game</button>
+            
+
             <button class="menu-toggle" id="menu-toggle" onclick="showTabs()">☰</button>
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab('calendar')" id="tab-calendar">Calendar

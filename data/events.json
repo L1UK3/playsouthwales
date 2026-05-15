@@ -8,6 +8,7 @@
         "leagueName": "Test League 1",
         "ticketLink": "http://example.com/tickets/1",
         "type": "CHALLENGE",
+        "game": "TCG",
         "description": "An exciting spring challenge event."
     },
     {
@@ -19,6 +20,7 @@
         "leagueName": "Test League 2",
         "ticketLink": null,
         "type": "CUP",
+        "game":"TCG",
         "description": "Compete for the summer cup!"
     },
     {
@@ -30,6 +32,7 @@
         "leagueName": "Test League 3",
         "ticketLink": "http://example.com/tickets/3",
         "type": "CHALLENGE",
+        "game": "TCG",
         "description": null
     },
     {
@@ -41,6 +44,7 @@
         "leagueName": "Test League 4",
         "ticketLink": null,
         "type": "PRE-RELEASE",
+        "game":"TCG",
         "description": "Be the first to play with the new set."
     },
     {
@@ -52,6 +56,7 @@
         "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "CUP",
+        "game": "TCG",
         "description": "Qualify for the championship."
     },
     {
@@ -63,6 +68,7 @@
         "leagueName": "Test League 2",
         "ticketLink": "http://example.com/tickets/6",
         "type": "CUP",
+        "game":"TCG",
         "description": "The ultimate showdown!"
     },
     {
@@ -74,6 +80,7 @@
         "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "CASUAL",
+        "game": "TCG",
         "description": "Relaxed day of gaming."
     },
     {
@@ -85,6 +92,7 @@
         "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "CASUAL",
+        "game":"TCG",
         "description": "Relaxed day of gaming."
     },
     {
@@ -96,6 +104,19 @@
         "leagueName": "Test League 1",
         "ticketLink": null,
         "type": "PRE-RELEASE",
+        "game":"TCG",
+        "description": "Be the first to play with the new set."
+    },
+    {
+        "id": 9,
+        "name":"Grand Final",
+        "date": "2026-04-25T00:00:00.000Z",
+        "startTime": "19:00:00",
+        "leagueId": 1,
+        "leagueName": "Test League 1",
+        "ticketLink": null,
+        "type": "PRE-RELEASE",
+        "game":"VGC",
         "description": "Be the first to play with the new set."
     }
 ]

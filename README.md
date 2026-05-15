@@ -4,7 +4,7 @@ TO-DO:
 - learn how to properly document the JS functions
 
 - calendar should do a get request to the api every time a new month is loaded
-currently the api just send ALL of the event data.
+currently the api just sends ALL of the event data.
 this will eventually slow the webapp down as the dataset increases
 
 - learn how to properly store the data
