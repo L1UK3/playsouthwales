@@ -20,3 +20,5 @@ maybe an OOP implementation?
 
 - make sure all of the elements are properly tagged so that css implementation is easy
 - maybe even find an example style sheet online?
+
+- add a tcg/vgc toggle button. the active tab should change colours to show the game change
