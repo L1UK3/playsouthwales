@@ -119,6 +119,14 @@ body {
     display: block;
 }
 
+.calendar-container {
+    display: none;
+}
+
+.calendar-container.active {
+    display: block;
+}
+
 .calendar-header {
     display: flex;
     justify-content: space-between;

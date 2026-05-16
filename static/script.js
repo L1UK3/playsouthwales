@@ -23,21 +23,13 @@ async function loadEvents(month, year) {
             const data = await response.json();
             events = data;
 
-            filteredEvents = data.reduce((acc, event) => {
-                const dateKey = event.date ? event.date.slice(0, 10) : null;
-                if (!dateKey) return acc;
-                if (!acc[dateKey]) acc[dateKey] = [];
-                acc[dateKey].push(event);
-                return acc;
-            }, {});
-
             return data;
         }
     } catch (error) {
         console.error('Error fetching events:', error);
         throw error;
     }
-}
+} 
 
 async function loadTypes() {
     try {
@@ -64,7 +56,7 @@ async function loadLeagues() {
             const data = await response.json();
             leagues = data;
             leagueMap = data.reduce((map, league) => {
-                map[league.id] = league;
+                map[league.leagueId] = league;
                 return map;
             }, {});
             return data;
@@ -199,7 +191,31 @@ function applyFilters() {
     const league = document.getElementById('league-filter').value;
     const type = document.getElementById('type-filter').value;
     const game = document.getElementById('game-filter').value;
-    // Additional logic for filtering 'filteredEvents' can be implemented here if needed.
+
+    const filtered = events.filter(event => {
+        let match = true;
+        if (league && String(event.leagueId) !== String(league)) match = false;
+        if (type && event.type !== type) match = false;
+        if (game && event.game !== game) match = false;
+        return match;
+    });
+
+    filteredEvents = filtered.reduce((acc, event) => {
+        const dateKey = event.date ? event.date.slice(0, 10) : null;
+        if (!dateKey) return acc;
+        if (!acc[dateKey]) acc[dateKey] = [];
+        acc[dateKey].push(event);
+        return acc;
+    }, {});
+
+    if (currentView === 'calendar') {
+        renderCalendar();
+        if (selectedDateKey) {
+            showSelectedDay(selectedDateKey);
+        }
+    } else {
+        renderList();
+    }
 }
 
 function renderList() {
@@ -295,8 +311,7 @@ async function goToToday() {
     currentDate = new Date();
     selectedDateKey = TODAY.toISOString().slice(0, 10);
     await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
-    renderCalendar();
-    showSelectedDay(selectedDateKey);
+    applyFilters();
 }
 
 async function previousMonth() {
@@ -304,7 +319,7 @@ async function previousMonth() {
     selectedDateKey = null;
     await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
     hideSelectedDaySection();
-    renderCalendar();
+    applyFilters();
 }
 
 async function nextMonth() {
@@ -312,7 +327,7 @@ async function nextMonth() {
     selectedDateKey = null;
     await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
     hideSelectedDaySection();
-    renderCalendar();
+    applyFilters();
 }
 
 window.goToToday = goToToday;
@@ -332,14 +347,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadLeagues();
         await loadTypes();
         await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
-        renderCalendar();
         
         // Setup initial options for filters if needed
         const leagueFilter = document.getElementById('league-filter');
         if (leagues && leagues.length > 0 && leagueFilter) {
             leagues.forEach(l => {
                 const opt = document.createElement('option');
-                opt.value = l.id;
+                opt.value = l.leagueId;
                 opt.textContent = l.name;
                 leagueFilter.appendChild(opt);
             });
@@ -365,6 +379,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 gameFilter.appendChild(opt);
             });
         }
+
+        applyFilters();
     } catch (e) {
         console.error("Initialization failed", e);
     }

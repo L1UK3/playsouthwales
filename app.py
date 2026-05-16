@@ -8,8 +8,6 @@ api_events = os.path.join(os.path.dirname(__file__), 'data', 'events.json')
 api_leagues = os.path.join(os.path.dirname(__file__), 'data', 'leagues.json')
 api_types = os.path.join(os.path.dirname(__file__), 'data', 'types.json')
 
-
-
 def load_events():
     with open(api_events, 'r', encoding='utf-8') as f:
        return json.load(f)
