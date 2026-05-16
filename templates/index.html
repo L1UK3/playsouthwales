@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Play! Wales: Schedule</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
 </head>
 
 <body>
@@ -16,14 +16,12 @@
             <!-- TODO: #1 This needs to beocome a proper toggle switch and the script needs to update the webapp's displayed
              data to reflect this -->
             <button class="game-toggle" id="game-toggle" onclick="switchGame()">Switch Game</button>
-            
-
             <button class="menu-toggle" id="menu-toggle" onclick="showTabs()">☰</button>
+
             <div class="tabs">
-                <button class="tab-button active" onclick="switchTab('calendar')" id="tab-calendar">Calendar
-                    View</button>
-                <button class="tab-button" onclick="switchTab('list')" id="tab-list">List View</button>
+                <button class="tab-button active" onclick="switchTab('schedule')" id="tab-schedule">Schedule</button>
                 <button class="tab-button" onclick="switchTab('venues')" id="tab-venues">Venues</button>
+                <button class="tab-button" onclick="switchTab('admin')" id="tab-admin">Admin</button>
             </div>
         </div>
     </header>
@@ -31,27 +29,33 @@
 
     <div class="app-container">
 
-        <div class="calendar-header">
-            <h2 id="month-title"></h2>
-            <div class="controls">
-                <button type="button" id="todayBtn">Today</button>
-                <button type="button" id="prevBtn">&larr;</button>
-                <button type="button" id="nextBtn">&rarr;</button>
-            </div>
-        </div>
 
-        <div class="tab-content active" id="calendar-view">
-            <div class="filters" id="view-filters">
-                <select id="league-filter" onchange="applyFilters()">
-                    <option value="">All Leagues</option>
-                </select>
-                <select id="type-filter" onchange="applyFilters()">
-                    <option value="">All Event Types</option>
-                </select>
-                <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
+        <div class="tab-content active" id="schedule-view">
+
+            <div class="schedule-header">
+                <h2 id="month-title"></h2>
+                <div class="controls">
+                    <button type="button" id="todayBtn">Today</button>
+                    <button type="button" id="prevBtn">&larr;</button>
+                    <button type="button" id="nextBtn">&rarr;</button>
+                    <button type="button" id="toggle-view-btn" onclick="toggleCalendarView()">List View</button>
+                </div>
+
+                <div class="filters" id="view-filters">
+                    <select id="league-filter" onchange="applyFilters()">
+                        <option value="">All Leagues</option>
+                    </select>
+                    <select id="type-filter" onchange="applyFilters()">
+                        <option value="">All Event Types</option>
+                    </select>
+                    <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
+                </div>
             </div>
 
-            <div class="calendar-container">
+
+
+            <div class="calendar-container active" id="calendar-view">
+
                 <div class="calendar">
                     <div class="days-of-week">
                         <div class="day-name">Mon</div>
@@ -71,28 +75,20 @@
                     <div id="selected-day-events" class="selected-day-events"></div>
                 </div>
             </div>
-        </div>
 
-        <div class="tab-content" id="list-view">
-            <div class="filters" id="view-filters">
-                <select id="league-filter" onchange="applyFilters()">
-                    <option value="">All Leagues</option>
-                </select>
-                <select id="type-filter" onchange="applyFilters()">
-                    <option value="">All Event Types</option>
-                </select>
-                <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
+            <div class="calendar-container" id="list-view">
             </div>
-            <div id="list-events-container" class="list-events-container"></div>
+
         </div>
 
         <div class="tab-content" id="venues-view">
             <div id="venues-container" class="venues-container"></div>
         </div>
 
+
     </div>
 
-    <script src="{{ url_for('static', filename='calendar.js') }}"></script>
+    <script src="{{ url_for('static', filename='old.js') }}"></script>
 </body>
 
 </html>

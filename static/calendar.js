@@ -9,7 +9,7 @@ let selectedDate = null;
 let filteredEventsByDate = {};
 let events = [];
 let types = [];
-let filters = {leagueName: null, eventType: null, game: null};
+let filters = {leagueName: null, eventType: null};
 
 
 async function loadEvents(month, year) {
