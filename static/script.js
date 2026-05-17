@@ -4,14 +4,21 @@ const MONTH_NAMES = [
     "July", "August", "September", "October", "November", "December"
 ];
 
-let events = {};
+let events = [];
 let filteredEvents = {};
 let leagues = [];
 let leagueMap = {};
-let types = [];
+let types = {};
 let currentView = 'calendar';
 let currentDate = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
 let selectedDateKey = null;
+
+function getLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
 async function loadEvents(month, year) {
     try {
@@ -22,7 +29,6 @@ async function loadEvents(month, year) {
         } else {
             const data = await response.json();
             events = data;
-
             return data;
         }
     } catch (error) {
@@ -67,6 +73,15 @@ async function loadLeagues() {
     }
 }
 
+function updateMonthTitle() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const titleEl = document.getElementById('month-title');
+    if (titleEl) {
+        titleEl.textContent = `${MONTH_NAMES[month]} ${year}`;
+    }
+}
+
 function createDayCell(day, month, year, isOtherMonth) {
     const cell = document.createElement('div');
     cell.className = 'calendar-cell';
@@ -75,18 +90,18 @@ function createDayCell(day, month, year, isOtherMonth) {
     }
 
     const cellDate = new Date(year, month, day);
-    const dateKey = cellDate.toISOString().slice(0, 10);
+    const dateKey = getLocalDateString(cellDate);
 
     const dayNumber = document.createElement('div');
     dayNumber.className = 'date-number';
-    dayNumber.textContent = day;
+    dayNumber.textContent = cellDate.getDate();
     cell.appendChild(dayNumber);
 
     if (dateKey === selectedDateKey) {
         cell.classList.add('selected');
     }
 
-    if (dateKey === TODAY.toISOString().slice(0, 10)) {
+    if (dateKey === getLocalDateString(TODAY)) {
         cell.classList.add('today');
     }
 
@@ -98,7 +113,11 @@ function createDayCell(day, month, year, isOtherMonth) {
         eventsForDay.slice(0, 2).forEach(event => {
             const eventEl = document.createElement('div');
             eventEl.className = 'event';
-            eventEl.innerHTML = `<span>${event.leagueName || 'Event'}</span><span class="type">${event.type || ''}</span>`;
+            const storeColor = event.leagueId && leagueMap[event.leagueId] && leagueMap[event.leagueId].brandColor 
+                               ? leagueMap[event.leagueId].brandColor 
+                               : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
+            eventEl.style.setProperty('--store-color', storeColor);
+            eventEl.innerHTML = `<span>${event.leagueName || 'Event'}</span><span class="type">${types[event.type] || event.type}</span>`;
             eventList.appendChild(eventEl);
         });
 
@@ -121,7 +140,7 @@ function showSelectedDay(dateKey) {
     const title = document.getElementById('selected-day-title');
     const eventsContainer = document.getElementById('selected-day-events');
 
-    const date = new Date(dateKey);
+    const date = new Date(dateKey + 'T00:00:00');
     const dateText = date.toLocaleDateString(undefined, {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
@@ -138,8 +157,12 @@ function showSelectedDay(dateKey) {
     } else {
         eventsForDay.forEach(event => {
             const leagueName = event.leagueId ? (leagueMap[event.leagueId]?.name || event.leagueName || 'Unknown League') : (event.leagueName || 'No League');
+            const storeColor = event.leagueId && leagueMap[event.leagueId] && leagueMap[event.leagueId].brandColor 
+                               ? leagueMap[event.leagueId].brandColor 
+                               : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
             const card = document.createElement('div');
             card.className = 'event-card';
+            card.style.setProperty('--store-color', storeColor);
             card.innerHTML = `
                 <div>
                     <div class="event-card-store">${event.name}</div>
@@ -178,13 +201,12 @@ function toggleCalendarView() {
         document.getElementById('calendar-view').classList.remove('active');
         document.getElementById('list-view').classList.add('active');
         currentView = 'list-view';
-        renderList();
     } else {
         document.getElementById('list-view').classList.remove('active');
         document.getElementById('calendar-view').classList.add('active');
         currentView = 'calendar';
-        renderCalendar();
     }
+    applyFilters();
 }
 
 function applyFilters() {
@@ -208,10 +230,14 @@ function applyFilters() {
         return acc;
     }, {});
 
+    updateMonthTitle();
+
     if (currentView === 'calendar') {
         renderCalendar();
         if (selectedDateKey) {
             showSelectedDay(selectedDateKey);
+        } else {
+            hideSelectedDaySection();
         }
     } else {
         renderList();
@@ -252,12 +278,16 @@ function renderList() {
 
         eventsForDay.forEach(event => {
             const leagueName = event.leagueId ? (leagueMap[event.leagueId]?.name || event.leagueName || 'Unknown League') : (event.leagueName || 'No League');
+            const storeColor = event.leagueId && leagueMap[event.leagueId] && leagueMap[event.leagueId].brandColor 
+                               ? leagueMap[event.leagueId].brandColor 
+                               : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
             const card = document.createElement('div');
             card.className = 'list-event-card';
+            card.style.setProperty('--store-color', storeColor);
             card.innerHTML = `
                 <div class="list-event-info">
                     <div class="list-event-store">${event.name}</div>
-                    <div class="list-event-type">${event.type}</div>
+                    <div class="list-event-type">${types[event.type] ? types[event.type] + ' ' + event.type : event.type}</div>
                     <div class="list-event-date">${leagueName} • ${event.startTime || ''}</div>
                 </div>
             `;
@@ -272,7 +302,6 @@ function renderList() {
 function renderCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    document.getElementById('month-title').textContent = `${MONTH_NAMES[month]} ${year}`;
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -309,7 +338,7 @@ function clearFilters() {
 
 async function goToToday() {
     currentDate = new Date();
-    selectedDateKey = TODAY.toISOString().slice(0, 10);
+    selectedDateKey = getLocalDateString(TODAY);
     await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
     applyFilters();
 }
@@ -318,7 +347,6 @@ async function previousMonth() {
     currentDate.setMonth(currentDate.getMonth() - 1);
     selectedDateKey = null;
     await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
-    hideSelectedDaySection();
     applyFilters();
 }
 
@@ -326,7 +354,6 @@ async function nextMonth() {
     currentDate.setMonth(currentDate.getMonth() + 1);
     selectedDateKey = null;
     await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
-    hideSelectedDaySection();
     applyFilters();
 }
 
@@ -348,7 +375,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadTypes();
         await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
         
-        // Setup initial options for filters if needed
         const leagueFilter = document.getElementById('league-filter');
         if (leagues && leagues.length > 0 && leagueFilter) {
             leagues.forEach(l => {
@@ -364,7 +390,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             Object.keys(types).forEach(type => {
                 const opt = document.createElement('option');
                 opt.value = type;
-                opt.textContent = type;
+                opt.textContent = types[type] ? `${types[type]} ${type}` : type;
                 typeFilter.appendChild(opt);
             });
         }
