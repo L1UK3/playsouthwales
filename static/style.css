@@ -51,7 +51,7 @@ header {
 }
 
 .top-nav {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
@@ -60,6 +60,25 @@ header {
     padding: 18px 22px;
     border-radius: 16px;
     box-shadow: var(--shadow);
+}
+
+
+.admin-button {
+    align-self: self-end;
+    padding: 10px 18px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: var(--bg-main);
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-button:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-darker);
 }
 
 .logo-area {
@@ -125,40 +144,7 @@ header {
     background: #dc2626;
 }
 
-.tabs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 8px;
-    margin-bottom: 20px;
-    background: var(--bg-card);
-    padding: 12px;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    flex-wrap: wrap;
-}
 
-.tab-button {
-    padding: 10px 18px;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    background: var(--bg-main);
-    color: var(--text-muted);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.tab-button:hover {
-    background: var(--bg-card-hover);
-    color: var(--text-darker);
-}
-
-.tab-button.active {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-}
 
 .tab-content {
     display: none;

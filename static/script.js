@@ -361,7 +361,7 @@ function setFilters() {
         Object.keys(types).forEach(type => {
             const opt = document.createElement('option');
             opt.value = type;
-            opt.textContent = types[type] ? `${types[type]} ${type}` : type;
+            opt.textContent = types[type] ? `[${types[type]}] ${type}` : type;
             typeFilter.appendChild(opt);
         });
     }
