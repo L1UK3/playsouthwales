@@ -278,6 +278,39 @@ function toggleCalendarView() {
     applyFilters();
 }
 
+function setFilters() {
+    const leagueFilter = document.getElementById('league-filter');
+    if (leagues && leagues.length > 0 && leagueFilter) {
+        leagues.forEach(l => {
+            const opt = document.createElement('option');
+            opt.value = l.leagueId;
+            opt.textContent = l.name;
+            leagueFilter.appendChild(opt);
+        });
+    }
+
+    const typeFilter = document.getElementById('type-filter');
+    if (types && Object.keys(types).length > 0 && typeFilter) {
+        Object.keys(types).forEach(type => {
+            const opt = document.createElement('option');
+            opt.value = type;
+            opt.textContent = types[type] ? `${types[type]} ${type}` : type;
+            typeFilter.appendChild(opt);
+        });
+    }
+
+    const gameFilter = document.getElementById('game-filter');
+    if (gameFilter) {
+        const games = ['TCG', 'VGC'];
+        games.forEach(game => {
+            const opt = document.createElement('option');
+            opt.value = game;
+            opt.textContent = game;
+            gameFilter.appendChild(opt);
+        });
+    }
+}
+
 function applyFilters() {
     const league = document.getElementById('league-filter').value;
     const type = document.getElementById('type-filter').value;
@@ -450,39 +483,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadTypes();
         await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
         
-        const leagueFilter = document.getElementById('league-filter');
-        if (leagues && leagues.length > 0 && leagueFilter) {
-            leagues.forEach(l => {
-                const opt = document.createElement('option');
-                opt.value = l.leagueId;
-                opt.textContent = l.name;
-                leagueFilter.appendChild(opt);
-            });
-        }
-
-        const typeFilter = document.getElementById('type-filter');
-        if (types && Object.keys(types).length > 0 && typeFilter) {
-            Object.keys(types).forEach(type => {
-                const opt = document.createElement('option');
-                opt.value = type;
-                opt.textContent = types[type] ? `${types[type]} ${type}` : type;
-                typeFilter.appendChild(opt);
-            });
-        }
-
-        const gameFilter = document.getElementById('game-filter');
-        if (gameFilter) {
-            const games = ['TCG', 'VGC'];
-            games.forEach(game => {
-                const opt = document.createElement('option');
-                opt.value = game;
-                opt.textContent = game;
-                gameFilter.appendChild(opt);
-            });
-        }
-
+        setFilters();
         applyFilters();
     } catch (e) {
         console.error("Initialization failed", e);
     }
 });
+
