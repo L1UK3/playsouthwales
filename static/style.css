@@ -58,7 +58,7 @@ header {
 }
 
 
-.admin-button {
+.top-nav button{
     padding: 10px 18px;
     border: 2px solid transparent;
     border-radius: 12px;
@@ -70,7 +70,7 @@ header {
     transition: all 0.2s ease;
 }
 
-.admin-button:hover {
+.top-nav button:hover {
     background: var(--bg-card-hover);
     color: var(--text-darker);
 }
