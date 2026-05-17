@@ -7,6 +7,10 @@ const CACHE_SIZE = 5;
 const DEFAULT_DEPTH = 2;
 
 class CalendarCache {
+    /** 
+     * Initializes a new instance of the CalendarCache.
+     * @param {number} maxSize - The maximum number of entries allowed in the cache.
+     */
     constructor(maxSize = 5) {
         this.cache = new Map();
         this.maxSize = maxSize;
@@ -18,8 +22,9 @@ class CalendarCache {
             this.cache.delete(key); 
             this.cache.set(key, value); 
             return value;
+        } else {
+            return null;
         }
-        return null;
     }
 
     set(key, value) {
@@ -57,6 +62,11 @@ let currentDate = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
 let selectedDateKey = null;
 
 function getLocalDateString(date) {
+    /**
+     * Returns a date string in YYYY-MM-DD format based on the local time of the provided Date object.
+     * @param {Date} date 
+     * @returns {string}
+     */
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -64,6 +74,12 @@ function getLocalDateString(date) {
 }
 
 async function loadEvents(month, year) {
+    /**
+     * Fetches events for a specific month and year from the server.
+     * @param {number} month - The 0-indexed month (0-11).
+     * @param {number} year - The year.
+     * @returns {Promise<Array>} - A promise that resolves to the list of events.
+     */
     try {
         const fetchMonth = month + 1;
         const response = await fetch(`/events?month=${fetchMonth}&year=${year}`);
@@ -80,6 +96,10 @@ async function loadEvents(month, year) {
 } 
 
 async function loadTypes() {
+    /**
+     * Fetches event types from the server.
+     * @returns {Promise<Object>} - A promise that resolves to an object containing event types.
+     */
     try {
         const response = await fetch('/types');
         if (!response.ok) {
@@ -96,6 +116,11 @@ async function loadTypes() {
 }
 
 async function loadLeagues() {
+    /**
+     * Fetches leagues from the server.
+     * @returns {Promise<Array>} - A promise that resolves to an array
+     * containing league objects.
+     */
     try {
         const response = await fetch('/leagues');
         if (!response.ok) {
@@ -116,6 +141,14 @@ async function loadLeagues() {
 }
 
 async function fetchAndCache(month, year, depth = DEFAULT_DEPTH) {
+    /**
+     * Fetches and caches events for a specific month and year.
+     * @param {number} month - The 0-indexed month.
+     * @param {number} year - The year.
+     * @param {number} depth - How many adjacent months to pre-fetch.
+     * 
+     * @returns {Promise<Array|null>} - A promise that resolves to the list of events for the requested month, or null if the fetch fails.
+     */
     const cacheKey = `${year}-${month}`;
 
     if (!events.has(cacheKey)) {
@@ -143,6 +176,9 @@ async function fetchAndCache(month, year, depth = DEFAULT_DEPTH) {
 }
 
 function updateMonthTitle() {
+    /**
+     * Updates the month and year display in the calendar header.
+     */
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const titleEl = document.getElementById('month-title');
@@ -152,6 +188,14 @@ function updateMonthTitle() {
 }
 
 function createDayCell(day, month, year, isOtherMonth) {
+    /**
+     * Creates a DOM element for a single day in the calendar grid.
+     * @param {number} day - The day of the month.
+     * @param {number} month - The 0-indexed month.
+     * @param {number} year - The year.
+     * @param {boolean} isOtherMonth - Whether the day belongs to a different month than the current view.
+     * @returns {HTMLElement} - The constructed day cell element.
+     */
     const cell = document.createElement('div');
     cell.className = 'calendar-cell';
     if (isOtherMonth) {
@@ -205,6 +249,10 @@ function createDayCell(day, month, year, isOtherMonth) {
 }
 
 function showSelectedDay(dateKey) {
+    /**
+     * Displays the details of events for a specific date in the side panel.
+     * @param {string} dateKey - The date string in YYYY-MM-DD format.
+     */
     const section = document.getElementById('selected-day-section');
     const title = document.getElementById('selected-day-title');
     const eventsContainer = document.getElementById('selected-day-events');
@@ -247,17 +295,30 @@ function showSelectedDay(dateKey) {
 }
 
 function selectDay(dateKey) {
+    /**
+     * Sets the selected date key, re-renders the calendar to reflect the selection, 
+     * and updates the side panel with event details for that date.
+     * @param {string} dateKey - The date string in YYYY-MM-DD format.
+     
+     */
     selectedDateKey = dateKey;
     renderCalendar();
     showSelectedDay(dateKey);
 }
 
 function hideSelectedDaySection() {
+    /**
+     * Hides the side panel containing event details.
+     */
     const section = document.getElementById('selected-day-section');
     section.classList.remove('active');
 }
 
 function switchView(viewName) {
+    /**
+     * Switches the current view to the specified view name.
+     * @param {string} viewName - The name of the view to switch to.
+     */
     currentView = viewName;
     document.querySelectorAll('.calendar-container').forEach(view => {
         view.classList.remove('active');
@@ -266,6 +327,9 @@ function switchView(viewName) {
 }
 
 function toggleCalendarView() {
+    /**
+     * Toggles between the calendar and list view.
+     */
     if (currentView === 'calendar') {
         document.getElementById('calendar-view').classList.remove('active');
         document.getElementById('list-view').classList.add('active');
@@ -279,6 +343,9 @@ function toggleCalendarView() {
 }
 
 function setFilters() {
+    /**
+     * Populates the filter dropdown menus with available leagues, event types, and game formats.
+     */
     const leagueFilter = document.getElementById('league-filter');
     if (leagues && leagues.length > 0 && leagueFilter) {
         leagues.forEach(l => {
@@ -312,6 +379,10 @@ function setFilters() {
 }
 
 function applyFilters() {
+    /**
+     * Filters the cached events based on the current selection of league, event type, and game format, 
+     * then updates the global filteredEvents object and refreshes the current view.
+     */
     const league = document.getElementById('league-filter').value;
     const type = document.getElementById('type-filter').value;
     const game = document.getElementById('game-filter').value;
@@ -347,6 +418,9 @@ function applyFilters() {
 }
 
 function renderList() {
+    /**
+     * Renders the list view by grouping filtered events by date and displaying them as cards.
+     */
     const container = document.getElementById('list-view-events');
     if (!container) return;
     container.innerHTML = '';
@@ -408,6 +482,9 @@ function renderList() {
 }
 
 function renderCalendar() {
+    /**
+     * Renders the calendar grid for the current month, including padding days from the previous and next months.
+     */
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
@@ -438,6 +515,9 @@ function renderCalendar() {
 }
 
 function clearFilters() {
+    /**
+     * Resets all filter dropdowns to their default empty values and refreshes the event display.
+     */
     document.getElementById('league-filter').value = '';
     document.getElementById('type-filter').value = '';
     document.getElementById('game-filter').value = '';
@@ -445,6 +525,9 @@ function clearFilters() {
 }
 
 async function goToToday() {
+    /**
+     * Resets the calendar view to the current month and year, selects today's date, and refreshes the display.
+     */
     currentDate = new Date();
     selectedDateKey = getLocalDateString(TODAY);
     await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
@@ -452,6 +535,9 @@ async function goToToday() {
 }
 
 async function previousMonth() {
+    /**
+     * Decrements the current month, clears the selected date, fetches events for the new month, and refreshes the display.
+     */
     currentDate.setMonth(currentDate.getMonth() - 1);
     selectedDateKey = null;
     await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
@@ -459,6 +545,9 @@ async function previousMonth() {
 }
 
 async function nextMonth() {
+    /**
+     * Increments the current month, clears the selected date, fetches events for the new month, and refreshes the display.
+     */
     currentDate.setMonth(currentDate.getMonth() + 1);
     selectedDateKey = null;
     await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
