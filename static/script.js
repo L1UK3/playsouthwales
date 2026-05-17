@@ -13,6 +13,37 @@ let currentView = 'calendar';
 let currentDate = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
 let selectedDateKey = null;
 
+class CalendarCache {
+    constructor(maxSize = 5) {
+        this.cache = new Map();
+        this.maxSize = maxSize;
+    }
+
+    get(key) {
+        if (this.cache.has(key)) {
+            const value = this.cache.get(key);
+            this.cache.delete(key); 
+            this.cache.set(key, value); 
+            return value;
+        }
+        return null;
+    }
+
+    set(key, value) {
+        if (this.cache.has(key)) {
+            this.cache.delete(key);
+        } else if (this.cache.size >= this.maxSize) {
+            const oldestKey = this.cache.keys().next().value;
+            this.cache.delete(oldestKey);
+        }
+        this.cache.set(key, value);
+    }
+  
+    has(key) {
+        return this.cache.has(key);
+    }
+}
+
 function getLocalDateString(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -28,7 +59,6 @@ async function loadEvents(month, year) {
             throw new Error('Failed to fetch events: ' + response.statusText);
         } else {
             const data = await response.json();
-            events = data;
             return data;
         }
     } catch (error) {
@@ -71,6 +101,33 @@ async function loadLeagues() {
         console.error('Error fetching leagues:', error);
         throw error;
     }
+}
+
+async function fetchAndCache(month, year, depth = 1) {
+    const cacheKey = `${year}-${month}`;
+
+    if (!events.has(cacheKey)) {
+        try {
+            const data = await loadEvents(month, year);
+            events.set(cacheKey, data);
+        } catch (error) {
+            return null; 
+        }
+    }
+
+    if (depth > 0) {
+        // Handle 0-indexed month boundaries (0 = Jan, 11 = Dec)
+        const prevMonth = month === 0 ? 11 : month - 1;
+        const prevYear  = month === 0 ? year - 1 : year;
+        
+        const nextMonth = month === 11 ? 0 : month + 1;
+        const nextYear  = month === 11 ? year + 1 : year;
+
+        fetchAndCache(prevMonth, prevYear, depth - 1);
+        fetchAndCache(nextMonth, nextYear, depth - 1);
+    }
+
+    return events.get(cacheKey);
 }
 
 function updateMonthTitle() {
@@ -339,21 +396,21 @@ function clearFilters() {
 async function goToToday() {
     currentDate = new Date();
     selectedDateKey = getLocalDateString(TODAY);
-    await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
+    await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
     applyFilters();
 }
 
 async function previousMonth() {
     currentDate.setMonth(currentDate.getMonth() - 1);
     selectedDateKey = null;
-    await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
+    await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
     applyFilters();
 }
 
 async function nextMonth() {
     currentDate.setMonth(currentDate.getMonth() + 1);
     selectedDateKey = null;
-    await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
+    await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
     applyFilters();
 }
 
@@ -373,7 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         await loadLeagues();
         await loadTypes();
-        await loadEvents(currentDate.getMonth(), currentDate.getFullYear());
+        await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
         
         const leagueFilter = document.getElementById('league-filter');
         if (leagues && leagues.length > 0 && leagueFilter) {
