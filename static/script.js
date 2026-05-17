@@ -3,15 +3,8 @@ const MONTH_NAMES = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
-
-let events = [];
-let filteredEvents = {};
-let leagues = [];
-let leagueMap = {};
-let types = {};
-let currentView = 'calendar';
-let currentDate = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
-let selectedDateKey = null;
+const CACHE_SIZE = 5;
+const DEFAULT_DEPTH = 2;
 
 class CalendarCache {
     constructor(maxSize = 5) {
@@ -42,7 +35,26 @@ class CalendarCache {
     has(key) {
         return this.cache.has(key);
     }
+
+    getAll() {
+        let all = [];
+        for (const value of this.cache.values()) {
+            if (Array.isArray(value)) {
+                all.push(...value);
+            }
+        }
+        return all;
+    }
 }
+
+let events = new CalendarCache(CACHE_SIZE);
+let filteredEvents = {};
+let leagues = [];
+let leagueMap = {};
+let types = {};
+let currentView = 'calendar';
+let currentDate = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+let selectedDateKey = null;
 
 function getLocalDateString(date) {
     const year = date.getFullYear();
@@ -103,7 +115,7 @@ async function loadLeagues() {
     }
 }
 
-async function fetchAndCache(month, year, depth = 1) {
+async function fetchAndCache(month, year, depth = DEFAULT_DEPTH) {
     const cacheKey = `${year}-${month}`;
 
     if (!events.has(cacheKey)) {
@@ -271,7 +283,7 @@ function applyFilters() {
     const type = document.getElementById('type-filter').value;
     const game = document.getElementById('game-filter').value;
 
-    const filtered = events.filter(event => {
+    const filtered = events.getAll().filter(event => {
         let match = true;
         if (league && String(event.leagueId) !== String(league)) match = false;
         if (type && event.type !== type) match = false;
@@ -306,7 +318,13 @@ function renderList() {
     if (!container) return;
     container.innerHTML = '';
 
-    const sortedDates = Object.keys(filteredEvents).sort();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const prefix = `${year}-${month}-`;
+
+    const sortedDates = Object.keys(filteredEvents)
+        .filter(dateKey => dateKey.startsWith(prefix))
+        .sort();
 
     if (sortedDates.length === 0) {
         const noEventsDiv = document.createElement('div');
