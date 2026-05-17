@@ -168,8 +168,10 @@ async function fetchAndCache(month, year, depth = DEFAULT_DEPTH) {
         const nextMonth = month === 11 ? 0 : month + 1;
         const nextYear  = month === 11 ? year + 1 : year;
 
-        fetchAndCache(prevMonth, prevYear, depth - 1);
-        fetchAndCache(nextMonth, nextYear, depth - 1);
+        await Promise.all([
+            fetchAndCache(prevMonth, prevYear, depth - 1),
+            fetchAndCache(nextMonth, nextYear, depth - 1)
+        ]);
     }
 
     return events.get(cacheKey);
