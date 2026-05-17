@@ -1,5 +1,6 @@
 import json
-from datetime import datetime
+import os
+from datetime import datetime, timedelta, date
 
 events = []
 event_id = 1
@@ -20,34 +21,44 @@ def add_event(name, date_str, time_str, league_id, league_name, type_, game, des
     })
     event_id += 1
 
-# Weeklies:
-# Swansea Jack (1): Wednesdays (6, 13, 20, 27) at 18:30
-for d in [6, 13, 20, 27]:
-    add_event("Weekly Standard", f"2026-05-{d:02d}T00:00:00.000Z", "18:30:00", 1, "Swansea Jack", "STANDARD", "TCG", "Weekly standard tournament")
+# Generate from May 1, 2025 to August 31, 2026
+start_date = date(2025, 5, 1)
+end_date = date(2026, 8, 31)
 
-# Gamers Emporium (3): Fridays (1, 8, 15, 22, 29) at 19:00
-for d in [1, 8, 15, 22, 29]:
-    add_event("Weekly Standard", f"2026-05-{d:02d}T00:00:00.000Z", "19:00:00", 3, "Gamers Emporium", "STANDARD", "TCG", "Weekly standard tournament")
+current_date = start_date
+while current_date <= end_date:
+    date_str = current_date.strftime("%Y-%m-%dT00:00:00.000Z")
+    weekday = current_date.weekday() # 0 = Mon, 6 = Sun
 
-# Firestorm Games (4): Tuesdays (5, 12, 19, 26) at 18:30
-for d in [5, 12, 19, 26]:
-    add_event("Weekly Standard", f"2026-05-{d:02d}T00:00:00.000Z", "18:30:00", 4, "Firestorm Games", "STANDARD", "TCG", "Weekly standard tournament")
+    # Weeklies
+    if weekday == 2: # Wednesday
+        add_event("Weekly Standard", date_str, "18:30:00", 1, "Swansea Jack", "STANDARD", "TCG", "Weekly standard tournament")
+    elif weekday == 4: # Friday
+        add_event("Weekly Standard", date_str, "19:00:00", 3, "Gamers Emporium", "STANDARD", "TCG", "Weekly standard tournament")
+    elif weekday == 1: # Tuesday
+        add_event("Weekly Standard", date_str, "18:30:00", 4, "Firestorm Games", "STANDARD", "TCG", "Weekly standard tournament")
+    elif weekday == 6: # Sunday
+        add_event("Sunday Casual", date_str, "13:00:00", 2, "Common Meeple", "CASUAL", "TCG", "Casual play and trading")
 
-# Common Meeple Casual Sundays (3, 10, 17, 24, 31)
-for d in [3, 10, 17, 24, 31]:
-    add_event("Sunday Casual", f"2026-05-{d:02d}T00:00:00.000Z", "13:00:00", 2, "Common Meeple", "CASUAL", "TCG", "Casual play and trading")
+    # Weekend Events (PR, Challenge, Cup)
+    if weekday in [5, 6]: # Saturday or Sunday
+        if current_date.day <= 7:
+            if weekday == 5: # First Saturday
+                add_event("New Set Pre-release", date_str, "10:00:00", 4, "Firestorm Games", "PRE-RELEASE", "TCG", "Get your hands on the new set early!")
+            else: # First Sunday
+                add_event("New Set Pre-release", date_str, "11:00:00", 1, "Swansea Jack", "PRE-RELEASE", "TCG", "Pre-release tournament")
+        elif 8 <= current_date.day <= 14:
+            if weekday == 6: # Second Sunday
+                add_event("League Challenge", date_str, "12:00:00", 1, "Swansea Jack", "CHALLENGE", "TCG", "Earn championship points!")
+        elif 15 <= current_date.day <= 21:
+            if weekday == 5: # Third Saturday
+                add_event("League Cup", date_str, "09:30:00", 3, "Gamers Emporium", "CUP", "TCG", "Large prize pool league cup")
+        elif 22 <= current_date.day <= 28:
+            if weekday == 5: # Fourth Saturday
+                add_event("VGC League Challenge", date_str, "10:30:00", 2, "Common Meeple", "CHALLENGE", "VGC", "Video Game League Challenge")
 
-# Weekend Events (PR, Challenge, Cup)
-# Pre-release (TCG only)
-add_event("New Set Pre-release", "2026-05-02T00:00:00.000Z", "10:00:00", 4, "Firestorm Games", "PRE-RELEASE", "TCG", "Get your hands on the new set early!")
-add_event("New Set Pre-release", "2026-05-17T00:00:00.000Z", "11:00:00", 1, "Swansea Jack", "PRE-RELEASE", "TCG", "Pre-release tournament")
+    current_date += timedelta(days=1)
 
-# Challenges
-add_event("May League Challenge", "2026-05-10T00:00:00.000Z", "12:00:00", 1, "Swansea Jack", "CHALLENGE", "TCG", "Earn championship points!")
-add_event("VGC League Challenge", "2026-05-30T00:00:00.000Z", "10:30:00", 2, "Common Meeple", "CHALLENGE", "VGC", "Video Game League Challenge")
-
-# Cups
-add_event("May League Cup", "2026-05-23T00:00:00.000Z", "09:30:00", 3, "Gamers Emporium", "CUP", "TCG", "Large prize pool league cup")
-
-with open("c:\\Users\\lukee\\Documents\\Projects\\playwales\\data\\events.json", "w") as f:
+output_file = os.path.join(os.path.dirname(__file__), "data", "events.json")
+with open(output_file, "w") as f:
     json.dump(events, f, indent=4)
