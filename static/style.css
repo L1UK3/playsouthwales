@@ -60,7 +60,6 @@ header {
     padding: 18px 22px;
     border-radius: 16px;
     box-shadow: var(--shadow);
-    margin-bottom: 26px;
 }
 
 .logo-area {
@@ -331,7 +330,7 @@ header {
     display: block;
 }
 
-.selected-day-title {
+#selected-day-title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 16px;
