@@ -14,12 +14,18 @@
             <h1>Play! Wales | Schedule </h1>
             <button type="button" class="leagues-button" id="leagues-button" onclick="toggleAppTab()">Leagues</button>
             <button type="button" class="admin-button" id="admin-button">Admin</button>
-            <button type="button" class="settings-button" id="settings-button">
+
+
+            <button type="button" class="settings-button" id="settings-button" onclick="showSettingsBar()">
                 <img src="{{ url_for('static', filename='settings-icon.svg') }}" alt="Settings">
-                <!-- TODO #9 Add 24 hour clock format toggle button -->
-                <!-- TODO #6: Create high contrast toggle button and make colours more colour-blind accessible-->
-                <button class="button" id="high-contrast-button" onclick="toggleHighContrast()"></button>
             </button>
+
+            <div class="settings-bar" id="settings-bar">
+                <!-- TODO #9 Add 24 hour clock format toggle button -->
+                <button class="button" id="24-hour-button" onclick="toggle24HourFormat()""></button>
+                <!-- TODO #6: Create high contrast toggle button and make colours more colour-blind accessible-->
+                <button class=" button" id="high-contrast-button" onclick="toggleHighContrast()"></button>
+            </div>
         </div>
     </header>
 
@@ -35,7 +41,7 @@
                     <button type="button" id="nextBtn">&rarr;</button>
                     <button class="calendar-toggle" id="calendar-toggle-btn" onclick="toggleCalendarView()">Switch
                         View</button>
-                    
+
                 </div>
 
                 <div class="filters" id="view-filters">
@@ -51,8 +57,6 @@
                     <button type="button" class="clear-filters" onclick="clearFilters()">Clear</button>
                 </div>
             </div>
-
-
 
             <div class="calendar-container active" id="calendar-view">
 
@@ -81,12 +85,15 @@
                 <div id="list-view-events" class="event-list"></div>
             </div>
 
-        </div>
 
-        </div class="tab-content" id="leagues-view"></div>
-
+        </div class="tab-content" id="leagues-view">
+        <div class="leagues-header" id="leagues-header"></div>
+        <div class="leagues-container" id="leagues-container"></div>
+        <div class="map-api" id="map-api"></div>
+    </div>
 
     </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
