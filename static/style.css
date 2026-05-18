@@ -483,7 +483,7 @@ header {
 }
 
 .list-event-card:hover {
-    background: var(--bg-card-hover);
+    /*background: var(--bg-card-hover);*/
     transform: translateX(4px);
     border-color: var(--primary);
 }
@@ -620,7 +620,6 @@ header {
 }
 
 .list-events-in-group {
-    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
