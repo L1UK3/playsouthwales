@@ -8,17 +8,30 @@ api_events = os.path.join(os.path.dirname(__file__), 'data', 'events.json')
 api_leagues = os.path.join(os.path.dirname(__file__), 'data', 'leagues.json')
 api_types = os.path.join(os.path.dirname(__file__), 'data', 'types.json')
 
+# Global cache for data
+_cached_data = {
+    'events': None,
+    'leagues': None,
+    'types': None
+}
+
 def load_events():
-    with open(api_events, 'r', encoding='utf-8') as f:
-       return json.load(f)
+    if _cached_data['events'] is None:
+        with open(api_events, 'r', encoding='utf-8') as f:
+           _cached_data['events'] = json.load(f)
+    return _cached_data['events']
 
 def load_leagues():
-    with open(api_leagues, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    if _cached_data['leagues'] is None:
+        with open(api_leagues, 'r', encoding='utf-8') as f:
+            _cached_data['leagues'] = json.load(f)
+    return _cached_data['leagues']
 
 def load_types():
-    with open(api_types, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    if _cached_data['types'] is None:
+        with open(api_types, 'r', encoding='utf-8') as f:
+            _cached_data['types'] = json.load(f)
+    return _cached_data['types']
 
 @app.route('/')
 def index():
@@ -29,10 +42,13 @@ def getEvents():
     #/events?month=${month}&year=${year}
     month = request.args.get('month')
     year = request.args.get('year')
-    date = f"{year}-{month.zfill(2)}"
+    if not month or not year:
+        return jsonify([])
+        
+    date_prefix = f"{year}-{month.zfill(2)}"
     events = load_events()
 
-    filteredEvents = [event for event in events if event['date'].startswith(date)]
+    filteredEvents = [event for event in events if event['date'].startswith(date_prefix)]
     return jsonify(filteredEvents)
 
 @app.route('/leagues')

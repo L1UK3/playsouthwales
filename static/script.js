@@ -3,17 +3,18 @@ const MONTH_NAMES = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
-const CACHE_SIZE = 5;
-const DEFAULT_DEPTH = 2;
+const CACHE_SIZE = 12;
+const DEFAULT_DEPTH = 1;
 
 class CalendarCache {
     /** 
      * Initializes a new instance of the CalendarCache.
      * @param {number} maxSize - The maximum number of entries allowed in the cache.
      */
-    constructor(maxSize = 5) {
+    constructor(maxSize = 12) {
         this.cache = new Map();
         this.maxSize = maxSize;
+        this.fetchPromises = new Map(); // Track ongoing fetches
     }
 
     get(key) {
@@ -76,13 +77,12 @@ function getLocalDateString(date) {
 async function loadEvents(month, year) {
     /**
      * Fetches events for a specific month and year from the server.
-     * @param {number} month - The 0-indexed month (0-11).
+     * @param {number} month - The 1-indexed month (1-12).
      * @param {number} year - The year.
      * @returns {Promise<Array>} - A promise that resolves to the list of events.
      */
     try {
-        const fetchMonth = month + 1;
-        const response = await fetch(`/events?month=${fetchMonth}&year=${year}`);
+        const response = await fetch(`/events?month=${month}&year=${year}`);
         if (!response.ok) {
             throw new Error('Failed to fetch events: ' + response.statusText);
         } else {
@@ -143,7 +143,7 @@ async function loadLeagues() {
 async function fetchAndCache(month, year, depth = DEFAULT_DEPTH) {
     /**
      * Fetches and caches events for a specific month and year.
-     * @param {number} month - The 0-indexed month.
+     * @param {number} month - The 1-indexed month (1-12).
      * @param {number} year - The year.
      * @param {number} depth - How many adjacent months to pre-fetch.
      * 
@@ -151,30 +151,73 @@ async function fetchAndCache(month, year, depth = DEFAULT_DEPTH) {
      */
     const cacheKey = `${year}-${month}`;
 
-    if (!events.has(cacheKey)) {
+    // 1. Check if it's already in the cache
+    if (events.has(cacheKey)) {
+        const data = events.get(cacheKey); // updates LRU
+        if (depth > 0) {
+            preFetchNeighbors(month, year, depth);
+        }
+        return data;
+    }
+
+    // 2. Check if there's already an active fetch for this month
+    if (events.fetchPromises.has(cacheKey)) {
+        const data = await events.fetchPromises.get(cacheKey);
+        if (depth > 0) {
+            preFetchNeighbors(month, year, depth);
+        }
+        return data;
+    }
+
+    // 3. Start a new fetch and store its promise
+    const fetchPromise = (async () => {
         try {
             const data = await loadEvents(month, year);
             events.set(cacheKey, data);
+            return data;
         } catch (error) {
-            return null; 
+            console.error(`Error fetching ${cacheKey}:`, error);
+            return null;
+        } finally {
+            events.fetchPromises.delete(cacheKey);
         }
-    }
+    })();
 
+    events.fetchPromises.set(cacheKey, fetchPromise);
+    const result = await fetchPromise;
+
+    // 4. Trigger pre-fetching of neighbors in the background
     if (depth > 0) {
-        // Handle 0-indexed month boundaries (0 = Jan, 11 = Dec)
-        const prevMonth = month === 0 ? 11 : month - 1;
-        const prevYear  = month === 0 ? year - 1 : year;
-        
-        const nextMonth = month === 11 ? 0 : month + 1;
-        const nextYear  = month === 11 ? year + 1 : year;
-
-        await Promise.all([
-            fetchAndCache(prevMonth, prevYear, depth - 1),
-            fetchAndCache(nextMonth, nextYear, depth - 1)
-        ]);
+        preFetchNeighbors(month, year, depth);
     }
 
-    return events.get(cacheKey);
+    return result;
+}
+
+function preFetchNeighbors(month, year, depth) {
+    /**
+     * Pre-fetches adjacent months in the background to avoid blocking the main UI update.
+     * @param {number} month - The 1-indexed month (1-12).
+     */
+    const prevDate = new Date(year, month - 2, 1);
+    const nextDate = new Date(year, month, 1);
+    
+    const prevMonth = prevDate.getMonth() + 1;
+    const prevYear  = prevDate.getFullYear();
+    
+    const nextMonth = nextDate.getMonth() + 1;
+    const nextYear  = nextDate.getFullYear();
+
+    // Run background fetches with reduced depth
+    Promise.all([
+        fetchAndCache(prevMonth, prevYear, depth - 1),
+        fetchAndCache(nextMonth, nextYear, depth - 1)
+    ]).then(() => {
+        // Re-apply filters to update any "padding" days in the calendar view
+        if (currentView === 'calendar') {
+            applyFilters();
+        }
+    });
 }
 
 function updateMonthTitle() {
@@ -182,10 +225,10 @@ function updateMonthTitle() {
      * Updates the month and year display in the calendar header.
      */
     const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
+    const monthIndex = currentDate.getMonth(); // 0-indexed for array access
     const titleEl = document.getElementById('month-title');
     if (titleEl) {
-        titleEl.textContent = `${MONTH_NAMES[month]} ${year}`;
+        titleEl.textContent = `${MONTH_NAMES[monthIndex]} ${year}`;
     }
 }
 
@@ -193,7 +236,7 @@ function createDayCell(day, month, year, isOtherMonth) {
     /**
      * Creates a DOM element for a single day in the calendar grid.
      * @param {number} day - The day of the month.
-     * @param {number} month - The 0-indexed month.
+     * @param {number} month - The 1-indexed month (1-12).
      * @param {number} year - The year.
      * @param {boolean} isOtherMonth - Whether the day belongs to a different month than the current view.
      * @returns {HTMLElement} - The constructed day cell element.
@@ -204,7 +247,7 @@ function createDayCell(day, month, year, isOtherMonth) {
         cell.classList.add('empty');
     }
 
-    const cellDate = new Date(year, month, day);
+    const cellDate = new Date(year, month - 1, day);
     const dateKey = getLocalDateString(cellDate);
 
     const dayNumber = document.createElement('div');
@@ -506,18 +549,18 @@ function renderCalendar() {
 
     for (let i = startDay - 1; i >= 0; i--) {
         const dayNum = daysInPrevMonth - i;
-        const cell = createDayCell(dayNum, month - 1, year, true);
+        const cell = createDayCell(dayNum, month, year, true);
         calendarGrid.appendChild(cell);
     }
     for (let day = 1; day <= daysInMonth; day++) {
-        const cell = createDayCell(day, month, year, false);
+        const cell = createDayCell(day, month + 1, year, false);
         calendarGrid.appendChild(cell);
     }
 
     const totalCells = calendarGrid.children.length;
     const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells;
     for (let day = 1; day <= remainingCells; day++) {
-        const cell = createDayCell(day, month + 1, year, true);
+        const cell = createDayCell(day, month + 2, year, true);
         calendarGrid.appendChild(cell);
     }
 }
@@ -538,7 +581,7 @@ async function goToToday() {
      */
     currentDate = new Date();
     selectedDateKey = getLocalDateString(TODAY);
-    await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
+    await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
 
@@ -548,7 +591,7 @@ async function previousMonth() {
      */
     currentDate.setMonth(currentDate.getMonth() - 1);
     selectedDateKey = null;
-    await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
+    await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
 
@@ -558,7 +601,7 @@ async function nextMonth() {
      */
     currentDate.setMonth(currentDate.getMonth() + 1);
     selectedDateKey = null;
-    await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
+    await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
 
@@ -578,7 +621,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         await loadLeagues();
         await loadTypes();
-        await fetchAndCache(currentDate.getMonth(), currentDate.getFullYear());
+        await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
         
         setFilters();
         applyFilters();
