@@ -650,9 +650,13 @@ function switchTab() {
      * 
      */
     if (currentTab === 'schedule') {
-        // show leagues tab
+        currentTab = 'leagues';
+        document.getElementById('schedule-tab').classList.remove('active');
+        document.getElementById('leagues-tab').classList.add('active');
     } else {
-        //revert back to the schedule tab
+        currentTab = 'schedule';
+        document.getElementById('leagues-tab').classList.remove('active');
+        document.getElementById('schedule-tab').classList.add('active');
     }
 }
 
