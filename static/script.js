@@ -606,6 +606,8 @@ async function nextMonth() {
     applyFilters();
 }
 
+// TODO #2: Implement the functionality of the leagues view. Would be awesome to add a map of
+// locations respective to the player
 function switchTab() {
     /**
      * 

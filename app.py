@@ -8,6 +8,7 @@ api_events = os.path.join(os.path.dirname(__file__), 'data', 'events.json')
 api_leagues = os.path.join(os.path.dirname(__file__), 'data', 'leagues.json')
 api_types = os.path.join(os.path.dirname(__file__), 'data', 'types.json')
 
+# TODO #3: Implement the data in a sql database rather than as JSON files
 # Global cache for data
 _cached_data = {
     'events': None,
