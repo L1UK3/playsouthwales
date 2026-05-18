@@ -271,7 +271,7 @@ function createDayCell(day, month, year, isOtherMonth) {
 
         eventsForDay.slice(0, 2).forEach(event => {
             const eventEl = document.createElement('div');
-            eventEl.className = 'event';
+            eventEl.className = `event type-${event.type}`;
             const storeColor = event.leagueId && leagueMap[event.leagueId] && leagueMap[event.leagueId].brandColor 
                                ? leagueMap[event.leagueId].brandColor 
                                : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
@@ -330,13 +330,22 @@ function showSelectedDay(dateKey) {
                                ? leagueMap[event.leagueId].brandColor 
                                : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
             const card = document.createElement('div');
-            card.className = 'event-card';
+            card.className = `event-card type-${event.type}`;
             card.style.setProperty('--store-color', storeColor);
             card.innerHTML = `
-                <div>
-                    <div class="event-card-store">${event.name}</div>
-                    <div class="event-card-type">${event.type}</div>
-                    <div class="event-card-date">${leagueName} • ${event.startTime || ''}</div>
+                <div class="event-card-content">
+                    <div class="event-card-header">
+                        <div class="event-card-store">${event.name}</div>
+                        <div class="event-card-type">${types[event.type] ? types[event.type] + ' ' : ''}${event.type} • ${event.game}</div>
+                    </div>
+                    <div class="event-card-details">
+                        <div class="event-card-league">${leagueName}</div>
+                        <!-- TODO #8: remove seconds from start time -->
+                        <div class="event-card-time">${event.startTime || ''} ${event.entryFee ? '• ' + event.entryFee : ''}</div>
+                    </div>
+                    ${event.description ? `<div class="event-card-description">${event.description}</div>` : ''}
+                    ${event.prizes ? `<div class="event-card-prizes"><strong>Prizes:</strong> ${event.prizes}</div>` : ''}
+                    ${event.ticketLink ? `<a href="${event.ticketLink}" class="event-card-link" target="_blank">Tickets & Info</a>` : ''}
                 </div>
             `;
             eventsContainer.appendChild(card);
@@ -515,16 +524,44 @@ function renderList() {
             const storeColor = event.leagueId && leagueMap[event.leagueId] && leagueMap[event.leagueId].brandColor 
                                ? leagueMap[event.leagueId].brandColor 
                                : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
+            
             const card = document.createElement('div');
             card.className = 'list-event-card';
             card.style.setProperty('--store-color', storeColor);
+            
             card.innerHTML = `
-                <div class="list-event-info">
-                    <div class="list-event-store">${event.name}</div>
-                    <div class="list-event-type">${types[event.type] ? types[event.type] + ' ' + event.type : event.type}</div>
-                    <div class="list-event-date">${leagueName} • ${event.startTime || ''}</div>
+                <div class="list-event-card-header">
+                    <div class="list-event-card-primary">
+                        <div class="list-event-card-time">${event.startTime ? event.startTime.slice(0, 5) : ''}</div>
+                        <div class="list-event-card-main-info">
+                            <div class="list-event-card-store">${event.name}</div>
+                            <div class="list-event-card-sub">${leagueName} • ${event.game}</div>
+                        </div>
+                    </div>
+                    <div class="list-event-card-indicator">
+                        <span class="type-badge">${types[event.type] || ''}</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="list-event-card-expandable">
+                    <div class="list-event-card-body">
+                        <div class="list-event-meta">
+                            <span class="meta-item"><strong>Format:</strong> ${event.type}</span>
+                            ${event.entryFee ? `<span class="meta-item"><strong>Entry:</strong> ${event.entryFee}</span>` : ''}
+                        </div>
+                        ${event.description ? `<div class="list-event-description">${event.description}</div>` : ''}
+                        ${event.prizes ? `<div class="list-event-prizes"><strong>Prizes:</strong> ${event.prizes}</div>` : ''}
+                        <div class="list-event-actions">
+                            ${event.ticketLink ? `<a href="${event.ticketLink}" class="list-event-link" target="_blank" onclick="event.stopPropagation()">Tickets & Info</a>` : ''}
+                        </div>
+                    </div>
                 </div>
             `;
+
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+
             eventsDiv.appendChild(card);
         });
 
@@ -646,4 +683,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Initialization failed", e);
     }
 });
-

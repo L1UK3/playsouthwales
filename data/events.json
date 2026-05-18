@@ -9,7 +9,9 @@
         "ticketLink": "http://example.com/tickets/1",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 2,
@@ -21,7 +23,9 @@
         "ticketLink": "http://example.com/tickets/2",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 3,
@@ -33,7 +37,9 @@
         "ticketLink": "http://example.com/tickets/3",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 4,
@@ -45,7 +51,9 @@
         "ticketLink": "http://example.com/tickets/4",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 5,
@@ -57,7 +65,9 @@
         "ticketLink": "http://example.com/tickets/5",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 6,
@@ -69,7 +79,9 @@
         "ticketLink": "http://example.com/tickets/6",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 7,
@@ -81,7 +93,9 @@
         "ticketLink": "http://example.com/tickets/7",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 8,
@@ -93,7 +107,9 @@
         "ticketLink": "http://example.com/tickets/8",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 9,
@@ -105,7 +121,9 @@
         "ticketLink": "http://example.com/tickets/9",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 10,
@@ -117,7 +135,9 @@
         "ticketLink": "http://example.com/tickets/10",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 11,
@@ -129,7 +149,9 @@
         "ticketLink": "http://example.com/tickets/11",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 12,
@@ -141,7 +163,9 @@
         "ticketLink": "http://example.com/tickets/12",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 13,
@@ -153,7 +177,9 @@
         "ticketLink": "http://example.com/tickets/13",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 14,
@@ -165,7 +191,9 @@
         "ticketLink": "http://example.com/tickets/14",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 15,
@@ -177,7 +205,9 @@
         "ticketLink": "http://example.com/tickets/15",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 16,
@@ -189,7 +219,9 @@
         "ticketLink": "http://example.com/tickets/16",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 17,
@@ -201,7 +233,9 @@
         "ticketLink": "http://example.com/tickets/17",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 18,
@@ -213,7 +247,9 @@
         "ticketLink": "http://example.com/tickets/18",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 19,
@@ -225,7 +261,9 @@
         "ticketLink": "http://example.com/tickets/19",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 20,
@@ -237,7 +275,9 @@
         "ticketLink": "http://example.com/tickets/20",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 21,
@@ -249,7 +289,9 @@
         "ticketLink": "http://example.com/tickets/21",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 22,
@@ -261,7 +303,9 @@
         "ticketLink": "http://example.com/tickets/22",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 23,
@@ -273,7 +317,9 @@
         "ticketLink": "http://example.com/tickets/23",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 24,
@@ -285,7 +331,9 @@
         "ticketLink": "http://example.com/tickets/24",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 25,
@@ -297,7 +345,9 @@
         "ticketLink": "http://example.com/tickets/25",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 26,
@@ -309,7 +359,9 @@
         "ticketLink": "http://example.com/tickets/26",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 27,
@@ -321,7 +373,9 @@
         "ticketLink": "http://example.com/tickets/27",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 28,
@@ -333,7 +387,9 @@
         "ticketLink": "http://example.com/tickets/28",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 29,
@@ -345,7 +401,9 @@
         "ticketLink": "http://example.com/tickets/29",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 30,
@@ -357,7 +415,9 @@
         "ticketLink": "http://example.com/tickets/30",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 31,
@@ -369,7 +429,9 @@
         "ticketLink": "http://example.com/tickets/31",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 32,
@@ -381,7 +443,9 @@
         "ticketLink": "http://example.com/tickets/32",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 33,
@@ -393,7 +457,9 @@
         "ticketLink": "http://example.com/tickets/33",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 34,
@@ -405,7 +471,9 @@
         "ticketLink": "http://example.com/tickets/34",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 35,
@@ -417,7 +485,9 @@
         "ticketLink": "http://example.com/tickets/35",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 36,
@@ -429,7 +499,9 @@
         "ticketLink": "http://example.com/tickets/36",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 37,
@@ -441,7 +513,9 @@
         "ticketLink": "http://example.com/tickets/37",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 38,
@@ -453,7 +527,9 @@
         "ticketLink": "http://example.com/tickets/38",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 39,
@@ -465,7 +541,9 @@
         "ticketLink": "http://example.com/tickets/39",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 40,
@@ -477,7 +555,9 @@
         "ticketLink": "http://example.com/tickets/40",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 41,
@@ -489,7 +569,9 @@
         "ticketLink": "http://example.com/tickets/41",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 42,
@@ -501,7 +583,9 @@
         "ticketLink": "http://example.com/tickets/42",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 43,
@@ -513,7 +597,9 @@
         "ticketLink": "http://example.com/tickets/43",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 44,
@@ -525,7 +611,9 @@
         "ticketLink": "http://example.com/tickets/44",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 45,
@@ -537,7 +625,9 @@
         "ticketLink": "http://example.com/tickets/45",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 46,
@@ -549,7 +639,9 @@
         "ticketLink": "http://example.com/tickets/46",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 47,
@@ -561,7 +653,9 @@
         "ticketLink": "http://example.com/tickets/47",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 48,
@@ -573,7 +667,9 @@
         "ticketLink": "http://example.com/tickets/48",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 49,
@@ -585,7 +681,9 @@
         "ticketLink": "http://example.com/tickets/49",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 50,
@@ -597,7 +695,9 @@
         "ticketLink": "http://example.com/tickets/50",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 51,
@@ -609,7 +709,9 @@
         "ticketLink": "http://example.com/tickets/51",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 52,
@@ -621,7 +723,9 @@
         "ticketLink": "http://example.com/tickets/52",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 53,
@@ -633,7 +737,9 @@
         "ticketLink": "http://example.com/tickets/53",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 54,
@@ -645,7 +751,9 @@
         "ticketLink": "http://example.com/tickets/54",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 55,
@@ -657,7 +765,9 @@
         "ticketLink": "http://example.com/tickets/55",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 56,
@@ -669,7 +779,9 @@
         "ticketLink": "http://example.com/tickets/56",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 57,
@@ -681,7 +793,9 @@
         "ticketLink": "http://example.com/tickets/57",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 58,
@@ -693,7 +807,9 @@
         "ticketLink": "http://example.com/tickets/58",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 59,
@@ -705,7 +821,9 @@
         "ticketLink": "http://example.com/tickets/59",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 60,
@@ -717,7 +835,9 @@
         "ticketLink": "http://example.com/tickets/60",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 61,
@@ -729,7 +849,9 @@
         "ticketLink": "http://example.com/tickets/61",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 62,
@@ -741,7 +863,9 @@
         "ticketLink": "http://example.com/tickets/62",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 63,
@@ -753,7 +877,9 @@
         "ticketLink": "http://example.com/tickets/63",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 64,
@@ -765,7 +891,9 @@
         "ticketLink": "http://example.com/tickets/64",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 65,
@@ -777,7 +905,9 @@
         "ticketLink": "http://example.com/tickets/65",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 66,
@@ -789,7 +919,9 @@
         "ticketLink": "http://example.com/tickets/66",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 67,
@@ -801,7 +933,9 @@
         "ticketLink": "http://example.com/tickets/67",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 68,
@@ -813,7 +947,9 @@
         "ticketLink": "http://example.com/tickets/68",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 69,
@@ -825,7 +961,9 @@
         "ticketLink": "http://example.com/tickets/69",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 70,
@@ -837,7 +975,9 @@
         "ticketLink": "http://example.com/tickets/70",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 71,
@@ -849,7 +989,9 @@
         "ticketLink": "http://example.com/tickets/71",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 72,
@@ -861,7 +1003,9 @@
         "ticketLink": "http://example.com/tickets/72",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 73,
@@ -873,7 +1017,9 @@
         "ticketLink": "http://example.com/tickets/73",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 74,
@@ -885,7 +1031,9 @@
         "ticketLink": "http://example.com/tickets/74",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 75,
@@ -897,7 +1045,9 @@
         "ticketLink": "http://example.com/tickets/75",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 76,
@@ -909,7 +1059,9 @@
         "ticketLink": "http://example.com/tickets/76",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 77,
@@ -921,7 +1073,9 @@
         "ticketLink": "http://example.com/tickets/77",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 78,
@@ -933,7 +1087,9 @@
         "ticketLink": "http://example.com/tickets/78",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 79,
@@ -945,7 +1101,9 @@
         "ticketLink": "http://example.com/tickets/79",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 80,
@@ -957,7 +1115,9 @@
         "ticketLink": "http://example.com/tickets/80",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 81,
@@ -969,7 +1129,9 @@
         "ticketLink": "http://example.com/tickets/81",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 82,
@@ -981,7 +1143,9 @@
         "ticketLink": "http://example.com/tickets/82",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 83,
@@ -993,7 +1157,9 @@
         "ticketLink": "http://example.com/tickets/83",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 84,
@@ -1005,7 +1171,9 @@
         "ticketLink": "http://example.com/tickets/84",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 85,
@@ -1017,7 +1185,9 @@
         "ticketLink": "http://example.com/tickets/85",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 86,
@@ -1029,7 +1199,9 @@
         "ticketLink": "http://example.com/tickets/86",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 87,
@@ -1041,7 +1213,9 @@
         "ticketLink": "http://example.com/tickets/87",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 88,
@@ -1053,7 +1227,9 @@
         "ticketLink": "http://example.com/tickets/88",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 89,
@@ -1065,7 +1241,9 @@
         "ticketLink": "http://example.com/tickets/89",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 90,
@@ -1077,7 +1255,9 @@
         "ticketLink": "http://example.com/tickets/90",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 91,
@@ -1089,7 +1269,9 @@
         "ticketLink": "http://example.com/tickets/91",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 92,
@@ -1101,7 +1283,9 @@
         "ticketLink": "http://example.com/tickets/92",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 93,
@@ -1113,7 +1297,9 @@
         "ticketLink": "http://example.com/tickets/93",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 94,
@@ -1125,7 +1311,9 @@
         "ticketLink": "http://example.com/tickets/94",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 95,
@@ -1137,7 +1325,9 @@
         "ticketLink": "http://example.com/tickets/95",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 96,
@@ -1149,7 +1339,9 @@
         "ticketLink": "http://example.com/tickets/96",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 97,
@@ -1161,7 +1353,9 @@
         "ticketLink": "http://example.com/tickets/97",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 98,
@@ -1173,7 +1367,9 @@
         "ticketLink": "http://example.com/tickets/98",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 99,
@@ -1185,7 +1381,9 @@
         "ticketLink": "http://example.com/tickets/99",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 100,
@@ -1197,7 +1395,9 @@
         "ticketLink": "http://example.com/tickets/100",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 101,
@@ -1209,7 +1409,9 @@
         "ticketLink": "http://example.com/tickets/101",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 102,
@@ -1221,7 +1423,9 @@
         "ticketLink": "http://example.com/tickets/102",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 103,
@@ -1233,7 +1437,9 @@
         "ticketLink": "http://example.com/tickets/103",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 104,
@@ -1245,7 +1451,9 @@
         "ticketLink": "http://example.com/tickets/104",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 105,
@@ -1257,7 +1465,9 @@
         "ticketLink": "http://example.com/tickets/105",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 106,
@@ -1269,7 +1479,9 @@
         "ticketLink": "http://example.com/tickets/106",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 107,
@@ -1281,7 +1493,9 @@
         "ticketLink": "http://example.com/tickets/107",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 108,
@@ -1293,7 +1507,9 @@
         "ticketLink": "http://example.com/tickets/108",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 109,
@@ -1305,7 +1521,9 @@
         "ticketLink": "http://example.com/tickets/109",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 110,
@@ -1317,7 +1535,9 @@
         "ticketLink": "http://example.com/tickets/110",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 111,
@@ -1329,7 +1549,9 @@
         "ticketLink": "http://example.com/tickets/111",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 112,
@@ -1341,7 +1563,9 @@
         "ticketLink": "http://example.com/tickets/112",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 113,
@@ -1353,7 +1577,9 @@
         "ticketLink": "http://example.com/tickets/113",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 114,
@@ -1365,7 +1591,9 @@
         "ticketLink": "http://example.com/tickets/114",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 115,
@@ -1377,7 +1605,9 @@
         "ticketLink": "http://example.com/tickets/115",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 116,
@@ -1389,7 +1619,9 @@
         "ticketLink": "http://example.com/tickets/116",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 117,
@@ -1401,7 +1633,9 @@
         "ticketLink": "http://example.com/tickets/117",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 118,
@@ -1413,7 +1647,9 @@
         "ticketLink": "http://example.com/tickets/118",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 119,
@@ -1425,7 +1661,9 @@
         "ticketLink": "http://example.com/tickets/119",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 120,
@@ -1437,7 +1675,9 @@
         "ticketLink": "http://example.com/tickets/120",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 121,
@@ -1449,7 +1689,9 @@
         "ticketLink": "http://example.com/tickets/121",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 122,
@@ -1461,7 +1703,9 @@
         "ticketLink": "http://example.com/tickets/122",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 123,
@@ -1473,7 +1717,9 @@
         "ticketLink": "http://example.com/tickets/123",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 124,
@@ -1485,7 +1731,9 @@
         "ticketLink": "http://example.com/tickets/124",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 125,
@@ -1497,7 +1745,9 @@
         "ticketLink": "http://example.com/tickets/125",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 126,
@@ -1509,7 +1759,9 @@
         "ticketLink": "http://example.com/tickets/126",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 127,
@@ -1521,7 +1773,9 @@
         "ticketLink": "http://example.com/tickets/127",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 128,
@@ -1533,7 +1787,9 @@
         "ticketLink": "http://example.com/tickets/128",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 129,
@@ -1545,7 +1801,9 @@
         "ticketLink": "http://example.com/tickets/129",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 130,
@@ -1557,7 +1815,9 @@
         "ticketLink": "http://example.com/tickets/130",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 131,
@@ -1569,7 +1829,9 @@
         "ticketLink": "http://example.com/tickets/131",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 132,
@@ -1581,7 +1843,9 @@
         "ticketLink": "http://example.com/tickets/132",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 133,
@@ -1593,7 +1857,9 @@
         "ticketLink": "http://example.com/tickets/133",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 134,
@@ -1605,7 +1871,9 @@
         "ticketLink": "http://example.com/tickets/134",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 135,
@@ -1617,7 +1885,9 @@
         "ticketLink": "http://example.com/tickets/135",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 136,
@@ -1629,7 +1899,9 @@
         "ticketLink": "http://example.com/tickets/136",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 137,
@@ -1641,7 +1913,9 @@
         "ticketLink": "http://example.com/tickets/137",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 138,
@@ -1653,7 +1927,9 @@
         "ticketLink": "http://example.com/tickets/138",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 139,
@@ -1665,7 +1941,9 @@
         "ticketLink": "http://example.com/tickets/139",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 140,
@@ -1677,7 +1955,9 @@
         "ticketLink": "http://example.com/tickets/140",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 141,
@@ -1689,7 +1969,9 @@
         "ticketLink": "http://example.com/tickets/141",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 142,
@@ -1701,7 +1983,9 @@
         "ticketLink": "http://example.com/tickets/142",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 143,
@@ -1713,7 +1997,9 @@
         "ticketLink": "http://example.com/tickets/143",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 144,
@@ -1725,7 +2011,9 @@
         "ticketLink": "http://example.com/tickets/144",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 145,
@@ -1737,7 +2025,9 @@
         "ticketLink": "http://example.com/tickets/145",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 146,
@@ -1749,7 +2039,9 @@
         "ticketLink": "http://example.com/tickets/146",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 147,
@@ -1761,7 +2053,9 @@
         "ticketLink": "http://example.com/tickets/147",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 148,
@@ -1773,7 +2067,9 @@
         "ticketLink": "http://example.com/tickets/148",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 149,
@@ -1785,7 +2081,9 @@
         "ticketLink": "http://example.com/tickets/149",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 150,
@@ -1797,7 +2095,9 @@
         "ticketLink": "http://example.com/tickets/150",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 151,
@@ -1809,7 +2109,9 @@
         "ticketLink": "http://example.com/tickets/151",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 152,
@@ -1821,7 +2123,9 @@
         "ticketLink": "http://example.com/tickets/152",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 153,
@@ -1833,7 +2137,9 @@
         "ticketLink": "http://example.com/tickets/153",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 154,
@@ -1845,7 +2151,9 @@
         "ticketLink": "http://example.com/tickets/154",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 155,
@@ -1857,7 +2165,9 @@
         "ticketLink": "http://example.com/tickets/155",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 156,
@@ -1869,7 +2179,9 @@
         "ticketLink": "http://example.com/tickets/156",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 157,
@@ -1881,7 +2193,9 @@
         "ticketLink": "http://example.com/tickets/157",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 158,
@@ -1893,7 +2207,9 @@
         "ticketLink": "http://example.com/tickets/158",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 159,
@@ -1905,7 +2221,9 @@
         "ticketLink": "http://example.com/tickets/159",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 160,
@@ -1917,7 +2235,9 @@
         "ticketLink": "http://example.com/tickets/160",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 161,
@@ -1929,7 +2249,9 @@
         "ticketLink": "http://example.com/tickets/161",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 162,
@@ -1941,7 +2263,9 @@
         "ticketLink": "http://example.com/tickets/162",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 163,
@@ -1953,7 +2277,9 @@
         "ticketLink": "http://example.com/tickets/163",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 164,
@@ -1965,7 +2291,9 @@
         "ticketLink": "http://example.com/tickets/164",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 165,
@@ -1977,7 +2305,9 @@
         "ticketLink": "http://example.com/tickets/165",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 166,
@@ -1989,7 +2319,9 @@
         "ticketLink": "http://example.com/tickets/166",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 167,
@@ -2001,7 +2333,9 @@
         "ticketLink": "http://example.com/tickets/167",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 168,
@@ -2013,7 +2347,9 @@
         "ticketLink": "http://example.com/tickets/168",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 169,
@@ -2025,7 +2361,9 @@
         "ticketLink": "http://example.com/tickets/169",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 170,
@@ -2037,7 +2375,9 @@
         "ticketLink": "http://example.com/tickets/170",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 171,
@@ -2049,7 +2389,9 @@
         "ticketLink": "http://example.com/tickets/171",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 172,
@@ -2061,7 +2403,9 @@
         "ticketLink": "http://example.com/tickets/172",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 173,
@@ -2073,7 +2417,9 @@
         "ticketLink": "http://example.com/tickets/173",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 174,
@@ -2085,7 +2431,9 @@
         "ticketLink": "http://example.com/tickets/174",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 175,
@@ -2097,7 +2445,9 @@
         "ticketLink": "http://example.com/tickets/175",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 176,
@@ -2109,7 +2459,9 @@
         "ticketLink": "http://example.com/tickets/176",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 177,
@@ -2121,7 +2473,9 @@
         "ticketLink": "http://example.com/tickets/177",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 178,
@@ -2133,7 +2487,9 @@
         "ticketLink": "http://example.com/tickets/178",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 179,
@@ -2145,7 +2501,9 @@
         "ticketLink": "http://example.com/tickets/179",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 180,
@@ -2157,7 +2515,9 @@
         "ticketLink": "http://example.com/tickets/180",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 181,
@@ -2169,7 +2529,9 @@
         "ticketLink": "http://example.com/tickets/181",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 182,
@@ -2181,7 +2543,9 @@
         "ticketLink": "http://example.com/tickets/182",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 183,
@@ -2193,7 +2557,9 @@
         "ticketLink": "http://example.com/tickets/183",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 184,
@@ -2205,7 +2571,9 @@
         "ticketLink": "http://example.com/tickets/184",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 185,
@@ -2217,7 +2585,9 @@
         "ticketLink": "http://example.com/tickets/185",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 186,
@@ -2229,7 +2599,9 @@
         "ticketLink": "http://example.com/tickets/186",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 187,
@@ -2241,7 +2613,9 @@
         "ticketLink": "http://example.com/tickets/187",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 188,
@@ -2253,7 +2627,9 @@
         "ticketLink": "http://example.com/tickets/188",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 189,
@@ -2265,7 +2641,9 @@
         "ticketLink": "http://example.com/tickets/189",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 190,
@@ -2277,7 +2655,9 @@
         "ticketLink": "http://example.com/tickets/190",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 191,
@@ -2289,7 +2669,9 @@
         "ticketLink": "http://example.com/tickets/191",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 192,
@@ -2301,7 +2683,9 @@
         "ticketLink": "http://example.com/tickets/192",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 193,
@@ -2313,7 +2697,9 @@
         "ticketLink": "http://example.com/tickets/193",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 194,
@@ -2325,7 +2711,9 @@
         "ticketLink": "http://example.com/tickets/194",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 195,
@@ -2337,7 +2725,9 @@
         "ticketLink": "http://example.com/tickets/195",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 196,
@@ -2349,7 +2739,9 @@
         "ticketLink": "http://example.com/tickets/196",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 197,
@@ -2361,7 +2753,9 @@
         "ticketLink": "http://example.com/tickets/197",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 198,
@@ -2373,7 +2767,9 @@
         "ticketLink": "http://example.com/tickets/198",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 199,
@@ -2385,7 +2781,9 @@
         "ticketLink": "http://example.com/tickets/199",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 200,
@@ -2397,7 +2795,9 @@
         "ticketLink": "http://example.com/tickets/200",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 201,
@@ -2409,7 +2809,9 @@
         "ticketLink": "http://example.com/tickets/201",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 202,
@@ -2421,7 +2823,9 @@
         "ticketLink": "http://example.com/tickets/202",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 203,
@@ -2433,7 +2837,9 @@
         "ticketLink": "http://example.com/tickets/203",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 204,
@@ -2445,7 +2851,9 @@
         "ticketLink": "http://example.com/tickets/204",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 205,
@@ -2457,7 +2865,9 @@
         "ticketLink": "http://example.com/tickets/205",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 206,
@@ -2469,7 +2879,9 @@
         "ticketLink": "http://example.com/tickets/206",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 207,
@@ -2481,7 +2893,9 @@
         "ticketLink": "http://example.com/tickets/207",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 208,
@@ -2493,7 +2907,9 @@
         "ticketLink": "http://example.com/tickets/208",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 209,
@@ -2505,7 +2921,9 @@
         "ticketLink": "http://example.com/tickets/209",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 210,
@@ -2517,7 +2935,9 @@
         "ticketLink": "http://example.com/tickets/210",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 211,
@@ -2529,7 +2949,9 @@
         "ticketLink": "http://example.com/tickets/211",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 212,
@@ -2541,7 +2963,9 @@
         "ticketLink": "http://example.com/tickets/212",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 213,
@@ -2553,7 +2977,9 @@
         "ticketLink": "http://example.com/tickets/213",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 214,
@@ -2565,7 +2991,9 @@
         "ticketLink": "http://example.com/tickets/214",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 215,
@@ -2577,7 +3005,9 @@
         "ticketLink": "http://example.com/tickets/215",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 216,
@@ -2589,7 +3019,9 @@
         "ticketLink": "http://example.com/tickets/216",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 217,
@@ -2601,7 +3033,9 @@
         "ticketLink": "http://example.com/tickets/217",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 218,
@@ -2613,7 +3047,9 @@
         "ticketLink": "http://example.com/tickets/218",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 219,
@@ -2625,7 +3061,9 @@
         "ticketLink": "http://example.com/tickets/219",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 220,
@@ -2637,7 +3075,9 @@
         "ticketLink": "http://example.com/tickets/220",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 221,
@@ -2649,7 +3089,9 @@
         "ticketLink": "http://example.com/tickets/221",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 222,
@@ -2661,7 +3103,9 @@
         "ticketLink": "http://example.com/tickets/222",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 223,
@@ -2673,7 +3117,9 @@
         "ticketLink": "http://example.com/tickets/223",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 224,
@@ -2685,7 +3131,9 @@
         "ticketLink": "http://example.com/tickets/224",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 225,
@@ -2697,7 +3145,9 @@
         "ticketLink": "http://example.com/tickets/225",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 226,
@@ -2709,7 +3159,9 @@
         "ticketLink": "http://example.com/tickets/226",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 227,
@@ -2721,7 +3173,9 @@
         "ticketLink": "http://example.com/tickets/227",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 228,
@@ -2733,7 +3187,9 @@
         "ticketLink": "http://example.com/tickets/228",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 229,
@@ -2745,7 +3201,9 @@
         "ticketLink": "http://example.com/tickets/229",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 230,
@@ -2757,7 +3215,9 @@
         "ticketLink": "http://example.com/tickets/230",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 231,
@@ -2769,7 +3229,9 @@
         "ticketLink": "http://example.com/tickets/231",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 232,
@@ -2781,7 +3243,9 @@
         "ticketLink": "http://example.com/tickets/232",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 233,
@@ -2793,7 +3257,9 @@
         "ticketLink": "http://example.com/tickets/233",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 234,
@@ -2805,7 +3271,9 @@
         "ticketLink": "http://example.com/tickets/234",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 235,
@@ -2817,7 +3285,9 @@
         "ticketLink": "http://example.com/tickets/235",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 236,
@@ -2829,7 +3299,9 @@
         "ticketLink": "http://example.com/tickets/236",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 237,
@@ -2841,7 +3313,9 @@
         "ticketLink": "http://example.com/tickets/237",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 238,
@@ -2853,7 +3327,9 @@
         "ticketLink": "http://example.com/tickets/238",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 239,
@@ -2865,7 +3341,9 @@
         "ticketLink": "http://example.com/tickets/239",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 240,
@@ -2877,7 +3355,9 @@
         "ticketLink": "http://example.com/tickets/240",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 241,
@@ -2889,7 +3369,9 @@
         "ticketLink": "http://example.com/tickets/241",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 242,
@@ -2901,7 +3383,9 @@
         "ticketLink": "http://example.com/tickets/242",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 243,
@@ -2913,7 +3397,9 @@
         "ticketLink": "http://example.com/tickets/243",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 244,
@@ -2925,7 +3411,9 @@
         "ticketLink": "http://example.com/tickets/244",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 245,
@@ -2937,7 +3425,9 @@
         "ticketLink": "http://example.com/tickets/245",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 246,
@@ -2949,7 +3439,9 @@
         "ticketLink": "http://example.com/tickets/246",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 247,
@@ -2961,7 +3453,9 @@
         "ticketLink": "http://example.com/tickets/247",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 248,
@@ -2973,7 +3467,9 @@
         "ticketLink": "http://example.com/tickets/248",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 249,
@@ -2985,7 +3481,9 @@
         "ticketLink": "http://example.com/tickets/249",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 250,
@@ -2997,7 +3495,9 @@
         "ticketLink": "http://example.com/tickets/250",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 251,
@@ -3009,7 +3509,9 @@
         "ticketLink": "http://example.com/tickets/251",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 252,
@@ -3021,7 +3523,9 @@
         "ticketLink": "http://example.com/tickets/252",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 253,
@@ -3033,7 +3537,9 @@
         "ticketLink": "http://example.com/tickets/253",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 254,
@@ -3045,7 +3551,9 @@
         "ticketLink": "http://example.com/tickets/254",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 255,
@@ -3057,7 +3565,9 @@
         "ticketLink": "http://example.com/tickets/255",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 256,
@@ -3069,7 +3579,9 @@
         "ticketLink": "http://example.com/tickets/256",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 257,
@@ -3081,7 +3593,9 @@
         "ticketLink": "http://example.com/tickets/257",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 258,
@@ -3093,7 +3607,9 @@
         "ticketLink": "http://example.com/tickets/258",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 259,
@@ -3105,7 +3621,9 @@
         "ticketLink": "http://example.com/tickets/259",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 260,
@@ -3117,7 +3635,9 @@
         "ticketLink": "http://example.com/tickets/260",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 261,
@@ -3129,7 +3649,9 @@
         "ticketLink": "http://example.com/tickets/261",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 262,
@@ -3141,7 +3663,9 @@
         "ticketLink": "http://example.com/tickets/262",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 263,
@@ -3153,7 +3677,9 @@
         "ticketLink": "http://example.com/tickets/263",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 264,
@@ -3165,7 +3691,9 @@
         "ticketLink": "http://example.com/tickets/264",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 265,
@@ -3177,7 +3705,9 @@
         "ticketLink": "http://example.com/tickets/265",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 266,
@@ -3189,7 +3719,9 @@
         "ticketLink": "http://example.com/tickets/266",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 267,
@@ -3201,7 +3733,9 @@
         "ticketLink": "http://example.com/tickets/267",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 268,
@@ -3213,7 +3747,9 @@
         "ticketLink": "http://example.com/tickets/268",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 269,
@@ -3225,7 +3761,9 @@
         "ticketLink": "http://example.com/tickets/269",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 270,
@@ -3237,7 +3775,9 @@
         "ticketLink": "http://example.com/tickets/270",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 271,
@@ -3249,7 +3789,9 @@
         "ticketLink": "http://example.com/tickets/271",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 272,
@@ -3261,7 +3803,9 @@
         "ticketLink": "http://example.com/tickets/272",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 273,
@@ -3273,7 +3817,9 @@
         "ticketLink": "http://example.com/tickets/273",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 274,
@@ -3285,7 +3831,9 @@
         "ticketLink": "http://example.com/tickets/274",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 275,
@@ -3297,7 +3845,9 @@
         "ticketLink": "http://example.com/tickets/275",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 276,
@@ -3309,7 +3859,9 @@
         "ticketLink": "http://example.com/tickets/276",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 277,
@@ -3321,7 +3873,9 @@
         "ticketLink": "http://example.com/tickets/277",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 278,
@@ -3333,7 +3887,9 @@
         "ticketLink": "http://example.com/tickets/278",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 279,
@@ -3345,7 +3901,9 @@
         "ticketLink": "http://example.com/tickets/279",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 280,
@@ -3357,7 +3915,9 @@
         "ticketLink": "http://example.com/tickets/280",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 281,
@@ -3369,7 +3929,9 @@
         "ticketLink": "http://example.com/tickets/281",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 282,
@@ -3381,7 +3943,9 @@
         "ticketLink": "http://example.com/tickets/282",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 283,
@@ -3393,7 +3957,9 @@
         "ticketLink": "http://example.com/tickets/283",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 284,
@@ -3405,7 +3971,9 @@
         "ticketLink": "http://example.com/tickets/284",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 285,
@@ -3417,7 +3985,9 @@
         "ticketLink": "http://example.com/tickets/285",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 286,
@@ -3429,7 +3999,9 @@
         "ticketLink": "http://example.com/tickets/286",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 287,
@@ -3441,7 +4013,9 @@
         "ticketLink": "http://example.com/tickets/287",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 288,
@@ -3453,7 +4027,9 @@
         "ticketLink": "http://example.com/tickets/288",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 289,
@@ -3465,7 +4041,9 @@
         "ticketLink": "http://example.com/tickets/289",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 290,
@@ -3477,7 +4055,9 @@
         "ticketLink": "http://example.com/tickets/290",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 291,
@@ -3489,7 +4069,9 @@
         "ticketLink": "http://example.com/tickets/291",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 292,
@@ -3501,7 +4083,9 @@
         "ticketLink": "http://example.com/tickets/292",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 293,
@@ -3513,7 +4097,9 @@
         "ticketLink": "http://example.com/tickets/293",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 294,
@@ -3525,7 +4111,9 @@
         "ticketLink": "http://example.com/tickets/294",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 295,
@@ -3537,7 +4125,9 @@
         "ticketLink": "http://example.com/tickets/295",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 296,
@@ -3549,7 +4139,9 @@
         "ticketLink": "http://example.com/tickets/296",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 297,
@@ -3561,7 +4153,9 @@
         "ticketLink": "http://example.com/tickets/297",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 298,
@@ -3573,7 +4167,9 @@
         "ticketLink": "http://example.com/tickets/298",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 299,
@@ -3585,7 +4181,9 @@
         "ticketLink": "http://example.com/tickets/299",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 300,
@@ -3597,7 +4195,9 @@
         "ticketLink": "http://example.com/tickets/300",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 301,
@@ -3609,7 +4209,9 @@
         "ticketLink": "http://example.com/tickets/301",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 302,
@@ -3621,7 +4223,9 @@
         "ticketLink": "http://example.com/tickets/302",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 303,
@@ -3633,7 +4237,9 @@
         "ticketLink": "http://example.com/tickets/303",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 304,
@@ -3645,7 +4251,9 @@
         "ticketLink": "http://example.com/tickets/304",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 305,
@@ -3657,7 +4265,9 @@
         "ticketLink": "http://example.com/tickets/305",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 306,
@@ -3669,7 +4279,9 @@
         "ticketLink": "http://example.com/tickets/306",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 307,
@@ -3681,7 +4293,9 @@
         "ticketLink": "http://example.com/tickets/307",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 308,
@@ -3693,7 +4307,9 @@
         "ticketLink": "http://example.com/tickets/308",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 309,
@@ -3705,7 +4321,9 @@
         "ticketLink": "http://example.com/tickets/309",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 310,
@@ -3717,7 +4335,9 @@
         "ticketLink": "http://example.com/tickets/310",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 311,
@@ -3729,7 +4349,9 @@
         "ticketLink": "http://example.com/tickets/311",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 312,
@@ -3741,7 +4363,9 @@
         "ticketLink": "http://example.com/tickets/312",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 313,
@@ -3753,7 +4377,9 @@
         "ticketLink": "http://example.com/tickets/313",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 314,
@@ -3765,7 +4391,9 @@
         "ticketLink": "http://example.com/tickets/314",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 315,
@@ -3777,7 +4405,9 @@
         "ticketLink": "http://example.com/tickets/315",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 316,
@@ -3789,7 +4419,9 @@
         "ticketLink": "http://example.com/tickets/316",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 317,
@@ -3801,7 +4433,9 @@
         "ticketLink": "http://example.com/tickets/317",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 318,
@@ -3813,7 +4447,9 @@
         "ticketLink": "http://example.com/tickets/318",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 319,
@@ -3825,7 +4461,9 @@
         "ticketLink": "http://example.com/tickets/319",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 320,
@@ -3837,7 +4475,9 @@
         "ticketLink": "http://example.com/tickets/320",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 321,
@@ -3849,7 +4489,9 @@
         "ticketLink": "http://example.com/tickets/321",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 322,
@@ -3861,7 +4503,9 @@
         "ticketLink": "http://example.com/tickets/322",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 323,
@@ -3873,7 +4517,9 @@
         "ticketLink": "http://example.com/tickets/323",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 324,
@@ -3885,7 +4531,9 @@
         "ticketLink": "http://example.com/tickets/324",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 325,
@@ -3897,7 +4545,9 @@
         "ticketLink": "http://example.com/tickets/325",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 326,
@@ -3909,7 +4559,9 @@
         "ticketLink": "http://example.com/tickets/326",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 327,
@@ -3921,7 +4573,9 @@
         "ticketLink": "http://example.com/tickets/327",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 328,
@@ -3933,7 +4587,9 @@
         "ticketLink": "http://example.com/tickets/328",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 329,
@@ -3945,7 +4601,9 @@
         "ticketLink": "http://example.com/tickets/329",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 330,
@@ -3957,7 +4615,9 @@
         "ticketLink": "http://example.com/tickets/330",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 331,
@@ -3969,7 +4629,9 @@
         "ticketLink": "http://example.com/tickets/331",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 332,
@@ -3981,7 +4643,9 @@
         "ticketLink": "http://example.com/tickets/332",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 333,
@@ -3993,7 +4657,9 @@
         "ticketLink": "http://example.com/tickets/333",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 334,
@@ -4005,7 +4671,9 @@
         "ticketLink": "http://example.com/tickets/334",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 335,
@@ -4017,7 +4685,9 @@
         "ticketLink": "http://example.com/tickets/335",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 336,
@@ -4029,7 +4699,9 @@
         "ticketLink": "http://example.com/tickets/336",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 337,
@@ -4041,7 +4713,9 @@
         "ticketLink": "http://example.com/tickets/337",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Get your hands on the new set early!"
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 338,
@@ -4053,7 +4727,9 @@
         "ticketLink": "http://example.com/tickets/338",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 339,
@@ -4065,7 +4741,9 @@
         "ticketLink": "http://example.com/tickets/339",
         "type": "PRE-RELEASE",
         "game": "TCG",
-        "description": "Pre-release tournament"
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 340,
@@ -4077,7 +4755,9 @@
         "ticketLink": "http://example.com/tickets/340",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 341,
@@ -4089,7 +4769,9 @@
         "ticketLink": "http://example.com/tickets/341",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 342,
@@ -4101,7 +4783,9 @@
         "ticketLink": "http://example.com/tickets/342",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 343,
@@ -4113,7 +4797,9 @@
         "ticketLink": "http://example.com/tickets/343",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 344,
@@ -4125,7 +4811,9 @@
         "ticketLink": "http://example.com/tickets/344",
         "type": "CHALLENGE",
         "game": "TCG",
-        "description": "Earn championship points!"
+        "description": "Earn championship points!",
+        "prizes": "CP + Packs",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 345,
@@ -4137,7 +4825,9 @@
         "ticketLink": "http://example.com/tickets/345",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 346,
@@ -4149,7 +4839,9 @@
         "ticketLink": "http://example.com/tickets/346",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 347,
@@ -4161,7 +4853,9 @@
         "ticketLink": "http://example.com/tickets/347",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 348,
@@ -4173,7 +4867,9 @@
         "ticketLink": "http://example.com/tickets/348",
         "type": "CUP",
         "game": "TCG",
-        "description": "Large prize pool league cup"
+        "description": "Large prize pool league cup",
+        "prizes": "Exclusive Playmat + CP + Packs",
+        "entryFee": "\u00a320.00"
     },
     {
         "id": 349,
@@ -4185,7 +4881,9 @@
         "ticketLink": "http://example.com/tickets/349",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 350,
@@ -4197,7 +4895,9 @@
         "ticketLink": "http://example.com/tickets/350",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 351,
@@ -4209,7 +4909,9 @@
         "ticketLink": "http://example.com/tickets/351",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 352,
@@ -4221,7 +4923,9 @@
         "ticketLink": "http://example.com/tickets/352",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 353,
@@ -4233,7 +4937,9 @@
         "ticketLink": "http://example.com/tickets/353",
         "type": "CHALLENGE",
         "game": "VGC",
-        "description": "Video Game League Challenge"
+        "description": "Video Game League Challenge",
+        "prizes": "CP + Store credit",
+        "entryFee": "\u00a310.00"
     },
     {
         "id": 354,
@@ -4245,7 +4951,9 @@
         "ticketLink": "http://example.com/tickets/354",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     },
     {
         "id": 355,
@@ -4257,7 +4965,9 @@
         "ticketLink": "http://example.com/tickets/355",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Store credit",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 356,
@@ -4269,7 +4979,9 @@
         "ticketLink": "http://example.com/tickets/356",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "Pack per win",
+        "entryFee": "\u00a35.00"
     },
     {
         "id": 357,
@@ -4281,7 +4993,9 @@
         "ticketLink": "http://example.com/tickets/357",
         "type": "STANDARD",
         "game": "TCG",
-        "description": "Weekly standard tournament"
+        "description": "Weekly standard tournament",
+        "prizes": "2 Packs per win",
+        "entryFee": "\u00a36.00"
     },
     {
         "id": 358,
@@ -4293,6 +5007,8 @@
         "ticketLink": "http://example.com/tickets/358",
         "type": "CASUAL",
         "game": "TCG",
-        "description": "Casual play and trading"
+        "description": "Casual play and trading",
+        "prizes": "Promo packs",
+        "entryFee": "\u00a33.00"
     }
 ]
