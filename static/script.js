@@ -59,6 +59,7 @@ let leagues = [];
 let leagueMap = {};
 let types = {};
 let currentView = 'calendar';
+let currentTab = 'schedule';
 let currentDate = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
 let selectedDateKey = null;
 
@@ -605,12 +606,26 @@ async function nextMonth() {
     applyFilters();
 }
 
+function switchTab() {
+    /**
+     * 
+     */
+    if (currentTab === 'schedule') {
+        // show leagues tab
+    } else {
+        //revert back to the schedule tab
+    }
+}
+
+
+
 window.goToToday = goToToday;
 window.previousMonth = previousMonth;
 window.nextMonth = nextMonth;
 window.toggleCalendarView = toggleCalendarView;
 window.clearFilters = clearFilters;
 window.applyFilters = applyFilters;
+window.switchTab = switchTab;
 
 document.getElementById('prevBtn').addEventListener('click', previousMonth);
 document.getElementById('nextBtn').addEventListener('click', nextMonth);
