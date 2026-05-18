@@ -246,7 +246,13 @@ function createDayCell(day, month, year, isOtherMonth) {
         cell.appendChild(eventList);
     }
 
-    cell.addEventListener('click', () => selectDay(dateKey));
+    if (isOtherMonth) {
+        cell.classList.add('empty');
+
+    } else {
+        cell.addEventListener('click', () => selectDay(dateKey));
+    }
+    
     return cell;
 }
 
