@@ -69,6 +69,7 @@
                 </div>
             </div>
 
+            <!-- TODO #7: make the list view colour coded by event type -->
             <div class="calendar-container" id="list-view">
                 <div id="list-view-title" class="event-list-title"></div>
                 <div id="list-view-events" class="event-list"></div>
@@ -80,6 +81,9 @@
 
 
     </div>
+
+    <!-- TODO #6: Create high contrast toggle button and make colours more colour-blind accessible-->
+     <button class="button" id="high-contrast-button" onclick="toggleHighContrast()">High Contrast</button>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
