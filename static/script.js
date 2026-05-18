@@ -526,7 +526,7 @@ function renderList() {
                                : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
             
             const card = document.createElement('div');
-            card.className = 'list-event-card';
+            card.className = `list-event-card type-${event.type}`;
             card.style.setProperty('--store-color', storeColor);
             
             card.innerHTML = `
