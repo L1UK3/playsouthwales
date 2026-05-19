@@ -87,6 +87,23 @@ header {
     transition: all 0.2s ease;
 }
 
+.tab-toggle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.config-tabs{
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+
+
 .top-nav button:hover {
     background: var(--bg-card-hover);
     color: var(--text-darker);
@@ -95,9 +112,7 @@ header {
 .top-nav h1 {
     font-size: 24px;
     color: var(--text-main);
-    margin: 0;
-    flex-grow: 1;
-    align-self: self-start;
+    flex: 1;
 }
 
 .app-container {
@@ -168,10 +183,23 @@ header {
 
 .calendar-container {
     display: none;
+    opacity: 0;
 }
 
 .calendar-container.active {
     display: block;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .calendar-header {

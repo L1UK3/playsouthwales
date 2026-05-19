@@ -295,6 +295,10 @@ function createDayCell(day, month, year, isOtherMonth) {
 
     } else {
         cell.addEventListener('click', () => selectDay(dateKey));
+        cell.addEventListener('click', () => {
+            const section = document.getElementById('selected-day-section');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
     }
     
     return cell;
