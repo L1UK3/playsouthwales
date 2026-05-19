@@ -60,7 +60,19 @@ header {
     padding: 20px;
 }
 
+button {
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+}
 
+button:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
 
 .top-nav {
     display: flex;
@@ -85,6 +97,13 @@ header {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
+}
+
+.top-nav button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .tab-toggle{
@@ -203,6 +222,9 @@ header {
     animation: swipeRight 0.5s ease forwards;
 }
 
+.animate-fade-down {
+    animation: fadeDown 0.5s ease forwards;
+}
 
 @keyframes fadeIn {
     from {
@@ -234,6 +256,17 @@ header {
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -386,10 +419,13 @@ header {
     border-radius: 16px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    
 }
 
 .selected-day-section.active {
     display: block;
+    
+    
 }
 
 #selected-day-title {

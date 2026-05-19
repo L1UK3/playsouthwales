@@ -46,5 +46,17 @@
         "webLink": null,
         "location": null,
         "description": null
+    },
+    {
+        "leagueId": 5,
+        "name": "Badger Badger",
+        "logo": null,
+        "website": null,
+        "socialLink": null,
+        "pokemonLink": null,
+        "brandColor": "Orange",
+        "webLink": null,
+        "location": null,
+        "description": null
     }
 ]

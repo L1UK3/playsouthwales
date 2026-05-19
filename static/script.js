@@ -321,6 +321,11 @@ function showSelectedDay(dateKey) {
     title.textContent = `${dateText}`;
     eventsContainer.innerHTML = '';
 
+    // Trigger fadeDown animation
+    section.classList.remove('animate-fade-down');
+    void section.offsetWidth; // Trigger reflow
+    section.classList.add('animate-fade-down');
+
     const eventsForDay = filteredEvents[dateKey] || [];
     if (eventsForDay.length === 0) {
         const emptyMessage = document.createElement('div');
@@ -655,7 +660,7 @@ async function previousMonth() {
      */
     currentDate.setMonth(currentDate.getMonth() - 1);
     selectedDateKey = null;
-    triggerViewAnimation('animate-swipe-left');
+    triggerViewAnimation('animate-swipe-right');
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
@@ -666,7 +671,7 @@ async function nextMonth() {
      */
     currentDate.setMonth(currentDate.getMonth() + 1);
     selectedDateKey = null;
-    triggerViewAnimation('animate-swipe-right');
+    triggerViewAnimation('animate-swipe-left');
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
@@ -690,6 +695,38 @@ function switchTab() {
 
 
 
+function toggleAppTab(tabName) {
+    /**
+     * Switches the application tab and updates the active button state.
+     * @param {string} tabName - The name of the tab to switch to.
+     */
+    const tabs = ['schedule', 'leagues', 'map'];
+    
+    // Update button states
+    tabs.forEach(tab => {
+        const btn = document.getElementById(`${tab}-button`);
+        if (btn) {
+            if (tab === tabName) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+    });
+
+    // Update view visibility
+    // Note: The HTML structure has some quirks (leagues-view and map-api are separate IDs)
+    const scheduleView = document.getElementById('schedule-view');
+    const leaguesView = document.getElementById('leagues-view');
+    const mapView = document.getElementById('map-api');
+
+    if (scheduleView) scheduleView.style.display = (tabName === 'schedule') ? 'block' : 'none';
+    if (leaguesView) leaguesView.style.display = (tabName === 'leagues') ? 'block' : 'none';
+    if (mapView) mapView.style.display = (tabName === 'map') ? 'block' : 'none';
+
+    currentTab = tabName;
+}
+
 window.goToToday = goToToday;
 window.previousMonth = previousMonth;
 window.nextMonth = nextMonth;
@@ -697,6 +734,7 @@ window.toggleCalendarView = toggleCalendarView;
 window.clearFilters = clearFilters;
 window.applyFilters = applyFilters;
 window.switchTab = switchTab;
+window.toggleAppTab = toggleAppTab;
 
 document.getElementById('prevBtn').addEventListener('click', previousMonth);
 document.getElementById('nextBtn').addEventListener('click', nextMonth);
