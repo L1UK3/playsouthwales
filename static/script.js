@@ -404,6 +404,7 @@ function toggleCalendarView() {
         document.getElementById('calendar-view').classList.add('active');
         currentView = 'calendar';
     }
+    triggerViewAnimation('animate-fade-in');
     applyFilters();
 }
 
@@ -617,14 +618,35 @@ function clearFilters() {
     applyFilters();
 }
 
+function triggerViewAnimation(animationClass) {
+    /**
+     * Triggers a CSS animation on the currently active view by resetting and reapplying the specified animation class.
+     * @param {string} animationClass - The CSS class name for the animation to apply.
+     */
+    const activeView = currentView === 'calendar' ? 
+        document.getElementById('calendar-view') : 
+        document.getElementById('list-view');
+    
+    activeView.classList.remove('animate-fade-in', 'animate-swipe-left', 'animate-swipe-right');
+    void activeView.offsetWidth; // Trigger reflow
+    activeView.classList.add(animationClass);
+}
+
 async function goToToday() {
     /**
      * Resets the calendar view to the current month and year, selects today's date, and refreshes the display.
      */
-    currentDate = new Date();
-    selectedDateKey = getLocalDateString(TODAY);
-    await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
-    applyFilters();
+    if (currentDate.getFullYear() === TODAY.getFullYear() && currentDate.getMonth() === TODAY.getMonth()){
+        selectedDateKey = getLocalDateString(TODAY);
+        showSelectedDay(selectedDateKey);
+        applyFilters();
+    } else {
+        currentDate = new Date();
+        selectedDateKey = getLocalDateString(TODAY);
+        triggerViewAnimation('animate-fade-in');
+        await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
+        applyFilters();
+    }
 }
 
 async function previousMonth() {
@@ -633,6 +655,7 @@ async function previousMonth() {
      */
     currentDate.setMonth(currentDate.getMonth() - 1);
     selectedDateKey = null;
+    triggerViewAnimation('animate-swipe-left');
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
@@ -643,6 +666,7 @@ async function nextMonth() {
      */
     currentDate.setMonth(currentDate.getMonth() + 1);
     selectedDateKey = null;
+    triggerViewAnimation('animate-swipe-right');
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
 }
@@ -681,12 +705,17 @@ document.getElementById('todayBtn').addEventListener('click', goToToday);
 // Initial load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        currentDate = new Date();
+        selectedDateKey = null;
+
         await loadLeagues();
-        await loadTypes();
+        await loadTypes(); 
         await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
         
-        setFilters();
+        triggerViewAnimation('animate-fade-in');
         applyFilters();
+        setFilters();
+    
     } catch (e) {
         console.error("Initialization failed", e);
     }
