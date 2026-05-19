@@ -676,33 +676,13 @@ async function nextMonth() {
     applyFilters();
 }
 
-// TODO #2: Implement the functionality of the leagues view. Would be awesome to add a map of
-// locations respective to the player
-function switchTab() {
-    /**
-     * 
-     */
-    if (currentTab === 'schedule') {
-        currentTab = 'leagues';
-        document.getElementById('schedule-tab').classList.remove('active');
-        document.getElementById('leagues-tab').classList.add('active');
-    } else {
-        currentTab = 'schedule';
-        document.getElementById('leagues-tab').classList.remove('active');
-        document.getElementById('schedule-tab').classList.add('active');
-    }
-}
-
-
-
 function toggleAppTab(tabName) {
     /**
      * Switches the application tab and updates the active button state.
      * @param {string} tabName - The name of the tab to switch to.
      */
-    const tabs = ['schedule', 'leagues', 'map'];
+    const tabs = ['schedule', 'leagues'];
     
-    // Update button states
     tabs.forEach(tab => {
         const btn = document.getElementById(`${tab}-button`);
         if (btn) {
@@ -714,15 +694,20 @@ function toggleAppTab(tabName) {
         }
     });
 
-    // Update view visibility
-    // Note: The HTML structure has some quirks (leagues-view and map-api are separate IDs)
     const scheduleView = document.getElementById('schedule-view');
     const leaguesView = document.getElementById('leagues-view');
     const mapView = document.getElementById('map-api');
 
-    if (scheduleView) scheduleView.style.display = (tabName === 'schedule') ? 'block' : 'none';
-    if (leaguesView) leaguesView.style.display = (tabName === 'leagues') ? 'block' : 'none';
-    if (mapView) mapView.style.display = (tabName === 'map') ? 'block' : 'none';
+    siteTitle = document.getElementById('site-title');
+
+    if (scheduleView) {
+        scheduleView.style.display = (tabName === 'schedule') ? 'block' : 'none';
+        siteTitle.textContent = 'Play! Wales | Event Schedule';
+    }
+    if (leaguesView) {
+        leaguesView.style.display = (tabName === 'leagues') ? 'block' : 'none';
+        siteTitle.textContent = 'Play! Wales | Leagues';
+    }
 
     currentTab = tabName;
 }
@@ -733,7 +718,6 @@ window.nextMonth = nextMonth;
 window.toggleCalendarView = toggleCalendarView;
 window.clearFilters = clearFilters;
 window.applyFilters = applyFilters;
-window.switchTab = switchTab;
 window.toggleAppTab = toggleAppTab;
 
 document.getElementById('prevBtn').addEventListener('click', previousMonth);
