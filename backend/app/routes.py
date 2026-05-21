@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, current_app
+from flask import Blueprint, request, jsonify, render_template
 from .models import Event, League
 import os
 import json
@@ -17,15 +17,6 @@ def load_types():
         if os.path.exists(api_types):
             with open(api_types, 'r', encoding='utf-8') as f:
                 _cached_data['types'] = json.load(f)
-        else:
-            # Provide some default types since types.json is missing
-            _cached_data['types'] = {
-                "STANDARD": "Standard",
-                "CASUAL": "Casual",
-                "PRE-RELEASE": "Pre-release",
-                "CHALLENGE": "Challenge",
-                "CUP": "Cup"
-            }
     return _cached_data['types']
 
 @main.route('/')
