@@ -6,7 +6,7 @@ import json
 main = Blueprint('main', __name__)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
-api_types = os.path.join(DATA_DIR, 'types.json')
+api_types = os.path.join(os.path.dirname(__file__), 'types.json')
 
 _cached_data = {
     'types': None
@@ -17,6 +17,8 @@ def load_types():
         if os.path.exists(api_types):
             with open(api_types, 'r', encoding='utf-8') as f:
                 _cached_data['types'] = json.load(f)
+        else:
+            _cached_data['types'] = {}
     return _cached_data['types']
 
 @main.route('/')
