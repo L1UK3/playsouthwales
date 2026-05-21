@@ -1,8 +1,7 @@
-from flask import Blueprint, request, jsonify, send_from_directory, current_app
-from . import db
+from flask import Blueprint, request, jsonify, render_template, current_app
 from .models import Event, League
-import json
 import os
+import json
 
 main = Blueprint('main', __name__)
 
@@ -19,13 +18,19 @@ def load_types():
             with open(api_types, 'r', encoding='utf-8') as f:
                 _cached_data['types'] = json.load(f)
         else:
-            _cached_data['types'] = {}
+            # Provide some default types since types.json is missing
+            _cached_data['types'] = {
+                "STANDARD": "Standard",
+                "CASUAL": "Casual",
+                "PRE-RELEASE": "Pre-release",
+                "CHALLENGE": "Challenge",
+                "CUP": "Cup"
+            }
     return _cached_data['types']
 
 @main.route('/')
 def index():
-    static_folder = current_app.static_folder or os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', 'dist')
-    return send_from_directory(static_folder, 'index.html')
+    return render_template('index.html')
 
 @main.route('/events')
 def getEvents():
