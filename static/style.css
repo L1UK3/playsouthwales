@@ -202,6 +202,37 @@ header {
     }
 }
 
+@keyframes swipeLeft {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes swipeRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+}
+
+.calendar-container.active.swipe-left {
+    animation: swipeLeft 0.5s ease forwards;
+}
+
+.calendar-container.active.swipe-right {
+    animation: swipeRight 0.5s ease forwards;
+}
+
 .calendar-header {
     display: flex;
     justify-content: space-between;

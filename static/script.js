@@ -625,6 +625,20 @@ async function goToToday() {
     selectedDateKey = getLocalDateString(TODAY);
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
+    triggerAnimation();
+}
+
+function triggerAnimation(animationClass) {
+    const activeView = document.querySelector('.calendar-container.active');
+    if (activeView) {
+        activeView.classList.remove('swipe-left', 'swipe-right');
+        activeView.style.animation = 'none';
+        void activeView.offsetWidth; // Force reflow to restart animation
+        activeView.style.animation = ''; // Restore CSS animation
+        if (animationClass) {
+            activeView.classList.add(animationClass);
+        }
+    }
 }
 
 async function previousMonth() {
@@ -635,6 +649,7 @@ async function previousMonth() {
     selectedDateKey = null;
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
+    triggerAnimation('swipe-right');
 }
 
 async function nextMonth() {
@@ -645,6 +660,7 @@ async function nextMonth() {
     selectedDateKey = null;
     await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
     applyFilters();
+    triggerAnimation('swipe-left');
 }
 
 // TODO #2: Implement the functionality of the leagues view. Would be awesome to add a map of
