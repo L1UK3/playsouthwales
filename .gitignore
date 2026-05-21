@@ -37,5 +37,5 @@ dist-ssr
 .env.local
 
 # OS files
-Thumbs.db
+site.db
 db.sqlite3
