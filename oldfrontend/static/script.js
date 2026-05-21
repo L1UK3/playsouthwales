@@ -646,12 +646,12 @@ async function goToToday() {
         showSelectedDay(selectedDateKey);
         applyFilters();
     } else {
-        currentDate = new Date();
-        selectedDateKey = getLocalDateString(TODAY);
+    currentDate = new Date();
+    selectedDateKey = getLocalDateString(TODAY);
         triggerViewAnimation('animate-fade-in');
-        await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
-        applyFilters();
-    }
+    await fetchAndCache(currentDate.getMonth() + 1, currentDate.getFullYear());
+    applyFilters();
+}
 }
 
 async function previousMonth() {
