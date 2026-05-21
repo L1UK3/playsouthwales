@@ -19,3 +19,7 @@ class Event(db.Model):
     league_id = db.Column(db.Integer, db.ForeignKey('league.id'), nullable=False)
     ticket_link = db.Column(db.String(255))
     event_type = db.Column(db.String(50))  # 'type' is a reserved word in python, using event_type
+    game = db.Column(db.String(20))
+    description = db.Column(db.Text)
+    prizes = db.Column(db.Text)
+    entry_fee = db.Column(db.String(50))

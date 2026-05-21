@@ -16,10 +16,12 @@ def create_app(config_class: type[Config] = Config):
     
     with app.app_context():
         from .routes import main
+        from .utils import import_json_data
         
         app.register_blueprint(main)
         
 
         db.create_all()
+        import_json_data()
         
     return app

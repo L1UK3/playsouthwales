@@ -38,7 +38,11 @@ def import_json_data():
                         start_time=item.get('startTime'),
                         league_id=item['leagueId'],
                         ticket_link=item.get('ticketLink'),
-                        event_type=item.get('type')
+                        event_type=item.get('type'),
+                        game=item.get('game'),
+                        description=item.get('description'),
+                        prizes=item.get('prizes'),
+                        entry_fee=item.get('entryFee')
                     )
                     db.session.add(event)
             db.session.commit()

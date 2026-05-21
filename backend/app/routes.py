@@ -49,7 +49,11 @@ def getEvents():
             'leagueId': event.league_id,
             'leagueName': event.league.name if event.league else 'Unknown',
             'ticketLink': event.ticket_link,
-            'type': event.event_type
+            'type': event.event_type,
+            'game': event.game,
+            'description': event.description,
+            'prizes': event.prizes,
+            'entryFee': event.entry_fee
         })
         
     return jsonify(output)
