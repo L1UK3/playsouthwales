@@ -28,6 +28,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 3,
+        "name": "New Set Pre-release",
+        "date": "2025-05-03T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/3",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 4,
         "name": "League Challenge",
         "date": "2025-05-03T00:00:00.000Z",
@@ -54,6 +68,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 6,
+        "name": "New Set Pre-release",
+        "date": "2025-05-04T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/6",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 7,
@@ -434,6 +462,20 @@
         "entryFee": "\u00a33.00"
     },
     {
+        "id": 34,
+        "name": "New Set Pre-release",
+        "date": "2025-06-01T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/34",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 35,
         "name": "League Challenge",
         "date": "2025-06-01T00:00:00.000Z",
@@ -502,6 +544,20 @@
         "description": "Weekly standard tournament",
         "prizes": "2 Packs per win",
         "entryFee": "\u00a36.00"
+    },
+    {
+        "id": 40,
+        "name": "New Set Pre-release",
+        "date": "2025-06-07T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/40",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 41,
@@ -868,6 +924,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 67,
+        "name": "New Set Pre-release",
+        "date": "2025-07-05T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/67",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 68,
         "name": "League Challenge",
         "date": "2025-07-05T00:00:00.000Z",
@@ -894,6 +964,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 70,
+        "name": "New Set Pre-release",
+        "date": "2025-07-06T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/70",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 71,
@@ -1260,6 +1344,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 97,
+        "name": "New Set Pre-release",
+        "date": "2025-08-02T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/97",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 98,
         "name": "League Challenge",
         "date": "2025-08-02T00:00:00.000Z",
@@ -1286,6 +1384,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 100,
+        "name": "New Set Pre-release",
+        "date": "2025-08-03T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/100",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 101,
@@ -1722,6 +1834,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 132,
+        "name": "New Set Pre-release",
+        "date": "2025-09-06T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/132",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 133,
         "name": "League Challenge",
         "date": "2025-09-06T00:00:00.000Z",
@@ -1748,6 +1874,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 135,
+        "name": "New Set Pre-release",
+        "date": "2025-09-07T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/135",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 136,
@@ -2100,6 +2240,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 161,
+        "name": "New Set Pre-release",
+        "date": "2025-10-04T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/161",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 162,
         "name": "League Challenge",
         "date": "2025-10-04T00:00:00.000Z",
@@ -2126,6 +2280,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 164,
+        "name": "New Set Pre-release",
+        "date": "2025-10-05T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/164",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 165,
@@ -2492,6 +2660,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 191,
+        "name": "New Set Pre-release",
+        "date": "2025-11-01T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/191",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 192,
         "name": "League Challenge",
         "date": "2025-11-01T00:00:00.000Z",
@@ -2518,6 +2700,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 194,
+        "name": "New Set Pre-release",
+        "date": "2025-11-02T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/194",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 195,
@@ -2954,6 +3150,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 226,
+        "name": "New Set Pre-release",
+        "date": "2025-12-06T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/226",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 227,
         "name": "League Challenge",
         "date": "2025-12-06T00:00:00.000Z",
@@ -2980,6 +3190,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 229,
+        "name": "New Set Pre-release",
+        "date": "2025-12-07T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/229",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 230,
@@ -3332,6 +3556,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 255,
+        "name": "New Set Pre-release",
+        "date": "2026-01-03T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/255",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 256,
         "name": "League Challenge",
         "date": "2026-01-03T00:00:00.000Z",
@@ -3358,6 +3596,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 258,
+        "name": "New Set Pre-release",
+        "date": "2026-01-04T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/258",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 259,
@@ -3738,6 +3990,20 @@
         "entryFee": "\u00a33.00"
     },
     {
+        "id": 286,
+        "name": "New Set Pre-release",
+        "date": "2026-02-01T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/286",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 287,
         "name": "League Challenge",
         "date": "2026-02-01T00:00:00.000Z",
@@ -3806,6 +4072,20 @@
         "description": "Weekly standard tournament",
         "prizes": "2 Packs per win",
         "entryFee": "\u00a36.00"
+    },
+    {
+        "id": 292,
+        "name": "New Set Pre-release",
+        "date": "2026-02-07T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/292",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 293,
@@ -4130,6 +4410,20 @@
         "entryFee": "\u00a33.00"
     },
     {
+        "id": 316,
+        "name": "New Set Pre-release",
+        "date": "2026-03-01T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/316",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 317,
         "name": "League Challenge",
         "date": "2026-03-01T00:00:00.000Z",
@@ -4198,6 +4492,20 @@
         "description": "Weekly standard tournament",
         "prizes": "2 Packs per win",
         "entryFee": "\u00a36.00"
+    },
+    {
+        "id": 322,
+        "name": "New Set Pre-release",
+        "date": "2026-03-07T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/322",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 323,
@@ -4564,6 +4872,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 349,
+        "name": "New Set Pre-release",
+        "date": "2026-04-04T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/349",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 350,
         "name": "League Challenge",
         "date": "2026-04-04T00:00:00.000Z",
@@ -4590,6 +4912,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 352,
+        "name": "New Set Pre-release",
+        "date": "2026-04-05T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/352",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 353,
@@ -4956,6 +5292,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 379,
+        "name": "New Set Pre-release",
+        "date": "2026-05-02T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/379",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 380,
         "name": "League Challenge",
         "date": "2026-05-02T00:00:00.000Z",
@@ -4982,6 +5332,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 382,
+        "name": "New Set Pre-release",
+        "date": "2026-05-03T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/382",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 383,
@@ -5418,6 +5782,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 414,
+        "name": "New Set Pre-release",
+        "date": "2026-06-06T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/414",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 415,
         "name": "League Challenge",
         "date": "2026-06-06T00:00:00.000Z",
@@ -5444,6 +5822,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 417,
+        "name": "New Set Pre-release",
+        "date": "2026-06-07T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/417",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 418,
@@ -5796,6 +6188,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 443,
+        "name": "New Set Pre-release",
+        "date": "2026-07-04T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/443",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 444,
         "name": "League Challenge",
         "date": "2026-07-04T00:00:00.000Z",
@@ -5822,6 +6228,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 446,
+        "name": "New Set Pre-release",
+        "date": "2026-07-05T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/446",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 447,
@@ -6188,6 +6608,20 @@
         "entryFee": "\u00a36.00"
     },
     {
+        "id": 473,
+        "name": "New Set Pre-release",
+        "date": "2026-08-01T00:00:00.000Z",
+        "startTime": "10:00:00",
+        "leagueId": 4,
+        "leagueName": "Firestorm Games",
+        "ticketLink": "http://example.com/tickets/473",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Get your hands on the new set early!",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
+    },
+    {
         "id": 474,
         "name": "League Challenge",
         "date": "2026-08-01T00:00:00.000Z",
@@ -6214,6 +6648,20 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
+    },
+    {
+        "id": 476,
+        "name": "New Set Pre-release",
+        "date": "2026-08-02T00:00:00.000Z",
+        "startTime": "11:00:00",
+        "leagueId": 1,
+        "leagueName": "Swansea Jack",
+        "ticketLink": "http://example.com/tickets/476",
+        "type": "PRE-RELEASE",
+        "game": "TCG",
+        "description": "Pre-release tournament",
+        "prizes": "Build & Battle Box + 3 packs",
+        "entryFee": "\u00a325.00"
     },
     {
         "id": 477,
@@ -6592,145 +7040,5 @@
         "description": "Casual play and trading",
         "prizes": "Promo packs",
         "entryFee": "\u00a33.00"
-    },
-    {
-        "id": 504,
-        "name": "New Set Pre-release",
-        "date": "2026-05-04T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 1,
-        "leagueName": "Swansea Jack",
-        "ticketLink": "http://example.com/tickets/504",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 505,
-        "name": "New Set Pre-release",
-        "date": "2026-05-11T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 1,
-        "leagueName": "Swansea Jack",
-        "ticketLink": "http://example.com/tickets/505",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 506,
-        "name": "New Set Pre-release",
-        "date": "2026-05-04T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 2,
-        "leagueName": "Common Meeple",
-        "ticketLink": "http://example.com/tickets/506",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 507,
-        "name": "New Set Pre-release",
-        "date": "2026-05-11T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 2,
-        "leagueName": "Common Meeple",
-        "ticketLink": "http://example.com/tickets/507",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 508,
-        "name": "New Set Pre-release",
-        "date": "2026-05-04T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 3,
-        "leagueName": "Gamers Emporium",
-        "ticketLink": "http://example.com/tickets/508",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 509,
-        "name": "New Set Pre-release",
-        "date": "2026-05-11T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 3,
-        "leagueName": "Gamers Emporium",
-        "ticketLink": "http://example.com/tickets/509",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 510,
-        "name": "New Set Pre-release",
-        "date": "2026-05-04T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 4,
-        "leagueName": "Firestorm Games",
-        "ticketLink": "http://example.com/tickets/510",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 511,
-        "name": "New Set Pre-release",
-        "date": "2026-05-11T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 4,
-        "leagueName": "Firestorm Games",
-        "ticketLink": "http://example.com/tickets/511",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 512,
-        "name": "New Set Pre-release",
-        "date": "2026-05-04T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 5,
-        "leagueName": "Badger Badger",
-        "ticketLink": "http://example.com/tickets/512",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
-    },
-    {
-        "id": 513,
-        "name": "New Set Pre-release",
-        "date": "2026-05-11T00:00:00.000Z",
-        "startTime": "11:00:00",
-        "leagueId": 5,
-        "leagueName": "Badger Badger",
-        "ticketLink": "http://example.com/tickets/513",
-        "type": "PRE-RELEASE",
-        "game": "TCG",
-        "description": "Get your hands on the new set early!",
-        "prizes": "Build & Battle Box + 3 packs",
-        "entryFee": "\u00a325.00"
     }
 ]

@@ -207,6 +207,7 @@ button:active {
 
 .calendar-container.active {
     display: block;
+    opacity: 1;
 }
 
 /* Animation Classes */

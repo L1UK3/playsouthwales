@@ -1,8 +1,10 @@
 import json
 import os
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend/dist', static_url_path='')
+CORS(app)
 
 api_events = os.path.join(os.path.dirname(__file__), 'data', 'events.json')
 api_leagues = os.path.join(os.path.dirname(__file__), 'data', 'leagues.json')
@@ -36,7 +38,13 @@ def load_types():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    static_folder = app.static_folder or 'frontend/dist'
+    return send_from_directory(static_folder, 'index.html')
+
+@app.errorhandler(404)
+def not_found(e: Exception):
+    static_folder = app.static_folder or 'frontend/dist'
+    return send_from_directory(static_folder, 'index.html')
 
 @app.route('/events')
 def getEvents():
