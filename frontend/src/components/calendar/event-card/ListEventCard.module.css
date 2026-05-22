@@ -118,6 +118,12 @@
 .prizes {
     font-size: 14px;
     color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #fbbf24;
+    display: flex;
+    gap: 8px;
 }
 
 .actions {
