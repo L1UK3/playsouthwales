@@ -1,122 +1,209 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect, useMemo } from 'react';
+import type { Event, League, EventTypes } from './types';
+import { loadEvents, loadLeagues, loadTypes, getLocalDateString } from './utils/api';
+import { MONTH_NAMES } from './constant';
+import Filters from './components/calendar/filters/Filters';
+import CalendarView from './components/calendar/calendar-view/CalendarView';
+import ListView from './components/calendar/list-view/ListView';
+import EventCard from './components/event-card/EventCard';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // State
+  const [leagues, setLeagues] = useState<League[]>([]);
+  const [types, setTypes] = useState<EventTypes>({});
+  const [allEvents, setAllEvents] = useState<Event[]>([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
+  const [activeTab, setActiveTab] = useState<'schedule' | 'leagues'>('schedule');
+  const [filters, setFilters] = useState({ league: '', type: '', game: '' });
+
+  // Initial Data Load
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const [leaguesData, typesData] = await Promise.all([loadLeagues(), loadTypes()]);
+        setLeagues(leaguesData);
+        setTypes(typesData);
+      } catch (e) {
+        console.error("Initialization failed", e);
+      }
+    };
+    init();
+  }, []);
+
+  // Event Loading (on month change)
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const month = currentDate.getMonth() + 1;
+        const year = currentDate.getFullYear();
+        const eventsData = await loadEvents(month, year);
+        
+        // In a real app with caching, we'd merge. For now, we replace or append.
+        // To keep it simple and match script.js's background prefetching idea:
+        setAllEvents(prev => {
+            const newEvents = eventsData.filter(ne => !prev.some(pe => pe.id === ne.id));
+            return [...prev, ...newEvents];
+        });
+      } catch (e) {
+        console.error("Failed to fetch events", e);
+      }
+    };
+    fetchEvents();
+  }, [currentDate]);
+
+  // Mappings & Filtered Data
+  const leagueMap = useMemo(() => 
+    leagues.reduce((acc, l) => ({ ...acc, [l.leagueId]: l }), {} as Record<number, League>), 
+    [leagues]
+  );
+
+  const filteredEventsGrouped = useMemo(() => {
+    const filtered = allEvents.filter(event => {
+      if (filters.league && String(event.leagueId) !== filters.league) return false;
+      if (filters.type && event.type !== filters.type) return false;
+      if (filters.game && event.game !== filters.game) return false;
+      return true;
+    });
+
+    return filtered.reduce((acc, event) => {
+      const dateKey = event.date.slice(0, 10);
+      if (!acc[dateKey]) acc[dateKey] = [];
+      acc[dateKey].push(event);
+      return acc;
+    }, {} as Record<string, Event[]>);
+  }, [allEvents, filters]);
+
+  // Handlers
+  const handlePrevMonth = () => {
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+    setSelectedDateKey(null);
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+    setSelectedDateKey(null);
+  };
+
+  const handleGoToToday = () => {
+    const today = new Date();
+    setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1));
+    setSelectedDateKey(getLocalDateString(today));
+  };
+
+  const handleFilterChange = (name: string, value: string) => {
+    setFilters(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters({ league: '', type: '', game: '' });
+  };
+
+  const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] || []) : [];
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-root">
+      <header>
+        <div className="top-nav">
+          <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : 'Leagues'}</h1>
+          <div className="tab-toggle">
+            <button 
+              className={activeTab === 'schedule' ? 'active' : ''} 
+              onClick={() => setActiveTab('schedule')}
+            >Schedule</button>
+            <button 
+              className={activeTab === 'leagues' ? 'active' : ''} 
+              onClick={() => setActiveTab('leagues')}
+            >Leagues</button>
+          </div>
+          <div className="config-tabs">
+            <button className="admin-button">Admin</button>
+            <button className="settings-button">⚙️</button>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
+      <main className="app-container">
+        {activeTab === 'schedule' ? (
+          <div className="tab-content active">
+            <div className="schedule-header">
+              <div className="controls">
+                <h2>{MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
+                <button onClick={handleGoToToday}>Today</button>
+                <button onClick={handlePrevMonth}>&larr;</button>
+                <button onClick={handleNextMonth}>&rarr;</button>
+                <button className="calendar-toggle" onClick={() => setViewMode(v => v === 'calendar' ? 'list' : 'calendar')}>
+                  Switch to {viewMode === 'calendar' ? 'List' : 'Calendar'}
+                </button>
+              </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+              <Filters 
+                leagues={leagues} 
+                types={types} 
+                filters={filters} 
+                onFilterChange={handleFilterChange}
+                onClear={handleClearFilters}
+              />
+            </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+            {viewMode === 'calendar' ? (
+              <div className="calendar-container active">
+                <CalendarView 
+                  currentDate={currentDate}
+                  events={filteredEventsGrouped}
+                  leagueMap={leagueMap}
+                  types={types}
+                  selectedDateKey={selectedDateKey}
+                  onSelectDay={setSelectedDateKey}
+                />
+                
+                {selectedDateKey && (
+                  <div className="selected-day-section active animate-fade-down">
+                    <div className="event-list-title">
+                        {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
+                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                        })}
+                    </div>
+                    <div className="event-list">
+                      {selectedDayEvents.length === 0 ? (
+                        <div className="no-events">No events scheduled for this day.</div>
+                      ) : (
+                        selectedDayEvents.map(event => (
+                          <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="calendar-container active">
+                <ListView 
+                  currentDate={currentDate}
+                  events={filteredEventsGrouped}
+                  leagueMap={leagueMap}
+                  types={types}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="tab-content active">
+            <div className="leagues-container">
+              {leagues.map(league => (
+                <div key={league.leagueId} className="league-card">
+                  <h3>{league.name}</h3>
+                  {league.website && <a href={league.website} target="_blank" rel="noopener noreferrer">Website</a>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

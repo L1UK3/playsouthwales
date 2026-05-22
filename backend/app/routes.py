@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, current_app
 from .models import Event, League
 import os
 import json
@@ -23,7 +23,7 @@ def load_types():
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    return current_app.send_static_file('index.html')
 
 @main.route('/events')
 def getEvents():
