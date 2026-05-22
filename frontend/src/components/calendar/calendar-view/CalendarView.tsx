@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Event, League, EventTypes } from '../../../types';
 import { getLocalDateString } from '../../../utils/api';
+import Cell from './Cell';
 
 interface CalendarViewProps {
     currentDate: Date;
@@ -29,62 +30,39 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     const todayKey = getLocalDateString(new Date());
 
-    const renderDayCell = (day: number, m: number, y: number, isOtherMonth: boolean) => {
+    const renderCell = (day: number, m: number, y: number, isOtherMonth: boolean) => {
         const cellDate = new Date(y, m - 1, day);
         const dateKey = getLocalDateString(cellDate);
-        const eventsForDay = events[dateKey] || [];
-        const isSelected = dateKey === selectedDateKey;
-        const isToday = dateKey === todayKey;
-
         return (
-            <div 
+            <Cell
                 key={dateKey}
-                className={`calendar-cell ${isOtherMonth ? 'empty' : ''} ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}`}
-                onClick={() => !isOtherMonth && onSelectDay(dateKey)}
-            >
-                <div className="date-number">{day}</div>
-                {eventsForDay.length > 0 && (
-                    <div className="event-list">
-                        {eventsForDay.slice(0, 2).map((event, idx) => {
-                            const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor 
-                                               ? leagueMap[event.leagueId].brandColor 
-                                               : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
-                            return (
-                                <div 
-                                    key={idx} 
-                                    className={`event type-${event.type}`} 
-                                    style={{ '--store-color': storeColor } as React.CSSProperties}
-                                >
-                                    <span>{event.leagueName || 'Event'}</span>
-                                    <span className="type">{types[event.type] || event.type}</span>
-                                </div>
-                            );
-                        })}
-                        {eventsForDay.length > 2 && (
-                            <div className="event-summary">
-                                {eventsForDay.length - 2} more event{eventsForDay.length - 2 === 1 ? '' : 's'}
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
+                day={day}
+                dateKey={dateKey}
+                isOtherMonth={isOtherMonth}
+                eventsForDay={events[dateKey] || []}
+                leagueMap={leagueMap}
+                types={types}
+                selectedDateKey={selectedDateKey}
+                todayKey={todayKey}
+                onSelectDay={onSelectDay}
+            />
         );
     };
 
     const cells = [];
     // Prev month padding
     for (let i = startDay - 1; i >= 0; i--) {
-        cells.push(renderDayCell(daysInPrevMonth - i, month, year, true));
+        cells.push(renderCell(daysInPrevMonth - i, month, year, true));
     }
     // Current month
     for (let day = 1; day <= daysInMonth; day++) {
-        cells.push(renderDayCell(day, month + 1, year, false));
+        cells.push(renderCell(day, month + 1, year, false));
     }
     // Next month padding
     const totalCells = cells.length;
     const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells;
     for (let day = 1; day <= remainingCells; day++) {
-        cells.push(renderDayCell(day, month + 2, year, true));
+        cells.push(renderCell(day, month + 2, year, true));
     }
 
     return (
