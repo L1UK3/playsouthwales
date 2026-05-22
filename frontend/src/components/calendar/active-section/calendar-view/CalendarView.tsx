@@ -1,16 +1,7 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../../types';
-import { getLocalDateString } from '../../../utils/api';
-import Cell from './Cell';
-
-interface CalendarViewProps {
-    currentDate: Date;
-    events: Record<string, Event[]>;
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-    selectedDateKey: string | null;
-    onSelectDay: (dateKey: string) => void;
-}
+import { getLocalDateString } from '../../../../utils/getLocalDateString';
+import Cell from './Renderer/cell/Cell';
+import type { CalendarViewProps } from './CalendarViewProps';
 
 const CalendarView: React.FC<CalendarViewProps> = ({ 
     currentDate, 

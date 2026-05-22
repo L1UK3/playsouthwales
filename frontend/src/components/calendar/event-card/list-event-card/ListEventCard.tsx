@@ -1,13 +1,5 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../../types';
-
-interface ListEventCardProps {
-    event: Event;
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-    isExpanded: boolean;
-    onToggle: () => void;
-}
+import type { ListEventCardProps } from './ListEventCardProps';
 
 const ListEventCard: React.FC<ListEventCardProps> = ({ event, leagueMap, types, isExpanded, onToggle }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;

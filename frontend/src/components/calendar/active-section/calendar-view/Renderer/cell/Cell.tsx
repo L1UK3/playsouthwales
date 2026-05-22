@@ -1,18 +1,6 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../../types';
-import Card from './Card';
-
-interface CellProps {
-    day: number;
-    dateKey: string;
-    isOtherMonth: boolean;
-    eventsForDay: Event[];
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-    selectedDateKey: string | null;
-    todayKey: string;
-    onSelectDay: (dateKey: string) => void;
-}
+import Card from '../card/Card';
+import type { CellProps } from './CellProps';
 
 const Cell: React.FC<CellProps> = ({
     day,

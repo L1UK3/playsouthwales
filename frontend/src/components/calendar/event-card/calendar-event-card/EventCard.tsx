@@ -1,11 +1,5 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../types';
-
-interface EventCardProps {
-    event: Event;
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-}
+import type { EventCardProps } from './EventCardProps';
 
 const EventCard: React.FC<EventCardProps> = ({ event, leagueMap, types }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;

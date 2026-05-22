@@ -1,9 +1,5 @@
 import React from 'react';
-import type { League } from '../../types';
-
-interface LeaguesPageProps {
-    leagues: League[];
-}
+import type { LeaguesPageProps } from './LeaguesPageProps';
 
 const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
     return (

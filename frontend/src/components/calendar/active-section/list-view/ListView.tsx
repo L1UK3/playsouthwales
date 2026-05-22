@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import type { Event, League, EventTypes } from '../../../types';
-import ListEventGroup from './ListEventGroup';
-
-interface ListViewProps {
-    currentDate: Date;
-    events: Record<string, Event[]>;
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-}
+import ListEventGroup from './list-event-group/ListEventGroup';
+import type { ListViewProps } from './ListViewProps';
 
 const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types }) => {
     const [expandedEventId, setExpandedEventId] = useState<number | null>(null);

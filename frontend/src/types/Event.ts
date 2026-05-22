@@ -1,13 +1,3 @@
-export interface League {
-    leagueId: number;
-    name: string;
-    logo?: string;
-    website?: string;
-    socialLink?: string;
-    pokemonLink?: string;
-    brandColor?: string;
-    webLink?: string;
-}
 
 export interface Event {
     id: number;
@@ -23,5 +13,3 @@ export interface Event {
     prizes?: string;
     entryFee?: string;
 }
-
-export type EventTypes = Record<string, string>;

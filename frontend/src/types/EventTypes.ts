@@ -1,0 +1,1 @@
+export type EventTypes = Record<string, string>;

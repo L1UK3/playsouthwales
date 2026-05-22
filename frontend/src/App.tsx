@@ -1,7 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import type { Event, League, EventTypes } from './types';
-import { fetchAndCache, loadLeagues, loadTypes, getLocalDateString, getAllCachedEvents } from './utils/api';
-import Header from './layouts/Header';
+import type { League } from "./types/League";
+import type { EventTypes } from "./types/EventTypes";
+import type { Event } from "./types/Event";
+import { fetchAndCache, loadLeagues, loadTypes, getAllCachedEvents } from './services/api';
+import { getLocalDateString } from "./utils/getLocalDateString";
+import Header from './layouts/Header/Header';
 import SchedulePage from './pages/schedule/SchedulePage';
 import LeaguesPage from './pages/leagues/LeaguesPage';
 import './App.css';

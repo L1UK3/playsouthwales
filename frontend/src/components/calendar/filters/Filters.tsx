@@ -1,17 +1,5 @@
 import React from 'react';
-import type { League, EventTypes } from '../../../types';
-
-interface FiltersProps {
-    leagues: League[];
-    types: EventTypes;
-    filters: {
-        league: string;
-        type: string;
-        game: string;
-    };
-    onFilterChange: (name: string, value: string) => void;
-    onClear: () => void;
-}
+import type { FiltersProps } from './FiltersProps';
 
 const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChange, onClear }) => {
     return (

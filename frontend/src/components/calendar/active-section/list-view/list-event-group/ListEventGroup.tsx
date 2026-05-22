@@ -1,15 +1,6 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../../types';
-import ListEventCard from './ListEventCard';
-
-interface ListEventGroupProps {
-    dateKey: string;
-    eventsForDay: Event[];
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-    expandedEventId: number | null;
-    onToggleEvent: (eventId: number) => void;
-}
+import ListEventCard from '../../../event-card/list-event-card/ListEventCard';
+import type { ListEventGroupProps } from './ListEventGroupProps';
 
 const ListEventGroup: React.FC<ListEventGroupProps> = ({ 
     dateKey, 

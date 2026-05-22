@@ -1,11 +1,5 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../../types';
-
-interface CardProps {
-    event: Event;
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-}
+import type { CardProps } from './CardProps';
 
 const Card: React.FC<CardProps> = ({ event, leagueMap, types }) => {
     const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor 

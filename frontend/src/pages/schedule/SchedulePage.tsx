@@ -1,29 +1,10 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../types';
 import { MONTH_NAMES } from '../../constant';
 import Filters from '../../components/calendar/filters/Filters';
-import CalendarView from '../../components/calendar/calendar-view/CalendarView';
-import ListView from '../../components/calendar/list-view/ListView';
-import SelectedDaySection from '../../components/calendar/calendar-view/SelectedDaySection';
-
-interface SchedulePageProps {
-    currentDate: Date;
-    viewMode: 'calendar' | 'list';
-    setViewMode: React.Dispatch<React.SetStateAction<'calendar' | 'list'>>;
-    handleGoToToday: () => void;
-    handlePrevMonth: () => void;
-    handleNextMonth: () => void;
-    leagues: League[];
-    types: EventTypes;
-    filters: { league: string; type: string; game: string };
-    handleFilterChange: (name: string, value: string) => void;
-    handleClearFilters: () => void;
-    filteredEventsGrouped: Record<string, Event[]>;
-    leagueMap: Record<number, League>;
-    selectedDateKey: string | null;
-    setSelectedDateKey: (key: string | null) => void;
-    selectedDayEvents: Event[];
-}
+import CalendarView from '../../components/calendar/active-section/calendar-view/CalendarView';
+import ListView from '../../components/calendar/active-section/list-view/ListView';
+import SelectedDaySection from '../../components/calendar/active-section/calendar-view/SelectedDaySection/SelectedDaySection';
+import type { SchedulePageProps } from './SchedulePageProps';
 
 const SchedulePage: React.FC<SchedulePageProps> = ({
     currentDate,

@@ -1,13 +1,6 @@
 import React from 'react';
-import type { Event, League, EventTypes } from '../../../types';
 import EventCard from '../../event-card/EventCard';
-
-interface SelectedDaySectionProps {
-    selectedDateKey: string | null;
-    selectedDayEvents: Event[];
-    leagueMap: Record<number, League>;
-    types: EventTypes;
-}
+import type { SelectedDaySectionProps } from './SelectedDaySectionProps';
 
 const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     selectedDateKey,

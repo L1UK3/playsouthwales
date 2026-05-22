@@ -1,9 +1,5 @@
 import React from 'react';
-
-interface HeaderProps {
-    activeTab: 'schedule' | 'leagues';
-    onTabChange: (tab: 'schedule' | 'leagues') => void;
-}
+import type { HeaderProps } from './HeaderProps';
 
 const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
     return (
