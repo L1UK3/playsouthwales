@@ -8,7 +8,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, leagueMap, types }) => {
     const storeColor = league?.brandColor || `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
 
     return (
-        <div className={`${styles.eventCard} type-${event.type}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
+        <div className={`${styles.eventCard} gradient-card type-${event.type}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
             <div className={styles.content}>
                 <div className={styles.header}>
                     <div className={styles.store}>{event.name}</div>
@@ -22,14 +22,14 @@ const EventCard: React.FC<EventCardProps> = ({ event, leagueMap, types }) => {
                         {event.startTime || ''} {event.entryFee ? `• ${event.entryFee}` : ''}
                     </div>
                 </div>
-                {event.description && <div className={styles.description}>{event.description}</div>}
+                {event.description && <div className={`${styles.description} description-box`}>{event.description}</div>}
                 {event.prizes && (
-                    <div className={styles.prizes}>
+                    <div className={`${styles.prizes} prizes-box`}>
                         <strong>Prizes:</strong> {event.prizes}
                     </div>
                 )}
                 {event.ticketLink && (
-                    <a href={event.ticketLink} className={styles.link} target="_blank" rel="noopener noreferrer">
+                    <a href={event.ticketLink} className={`${styles.link} btn btn-primary`} target="_blank" rel="noopener noreferrer">
                         Tickets & Info
                     </a>
                 )}

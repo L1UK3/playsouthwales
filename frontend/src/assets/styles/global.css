@@ -1,0 +1,231 @@
+:root {
+    --bg-main: #0f172a; /* slate-900 */
+    --bg-card: #1e293b; /* slate-800 */
+    --bg-card-hover: #334155; /* slate-700 */
+    --bg-cell-empty: #0f172a;
+    --bg-day-header: #1e293b;
+    --border-color: #334155;
+    
+    --text-main: #f8fafc; /* slate-50 */
+    --text-muted: #94a3b8; /* slate-400 */
+    --text-darker: #cbd5e1; /* slate-300 */
+    
+    --primary: #3b82f6; /* blue-500 */
+    --primary-hover: #60a5fa; /* blue-400 */
+    --accent: #8b5cf6; /* indigo-500 */
+    
+    --event-bg: #1e3a8a; /* blue-900 */
+    --event-text: #bfdbfe; /* blue-200 */
+    --event-more-bg: #312e81; /* indigo-900 */
+    --event-more-text: #c7d2fe; /* indigo-200 */
+    
+    --card-gradient-start: #1e3a8a;
+    --card-gradient-end: #172554;
+    
+    --today-border: #f59e0b;
+    --selected-border: #60a5fa;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    /* Default Event Colors */
+    --type-bg: #1e3a8a;
+    --type-text: #bfdbfe;
+    --type-border: var(--primary);
+}
+
+/* Event Type Color Schemes */
+.type-CASUAL { --type-bg: #064e3b; --type-text: #6ee7b7; --type-border: #10b981; }
+.type-STANDARD { --type-bg: #1e3a8a; --type-text: #bfdbfe; --type-border: #3b82f6; }
+.type-CHALLENGE { --type-bg: #78350f; --type-text: #fcd34d; --type-border: #f59e0b; }
+.type-CUP { --type-bg: #7f1d1d; --type-text: #fca5a5; --type-border: #ef4444; }
+.type-PRE-RELEASE { --type-bg: #4c1d95; --type-text: #ddd6fe; --type-border: #8b5cf6; }
+.type-SPECIAL { --type-bg: #831843; --type-text: #fbcfe8; --type-border: #ec4899; }
+.type-REGIONAL { --type-bg: #7c2d12; --type-text: #fed7aa; --type-border: #f97316; }
+.type-INTERNATIONAL { --type-bg: #164e63; --type-text: #a5f3fc; --type-border: #06b6d4; }
+.type-WORLDS { --type-bg: #713f12; --type-text: #fef08a; --type-border: #eab308; }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+header {
+    padding: 20px;
+}
+
+button {
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Utility Classes */
+.card-container {
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.gradient-card {
+    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
+}
+
+.form-control {
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-control:hover {
+    background: var(--bg-card-hover);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    color: white !important;
+    font-weight: 600;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card-hover);
+}
+
+.description-box {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-darker);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.prizes-box {
+    font-size: 14px;
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    display: flex;
+    gap: 8px;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.animate-swipe-left {
+    animation: swipeLeft 0.5s ease forwards;
+}
+
+.animate-swipe-right {
+    animation: swipeRight 0.5s ease forwards;
+}
+
+.animate-fade-down {
+    animation: fadeDown 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes swipeLeft {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes swipeRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

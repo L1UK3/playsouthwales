@@ -5,7 +5,7 @@ import styles from './Header.module.css';
 const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
     return (
         <header>
-            <div className={styles.topNav}>
+            <div className={`${styles.topNav} card-container`}>
                 <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : 'Leagues'}</h1>
                 <div className={styles.tabToggle}>
                     <button

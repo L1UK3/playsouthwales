@@ -10,10 +10,3 @@
     color: var(--text-muted);
     font-size: 16px;
 }
-
-.listEventsContainer {
-    background: var(--bg-card);
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-}

@@ -9,35 +9,17 @@
     margin-right: auto;
 }
 
-.navBar button {
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    background: var(--bg-card);
-    color: var(--text-main);
-    cursor: pointer;
-    transition: background-color 0.18s ease;
-}
-
-.navBar button:hover {
-    background: var(--bg-card-hover);
-}
-
 .calendarToggle {
-    background-color: var(--primary) !important;
-    color: white !important;
-    font-weight: 600;
-    border: none !important;
     margin-left: 8px;
-}
-
-.calendarToggle:hover {
-    background-color: var(--primary-hover) !important;
 }
 
 @media (max-width: 900px) {
     .navBar {
         flex-direction: column;
         align-items: stretch;
+    }
+    
+    .calendarToggle {
+        margin-left: 0;
     }
 }

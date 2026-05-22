@@ -1,8 +1,5 @@
 .calendar {
-    background: var(--bg-card);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
+    /* card-container utility handles background, border-radius, box-shadow, overflow */
 }
 
 .daysOfWeek {

@@ -9,7 +9,7 @@ const ListEventCard: React.FC<ListEventCardProps> = ({ event, leagueMap, types, 
 
     return (
         <div 
-            className={`${styles.listEventCard} type-${event.type} ${isExpanded ? styles.expanded : ''}`}
+            className={`${styles.listEventCard} gradient-card type-${event.type} ${isExpanded ? styles.expanded : ''}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >
@@ -32,13 +32,13 @@ const ListEventCard: React.FC<ListEventCardProps> = ({ event, leagueMap, types, 
                         <span className={styles.metaItem}><strong>Format:</strong> {event.type}</span>
                         {event.entryFee && <span className={styles.metaItem}><strong>Entry:</strong> {event.entryFee}</span>}
                     </div>
-                    {event.description && <div className={styles.description}>{event.description}</div>}
-                    {event.prizes && <div className={styles.prizes}><strong>Prizes:</strong> {event.prizes}</div>}
+                    {event.description && <div className={`${styles.description} description-box`}>{event.description}</div>}
+                    {event.prizes && <div className={`${styles.prizes} prizes-box`}><strong>Prizes:</strong> {event.prizes}</div>}
                     <div className={styles.actions}>
                         {event.ticketLink && (
                             <a 
                                 href={event.ticketLink} 
-                                className={styles.link} 
+                                className={`${styles.link} btn btn-primary`} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}

@@ -3,10 +3,8 @@
     gap: 20px;
     flex-wrap: wrap;
     justify-content: space-between;
-    background: var(--bg-card);
+    /* card-container utility handles background, border-radius, box-shadow, overflow */
     padding: 18px 22px;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
     align-items: center;
 }
 
@@ -53,10 +51,6 @@
     font-size: 24px;
     color: var(--text-main);
     flex: 1;
-}
-
-.adminButton, .settingsButton {
-    /* Base button styles already in App.css */
 }
 
 @media (max-width: 900px) {

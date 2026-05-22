@@ -14,11 +14,11 @@ const NavBar: React.FC<NavBarProps> = ({
     return (
         <div className={styles.navBar}>
             <h2>{monthName} {year}</h2>
-            <button onClick={onGoToToday}>Today</button>
-            <button onClick={onPrevMonth}>&larr;</button>
-            <button onClick={onNextMonth}>&rarr;</button>
+            <button className="btn btn-secondary" onClick={onGoToToday}>Today</button>
+            <button className="btn btn-secondary" onClick={onPrevMonth}>&larr;</button>
+            <button className="btn btn-secondary" onClick={onNextMonth}>&rarr;</button>
             <button 
-                className={styles.calendarToggle} 
+                className={`${styles.calendarToggle} btn btn-primary`} 
                 onClick={onToggleViewMode}
             >
                 Switch to {viewMode === 'calendar' ? 'List' : 'Calendar'}

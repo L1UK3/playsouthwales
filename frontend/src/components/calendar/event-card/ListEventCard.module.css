@@ -1,5 +1,4 @@
 .listEventCard {
-    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
     border-radius: 12px;
     border: 1px solid var(--border-color);
     overflow: hidden;
@@ -14,7 +13,6 @@
 }
 
 .header {
-    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
     padding: 16px 20px;
     display: flex;
     justify-content: space-between;
@@ -107,23 +105,11 @@
 }
 
 .description {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-darker);
-    background: rgba(255, 255, 255, 0.03);
-    padding: 12px;
-    border-radius: 8px;
+    /* description-box utility handles background, padding, etc. */
 }
 
 .prizes {
-    font-size: 14px;
-    color: #fbbf24;
-    background: rgba(251, 191, 36, 0.1);
-    border-radius: 8px;
-    padding: 12px;
-    border: 1px solid #fbbf24;
-    display: flex;
-    gap: 8px;
+    /* prizes-box utility handles background, padding, etc. */
 }
 
 .actions {
@@ -132,18 +118,5 @@
 }
 
 .link {
-    display: inline-block;
-    padding: 8px 16px;
-    background: var(--primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.link:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
+    /* btn-primary utility handles rest */
 }

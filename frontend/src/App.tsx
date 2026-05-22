@@ -6,7 +6,6 @@ import Header from './layouts/Header/Header';
 import SchedulePage from './pages/schedule/SchedulePage';
 import LeaguesPage from './pages/leagues/LeaguesPage';
 import styles from './App.module.css';
-import './App.css';
 
 function App() {
   // State (UI & Logic Hook)

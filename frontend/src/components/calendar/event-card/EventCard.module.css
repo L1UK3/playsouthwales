@@ -4,7 +4,6 @@
     gap: 12px;
     padding: 20px;
     border-radius: 16px;
-    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-left: 6px solid var(--store-color, var(--type-border));
 }
@@ -51,21 +50,11 @@
 }
 
 .description {
-    font-size: 14px;
-    color: var(--text-darker);
-    line-height: 1.5;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 8px 12px;
-    border-radius: 8px;
+    /* description-box utility handles background, padding, etc. */
 }
 
 .prizes {
-    font-size: 14px;
-    color: #fbbf24; /* amber-400 */
-    background: rgba(251, 191, 36, 0.1);
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(251, 191, 36, 0.2);
+    /* prizes-box utility handles background, padding, etc. */
 }
 
 .prizes strong {
@@ -75,19 +64,5 @@
 .link {
     display: inline-block;
     align-self: flex-start;
-    padding: 10px 20px;
-    background: var(--primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    text-align: center;
-}
-
-.link:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    /* btn-primary handles rest */
 }

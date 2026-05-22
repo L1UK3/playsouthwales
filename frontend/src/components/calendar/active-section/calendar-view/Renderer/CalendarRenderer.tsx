@@ -13,7 +13,7 @@ const CalendarRenderer: React.FC<CalendarRendererProps> = ({
     onSelectDay
 }) => {
     return (
-        <div className={styles.calendar}>
+        <div className={`${styles.calendar} card-container`}>
             <div className={styles.daysOfWeek}>
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
                     <div key={d} className={styles.dayName}>{d}</div>

@@ -7,6 +7,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
         <div className={styles.filters} id="view-filters">
             <select 
                 id="league-filter" 
+                className="form-control"
                 value={filters.league} 
                 onChange={(e) => onFilterChange('league', e.target.value)}
             >
@@ -18,6 +19,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
             
             <select 
                 id="type-filter" 
+                className="form-control"
                 value={filters.type} 
                 onChange={(e) => onFilterChange('type', e.target.value)}
             >
@@ -31,6 +33,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
             
             <select 
                 id="game-filter" 
+                className="form-control"
                 value={filters.game} 
                 onChange={(e) => onFilterChange('game', e.target.value)}
             >
@@ -39,7 +42,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                 <option value="VGC">VGC</option>
             </select>
             
-            <button type="button" className={styles.clearFilters} onClick={onClear}>Clear</button>
+            <button type="button" className={`${styles.clearFilters} btn btn-primary`} onClick={onClear}>Clear</button>
         </div>
     );
 };

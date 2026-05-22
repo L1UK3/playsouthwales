@@ -7,7 +7,7 @@ const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
         <div className={`${styles.tabContent} ${styles.active}`}>
             <div className={styles.leaguesContainer}>
                 {leagues.map(league => (
-                    <div key={league.leagueId} className={styles.leagueCard}>
+                    <div key={league.leagueId} className={`${styles.leagueCard} card-container`}>
                         <h3>{league.name}</h3>
                         {league.website && (
                             <a href={league.website} target="_blank" rel="noopener noreferrer">

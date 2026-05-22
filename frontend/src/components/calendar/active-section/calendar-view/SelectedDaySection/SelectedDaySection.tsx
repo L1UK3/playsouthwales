@@ -12,7 +12,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     if (!selectedDateKey) return null;
 
     return (
-        <div className={`${styles.selectedDaySection} ${styles.active} animate-fade-down`}>
+        <div className={`${styles.selectedDaySection} ${styles.active} card-container animate-fade-down`}>
             <div className={styles.eventListTitle}>
                 {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
                     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
