@@ -1,5 +1,6 @@
 import React from 'react';
 import type { CardProps } from './CardProps';
+import styles from './Card.module.css';
 
 const Card: React.FC<CardProps> = ({ event, leagueMap, types }) => {
     const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor 
@@ -8,11 +9,11 @@ const Card: React.FC<CardProps> = ({ event, leagueMap, types }) => {
     
     return (
         <div 
-            className={`event type-${event.type}`} 
+            className={`${styles.event} type-${event.type}`} 
             style={{ '--store-color': storeColor } as React.CSSProperties}
         >
             <span>{event.leagueName || 'Event'}</span>
-            <span className="type">{types[event.type] || event.type}</span>
+            <span className={styles.type}>{types[event.type] || event.type}</span>
         </div>
     );
 };

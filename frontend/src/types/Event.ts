@@ -1,4 +1,3 @@
-
 export interface Event {
     id: number;
     name: string;
@@ -13,3 +12,5 @@ export interface Event {
     prizes?: string;
     entryFee?: string;
 }
+
+

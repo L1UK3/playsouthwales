@@ -1,9 +1,10 @@
 import React from 'react';
 import type { FiltersProps } from './FiltersProps';
+import styles from './filters.module.css';
 
 const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChange, onClear }) => {
     return (
-        <div className="filters" id="view-filters">
+        <div className={styles.filters} id="view-filters">
             <select 
                 id="league-filter" 
                 value={filters.league} 
@@ -38,7 +39,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                 <option value="VGC">VGC</option>
             </select>
             
-            <button type="button" className="clear-filters" onClick={onClear}>Clear</button>
+            <button type="button" className={styles.clearFilters} onClick={onClear}>Clear</button>
         </div>
     );
 };

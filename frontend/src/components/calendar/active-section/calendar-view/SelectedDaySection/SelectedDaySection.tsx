@@ -1,6 +1,7 @@
 import React from 'react';
-import EventCard from '../../event-card/EventCard';
+import { EventCard } from '@event-card';
 import type { SelectedDaySectionProps } from './SelectedDaySectionProps';
+import styles from './SelectedDaySection.module.css';
 
 const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     selectedDateKey,
@@ -11,15 +12,15 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     if (!selectedDateKey) return null;
 
     return (
-        <div className="selected-day-section active animate-fade-down">
-            <div className="event-list-title">
+        <div className={`${styles.selectedDaySection} ${styles.active} animate-fade-down`}>
+            <div className={styles.eventListTitle}>
                 {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
                     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
                 })}
             </div>
-            <div className="event-list">
+            <div className={styles.eventList}>
                 {selectedDayEvents.length === 0 ? (
-                    <div className="no-events">No events scheduled for this day.</div>
+                    <div className={styles.noEvents}>No events scheduled for this day.</div>
                 ) : (
                     selectedDayEvents.map(event => (
                         <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />

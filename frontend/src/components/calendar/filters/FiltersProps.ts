@@ -1,5 +1,5 @@
-import type { League } from "../../../types/League";
-import type { EventTypes } from "../../../types/EventTypes";
+import type { League } from "@/types/League";
+import type { EventTypes } from "@/types/EventTypes";
 
 
 export interface FiltersProps {

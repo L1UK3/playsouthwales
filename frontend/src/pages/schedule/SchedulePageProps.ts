@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { Event } from '../../types/Event';
-import type { EventTypes } from '../../types/EventTypes';
-import type { League } from '../../types/League';
+import type { EventTypes } from "@/types/EventTypes";
+import type { League } from "@/types/League";
 
 export interface SchedulePageProps {
     currentDate: Date;

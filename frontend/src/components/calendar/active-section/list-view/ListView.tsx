@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ListEventGroup from './list-event-group/ListEventGroup';
 import type { ListViewProps } from './ListViewProps';
+import styles from './ListView.module.css';
 
 const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types }) => {
     const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
@@ -14,7 +15,7 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
         .sort();
 
     if (sortedDates.length === 0) {
-        return <div className="list-no-events">No events found.</div>;
+        return <div className={styles.listNoEvents}>No events found.</div>;
     }
 
     const handleToggleEvent = (eventId: number) => {
@@ -22,7 +23,7 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
     };
 
     return (
-        <div id="list-view-events" className="event-list">
+        <div id="list-view-events" className={styles.listViewEvents}>
             {sortedDates.map(dateKey => (
                 <ListEventGroup 
                     key={dateKey}

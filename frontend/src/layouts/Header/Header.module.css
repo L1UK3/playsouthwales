@@ -1,0 +1,67 @@
+.topNav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background: var(--bg-card);
+    padding: 18px 22px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    align-items: center;
+}
+
+.topNav button {
+    padding: 10px 18px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: var(--bg-main);
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.topNav button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tabToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.configTabs {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.topNav button:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-darker);
+}
+
+.topNav h1 {
+    font-size: 24px;
+    color: var(--text-main);
+    flex: 1;
+}
+
+.adminButton, .settingsButton {
+    /* Base button styles already in App.css */
+}
+
+@media (max-width: 900px) {
+    .topNav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

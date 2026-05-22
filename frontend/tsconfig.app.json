@@ -19,7 +19,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@event-card": ["./src/components/calendar/event-card/index.ts"],
+      "@event-card/*": ["./src/components/calendar/event-card/*"]
+
+    }
   },
   "include": ["src"]
 }

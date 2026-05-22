@@ -1,5 +1,5 @@
-import type { League } from "../types/League";
-import type { EventTypes } from "../types/EventTypes";
+import type { League } from "@/types/League";
+import type { EventTypes } from "@/types/EventTypes";
 import type { Event } from "../types/Event";
 import { CalendarCache } from '../utils/CalendarCache';
 import { CACHE_SIZE, DEFAULT_DEPTH } from '../constant';

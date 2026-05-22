@@ -1,4 +1,6 @@
-import type { Event, League, EventTypes } from '../../../types';
+import type { Event } from '@/types/Event';
+import type { EventTypes } from '@/types/EventTypes';
+import type { League } from '@/types/League';
 
 export interface CardProps {
     event: Event;

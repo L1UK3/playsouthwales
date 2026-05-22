@@ -1,10 +1,12 @@
 import React from 'react';
 import { MONTH_NAMES } from '../../constant';
 import Filters from '../../components/calendar/filters/Filters';
+import NavBar from '../../components/calendar/nav-bar/NavBar';
 import CalendarView from '../../components/calendar/active-section/calendar-view/CalendarView';
 import ListView from '../../components/calendar/active-section/list-view/ListView';
 import SelectedDaySection from '../../components/calendar/active-section/calendar-view/SelectedDaySection/SelectedDaySection';
 import type { SchedulePageProps } from './SchedulePageProps';
+import styles from './SchedulePage.module.css';
 
 const SchedulePage: React.FC<SchedulePageProps> = ({
     currentDate,
@@ -25,17 +27,17 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
     selectedDayEvents
 }) => {
     return (
-        <div className="tab-content active">
-            <div className="schedule-header">
-                <div className="controls">
-                    <h2>{MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
-                    <button onClick={handleGoToToday}>Today</button>
-                    <button onClick={handlePrevMonth}>&larr;</button>
-                    <button onClick={handleNextMonth}>&rarr;</button>
-                    <button className="calendar-toggle" onClick={() => setViewMode(v => v === 'calendar' ? 'list' : 'calendar')}>
-                        Switch to {viewMode === 'calendar' ? 'List' : 'Calendar'}
-                    </button>
-                </div>
+        <div className={`${styles.tabContent} ${styles.active}`}>
+            <div className={styles.scheduleHeader}>
+                <NavBar
+                    monthName={MONTH_NAMES[currentDate.getMonth()]}
+                    year={currentDate.getFullYear()}
+                    viewMode={viewMode}
+                    onGoToToday={handleGoToToday}
+                    onPrevMonth={handlePrevMonth}
+                    onNextMonth={handleNextMonth}
+                    onToggleViewMode={() => setViewMode(v => v === 'calendar' ? 'list' : 'calendar')}
+                />
 
                 <Filters
                     leagues={leagues}
@@ -46,7 +48,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
                 />
             </div>
 
-            <div className="calendar-container active">
+            <div className={`${styles.calendarContainer} ${styles.active}`}>
                 {viewMode === 'calendar' ? (
                     <>
                         <CalendarView

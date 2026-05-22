@@ -1,6 +1,7 @@
 import React from 'react';
-import ListEventCard from '../../../event-card/list-event-card/ListEventCard';
+import { ListEventCard } from '@event-card';
 import type { ListEventGroupProps } from './ListEventGroupProps';
+import styles from './ListEventGroup.module.css';
 
 const ListEventGroup: React.FC<ListEventGroupProps> = ({ 
     dateKey, 
@@ -16,9 +17,9 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
     });
 
     return (
-        <div className="list-events-group">
-            <div className="list-group-date">{dateText}</div>
-            <div className="list-events-in-group">
+        <div className={styles.listEventsGroup}>
+            <div className={styles.listGroupDate}>{dateText}</div>
+            <div className={styles.listEventsInGroup}>
                 {eventsForDay.map(event => (
                     <ListEventCard 
                         key={event.id}

@@ -1,0 +1,143 @@
+.listEventCard {
+    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 5px solid var(--store-color, var(--primary));
+}
+
+.listEventCard:hover {
+    transform: translateX(4px);
+    border-color: var(--primary);
+}
+
+.header {
+    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.primary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.time {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 50px;
+}
+
+.mainInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.store {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.sub {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.typeBadge {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.expandIcon {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.expanded .expandIcon {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+.expandable {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.expanded .expandable {
+    max-height: 500px;
+    border-top: 1px solid var(--border-color);
+}
+
+.body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.metaItem strong {
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-darker);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.prizes {
+    font-size: 14px;
+    color: #fbbf24;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.link {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.link:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}

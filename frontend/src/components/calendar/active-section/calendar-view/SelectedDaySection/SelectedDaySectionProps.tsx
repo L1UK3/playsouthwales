@@ -1,4 +1,6 @@
-import type { Event, League, EventTypes } from '../../../types';
+import type { Event } from '@/types/Event';
+import type { League } from '@/types/League';
+import type { EventTypes } from '@/types/EventTypes';
 
 export interface SelectedDaySectionProps {
     selectedDateKey: string | null;

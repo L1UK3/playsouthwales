@@ -50,7 +50,7 @@ export class CalendarCache {
     }
 
     getAll(): Event[] {
-        let all: Event[] = [];
+        const all: Event[] = [];
         for (const value of this.cache.values()) {
             all.push(...value);
         }

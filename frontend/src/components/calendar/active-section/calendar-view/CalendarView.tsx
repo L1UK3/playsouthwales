@@ -1,7 +1,8 @@
 import React from 'react';
 import { getLocalDateString } from '../../../../utils/getLocalDateString';
-import Cell from './Renderer/cell/Cell';
+import CalendarRenderer from './Renderer/CalendarRenderer';
 import type { CalendarViewProps } from './CalendarViewProps';
+import type { CellData } from './Renderer/CellData';
 
 const CalendarView: React.FC<CalendarViewProps> = ({ 
     currentDate, 
@@ -21,52 +22,43 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     const todayKey = getLocalDateString(new Date());
 
-    const renderCell = (day: number, m: number, y: number, isOtherMonth: boolean) => {
+    const generateCellData = (day: number, m: number, y: number, isOtherMonth: boolean): CellData => {
         const cellDate = new Date(y, m - 1, day);
-        const dateKey = getLocalDateString(cellDate);
-        return (
-            <Cell
-                key={dateKey}
-                day={day}
-                dateKey={dateKey}
-                isOtherMonth={isOtherMonth}
-                eventsForDay={events[dateKey] || []}
-                leagueMap={leagueMap}
-                types={types}
-                selectedDateKey={selectedDateKey}
-                todayKey={todayKey}
-                onSelectDay={onSelectDay}
-            />
-        );
+        return {
+            day,
+            month: m,
+            year: y,
+            isOtherMonth,
+            dateKey: getLocalDateString(cellDate)
+        };
     };
 
-    const cells = [];
+    const cells: CellData[] = [];
     // Prev month padding
     for (let i = startDay - 1; i >= 0; i--) {
-        cells.push(renderCell(daysInPrevMonth - i, month, year, true));
+        cells.push(generateCellData(daysInPrevMonth - i, month, year, true));
     }
     // Current month
     for (let day = 1; day <= daysInMonth; day++) {
-        cells.push(renderCell(day, month + 1, year, false));
+        cells.push(generateCellData(day, month + 1, year, false));
     }
     // Next month padding
     const totalCells = cells.length;
     const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells;
     for (let day = 1; day <= remainingCells; day++) {
-        cells.push(renderCell(day, month + 2, year, true));
+        cells.push(generateCellData(day, month + 2, year, true));
     }
 
     return (
-        <div className="calendar">
-            <div className="days-of-week">
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-                    <div key={d} className="day-name">{d}</div>
-                ))}
-            </div>
-            <div className="calendar-grid" id="calendar-grid">
-                {cells}
-            </div>
-        </div>
+        <CalendarRenderer
+            cells={cells}
+            events={events}
+            leagueMap={leagueMap}
+            types={types}
+            selectedDateKey={selectedDateKey}
+            todayKey={todayKey}
+            onSelectDay={onSelectDay}
+        />
     );
 };
 
