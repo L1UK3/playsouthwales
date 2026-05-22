@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Play! Wales: Schedule</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="top-nav" id="top-nav">
+            <h1 id="site-title">Play! Wales | Schedule</h1>
+            <div class="tab-toggle" id="tab-toggle">
+                <button type="button" class="schedule-button active" id="schedule-button"
+                    onclick="toggleAppTab('schedule')">Schedule</button>
+                <button type="button" class="leagues-button" id="leagues-button"
+                    onclick="toggleAppTab('leagues')">Leagues</button>
+            </div>
+
+            <div class="config-tabs" id="confing-tabs">
+                <button type="button" class="admin-button" id="admin-button">Admin</button>
+                <button type="button" class="settings-button" id="settings-button" 
+                    onclick="showSettingsBar()">
+                    <img src="{{ url_for('static', filename='settings-icon.svg') }}" alt="Settings">
+                </button>
+
+                <div class="settings-bar" id="settings-bar">
+                    <!-- TODO #9 Add 24 hour clock format toggle button -->
+                    <button class="button" id="24-hour-button" 
+                        onclick="toggle24HourFormat()""></button>
+                    <!-- TODO #6: Create high contrast toggle button and make colours more colour-blind accessible-->
+                    <button class=" button" id="high-contrast-button" 
+                        onclick="toggleHighContrast()"></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="app-container">
+        <div class="tab-content active" id="schedule-view">
+
+            <div class="schedule-header">
+
+                <div class="controls">
+                    <h2 id="month-title"></h2>
+                    <button type="button" id="todayBtn">Today</button>
+                    <button type="button" id="prevBtn">&larr;</button>
+                    <button type="button" id="nextBtn">&rarr;</button>
+                    <button class="calendar-toggle" id="calendar-toggle-btn" 
+                        onclick="toggleCalendarView()">Switch View</button>
+                </div>
+
+                <div class="filters" id="view-filters">
+                    <select id="league-filter" onchange="applyFilters()">
+                        <option value="">All Leagues</option>
+                    </select>
+                    <select id="type-filter" onchange="applyFilters()">
+                        <option value="">All Event Types</option>
+                    </select>
+                    <select id="game-filter" onchange="applyFilters()">
+                        <option value="">All Games</option>
+                    </select>
+                    <button type="button" class="clear-filters" 
+                        onclick="clearFilters()">Clear</button>
+                </div>
+            </div>
+
+            <div class="calendar-container active" id="calendar-view">
+
+                <div class="calendar">
+                    <div class="days-of-week">
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                        <div class="day-name">Sun</div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar-grid"></div>
+                </div>
+
+                <div id="selected-day-section" class="selected-day-section">
+                    <div id="selected-day-title" class="event-list-title"></div>
+                    <div id="selected-day-events" class="event-list"></div>
+                </div>
+            </div>
+
+            <div class="calendar-container" id="list-view">
+                <div id="list-view-title" class="event-list-title"></div>
+                <div id="list-view-events" class="event-list"></div>
+            </div>
+
+
+        </div class="tab-content" id="leagues-view">
+            <div class="leagues-header" id="leagues-header"></div>
+            <div class="leagues-container" id="leagues-container"></div>
+            <div class="map-api" id="map-api"></div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
