@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { Event, League, EventTypes } from './types';
 import { fetchAndCache, loadLeagues, loadTypes, getLocalDateString, getAllCachedEvents } from './utils/api';
-import { MONTH_NAMES } from './constant';
-import Filters from './components/calendar/filters/Filters';
-import CalendarView from './components/calendar/calendar-view/CalendarView';
-import ListView from './components/calendar/list-view/ListView';
-import EventCard from './components/event-card/EventCard';
+import Header from './layouts/Header';
+import SchedulePage from './pages/schedule/SchedulePage';
+import LeaguesPage from './pages/leagues/LeaguesPage';
 import './App.css';
 
 function App() {
@@ -39,12 +37,10 @@ function App() {
       const month = currentDate.getMonth() + 1;
       const year = currentDate.getFullYear();
 
-      // Use fetchAndCache with a callback to sync the cache into React state
       await fetchAndCache(month, year, 1, (updatedEvents) => {
         setAllEvents(updatedEvents);
       });
 
-      // Also ensure state is updated with initial fetch result even if callback isn't triggered (e.g. cache hit)
       setAllEvents(getAllCachedEvents());
     };
     fetchEvents();
@@ -101,101 +97,30 @@ function App() {
 
   return (
     <div className="app-root">
-      <header>
-        <div className="top-nav">
-          <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : 'Leagues'}</h1>
-          <div className="tab-toggle">
-            <button
-              className={activeTab === 'schedule' ? 'active' : ''}
-              onClick={() => setActiveTab('schedule')}
-            >Schedule</button>
-            <button
-              className={activeTab === 'leagues' ? 'active' : ''}
-              onClick={() => setActiveTab('leagues')}
-            >Leagues</button>
-          </div>
-          <div className="config-tabs">
-            <button className="admin-button">Admin</button>
-            <button className="settings-button">⚙️</button>
-          </div>
-        </div>
-      </header>
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className="app-container">
         {activeTab === 'schedule' ? (
-          <div className="tab-content active">
-            <div className="schedule-header">
-              <div className="controls">
-                <h2>{MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
-                <button onClick={handleGoToToday}>Today</button>
-                <button onClick={handlePrevMonth}>&larr;</button>
-                <button onClick={handleNextMonth}>&rarr;</button>
-                <button className="calendar-toggle" onClick={() => setViewMode(v => v === 'calendar' ? 'list' : 'calendar')}>
-                  Switch to {viewMode === 'calendar' ? 'List' : 'Calendar'}
-                </button>
-              </div>
-
-              <Filters
-                leagues={leagues}
-                types={types}
-                filters={filters}
-                onFilterChange={handleFilterChange}
-                onClear={handleClearFilters}
-              />
-            </div>
-
-            {viewMode === 'calendar' ? (
-              <div className="calendar-container active">
-                <CalendarView
-                  currentDate={currentDate}
-                  events={filteredEventsGrouped}
-                  leagueMap={leagueMap}
-                  types={types}
-                  selectedDateKey={selectedDateKey}
-                  onSelectDay={setSelectedDateKey}
-                />
-
-                {selectedDateKey && (
-                  <div className="selected-day-section active animate-fade-down">
-                    <div className="event-list-title">
-                      {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
-                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                      })}
-                    </div>
-                    <div className="event-list">
-                      {selectedDayEvents.length === 0 ? (
-                        <div className="no-events">No events scheduled for this day.</div>
-                      ) : (
-                        selectedDayEvents.map(event => (
-                          <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="calendar-container active">
-                <ListView
-                  currentDate={currentDate}
-                  events={filteredEventsGrouped}
-                  leagueMap={leagueMap}
-                  types={types}
-                />
-              </div>
-            )}
-          </div>
+          <SchedulePage 
+            currentDate={currentDate}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            handleGoToToday={handleGoToToday}
+            handlePrevMonth={handlePrevMonth}
+            handleNextMonth={handleNextMonth}
+            leagues={leagues}
+            types={types}
+            filters={filters}
+            handleFilterChange={handleFilterChange}
+            handleClearFilters={handleClearFilters}
+            filteredEventsGrouped={filteredEventsGrouped}
+            leagueMap={leagueMap}
+            selectedDateKey={selectedDateKey}
+            setSelectedDateKey={setSelectedDateKey}
+            selectedDayEvents={selectedDayEvents}
+          />
         ) : (
-          <div className="tab-content active">
-            <div className="leagues-container">
-              {leagues.map(league => (
-                <div key={league.leagueId} className="league-card">
-                  <h3>{league.name}</h3>
-                  {league.website && <a href={league.website} target="_blank" rel="noopener noreferrer">Website</a>}
-                </div>
-              ))}
-            </div>
-          </div>
+          <LeaguesPage leagues={leagues} />
         )}
       </main>
     </div>
