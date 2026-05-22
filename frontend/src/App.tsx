@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { Event, League, EventTypes } from './types';
-import { loadEvents, loadLeagues, loadTypes, getLocalDateString } from './utils/api';
+import { fetchAndCache, loadLeagues, loadTypes, getLocalDateString, getAllCachedEvents } from './utils/api';
 import { MONTH_NAMES } from './constant';
 import Filters from './components/calendar/filters/Filters';
 import CalendarView from './components/calendar/calendar-view/CalendarView';
@@ -36,27 +36,23 @@ function App() {
   // Event Loading (on month change)
   useEffect(() => {
     const fetchEvents = async () => {
-      try {
-        const month = currentDate.getMonth() + 1;
-        const year = currentDate.getFullYear();
-        const eventsData = await loadEvents(month, year);
-        
-        // In a real app with caching, we'd merge. For now, we replace or append.
-        // To keep it simple and match script.js's background prefetching idea:
-        setAllEvents(prev => {
-            const newEvents = eventsData.filter(ne => !prev.some(pe => pe.id === ne.id));
-            return [...prev, ...newEvents];
-        });
-      } catch (e) {
-        console.error("Failed to fetch events", e);
-      }
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+
+      // Use fetchAndCache with a callback to sync the cache into React state
+      await fetchAndCache(month, year, 1, (updatedEvents) => {
+        setAllEvents(updatedEvents);
+      });
+
+      // Also ensure state is updated with initial fetch result even if callback isn't triggered (e.g. cache hit)
+      setAllEvents(getAllCachedEvents());
     };
     fetchEvents();
   }, [currentDate]);
 
   // Mappings & Filtered Data
-  const leagueMap = useMemo(() => 
-    leagues.reduce((acc, l) => ({ ...acc, [l.leagueId]: l }), {} as Record<number, League>), 
+  const leagueMap = useMemo(() =>
+    leagues.reduce((acc, l) => ({ ...acc, [l.leagueId]: l }), {} as Record<number, League>),
     [leagues]
   );
 
@@ -109,12 +105,12 @@ function App() {
         <div className="top-nav">
           <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : 'Leagues'}</h1>
           <div className="tab-toggle">
-            <button 
-              className={activeTab === 'schedule' ? 'active' : ''} 
+            <button
+              className={activeTab === 'schedule' ? 'active' : ''}
               onClick={() => setActiveTab('schedule')}
             >Schedule</button>
-            <button 
-              className={activeTab === 'leagues' ? 'active' : ''} 
+            <button
+              className={activeTab === 'leagues' ? 'active' : ''}
               onClick={() => setActiveTab('leagues')}
             >Leagues</button>
           </div>
@@ -139,10 +135,10 @@ function App() {
                 </button>
               </div>
 
-              <Filters 
-                leagues={leagues} 
-                types={types} 
-                filters={filters} 
+              <Filters
+                leagues={leagues}
+                types={types}
+                filters={filters}
                 onFilterChange={handleFilterChange}
                 onClear={handleClearFilters}
               />
@@ -150,7 +146,7 @@ function App() {
 
             {viewMode === 'calendar' ? (
               <div className="calendar-container active">
-                <CalendarView 
+                <CalendarView
                   currentDate={currentDate}
                   events={filteredEventsGrouped}
                   leagueMap={leagueMap}
@@ -158,13 +154,13 @@ function App() {
                   selectedDateKey={selectedDateKey}
                   onSelectDay={setSelectedDateKey}
                 />
-                
+
                 {selectedDateKey && (
                   <div className="selected-day-section active animate-fade-down">
                     <div className="event-list-title">
-                        {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
-                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                        })}
+                      {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
+                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                      })}
                     </div>
                     <div className="event-list">
                       {selectedDayEvents.length === 0 ? (
@@ -180,7 +176,7 @@ function App() {
               </div>
             ) : (
               <div className="calendar-container active">
-                <ListView 
+                <ListView
                   currentDate={currentDate}
                   events={filteredEventsGrouped}
                   leagueMap={leagueMap}
