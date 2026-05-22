@@ -1,0 +1,9 @@
+.appRoot {
+    width: 100%;
+}
+
+.appContainer {
+    padding: 24px;
+    width: 100%;
+    max-width: 100%;
+}

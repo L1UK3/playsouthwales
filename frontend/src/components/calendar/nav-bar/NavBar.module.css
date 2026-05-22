@@ -1,0 +1,25 @@
+.navBar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.navBar h2 {
+    margin-right: auto;
+}
+
+.calendarToggle {
+    margin-left: 8px;
+}
+
+@media (max-width: 900px) {
+    .navBar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .calendarToggle {
+        margin-left: 0;
+    }
+}

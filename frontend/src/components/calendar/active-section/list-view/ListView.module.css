@@ -1,0 +1,12 @@
+.listViewEvents {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.listNoEvents {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 16px;
+}

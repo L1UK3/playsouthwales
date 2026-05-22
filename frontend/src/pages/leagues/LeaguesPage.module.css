@@ -1,0 +1,21 @@
+.leaguesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.leagueCard {
+    /* card-container utility handles background, border-radius, box-shadow, overflow */
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.tabContent {
+    display: none;
+    padding: 0;
+}
+
+.active {
+    display: block !important;
+}

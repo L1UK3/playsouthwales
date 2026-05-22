@@ -1,0 +1,68 @@
+.eventCard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 6px solid var(--store-color, var(--type-border));
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.store {
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 18px;
+}
+
+.type {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--type-text);
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.league {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-darker);
+}
+
+.time {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.description {
+    /* description-box utility handles background, padding, etc. */
+}
+
+.prizes {
+    /* prizes-box utility handles background, padding, etc. */
+}
+
+.prizes strong {
+    color: #f59e0b; /* amber-500 */
+}
+
+.link {
+    display: inline-block;
+    align-self: flex-start;
+    /* btn-primary handles rest */
+}

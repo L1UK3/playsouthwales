@@ -1,0 +1,32 @@
+.selectedDaySection {
+    display: none;
+    margin-top: 18px;
+    /* card-container utility handles background, border-radius, box-shadow, overflow */
+}
+
+.active {
+    display: block !important;
+}
+
+.eventListTitle {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-day-header);
+    color: var(--text-main);
+}
+
+.eventList {
+    display: grid;
+    gap: 14px;
+    padding: 20px;
+}
+
+.noEvents {
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 14px;
+    border-radius: 12px;
+    background: var(--bg-main);
+}

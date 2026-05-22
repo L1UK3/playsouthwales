@@ -8,8 +8,8 @@ db = SQLAlchemy()
 def create_app(config_class: type[Config] = Config):
     app = Flask(
         __name__, 
-        static_folder='../../frontend/static', 
-        template_folder='../../frontend/templates'
+        static_folder='../../frontend/dist', 
+        static_url_path='/'
     )
     app.config.from_object(config_class)
     

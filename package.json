@@ -1,0 +1,11 @@
+{
+  "name": "playwales",
+  "private": true,
+  "scripts": {
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "echo 'No build script for backend yet'",
+    "build": "npm run build:frontend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "start:backend": "python backend/app.py"
+  }
+}
