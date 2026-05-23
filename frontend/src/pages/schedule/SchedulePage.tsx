@@ -21,6 +21,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
     handleGoToToday,
     handlePrevMonth,
     handleNextMonth,
+    direction,
     leagues,
     types,
     filters,
@@ -32,6 +33,9 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
     setSelectedDateKey,
     selectedDayEvents
 }) => {
+    const animationClass = direction ? `animate-swipe-${direction}` : '';
+    const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
+
     return (
         <div className={`${styles.tabContent} ${styles.active}`}>
             <div className={styles.scheduleHeader}>
@@ -56,7 +60,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
 
             <div className={`${styles.calendarContainer} ${styles.active}`}>
                 {viewMode === 'calendar' ? (
-                    <>
+                    <div key={calendarKey} className={animationClass}>
                         <CalendarView
                             currentDate={currentDate}
                             events={filteredEventsGrouped}
@@ -71,14 +75,16 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
                             leagueMap={leagueMap}
                             types={types}
                         />
-                    </>
+                    </div>
                 ) : (
-                    <ListView
-                        currentDate={currentDate}
-                        events={filteredEventsGrouped}
-                        leagueMap={leagueMap}
-                        types={types}
-                    />
+                    <div key={`list-${calendarKey}`} className={animationClass}>
+                        <ListView
+                            currentDate={currentDate}
+                            events={filteredEventsGrouped}
+                            leagueMap={leagueMap}
+                            types={types}
+                        />
+                    </div>
                 )}
             </div>
         </div>

@@ -61,7 +61,7 @@ header {
 }
 
 button {
-    transition: background 0.2s, transform 0.2s;
+    transition: all 0.2s ease;
     cursor: pointer;
 }
 
@@ -71,7 +71,7 @@ button:hover {
 }
 
 button:active {
-    transform: translateY(1px);
+    transform: scale(0.95);
 }
 
 /* Utility Classes */
@@ -170,7 +170,7 @@ button:active {
     gap: 8px;
 }
 
-.animate-fade-in {
+.animate-swipe-down {
     animation: fadeIn 0.5s ease forwards;
 }
 
@@ -182,7 +182,7 @@ button:active {
     animation: swipeRight 0.5s ease forwards;
 }
 
-.animate-fade-down {
+.animate-swipe-up {
     animation: fadeDown 0.5s ease forwards;
 }
 

@@ -22,11 +22,13 @@ export function useAppLogic() {
 	const [viewMode, setViewMode] = useState<ViewMode>('calendar');
 	const [activeTab, setActiveTab] = useState<ActiveTab>('schedule');
 	const [filters, setFilters] = useState({ league: '', type: '', game: '' });
+	const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>(null);
 
 	/**
 	 * Navigates the calendar to the previous month and clears the selected date.
 	 */
 	const handlePrevMonth = () => {
+		setDirection('right');
 		setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
 		setSelectedDateKey(null);
 	};
@@ -35,6 +37,7 @@ export function useAppLogic() {
 	 * Navigates the calendar to the next month and clears the selected date.
 	 */
 	const handleNextMonth = () => {
+		setDirection('left');
 		setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
 		setSelectedDateKey(null);
 	};
@@ -44,7 +47,20 @@ export function useAppLogic() {
 	 */
 	const handleGoToToday = () => {
 		const today = new Date();
-		setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1));
+		const todayMonth = today.getMonth();
+		const todayYear = today.getFullYear();
+		const currentMonth = currentDate.getMonth();
+		const currentYear = currentDate.getFullYear();
+
+		if (todayYear < currentYear || (todayYear === currentYear && todayMonth < currentMonth)) {
+			setDirection('right');
+		} else if (todayYear > currentYear || (todayYear === currentYear && todayMonth > currentMonth)) {
+			setDirection('left');
+		} else {
+			setDirection(null);
+		}
+
+		setCurrentDate(new Date(todayYear, todayMonth, 1));
 		setSelectedDateKey(getLocalDateString(today));
 	};
 
@@ -74,6 +90,7 @@ export function useAppLogic() {
 		activeTab,
 		setActiveTab,
 		filters,
+		direction,
 		handlePrevMonth,
 		handleNextMonth,
 		handleGoToToday,

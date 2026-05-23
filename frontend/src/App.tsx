@@ -23,6 +23,7 @@ function App() {
 		activeTab,
 		setActiveTab,
 		filters,
+		direction,
 		handlePrevMonth,
 		handleNextMonth,
 		handleGoToToday,
@@ -55,6 +56,7 @@ function App() {
 						handleGoToToday={handleGoToToday}
 						handlePrevMonth={handlePrevMonth}
 						handleNextMonth={handleNextMonth}
+						direction={direction}
 						leagues={leagues}
 						types={types}
 						filters={filters}

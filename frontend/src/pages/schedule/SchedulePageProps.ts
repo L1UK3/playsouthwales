@@ -30,6 +30,7 @@ export interface SchedulePageProps {
     handleGoToToday: () => void;
     handlePrevMonth: () => void;
     handleNextMonth: () => void;
+    direction: 'left' | 'right' | 'up' | 'down' | null;
     leagues: League[];
     types: EventTypes;
     filters: { league: string; type: string; game: string; };
