@@ -26,13 +26,11 @@ class League(db.Model):
     brand_color = db.Column(db.String(50))
     web_link = db.Column(db.String(255))
     events = db.relationship('Event', backref='league', lazy=True)
-    #location = db.Column(db.String(255))
-    #latitude = db.Column(db.Float)
-    #longitude = db.Column(db.Float)
+    location = db.Column(db.String(255))
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
     
-
-        
-
+    
 class Event(db.Model):
     """
     Represents an event in the database.

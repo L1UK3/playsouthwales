@@ -1,29 +1,98 @@
-.leaguesContainer {
+.splitView {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    height: calc(100vh - 120px); /* Adjust based on your header height */
+    overflow: hidden;
+}
+
+.listSection {
+    overflow-y: auto;
     padding: 20px;
+    height: 100%;
+}
+
+.mapSection {
+    padding: 20px;
+    height: 100%;
+}
+
+.leaguesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .leagueCard {
-    padding: 20px;
-    border: 1px solid var(--border-color);
+    padding: 16px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.leagueCard:hover {
+    border-color: var(--border-color);
+    background: var(--bg-card-hover);
+}
+
+.selectedCard {
+    border-color: var(--primary) !important;
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.leagueHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.leagueLogo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.leagueLocation {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.leagueActions {
+    display: flex;
+    gap: 8px;
 }
 
 .tabContent {
     display: none;
-    padding: 0;
 }
 
 .active {
     display: block !important;
 }
 
-.map-container {
-    width: 100%;
-    height: 500px;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 20px;
-    border: 1px solid var(--border-color);
+.noLeagues {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+    .splitView {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 400px;
+        height: auto;
+        overflow: visible;
+    }
+
+    .listSection {
+        height: auto;
+        overflow: visible;
+    }
+
+    .mapSection {
+        height: 400px;
+        order: -1; /* Map on top for mobile */
+    }
 }

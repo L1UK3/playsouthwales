@@ -22,6 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
+    
     "paths": {
       "@/*": ["./src/*"],
       "@event-card": ["./src/components/calendar/event-card/index.ts"],
