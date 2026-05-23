@@ -13,6 +13,9 @@ class League(db.Model):
         brand_color (str): The hex code or name of the league's brand color.
         web_link (str): An additional web link for the league.
         events (list): A list of events associated with the league.
+        location (str): The location of the league.
+        latitude (float): The latitude coordinate of the location.
+        longitude (float): The longitude coordinate of the location.
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -23,6 +26,12 @@ class League(db.Model):
     brand_color = db.Column(db.String(50))
     web_link = db.Column(db.String(255))
     events = db.relationship('Event', backref='league', lazy=True)
+    location = db.Column(db.String(255))
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    
+
+        
 
 class Event(db.Model):
     """
