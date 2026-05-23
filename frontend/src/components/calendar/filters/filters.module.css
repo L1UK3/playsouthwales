@@ -10,7 +10,7 @@
 }
 
 .clearFilters {
-    background: #ef4444 !important; /* Overriding btn-primary for clear action */
+    background: #ef4444 !important;
     width: 80px;
 }
 

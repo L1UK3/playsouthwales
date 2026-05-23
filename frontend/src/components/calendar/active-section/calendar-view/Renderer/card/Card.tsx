@@ -2,6 +2,11 @@ import React from 'react';
 import type { CardProps } from './CardProps';
 import styles from './Card.module.css';
 
+/**
+ * Card component represents a single event entry within a calendar cell.
+ * @param props - The properties passed to the component including the event, leagueMap, and event types.
+ * @returns JSX.Element
+ */
 const Card: React.FC<CardProps> = ({ event, leagueMap, types }) => {
     const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor 
                        ? leagueMap[event.leagueId].brandColor 

@@ -3,6 +3,12 @@ import ListEventGroup from './list-event-group/ListEventGroup';
 import type { ListViewProps } from './ListViewProps';
 import styles from './ListView.module.css';
 
+/**
+ * ListView component displays a chronological list of events for the currently viewed month.
+ * It groups events by date and provides expandable details for each event.
+ * @param props - The properties passed to the component including the current date, events mapping, league mapping, and event types.
+ * @returns JSX.Element
+ */
 const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types }) => {
     const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
 

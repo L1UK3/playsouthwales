@@ -49,20 +49,11 @@
     color: var(--text-muted);
 }
 
-.description {
-    /* description-box utility handles background, padding, etc. */
-}
-
-.prizes {
-    /* prizes-box utility handles background, padding, etc. */
-}
-
 .prizes strong {
-    color: #f59e0b; /* amber-500 */
+    color: #f59e0b;
 }
 
 .link {
     display: inline-block;
     align-self: flex-start;
-    /* btn-primary handles rest */
 }

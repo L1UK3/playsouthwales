@@ -8,6 +8,12 @@ import SelectedDaySection from '../../components/calendar/active-section/calenda
 import type { SchedulePageProps } from './SchedulePageProps';
 import styles from './SchedulePage.module.css';
 
+/**
+ * SchedulePage component handles the rendering of the event schedule,
+ * providing both calendar and list views along with filtering capabilities.
+ * @param props - The properties passed to the component including state and handlers.
+ * @returns JSX.Element
+ */
 const SchedulePage: React.FC<SchedulePageProps> = ({
     currentDate,
     viewMode,

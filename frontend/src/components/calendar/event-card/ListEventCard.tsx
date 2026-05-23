@@ -2,6 +2,12 @@ import React from 'react';
 import type { ListEventCardProps } from './ListEventCardProps';
 import styles from './ListEventCard.module.css';
 
+/**
+ * ListEventCard component displays a summary of an event in a list format.
+ * It can be expanded to show more details such as description, prizes, and ticket links.
+ * @param props - The properties passed to the component including the event, leagueMap, event types, expansion state, and toggle handler.
+ * @returns JSX.Element
+ */
 const ListEventCard: React.FC<ListEventCardProps> = ({ event, leagueMap, types, isExpanded, onToggle }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;
     const leagueName = league?.name || event.leagueName || 'Unknown League';

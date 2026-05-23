@@ -1,7 +1,3 @@
-.calendar {
-    /* card-container utility handles background, border-radius, box-shadow, overflow */
-}
-
 .daysOfWeek {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

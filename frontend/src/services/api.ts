@@ -7,9 +7,14 @@ import { CACHE_SIZE, DEFAULT_DEPTH } from '../constant';
 const eventCache = new CalendarCache(CACHE_SIZE);
 
 /**
- * Fetches events for a specific month and year.
+ * Fetches events for a specific month and year from the API.
+ * 
+ * @param month - The month to fetch (1-12).
+ * @param year - The year to fetch.
+ * @returns A promise that resolves to an array of Event objects.
  */
 export async function loadEvents(month: number, year: number): Promise<Event[]> {
+    
     try {
         const response = await fetch(`/events?month=${month}&year=${year}`);
         if (!response.ok) {
@@ -23,17 +28,18 @@ export async function loadEvents(month: number, year: number): Promise<Event[]> 
 }
 
 /**
- * Fetches and caches events for a specific month and year, including neighbors.
+ * Fetches events for a specific month and year, stores them in the cache, and optionally pre-fetches neighboring months.
+ * 
+ * @param month - The month to fetch (1-12).
+ * @param year - The year to fetch.
+ * @param depth - How many adjacent months to recursively pre-fetch.
+ * @param onCacheUpdate - Optional callback triggered when new data is added to the cache.
+ * @returns A promise that resolves to the events for the requested month, or null if the fetch fails.
  */
-export async function fetchAndCache(
-    month: number, 
-    year: number, 
-    depth: number = DEFAULT_DEPTH,
-    onCacheUpdate?: (allEvents: Event[]) => void
-): Promise<Event[] | null> {
+export async function fetchAndCache(month: number, year: number, depth: number = DEFAULT_DEPTH, onCacheUpdate?: (allEvents: Event[]) => void): Promise<Event[] | null> {
     const cacheKey = `${year}-${month}`;
 
-    // 1. Check cache
+    // Check cache to see if the month is already present
     if (eventCache.has(cacheKey)) {
         const data = eventCache.get(cacheKey);
         if (depth > 0) {
@@ -42,7 +48,7 @@ export async function fetchAndCache(
         return data;
     }
 
-    // 2. Check active fetch
+    // Check active fetch
     const activePromise = eventCache.getFetchPromise(cacheKey);
     if (activePromise) {
         const data = await activePromise;
@@ -52,7 +58,7 @@ export async function fetchAndCache(
         return data;
     }
 
-    // 3. New fetch
+    // New fetch
     const fetchPromise = (async () => {
         try {
             const data = await loadEvents(month, year);
@@ -72,7 +78,7 @@ export async function fetchAndCache(
     eventCache.setFetchPromise(cacheKey, fetchPromise);
     const result = await fetchPromise;
 
-    // 4. Neighbors
+    // fetcg neighbors
     if (depth > 0) {
         preFetchNeighbors(month, year, depth, onCacheUpdate);
     }
@@ -81,14 +87,16 @@ export async function fetchAndCache(
 }
 
 /**
- * Pre-fetches adjacent months.
+ * Recursively pre-fetches events for the previous and next months to populate the cache.
+ * 
+ * @param month - The current month (1-12).
+ * @param year - The current year.
+ * @param depth - The remaining depth of recursion for pre-fetching.
+ * @param onCacheUpdate - Optional callback triggered when new data is added to the cache.
  */
-function preFetchNeighbors(
-    month: number, 
-    year: number, 
-    depth: number,
-    onCacheUpdate?: (allEvents: Event[]) => void
-): void {
+function preFetchNeighbors(month: number, year: number, depth: number, onCacheUpdate?: (allEvents: Event[]) => void): void {
+
+
     const prevDate = new Date(year, month - 2, 1);
     const nextDate = new Date(year, month, 1);
 
@@ -104,17 +112,13 @@ function preFetchNeighbors(
     ]);
 }
 
-/**
- * Returns all events currently in the cache.
- */
-export function getAllCachedEvents(): Event[] {
-    return eventCache.getAll();
-}
 
 /**
  * Fetches event types.
+ * @returns A promise that resolves to an EventTypes object. 
  */
 export async function loadTypes(): Promise<EventTypes> {
+
     try {
         const response = await fetch('/types');
         if (!response.ok) {
@@ -126,11 +130,12 @@ export async function loadTypes(): Promise<EventTypes> {
         throw error;
     }
 }
-
 /**
- * Fetches leagues.
+ * Fetches available leagues.
+ * @returns A promise that resolves to an array of League objects.
  */
 export async function loadLeagues(): Promise<League[]> {
+
     try {
         const response = await fetch('/leagues');
         if (!response.ok) {
@@ -141,4 +146,11 @@ export async function loadLeagues(): Promise<League[]> {
         console.error('Error fetching leagues:', error);
         throw error;
     }
+}
+
+/**
+ * Retrieves all events from the cache.
+ */
+export function getAllCachedEvents(): Event[] {
+    return eventCache.getAll();
 }

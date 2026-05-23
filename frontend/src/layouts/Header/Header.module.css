@@ -3,7 +3,6 @@
     gap: 20px;
     flex-wrap: wrap;
     justify-content: space-between;
-    /* card-container utility handles background, border-radius, box-shadow, overflow */
     padding: 18px 22px;
     align-items: center;
 }

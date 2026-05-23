@@ -2,6 +2,12 @@ import React from 'react';
 import type { EventCardProps } from './EventCardProps';
 import styles from './EventCard.module.css';
 
+/**
+ * EventCard component displays detailed information about a single event.
+ * It is typically used within the SelectedDaySection to show full event details including description, prizes, and ticket links.
+ * @param props - The properties passed to the component including the event, leagueMap, and event types.
+ * @returns JSX.Element
+ */
 const EventCard: React.FC<EventCardProps> = ({ event, leagueMap, types }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;
     const leagueName = league?.name || event.leagueName || 'Unknown League';

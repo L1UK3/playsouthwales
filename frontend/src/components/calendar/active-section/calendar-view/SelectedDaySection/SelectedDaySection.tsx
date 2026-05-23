@@ -3,6 +3,12 @@ import { EventCard } from '@event-card';
 import type { SelectedDaySectionProps } from './SelectedDaySectionProps';
 import styles from './SelectedDaySection.module.css';
 
+/**
+ * SelectedDaySection component displays a detailed list of events for a specific selected date.
+ * It appears when a user clicks on a calendar cell and provides full event information.
+ * @param props - The properties passed to the component including the selected date key, events for that day, league mapping, and event types.
+ * @returns JSX.Elemnent
+ */
 const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     selectedDateKey,
     selectedDayEvents,

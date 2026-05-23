@@ -1,16 +1,44 @@
 import type { Event } from "../types/Event";
 
+/**
+ * A Least Recently Used (LRU) cache for storing event data and managing active fetch requests.
+ * 
+ * This class helps prevent redundant API calls by storing previously fetched event data
+ * and keeping track of ongoing promises for specific month/year keys.
+ * 
+ * @property cache - A Map storing event arrays indexed by a string key (e.g., 'YYYY-MM').
+ * @property maxSize - The maximum number of months to keep in the cache before evicting the oldest entry.
+ * @property fetchPromises - A Map tracking active network requests to prevent duplicate concurrent fetches for the same period.
+ * 
+ * @method get - Retrieves events from the cache and updates their position to 'most recently used'.
+ * @method set - Adds events to the cache, maintaining the maxSize limit by evicting the least recently used entry.
+ * @method has - Checks if a specific key exists in the cache.
+ * @method getFetchPromise - Retrieves an active fetch promise for a given key.
+ * @method setFetchPromise - Stores an active fetch promise to prevent duplicate requests.
+ * @method deleteFetchPromise - Removes a fetch promise once the request is complete.
+ * @method getAll - Returns a flattened array of all events currently stored in the cache.
+ * @method clear - Clears all cached event data and active fetch promises. 
+ */
 export class CalendarCache {
     private cache: Map<string, Event[]>;
     private maxSize: number;
     private fetchPromises: Map<string, Promise<Event[] | null>>;
 
+    /**
+     * Initializes a new instance of the CalendarCache.
+     * @param maxSize - The maximum number of months to keep in the cache (defaults to 12).
+     */
     constructor(maxSize = 12) {
         this.cache = new Map();
         this.maxSize = maxSize;
         this.fetchPromises = new Map();
     }
 
+    /**
+     * Retrieves events from the cache and updates their position to 'most recently used'.
+     * @param key - The cache key (e.g., 'YYYY-MM').
+     * @returns The array of Event objects or null if not found.
+     */
     get(key: string): Event[] | null {
         if (this.cache.has(key)) {
             const value = this.cache.get(key)!;
@@ -21,6 +49,11 @@ export class CalendarCache {
         return null;
     }
 
+    /**
+     * Adds events to the cache, maintaining the maxSize limit by evicting the least recently used entry.
+     * @param key - The cache key (e.g., 'YYYY-MM').
+     * @param value - The array of Event objects to store.
+     */
     set(key: string, value: Event[]): void {
         if (this.cache.has(key)) {
             this.cache.delete(key);
@@ -33,27 +66,58 @@ export class CalendarCache {
         this.cache.set(key, value);
     }
 
+    /**
+     * Checks if a specific key exists in the cache.
+     * @param key - The cache key (e.g., 'YYYY-MM').
+     * @returns True if the key is present in the cache, otherwise false.
+     */
     has(key: string): boolean {
         return this.cache.has(key);
     }
 
+    /**
+     * Retrieves an active fetch promise for a given key.
+     * @param key - The cache key (e.g., 'YYYY-MM').
+     * @returns The active Promise or undefined if no fetch is in progress.
+     */
     getFetchPromise(key: string): Promise<Event[] | null> | undefined {
         return this.fetchPromises.get(key);
     }
 
+    /**
+     * Stores an active fetch promise to prevent duplicate requests for the same key.
+     * @param key - The cache key (e.g., 'YYYY-MM').
+     * @param promise - The promise representing the active fetch request.
+     */
     setFetchPromise(key: string, promise: Promise<Event[] | null>): void {
         this.fetchPromises.set(key, promise);
     }
 
+    /**
+     * Removes a fetch promise from the tracking map once the request is complete.
+     * @param key - The cache key (e.g., 'YYYY-MM').
+     */
     deleteFetchPromise(key: string): void {
         this.fetchPromises.delete(key);
     }
 
+    /**
+     * Returns a flattened array of all events currently stored in the cache.
+     * @returns An array containing all cached Event objects.
+     */
     getAll(): Event[] {
         const all: Event[] = [];
         for (const value of this.cache.values()) {
             all.push(...value);
         }
         return all;
+    }
+
+    /**
+     * Clears all cached event data and active fetch promises.
+     */
+    clear(): void {
+        this.cache.clear();
+        this.fetchPromises.clear();
     }
 }

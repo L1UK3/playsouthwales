@@ -3,6 +3,12 @@ import { ListEventCard } from '@event-card';
 import type { ListEventGroupProps } from './ListEventGroupProps';
 import styles from './ListEventGroup.module.css';
 
+/**
+ * ListEventGroup component displays a grouped list of events for a specific date within the ListView.
+ * It renders a date header followed by a series of ListEventCards for that day.
+ * @param props - The properties passed to the component including the date key, events for that day, league mapping, event types, and expansion state/handlers.
+ * @returns JSX.Element
+ */
 const ListEventGroup: React.FC<ListEventGroupProps> = ({ 
     dateKey, 
     eventsForDay, 

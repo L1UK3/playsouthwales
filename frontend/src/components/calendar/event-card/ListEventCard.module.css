@@ -104,19 +104,13 @@
     margin-right: 4px;
 }
 
-.description {
-    /* description-box utility handles background, padding, etc. */
-}
 
-.prizes {
-    /* prizes-box utility handles background, padding, etc. */
-}
+
+
 
 .actions {
     display: flex;
     justify-content: flex-end;
 }
 
-.link {
-    /* btn-primary utility handles rest */
-}
+

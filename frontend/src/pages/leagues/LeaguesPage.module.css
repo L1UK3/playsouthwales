@@ -6,7 +6,6 @@
 }
 
 .leagueCard {
-    /* card-container utility handles background, border-radius, box-shadow, overflow */
     padding: 20px;
     border: 1px solid var(--border-color);
 }

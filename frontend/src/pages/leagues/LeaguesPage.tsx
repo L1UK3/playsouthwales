@@ -2,6 +2,11 @@ import React from 'react';
 import type { LeaguesPageProps } from './LeaguesPageProps';
 import styles from './LeaguesPage.module.css';
 
+/**
+ * LeaguesPage component displays a list of participating leagues/stores.
+ * @param props - The properties passed to the component including the list of leagues.
+ * @returns JSX.Element
+ */
 const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
     return (
         <div className={`${styles.tabContent} ${styles.active}`}>

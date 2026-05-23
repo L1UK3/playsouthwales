@@ -2,6 +2,11 @@ import React from 'react';
 import type { HeaderProps } from './HeaderProps';
 import styles from './Header.module.css';
 
+/**
+ * Wrapper for the header component
+ * @param props - The properties passed to the component including activeTab and onTabChange.
+ * @returns JSX.Element
+ */
 const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
     return (
         <header>

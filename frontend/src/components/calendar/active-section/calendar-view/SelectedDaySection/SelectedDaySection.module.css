@@ -1,7 +1,6 @@
 .selectedDaySection {
     display: none;
     margin-top: 18px;
-    /* card-container utility handles background, border-radius, box-shadow, overflow */
 }
 
 .active {

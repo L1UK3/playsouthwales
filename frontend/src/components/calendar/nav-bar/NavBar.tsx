@@ -2,6 +2,12 @@ import React from 'react';
 import styles from './NavBar.module.css';
 import type { NavBarProps } from './NavBarProps';
 
+/**
+ * NavBar component provides navigation controls for the calendar,
+ * including month switching, returning to today, and toggling between view modes.
+ * @param props - The properties passed to the component including navigation handlers and current view state.
+ * @returns JSX.Element
+ */
 const NavBar: React.FC<NavBarProps> = ({
     monthName,
     year,

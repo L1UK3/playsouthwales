@@ -3,6 +3,12 @@ import Cell from './cell/Cell';
 import type { CalendarRendererProps } from './CalendarRendererProps';
 import styles from './CalendarRenderer.module.css';
 
+/**
+ * CalendarRenderer component handles the layout and rendering of the calendar grid.
+ * It maps through the provided cell data to render individual day cells and displays the days of the week header.
+ * @param props - The properties passed to the component including cells, events, leagueMap, types, selection state, and handlers.
+ * @returns JSX.Element
+ */
 const CalendarRenderer: React.FC<CalendarRendererProps> = ({
     cells,
     events,

@@ -2,6 +2,11 @@ import React from 'react';
 import type { FiltersProps } from './FiltersProps';
 import styles from './filters.module.css';
 
+/**
+ * Filters component provides dropdown menus to filter events by league, event type, and game category.
+ * @param props - The properties passed to the component including leagues, types, current filters, and change handlers.
+ * @returns JSX.Element
+ */
 const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChange, onClear }) => {
     return (
         <div className={styles.filters} id="view-filters">
