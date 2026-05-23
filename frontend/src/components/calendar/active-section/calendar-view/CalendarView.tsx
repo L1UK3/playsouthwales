@@ -8,7 +8,7 @@ import type { CellData } from './Renderer/CellData';
  * CalendarView component manages the logic for generating the calendar grid data.
  * It calculates the days for the current month, including padding for previous and next months,
  * and passes the processed data to the CalendarRenderer.
- * @param props - The properties passed to the component including the current date, events, league mapping, event types, and selection handlers.
+ * @param props - The properties passed to the component, including the current date, events, and selection handlers.
  * @returns JSX.Element
  */
 const CalendarView: React.FC<CalendarViewProps> = ({ 

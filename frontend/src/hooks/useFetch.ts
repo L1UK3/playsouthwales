@@ -8,13 +8,14 @@ import { fetchAndCache } from "@/utils/useCache";
 
 /**
  * Fetches events for a specific month and year from the API.
- * 
- * @param month - The month to fetch (1-12).
- * @param year - The year to fetch.
- * @returns A promise that resolves to an array of Event objects.
+ * @param currentDate - The current date used to determine which month's events to fetch.
+ * @returns { League, EventTypes, Event } An object containing arrays of leagues, event types, and all fetched events.
  */
-export function useFetch(currentDate: Date): { leagues: League[]; types: EventTypes; allEvents: Event[]; } {
-	
+export function useFetch(currentDate: Date): {
+	leagues: League[];
+	types: EventTypes;
+	allEvents: Event[];
+} {
 	const [leagues, setLeagues] = useState<League[]>([]);
 	const [types, setTypes] = useState<EventTypes>({});
 	const [allEvents, setAllEvents] = useState<Event[]>([]);
@@ -40,10 +41,10 @@ export function useFetch(currentDate: Date): { leagues: League[]; types: EventTy
 			const year = currentDate.getFullYear();
 
 			await fetchAndCache({
-                    month, year, depth: 1, onCacheUpdate: (updatedEvents) => {
-                        setAllEvents(updatedEvents);
-                    }
-                });
+				month, year, depth: 1, onCacheUpdate: (updatedEvents) => {
+					setAllEvents(updatedEvents);
+				}
+			});
 
 			setAllEvents(getAllCachedEvents());
 		};

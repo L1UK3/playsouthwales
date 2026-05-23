@@ -1,7 +1,7 @@
 /**
  * Returns a date string in YYYY-MM-DD format based on the local time of the provided Date object.
- * @param date - The Date object to format.
- * @returns The formatted date string (YYYY-MM-DD).
+ * @param {Date} date - The Date object to format.
+ * @returns {String} The formatted date string (YYYY-MM-DD).
  */
 export function getLocalDateString(date: Date): string {
     const year = date.getFullYear();

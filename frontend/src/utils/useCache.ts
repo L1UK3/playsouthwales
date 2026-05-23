@@ -90,6 +90,7 @@ export function preFetchNeighbors(month: number, year: number, depth: number, on
 
 /**
  * Retrieves all events from the cache.
+ * @returns {Event[]} An array of all currently cached Event objects.
  */
 export function getAllCachedEvents(): Event[] {
     return eventCache.getAll();

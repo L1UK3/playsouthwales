@@ -3,21 +3,29 @@ import type { Event } from "../types/Event";
 /**
  * A Least Recently Used (LRU) cache for storing event data and managing active fetch requests.
  * 
- * This class helps prevent redundant API calls by storing previously fetched event data
- * and keeping track of ongoing promises for specific month/year keys.
+ * @class CalendarCache
+ * @description Implements a caching mechanism for event data using a Least Recently Used (LRU) strategy.
+ * It ensures that the most recently accessed data remains available while older, 
+ * unused data is evicted when the cache reaches its maximum size.
  * 
- * @property cache - A Map storing event arrays indexed by a string key (e.g., 'YYYY-MM').
- * @property maxSize - The maximum number of months to keep in the cache before evicting the oldest entry.
- * @property fetchPromises - A Map tracking active network requests to prevent duplicate concurrent fetches for the same period.
+ * @example
+ * const cache = new CalendarCache(6);
+ * 
+ * @property {Map<string, Event[]>} cache - Internal storage for cached events.
+ * @property {number} maxSize - Maximum number of entries allowed in the cache.
+ * @property {Map<string, Promise<Event[] | null>>} fetchPromises - Tracking map for ongoing fetch requests.
+ * 
+ * @constructor
+ * @param {number} [maxSize=12] - The maximum number of months to keep in the cache.
  * 
  * @method get - Retrieves events from the cache and updates their position to 'most recently used'.
  * @method set - Adds events to the cache, maintaining the maxSize limit by evicting the least recently used entry.
  * @method has - Checks if a specific key exists in the cache.
  * @method getFetchPromise - Retrieves an active fetch promise for a given key.
- * @method setFetchPromise - Stores an active fetch promise to prevent duplicate requests.
- * @method deleteFetchPromise - Removes a fetch promise once the request is complete.
+ * @method setFetchPromise - Stores an active fetch promise to prevent duplicate requests for the same key.
+ * @method deleteFetchPromise - Removes a fetch promise from the tracking map once the request is complete.
  * @method getAll - Returns a flattened array of all events currently stored in the cache.
- * @method clear - Clears all cached event data and active fetch promises. 
+ * @method clear - Clears all cached event data and active fetch promises.
  */
 export class CalendarCache {
     private cache: Map<string, Event[]>;

@@ -5,12 +5,11 @@ import type { Event } from "../types/Event";
 /**
  * Fetches events for a specific month and year from the API.
  * 
- * @param month - The month to fetch (1-12).
- * @param year - The year to fetch.
- * @returns A promise that resolves to an array of Event objects.
+ * @param {number} month - The month to fetch (1-12).
+ * @param {number} year - The year to fetch.
+ * @returns {Promise<Event[]>} A promise that resolves to an array of Event objects.
  */
 export async function loadEvents(month: number, year: number): Promise<Event[]> {
-    
     try {
         const response = await fetch(`/events?month=${month}&year=${year}`);
         if (!response.ok) {
@@ -25,10 +24,9 @@ export async function loadEvents(month: number, year: number): Promise<Event[]> 
 
 /**
  * Fetches event types.
- * @returns A promise that resolves to an EventTypes object. 
+ * @returns {Promise<EventTypes>} A promise that resolves to an EventTypes object.
  */
 export async function loadTypes(): Promise<EventTypes> {
-
     try {
         const response = await fetch('/types');
         if (!response.ok) {
@@ -42,7 +40,7 @@ export async function loadTypes(): Promise<EventTypes> {
 }
 /**
  * Fetches available leagues.
- * @returns A promise that resolves to an array of League objects.
+ * @returns {Promise<League[]>} A promise that resolves to an array of League objects.
  */
 export async function loadLeagues(): Promise<League[]> {
 

@@ -1,13 +1,25 @@
 /**
  * Represents a competitive gaming league or store.
- * @property leagueId - Unique identifier for the league.
- * @property name - The display name of the league.
- * @property logo - Optional URL for the league's logo image.
- * @property website - Optional URL for the league's official website.
- * @property socialLink - Optional URL for the league's social media profile.
- * @property pokemonLink - Optional URL for the league's Pokemon-specific profile or page.
- * @property brandColor - Optional hex code or CSS color string for brand identity.
- * @property webLink - Optional additional web resource link.
+ * @interface League
+ * @description Defines the structure of a league object, including its identification, branding, and external links.
+ * 
+ * @example
+ * {
+ *   leagueId: 101,
+ *   name: "Card Kingdom",
+ *   logo: "/logos/card-kingdom.png",
+ *   website: "https://www.cardkingdom.com",
+ *   brandColor: "#e31d23"
+ * }
+ * 
+ * @property {number} leagueId - Unique identifier for the league.
+ * @property {string} name - The display name of the league or store.
+ * @property {string} [logo] - Optional URL or path to the league's logo image.
+ * @property {string} [website] - Optional URL to the league's official website.
+ * @property {string} [socialLink] - Optional URL to the league's primary social media profile.
+ * @property {string} [pokemonLink] - Optional URL to the league's official Pokémon event page.
+ * @property {string} [brandColor] - Optional hex code or CSS color representing the league's branding.
+ * @property {string} [webLink] - Optional additional web resource link.
  */
 export interface League {
     leagueId: number;

@@ -14,7 +14,22 @@ export type ActiveTab = 'schedule' | 'leagues';
  * - Active navigation tabs (schedule vs leagues).
  * - Event filtering criteria.
  * 
- * @returns An object containing state values and handler functions to manipulate the application state.
+ * @returns {currentDate, setCurrentDate,
+ *   selectedDateKey,
+ *   setSelectedDateKey,
+ *   viewMode,
+ *   handleToggleViewMode,
+ *   activeTab,
+ *   setActiveTab,
+ *   filters,
+ *   direction,
+ *   handlePrevMonth,
+ *   handleNextMonth,
+ *   handleGoToToday,
+ *   handleFilterChange,
+ *   handleClearFilters
+ * } - An object containing the state and handlers for application logic.
+ * 
  */
 export function useAppLogic(): {
 	currentDate: Date;

@@ -7,11 +7,10 @@ import styles from './LeagueMap.module.css';
  * @param props - The properties passed to the component including the list of leagues.
  * @returns JSX.Element
  */
-const LeagueMap: React.FC<LeagueMapProps> = ({ leagues }) => {
-    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const LeagueMap: React.FC<LeagueMapProps> = ({ }) => {
 
     return (
-        <div className="league-map">
+        <div className={styles.mapContainer}>
             {/* Map implementation would go here */}
         </div>
     );
