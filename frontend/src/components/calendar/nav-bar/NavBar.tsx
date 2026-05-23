@@ -27,7 +27,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 className={`${styles.calendarToggle} btn btn-primary`} 
                 onClick={onToggleViewMode}
             >
-                Switch to {viewMode === 'calendar' ? 'List' : 'Calendar'}
+                {viewMode === 'calendar' ? 'List' : 'Calendar'}
             </button>
         </div>
     );

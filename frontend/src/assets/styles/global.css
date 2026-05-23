@@ -170,7 +170,11 @@ button:active {
     gap: 8px;
 }
 
-.animate-swipe-down {
+.animate-fade-down {
+    animation: fadeDown 0.5s ease forwards;
+}
+
+.animate-swipe-up {
     animation: fadeIn 0.5s ease forwards;
 }
 
@@ -182,7 +186,7 @@ button:active {
     animation: swipeRight 0.5s ease forwards;
 }
 
-.animate-swipe-up {
+.animate-swipe-down {
     animation: fadeDown 0.5s ease forwards;
 }
 

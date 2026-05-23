@@ -22,6 +22,12 @@ const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
                     </div>
                 ))}
             </div>
+            {leagues.length === 0 && (
+                <div className={styles.noLeagues}>
+                    <p>No leagues found.</p>
+                </div>
+            )}
+            <div>Map view goes here</div>
         </div>
     );
 };

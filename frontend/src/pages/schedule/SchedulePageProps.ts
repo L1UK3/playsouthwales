@@ -1,4 +1,3 @@
-import type React from 'react';
 import type { Event } from '../../types/Event';
 import type { EventTypes } from "@/types/EventTypes";
 import type { League } from "@/types/League";
@@ -26,7 +25,7 @@ import type { League } from "@/types/League";
 export interface SchedulePageProps {
     currentDate: Date;
     viewMode: 'calendar' | 'list';
-    setViewMode: React.Dispatch<React.SetStateAction<'calendar' | 'list'>>;
+    handleToggleViewMode: () => void;
     handleGoToToday: () => void;
     handlePrevMonth: () => void;
     handleNextMonth: () => void;

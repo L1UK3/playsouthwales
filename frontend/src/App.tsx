@@ -19,7 +19,7 @@ function App() {
 		selectedDateKey,
 		setSelectedDateKey,
 		viewMode,
-		setViewMode,
+		handleToggleViewMode,
 		activeTab,
 		setActiveTab,
 		filters,
@@ -52,7 +52,7 @@ function App() {
 					<SchedulePage
 						currentDate={currentDate}
 						viewMode={viewMode}
-						setViewMode={setViewMode}
+						handleToggleViewMode={handleToggleViewMode}
 						handleGoToToday={handleGoToToday}
 						handlePrevMonth={handlePrevMonth}
 						handleNextMonth={handleNextMonth}

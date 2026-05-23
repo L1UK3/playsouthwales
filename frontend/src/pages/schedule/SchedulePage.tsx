@@ -17,7 +17,7 @@ import styles from './SchedulePage.module.css';
 const SchedulePage: React.FC<SchedulePageProps> = ({
     currentDate,
     viewMode,
-    setViewMode,
+    handleToggleViewMode,
     handleGoToToday,
     handlePrevMonth,
     handleNextMonth,
@@ -33,7 +33,11 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
     setSelectedDateKey,
     selectedDayEvents
 }) => {
-    const animationClass = direction ? `animate-swipe-${direction}` : '';
+    const animationClass = 
+        direction === 'left' ? 'animate-swipe-left' : 
+        direction === 'right' ? 'animate-swipe-right' : 
+        direction === 'down' ? 'animate-fade-down' : 
+        direction === 'up' ? 'animate-swipe-up' : '';
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
     return (
@@ -46,7 +50,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
                     onGoToToday={handleGoToToday}
                     onPrevMonth={handlePrevMonth}
                     onNextMonth={handleNextMonth}
-                    onToggleViewMode={() => setViewMode(v => v === 'calendar' ? 'list' : 'calendar')}
+                    onToggleViewMode={handleToggleViewMode}
                 />
 
                 <Filters

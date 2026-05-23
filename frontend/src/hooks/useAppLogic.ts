@@ -65,9 +65,15 @@ export function useAppLogic() {
 	};
 
 	/**
+	 * Toggles between calendar and list view modes and sets the animation direction.
+	 */
+	const handleToggleViewMode = () => {
+		setDirection('down');
+		setViewMode(prev => prev === 'calendar' ? 'list' : 'calendar');
+	};
+
+	/**
 	 * Updates a specific filter value (league, type, or game) in the state.
-	 * @param name - The name of the filter to update.
-	 * @param value - The new value to set for the filter.
 	 */
 	const handleFilterChange = (name: string, value: string) => {
 		setFilters(prev => ({ ...prev, [name]: value }));
@@ -86,7 +92,7 @@ export function useAppLogic() {
 		selectedDateKey,
 		setSelectedDateKey,
 		viewMode,
-		setViewMode,
+		handleToggleViewMode,
 		activeTab,
 		setActiveTab,
 		filters,
