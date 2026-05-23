@@ -22,47 +22,11 @@
     gap: 16px;
 }
 
-.leagueCard {
-    padding: 16px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.leagueCard:hover {
-    border-color: var(--border-color);
-    background: var(--bg-card-hover);
-}
-
 .selectedCard {
     border-color: var(--primary) !important;
     background: rgba(59, 130, 246, 0.05);
 }
 
-.leagueHeader {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-}
-
-.leagueLogo {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    object-fit: contain;
-}
-
-.leagueLocation {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-}
-
-.leagueActions {
-    display: flex;
-    gap: 8px;
-}
 
 .tabContent {
     display: none;
