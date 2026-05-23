@@ -16,7 +16,23 @@ export type ActiveTab = 'schedule' | 'leagues';
  * 
  * @returns An object containing state values and handler functions to manipulate the application state.
  */
-export function useAppLogic() {
+export function useAppLogic(): {
+	currentDate: Date;
+	setCurrentDate: import("react").Dispatch<import("react").SetStateAction<Date>>;
+	selectedDateKey: string | null;
+	setSelectedDateKey: import("react").Dispatch<import("react").SetStateAction<string | null>>;
+	viewMode: ViewMode;
+	handleToggleViewMode: () => void;
+	activeTab: ActiveTab;
+	setActiveTab: import("react").Dispatch<import("react").SetStateAction<ActiveTab>>;
+	filters: { league: string; type: string; game: string; };
+	direction: "left" | "right" | "up" | "down" | null;
+	handlePrevMonth: () => void;
+	handleNextMonth: () => void;
+	handleGoToToday: () => void;
+	handleFilterChange: (name: string, value: string) => void;
+	handleClearFilters: () => void;
+} {
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
 	const [viewMode, setViewMode] = useState<ViewMode>('calendar');
