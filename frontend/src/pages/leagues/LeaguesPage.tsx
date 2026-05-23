@@ -1,6 +1,7 @@
 import React from 'react';
 import type { LeaguesPageProps } from './LeaguesPageProps';
 import styles from './LeaguesPage.module.css';
+import LeagueMap from '../../components/leagues-map/LeagueMap';
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
@@ -22,12 +23,17 @@ const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
                     </div>
                 ))}
             </div>
+            
             {leagues.length === 0 && (
                 <div className={styles.noLeagues}>
                     <p>No leagues found.</p>
                 </div>
             )}
-            <div>Map view goes here</div>
+
+            <div className={styles.mapContainer}>
+                Map view goes here
+                <LeagueMap leagues={leagues} />
+            </div>
         </div>
     );
 };
