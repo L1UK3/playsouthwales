@@ -15,6 +15,10 @@
     transform: translateY(-1px);
 }
 
+.calendarCell:active {
+    transform: translateY(1px);
+}
+
 .empty {
     background: var(--bg-cell-empty) !important;
     cursor: default !important;

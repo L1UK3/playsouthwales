@@ -6,6 +6,14 @@ from config import Config
 db = SQLAlchemy()
 
 def create_app(config_class: type[Config] = Config):
+    """
+    Create a Flask application instance.
+    Args:
+        config_class (type[Config]): The configuration class to use for the app.
+
+    Returns:
+        Flask: The initialized Flask application instance.
+    """
     app = Flask(
         __name__, 
         static_folder='../../frontend/dist', 

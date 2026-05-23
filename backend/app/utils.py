@@ -1,14 +1,15 @@
 import os
 import json
 
-# Path to the types.json file in the instance folder
 api_types = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'types.json')
-
-_cached_data: dict[str, None] = {
-    'types': None
-}
+_cached_data: dict[str, None] = {'types': None}
 
 def load_types():
+    """
+    Load event types from the types.json file.
+    Returns:
+        dict: A dictionary containing event types and their metadata.
+    """
     if _cached_data['types'] is None:
         if os.path.exists(api_types):
             try:

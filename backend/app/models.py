@@ -1,6 +1,19 @@
 from . import db
 
 class League(db.Model):
+    """
+    Represents a league in the database.
+    Attributes:
+        id (int): The unique identifier for the league.
+        name (str): The name of the league.
+        logo (str): The URL to the logo of the league.
+        website (str): The URL to the league's official website.
+        social_link (str): The URL to the league's social media profile.
+        pokemon_link (str): The URL to the league's official Pokémon event page.
+        brand_color (str): The hex code or name of the league's brand color.
+        web_link (str): An additional web link for the league.
+        events (list): A list of events associated with the league.
+    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     logo = db.Column(db.String(255))
@@ -12,6 +25,21 @@ class League(db.Model):
     events = db.relationship('Event', backref='league', lazy=True)
 
 class Event(db.Model):
+    """
+    Represents an event in the database.
+    Attributes:
+        id (int): The unique identifier for the event.
+        name (str): The name of the event.
+        date (str): The date of the event.
+        start_time (str): The start time of the event.
+        league_id (int): The ID of the associated league.
+        ticket_link (str): The URL to the event's ticket page.
+        event_type (str): The type of the event.
+        game (str): The game associated with the event.
+        description (str): A description of the event.
+        prizes (str): Prizes associated with the event.
+        entry_fee (str): The entry fee for the event.
+    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     date = db.Column(db.String(50), nullable=False)  # Storing as string for now to match JSON prefix filtering

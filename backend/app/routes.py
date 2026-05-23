@@ -10,10 +10,20 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
 
 @main.route('/')
 def index():
+    """
+    Serve the frontend application.
+    Returns:
+        Response: The index.html file from the static folder.
+    """
     return current_app.send_static_file('index.html')
 
 @main.route('/events')
 def getEvents():
+    """
+    Fetch events filtered by month and year.
+    Returns:
+        Response: A JSON list of events matching the specified month and year.
+    """
     #/events?month=${month}&year=${year}
     month = request.args.get('month')
     year = request.args.get('year')
@@ -45,6 +55,11 @@ def getEvents():
 
 @main.route('/leagues')
 def getLeagues():
+    """
+    Fetch all leagues.
+    Returns:
+        Response: A JSON list of all leagues.
+    """
     leagues = League.query.all()
     output = []
     for league in leagues:
@@ -62,4 +77,9 @@ def getLeagues():
 
 @main.route('/types')
 def getTypes():
+    """
+    Fetch all types.
+    Returns:
+        Response: A JSON list of all types.
+    """
     return jsonify(load_types())
