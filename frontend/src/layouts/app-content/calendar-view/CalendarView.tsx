@@ -1,8 +1,8 @@
 import React from 'react';
-import { getLocalDateString } from '../../../../utils/getLocalDateString';
-import CalendarRenderer from './Renderer/CalendarRenderer';
+import { getLocalDateString } from '../../../utils/getLocalDateString';
+import CalendarRenderer from '../../../components/calendar/Renderer/CalendarRenderer';
 import type { CalendarViewProps } from './CalendarViewProps';
-import type { CellData } from './Renderer/CellData';
+import type { CellData } from '../../../components/calendar/Renderer/CellData';
 
 /**
  * CalendarView component manages the logic for generating the calendar grid data.

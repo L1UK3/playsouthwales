@@ -2,9 +2,9 @@ import React from 'react';
 import { MONTH_NAMES } from '../../constant';
 import Filters from '../../components/calendar/filters/Filters';
 import NavBar from '../../components/calendar/nav-bar/NavBar';
-import CalendarView from '../../components/calendar/active-section/calendar-view/CalendarView';
-import ListView from '../../components/calendar/active-section/list-view/ListView';
-import SelectedDaySection from '../../components/calendar/active-section/calendar-view/SelectedDaySection/SelectedDaySection';
+import CalendarView from '../../layouts/app-content/calendar-view/CalendarView';
+import ListView from '../../layouts/app-content/list-view/ListView';
+import SelectedDaySection from '../../components/calendar/SelectedDaySection/SelectedDaySection';
 import type { SchedulePageProps } from './SchedulePageProps';
 import styles from './SchedulePage.module.css';
 
