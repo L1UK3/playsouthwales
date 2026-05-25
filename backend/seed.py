@@ -57,7 +57,8 @@ def seed_data():
                         event_type=e_type,
                         game="TCG",
                         description=desc,
-                        prizes=prizes
+                        prizes=prizes,
+                        ticket_link="https://example.com/ticket-link"
                     ))
 
             # 2. Monthly Challenges
@@ -78,7 +79,8 @@ def seed_data():
                         game="TCG",
                         entry_fee="£10",
                         description="A more competitive event where players compete for Championship Points.",
-                        prizes="Booster packs based on attendance + CP."
+                        prizes="Booster packs based on attendance + CP.",
+                        ticket_link="https://example.com/ticket-link"
                     ))
 
             if weekday == 6: # Sunday
@@ -96,7 +98,8 @@ def seed_data():
                         game="TCG",
                         entry_fee="£10",
                         description="A more competitive event where players compete for Championship Points.",
-                        prizes="Booster packs based on attendance + CP."
+                        prizes="Booster packs based on attendance + CP.",
+                        ticket_link="https://example.com/ticket-link"
                     ))
 
             # 3. Quarterly Cups
@@ -131,7 +134,8 @@ def seed_data():
                         game="TCG",
                         entry_fee="£20",
                         description="A high-stakes tournament. The pinnacle of local League play.",
-                        prizes="Champion Playmat, Booster Boxes, and a large amount of CP."
+                        prizes="Champion Playmat, Booster Boxes, and a large amount of CP.",
+                        ticket_link="https://example.com/ticket-link"
                     ))
 
             # 4. Pre-releases (May 4th to May 17th)
@@ -165,7 +169,8 @@ def seed_data():
                             game="TCG",
                             entry_fee="£25",
                             description="Get your hands on the newest set before it officially releases! Build a deck from a Build & Battle Box.",
-                            prizes="3 additional booster packs at the end of the event."
+                            prizes="3 additional booster packs at the end of the event.",
+                            ticket_link="https://example.com/ticket-link"
                         ))
 
             current_date += timedelta(days=1)
