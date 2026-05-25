@@ -1,5 +1,5 @@
 import React from 'react';
-import Cell from './cell/Cell';
+import Cell from '../cell/Cell';
 import type { CalendarRendererProps } from './CalendarRendererProps';
 import styles from './CalendarRenderer.module.css';
 

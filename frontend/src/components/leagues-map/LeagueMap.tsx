@@ -1,18 +1,21 @@
 import React from 'react';
+import { APIProvider } from '@vis.gl/react-google-maps';
 import type { LeagueMapProps } from './LeagueMapProps';
 import styles from './LeagueMap.module.css';
 
 /**
- * LeagueMap component displays a map of participating leagues/stores.
- * @param props - The properties passed to the component including the list of leagues.
+ * LeagueMap component displays a Google Map with markers for each league.
+ * @param props - The properties for the LeagueMap component, including the list of leagues and selection handlers.
  * @returns JSX.Element
  */
-const LeagueMap: React.FC<LeagueMapProps> = ({ }) => {
+const LeagueMap: React.FC<LeagueMapProps> = ({  }) => {
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
     return (
-        <div className={styles.mapContainer}>
-            {/* Map implementation would go here */}
-        </div>
+        <APIProvider apiKey={apiKey}>
+            <div className={styles.mapContainer}>
+            </div>
+        </APIProvider>
     );
 };
 

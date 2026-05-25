@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ListEventGroup from './list-event-group/ListEventGroup';
+import ListEventGroup from '../../../components/calendar/list-event-group/ListEventGroup';
 import type { ListViewProps } from './ListViewProps';
 import styles from './ListView.module.css';
 

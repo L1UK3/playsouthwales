@@ -20,9 +20,3 @@ def load_types():
         else:
             _cached_data['types'] = {}
     return _cached_data['types']
-
-""" 
-TODO #13: Create a function that deals with geocoding the league addresses using the google api so that
-the frontend can easily map the locations.
-
-"""

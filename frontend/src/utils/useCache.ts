@@ -8,13 +8,19 @@ export const eventCache = new CalendarCache(CACHE_SIZE);
 /**
  * Fetches events for a specific month and year, stores them in the cache, and optionally pre-fetches neighboring months.
  *
- * @param month - The month to fetch (1-12).
- * @param year - The year to fetch.
- * @param depth - How many adjacent months to recursively pre-fetch.
- * @param onCacheUpdate - Optional callback triggered when new data is added to the cache.
- * @returns A promise that resolves to the events for the requested month, or null if the fetch fails.
+ * @param {number} month - The month to fetch (1-12).
+ * @param {number} year - The year to fetch.
+ * @param {number} depth - How many adjacent months to recursively pre-fetch.
+ * @param {(allEvents: Event[]) => void} onCacheUpdate - Optional callback triggered when new data is added to the cache.
+ * @returns {Promise<Event[] | null>} A promise that resolves to the events for the requested month, or null if the fetch fails.
  */
-export async function fetchAndCache({ month, year, depth = DEFAULT_DEPTH, onCacheUpdate }: { month: number; year: number; depth?: number; onCacheUpdate?: (allEvents: Event[]) => void; }): Promise<Event[] | null> {
+export async function fetchAndCache({ month, year, depth = DEFAULT_DEPTH, onCacheUpdate }:{
+        month: number;
+        year: number;
+        depth?: number;
+        onCacheUpdate?: (allEvents: Event[]) => void;
+    }
+): Promise<Event[] | null> {
     const cacheKey = `${year}-${month}`;
 
     // Check cache to see if the month is already present
@@ -67,10 +73,10 @@ export async function fetchAndCache({ month, year, depth = DEFAULT_DEPTH, onCach
 /**
  * Recursively pre-fetches events for the previous and next months to populate the cache.
  *
- * @param month - The current month (1-12).
- * @param year - The current year.
- * @param depth - The remaining depth of recursion for pre-fetching.
- * @param onCacheUpdate - Optional callback triggered when new data is added to the cache.
+ * @param {number} month - The current month (1-12).
+ * @param {number} year - The current year.
+ * @param {number} depth - The remaining depth of recursion for pre-fetching.
+ * @param {(allEvents: Event[]) => void} onCacheUpdate - Optional callback triggered when new data is added to the cache.
  */
 export function preFetchNeighbors(month: number, year: number, depth: number, onCacheUpdate?: (allEvents: Event[]) => void): void {
     const prevDate = new Date(year, month - 2, 1);

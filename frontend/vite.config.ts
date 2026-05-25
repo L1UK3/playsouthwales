@@ -9,6 +9,13 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  server: {
+    proxy: {
+      '/events': 'http://127.0.0.1:5000',
+      '/leagues': 'http://127.0.0.1:5000',
+      '/types': 'http://127.0.0.1:5000',
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
