@@ -6,8 +6,8 @@ import styles from './Cell.module.css';
 /**
  * Cell component represents an individual day in the calendar grid.
  * It displays the day number and a summary of events for that specific date.
- * @param props - The properties passed to the component including day, events, and selection state.
- * @returns JSX.Element
+ * @param {CellProps} props - The properties passed to the component including day, events, and selection state.
+ * @returns {JSX.Element} The rendered calendar cell.
  */
 const Cell: React.FC<CellProps> = ({
     day,

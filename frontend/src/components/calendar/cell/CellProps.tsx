@@ -3,17 +3,19 @@ import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
 
 /**
- * Properties for the Cell component.
- * @property day - The day of the month to display.
- * @property dateKey - A unique string identifier for the date (YYYY-MM-DD).
- * @property isOtherMonth - Boolean indicating if the day belongs to a different month than the one being viewed.
- * @property eventsForDay - Array of events occurring on this specific day.
- * @property leagueMap - A mapping of league IDs to league details for branding.
- * @property types - A mapping of event type keys to their display names or icons.
- * @property selectedDateKey - The dateKey of the currently selected day.
- * @property todayKey - The dateKey of the current real-world date.
- * @property onSelectDay - Callback function triggered when a cell is clicked.
+ * @interface CellProps
+ * @description Properties for the Cell component.
+ * @property {number} day - The day of the month to display.
+ * @property {string} dateKey - The unique key representing the date (e.g., YYYY-MM-DD).
+ * @property {boolean} isOtherMonth - Whether the cell belongs to a month other than the one currently being viewed.
+ * @property {Event[]} eventsForDay - The list of events occurring on this specific day.
+ * @property {Record<number, League>} leagueMap - A mapping of league IDs to league details.
+ * @property {EventTypes} types - A mapping of event type keys to their display names or icons.
+ * @property {string | null} selectedDateKey - The key of the currently selected date.
+ * @property {string} todayKey - The key representing today's date.
+ * @property {(dateKey: string) => void} onSelectDay - Callback function triggered when a cell is clicked.
  */
+ 
 export interface CellProps {
     day: number;
     dateKey: string;

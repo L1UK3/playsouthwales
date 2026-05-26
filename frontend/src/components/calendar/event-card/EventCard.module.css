@@ -1,3 +1,4 @@
+/* Default Variant Styles */
 .eventCard {
     display: flex;
     flex-direction: column;
@@ -47,6 +48,124 @@
 .time {
     font-size: 13px;
     color: var(--text-muted);
+}
+
+/* List Variant Styles */
+.listEventCard {
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 5px solid var(--store-color, var(--primary));
+}
+
+.listEventCard:hover {
+    transform: translateX(4px);
+    border-color: var(--primary);
+}
+
+.listHeader {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.primary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.listTime {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 50px;
+}
+
+.mainInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.listStore {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.sub {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.typeBadge {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.expandIcon {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.expanded .expandIcon {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+.expandable {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.expanded .expandable {
+    max-height: 500px;
+    border-top: 1px solid var(--border-color);
+}
+
+.body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.metaItem strong {
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Common/Shared Styles */
+.description {
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .prizes strong {
