@@ -1,3 +1,11 @@
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding: 24px 24px 0 24px;
+    background: var(--bg-main, #ffffff);
+}
+
 .topNav {
     display: flex;
     gap: 20px;
