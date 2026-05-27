@@ -1,5 +1,5 @@
 import type { League } from "@/types/League";
-import type { Event } from "../types/Event";
+import type { Event } from "@/types/Event";
 import type { EventFilters } from "./EventFilters";
 
 /**

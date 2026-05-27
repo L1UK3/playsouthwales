@@ -1,7 +1,7 @@
 import React from 'react';
 import type { LeaguesPageProps } from './LeaguesPageProps';
 import styles from './LeaguesPage.module.css';
-import LeagueMap from '../../components/leagues-map/LeagueMap';
+import LeagueMap from '@components/leagues-map/LeagueMap';
 import LeagueCard from '@/components/league-card/LeagueCard';
 
 /**

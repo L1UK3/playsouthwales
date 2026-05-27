@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getLocalDateString } from "../utils/getLocalDateString";
+import { getLocalDateString } from "@utils/getLocalDateString";
 
 export type ViewMode = 'calendar' | 'list';
 export type ActiveTab = 'schedule' | 'leagues';

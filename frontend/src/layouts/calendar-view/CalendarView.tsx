@@ -1,9 +1,9 @@
 import React from 'react';
-import { getLocalDateString } from '../../../utils/getLocalDateString';
+import { getLocalDateString } from '@utils/getLocalDateString';
 import type { CalendarViewProps } from './CalendarViewProps';
-import type { CellData } from '../../../types/CellData';
+import type { CellData } from '@/types/CellData';
 import styles from './CalendarView.module.css';
-import Cell from '@/components/calendar/cell/Cell'
+import Cell from '@/components/calendar/cell/Cell';
 
 
 /**
