@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListEventGroup from '@components/calendar/list-event-group/ListEventGroup';
 import type { ListViewProps } from './ListViewProps';
 import styles from './ListView.module.css';
@@ -27,6 +27,17 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
     const handleToggleEvent = (eventId: number) => {
         setExpandedEventId(prev => (prev === eventId ? null : eventId));
     };
+
+    useEffect(() => {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const timeoutId = setTimeout(() => {
+            const todayElement = document.getElementById(`date-${todayStr}`);
+            if (todayElement) {
+                todayElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+        return () => clearTimeout(timeoutId);
+    }, [sortedDates]);
 
     return (
         <div id="list-view-events" className={styles.listViewEvents}>

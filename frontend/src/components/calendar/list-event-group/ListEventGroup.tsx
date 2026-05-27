@@ -22,9 +22,11 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
+    const isToday = dateKey === new Date().toISOString().split('T')[0];
+
     return (
-        <div className={styles.listEventsGroup}>
-            <div className={styles.listGroupDate}>{dateText}</div>
+        <div className={styles.listEventsGroup} id={`date-${dateKey}`}>
+            <div className={`${styles.listGroupDate} ${isToday ? styles.today : ''}`}>{dateText}</div>
             <div className={styles.listEventsInGroup}>
                 {eventsForDay.map(event => (
                     <EventCard 
