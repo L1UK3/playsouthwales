@@ -6,8 +6,8 @@ import LeagueCard from '@/components/league-card/LeagueCard';
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
- * @param props - The properties passed to the component including the list of leagues.
- * @returns JSX.Element
+ * @param {LeaguesPageProps} props - The properties passed to the component including the list of leagues.
+ * @returns {JSX.Element} The rendered LeaguesPage.
  */
 const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
@@ -34,7 +34,7 @@ const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
                         />
                     ))}
                 </div>
-                
+
                 {leagues.length === 0 && (
                     <div className={styles.noLeagues}>
                         <p>No leagues found.</p>
@@ -43,8 +43,8 @@ const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
             </div>
 
             <div className={styles.mapSection}>
-                <LeagueMap 
-                    leagues={leagues} 
+                <LeagueMap
+                    leagues={leagues}
                     selectedLeagueId={selectedLeagueId}
                     onLeagueSelect={setSelectedLeagueId}
                 />

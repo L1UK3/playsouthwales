@@ -31,7 +31,7 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
     return (
         <div id="list-view-events" className={styles.listViewEvents}>
             {sortedDates.map(dateKey => (
-                <ListEventGroup 
+                <ListEventGroup
                     key={dateKey}
                     dateKey={dateKey}
                     eventsForDay={events[dateKey]}

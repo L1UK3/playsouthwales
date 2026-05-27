@@ -1,7 +1,7 @@
 .splitView {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height: calc(100vh - 120px); /* Adjust based on your header height */
+    height: calc(100vh - 120px);
     overflow: hidden;
 }
 
@@ -57,6 +57,6 @@
 
     .mapSection {
         height: 400px;
-        order: -1; /* Map on top for mobile */
+        order: -1;
     }
 }
