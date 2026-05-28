@@ -9,5 +9,5 @@ import type { League } from "@/types/League";
 export interface LeagueMapProps {
     leagues: League[];
     selectedLeagueId: number | null;
-    onLeagueSelect: (id: number) => void;
+    onLeagueSelect: (id: number | null) => void;
 }
