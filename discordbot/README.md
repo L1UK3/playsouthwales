@@ -1,0 +1,1 @@
+I have no clue if hosting a discord bot inside of the webapp is a good idea.
