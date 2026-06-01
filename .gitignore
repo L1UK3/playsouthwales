@@ -65,3 +65,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.github/
+.gitlab-ci.yml
