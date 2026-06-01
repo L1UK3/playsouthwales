@@ -1,10 +1,10 @@
+# Python
 *.pyc
 __pycache__/
 
-env/
+# Python virtual environment
 .venv/
 
-.vscode/
 # Logs
 logs
 *.log
@@ -14,6 +14,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node.js
 node_modules
 dist
 dist-ssr
@@ -37,10 +38,6 @@ dist-ssr
 .env.production.local
 .env.local
 
-# OS files
-site.db
-db.sqlite3
-
 # Logs
 logs
 *.log
@@ -49,11 +46,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
 
 # Editor directories and files
 .vscode/*
@@ -66,5 +58,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# GitHub
 .github/
 .gitlab-ci.yml
+
+# SQL
+*.db
+

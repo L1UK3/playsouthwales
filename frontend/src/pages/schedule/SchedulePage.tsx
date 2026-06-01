@@ -36,7 +36,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
     const animationClass = 
         direction === 'left' ? 'animate-swipe-left' : 
         direction === 'right' ? 'animate-swipe-right' : 
-        direction === 'down' ? 'animate-fade-down' : 
+        direction === 'down' ? 'animate-swipe-down' : 
         direction === 'up' ? 'animate-swipe-up' : '';
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
