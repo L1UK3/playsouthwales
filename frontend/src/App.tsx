@@ -2,7 +2,9 @@ import { useMemo } from 'react';
 import { createLeagueMap, filterAndGroupEvents } from "./utils/dataProcessing";
 import { useAppLogic } from './hooks/useAppLogic';
 import { useFetch } from './hooks/useFetch';
+import { useOverlay } from './hooks/useOverlay';
 import Header from './layouts/Header/Header';
+import LoginBox from './components/login/LoginBox';
 import SchedulePage from './pages/schedule/SchedulePage';
 import LeaguesPage from './pages/leagues/LeaguesPage';
 import styles from './App.module.css';
@@ -43,9 +45,23 @@ function App() {
 
 	const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] || []) : [];
 
+	// Overlay State
+	const {
+		isLoginOpen, handleLoginBox, handleCloseLogin,
+		isSettingsOpen, handleSettingsBox, handleCloseSettings,
+	} = useOverlay();
+
 	return (
 		<div className={styles.appRoot}>
-			<Header activeTab={activeTab} onTabChange={setActiveTab} />
+			<Header
+				activeTab={activeTab}
+				onTabChange={setActiveTab}
+				onLoginBox={handleLoginBox}
+				toggleSettingsBox={handleSettingsBox}
+				isSettingsOpen={isSettingsOpen}
+				onCloseSettings={handleCloseSettings}
+			/>
+			{isLoginOpen && <LoginBox onClose={handleCloseLogin} />}
 
 			<main className={styles.appContainer}>
 				{activeTab === 'schedule' ? (

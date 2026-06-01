@@ -83,3 +83,17 @@ def getTypes():
         Response: A JSON list of all types.
     """
     return jsonify(load_types())
+
+@main.route('/admin/login', methods=['POST'])
+def adminLogin():
+    """
+    Admin login endpoint.
+    """
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    if username == 'admin' and password == 'admin':
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False})
+        

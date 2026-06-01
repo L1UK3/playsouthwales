@@ -8,10 +8,10 @@ import type { EventCardProps } from './EventCardProps';
  * @param {EventCardProps} props - The properties for the component.
  * @returns {JSX.Element} The rendered event card.
  */
-const EventCard: React.FC<EventCardProps> = ({ 
-    event, 
-    leagueMap, 
-    types, 
+const EventCard: React.FC<EventCardProps> = ({
+    event,
+    leagueMap,
+    types,
     variant = 'default',
     isExpanded = false,
     onToggle
@@ -23,7 +23,7 @@ const EventCard: React.FC<EventCardProps> = ({
     // list variant
     if (variant === 'list') {
         return (
-            <div 
+            <div
                 className={`${styles.listEventCard} gradient-card type-${event.type} ${isExpanded ? styles.expanded : ''}`}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
                 onClick={onToggle}
@@ -51,10 +51,10 @@ const EventCard: React.FC<EventCardProps> = ({
                         {event.prizes && <div className={`${styles.prizes} prizes-box`}><strong>Prizes:</strong> {event.prizes}</div>}
                         <div className={styles.actions}>
                             {event.ticketLink && (
-                                <a 
-                                    href={event.ticketLink} 
-                                    className={`${styles.link} btn btn-primary`} 
-                                    target="_blank" 
+                                <a
+                                    href={event.ticketLink}
+                                    className={`${styles.link} btn btn-primary`}
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={(e) => e.stopPropagation()}
                                 >
