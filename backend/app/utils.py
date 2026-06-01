@@ -1,7 +1,7 @@
 import os
 import json
 
-api_types = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'types.json')
+api_types = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'types.json')
 _cached_data: dict[str, None] = {'types': None}
 
 def load_types():

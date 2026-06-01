@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -17,7 +18,8 @@ def create_app(config_class: type[Config] = Config):
     app = Flask(
         __name__, 
         static_folder='../../frontend/dist', 
-        static_url_path='/'
+        static_url_path='/',
+        instance_path=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
     )
     app.config.from_object(config_class)
     
