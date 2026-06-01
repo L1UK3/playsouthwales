@@ -2,7 +2,7 @@
 __pycache__/
 
 env/
-venv/
+.venv/
 
 .vscode/
 # Logs
