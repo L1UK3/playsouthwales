@@ -3,7 +3,7 @@ import type { League } from "@/types/League";
 import type { EventTypes } from "@/types/EventTypes";
 import type { Event } from "@/types/Event";
 import { loadLeagues, loadTypes } from '@services/api';
-import { getAllCachedEvents, fetchAndCache } from '@/utils/useCache';
+import { getAllCachedEvents, fetchAndCache } from '@hooks/useCache';
 
 /**
  * Fetches events for a specific month and year from the API.

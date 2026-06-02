@@ -1,7 +1,17 @@
 {
-  "workspaces": ["packages/*"],
-  "scripts": {
-    "install": "npm install -w shared && npm install",
-    "dev": "npm run dev -w frontend & npm run dev -w admin"
-  }
+    "name": "playwales",
+    "version": "1.0.0",
+    "private": true,
+    "description": "PlayWales",
+    "workspaces": [
+        "admin",
+        "frontend",
+        "shared"
+    ],
+    "scripts": {
+        "dev": "npm run dev --workspaces",
+        "build": "npm run build --workspaces",
+        "lint": "npm run lint --workspaces",
+        "preview": "npm run preview --workspace=frontend"
+    }
 }

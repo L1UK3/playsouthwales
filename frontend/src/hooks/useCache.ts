@@ -1,7 +1,7 @@
 import { CACHE_SIZE, DEFAULT_DEPTH } from "@/constant";
 import { loadEvents } from "@/services/api";
 import type { Event } from "@/types/Event";
-import { CalendarCache } from "./CalendarCache";
+import { CalendarCache } from "@/utils/CalendarCache";
 
 export const eventCache = new CalendarCache(CACHE_SIZE);
 
