@@ -4,11 +4,7 @@
 
 - Leagues Map
 
-- Settings drop-down
-
 - Settings
-
-- Admin login screen
 
 - Admin portal
 

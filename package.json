@@ -1,0 +1,7 @@
+{
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "install": "npm install -w packages/shared && npm install",
+    "dev": "npm run dev -w packages/frontend & npm run dev -w packages/admin"
+  }
+}
