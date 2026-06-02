@@ -7,7 +7,7 @@ export function useOverlay() {
     const handleLoginBox = () => setIsLoginOpen(true);
     const handleCloseLogin = () => setIsLoginOpen(false);
 
-    const handleSettingsBox = () => setIsSettingsOpen(true);
+    const handleSettingsBox = () => setIsSettingsOpen(prev => !prev);
     const handleCloseSettings = () => setIsSettingsOpen(false);
 
     return {

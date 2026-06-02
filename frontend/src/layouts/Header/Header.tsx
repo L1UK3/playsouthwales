@@ -13,7 +13,8 @@ const Header: React.FC<HeaderProps> = ({
     onTabChange,
     onLoginBox,
     onSettingsBox,
-    isSettingsOpen
+    isSettingsOpen,
+    onCloseSettings
 }) => {
     return (
         <header className={styles.header}>
@@ -47,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({
                         </button>
                         {isSettingsOpen && (
                             <div className={styles.dropdown}>
-                                <SettingsBox onClose={onSettingsBox} />
+                                <SettingsBox onClose={onCloseSettings} />
                             </div>
                         )}
                     </div>

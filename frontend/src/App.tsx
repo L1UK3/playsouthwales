@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { createLeagueMap, filterAndGroupEvents } from "./utils/dataProcessing";
 import { useFetch } from './hooks/useFetch';
 import { useOverlay } from './hooks/useOverlay';
-import Header from './layouts/Header/Header';
+import Header from './layouts/header/Header';
 import LoginBox from './components/login/LoginBox';
 import SchedulePage from './pages/schedule/SchedulePage';
 import LeaguesPage from './pages/leagues/LeaguesPage';

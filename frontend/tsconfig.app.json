@@ -41,7 +41,7 @@
       "@event-card": ["./src/components/calendar/event-card/index.ts"],
       "@event-card/*": ["./src/components/calendar/event-card/*"],
       "@calendar/*": ["./src/components/calendar/*"],
-      "@header/*": ["./src/layouts/Header/*"]
+      "@header/*": ["./src/layouts/header/*"]
     }
   },
   "include": [
