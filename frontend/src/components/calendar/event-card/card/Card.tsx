@@ -1,5 +1,6 @@
 import React from 'react';
 import type { EventCardProps } from '../EventCardProps';
+import type { CardProps } from './CardProps';
 import styles from './Card.module.css';
 
 /**
@@ -7,14 +8,14 @@ import styles from './Card.module.css';
  * @param {EventCardProps} props - The properties passed to the component including the event, leagueMap, and event types.
  * @returns {JSX.Element} The rendered card component.
  */
-const Card: React.FC<EventCardProps> = ({ event, leagueMap, types }) => {
+const Card: React.FC<EventCardProps & CardProps> = ({ event, leagueMap, types, isOtherMonth }) => {
     const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor 
                        ? leagueMap[event.leagueId].brandColor 
                        : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
     
     return (
         <div 
-            className={`${styles.event} type-${event.type}`} 
+            className={`${styles.event} type-${event.type} ${isOtherMonth ? styles.otherMonth : ''}`} 
             style={{ '--store-color': storeColor } as React.CSSProperties}
         >
             <span>{event.leagueName || 'Event'}</span>

@@ -37,6 +37,7 @@ const Cell: React.FC<CellProps> = ({
                             event={event}
                             leagueMap={leagueMap}
                             types={types}
+                            isOtherMonth={isOtherMonth}
                         />
                     ))}
                     {eventsForDay.length > 2 && (
