@@ -1,7 +1,7 @@
 import React from 'react';
-import EventCard from '../event-card/EventCard';
 import type { ListEventGroupProps } from './ListEventGroupProps';
 import styles from './ListEventGroup.module.css';
+import ListCard from '../event-card/list/ListCard';
 
 /**
  * ListEventGroup component displays a grouped list of events for a specific date within the ListView.
@@ -29,12 +29,11 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
             <div className={`${styles.listGroupDate} ${isToday ? styles.today : ''}`}>{dateText}</div>
             <div className={styles.listEventsInGroup}>
                 {eventsForDay.map(event => (
-                    <EventCard 
+                    <ListCard 
                         key={event.id}
                         event={event}
                         leagueMap={leagueMap}
                         types={types}
-                        variant="list"
                         isExpanded={expandedEventId === event.id}
                         onToggle={() => onToggleEvent(event.id)}
                     />

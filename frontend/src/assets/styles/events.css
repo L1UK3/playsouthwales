@@ -1,0 +1,42 @@
+
+/* Event Type Color Schemes */
+.type-CASUAL { --type-bg: #064e3b; --type-text: #6ee7b7; --type-border: #10b981; }
+.type-STANDARD { --type-bg: #1e3a8a; --type-text: #bfdbfe; --type-border: #3b82f6; }
+.type-CHALLENGE { --type-bg: #78350f; --type-text: #fcd34d; --type-border: #f59e0b; }
+.type-CUP { --type-bg: #7f1d1d; --type-text: #fca5a5; --type-border: #ef4444; }
+.type-PRE-RELEASE { --type-bg: #4c1d95; --type-text: #ddd6fe; --type-border: #8b5cf6; }
+.type-SPECIAL { --type-bg: #831843; --type-text: #fbcfe8; --type-border: #ec4899; }
+.type-REGIONAL { --type-bg: #7c2d12; --type-text: #fed7aa; --type-border: #f97316; }
+.type-INTERNATIONAL { --type-bg: #164e63; --type-text: #a5f3fc; --type-border: #06b6d4; }
+.type-WORLDS { --type-bg: #713f12; --type-text: #fef08a; --type-border: #eab308; }
+
+.card-container {
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.gradient-card {
+    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
+}
+
+.description-box {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-darker);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.prizes-box {
+    font-size: 14px;
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    display: flex;
+    gap: 8px;
+}

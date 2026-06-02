@@ -1,5 +1,5 @@
 import React from 'react';
-import EventCard from '../event-card/EventCard';
+import EventCard from '../event-card/default/EventCard';
 import type { SelectedDaySectionProps } from './SelectedDaySectionProps';
 import styles from './SelectedDaySection.module.css';
 

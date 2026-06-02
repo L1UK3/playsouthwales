@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({
     activeTab,
     onTabChange,
     onLoginBox,
-    toggleSettingsBox,
+    onSettingsBox,
     isSettingsOpen
 }) => {
     return (
@@ -42,12 +42,12 @@ const Header: React.FC<HeaderProps> = ({
                     <div className={styles.dropdownAnchor}>
                         <button
                             className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
-                            onClick={toggleSettingsBox}>
+                            onClick={onSettingsBox}>
                             ⚙️
                         </button>
                         {isSettingsOpen && (
                             <div className={styles.dropdown}>
-                                <SettingsBox onClose={toggleSettingsBox} />
+                                <SettingsBox onClose={onSettingsBox} />
                             </div>
                         )}
                     </div>

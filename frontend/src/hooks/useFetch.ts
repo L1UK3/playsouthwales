@@ -7,7 +7,7 @@ import { getAllCachedEvents, fetchAndCache } from '@/utils/useCache';
 
 /**
  * Fetches events for a specific month and year from the API.
- * @param currentDate - The current date used to determine which month's events to fetch.
+ * @param {Date} currentDate - The current date used to determine which month's events to fetch.
  * @returns { League, EventTypes, Event } An object containing arrays of leagues, event types, and all fetched events.
  */
 export function useFetch(currentDate: Date): {
