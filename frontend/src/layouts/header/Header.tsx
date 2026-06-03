@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import type { HeaderProps } from './HeaderProps';
 import SettingsBox from '@components/settings/SettingsBox';
 import styles from './Header.module.css';
@@ -16,6 +16,20 @@ const Header: React.FC<HeaderProps> = ({
     isSettingsOpen,
     onCloseSettings
 }) => {
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (isSettingsOpen && dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                onCloseSettings();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isSettingsOpen, onCloseSettings]);
     return (
         <header className={styles.header}>
             <div className={styles.topNav}>
@@ -32,6 +46,12 @@ const Header: React.FC<HeaderProps> = ({
                         onClick={() => onTabChange('leagues')}>
                         Leagues
                     </button>
+
+                    <button
+                        className={activeTab === 'rankings' ? styles.active : ''}
+                        onClick={() => onTabChange('rankings')}>
+                        Rankings
+                    </button>
                 </div>
                 <div className={styles.configTabs}>
                     <button
@@ -40,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({
                         Admin
                     </button>
 
-                    <div className={styles.dropdownAnchor}>
+                    <div className={styles.dropdownAnchor} ref={dropdownRef}>
                         <button
                             className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
                             onClick={onSettingsBox}>

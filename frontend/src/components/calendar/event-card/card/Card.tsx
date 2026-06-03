@@ -9,17 +9,17 @@ import styles from './Card.module.css';
  * @returns {JSX.Element} The rendered card component.
  */
 const Card: React.FC<EventCardProps & CardProps> = ({ event, leagueMap, types, isOtherMonth }) => {
-    const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor 
-                       ? leagueMap[event.leagueId].brandColor 
-                       : `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
-    
+    const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor
+        ? leagueMap[event.leagueId].brandColor
+        : `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
+
     return (
-        <div 
-            className={`${styles.event} type-${event.type} ${isOtherMonth ? styles.otherMonth : ''}`} 
+        <div
+            className={`${styles.event} type-${event.type} ${isOtherMonth ? styles.otherMonth : ''}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
         >
-            <span>{event.leagueName || 'Event'}</span>
-            <span className={styles.type}>{types[event.type] || event.type}</span>
+            <span>{event.leagueName ?? 'Event'}</span>
+            <span className={styles.type}>{types[event.type] ?? event.type}</span>
         </div>
     );
 };

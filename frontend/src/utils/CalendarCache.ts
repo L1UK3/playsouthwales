@@ -33,9 +33,9 @@ export class CalendarCache {
 
     /**
      * Initializes a new instance of the CalendarCache.
-     * @param {number} maxSize - The maximum number of months to keep in the cache (defaults to 12).
+     * @param {number} maxSize - The maximum number of months to keep in the cache.
      */
-    constructor(maxSize: number = 12) {
+    constructor(maxSize = 12) {
         this.cache = new Map();
         this.maxSize = maxSize;
         this.fetchPromises = new Map();

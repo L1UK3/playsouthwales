@@ -9,7 +9,7 @@ import type { League } from "@/types/League";
  * @property {(id: number) => void} onLeagueSelect - Callback function triggered when a league is selected.
  */
 export interface LeagueCardProps {
-    key: number; 
+    key: number;
     league: League;
     selectedLeagueID: number | null;
     onLeagueSelect: (id: number) => void;
