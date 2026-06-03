@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { createLeagueMap, filterAndGroupEvents } from "./utils/dataProcessing";
 import { useFetch } from './hooks/useFetch';
 import { useOverlay } from './hooks/useOverlay';
-import Header from './layouts/header/Header';
+import Header from './layouts/Header/Header';
 import LoginBox from './components/login/LoginBox';
 import SchedulePage from './pages/schedule/SchedulePage';
 import LeaguesPage from './pages/leagues/LeaguesPage';
@@ -10,7 +10,7 @@ import styles from './App.module.css';
 import { getLocalDateString } from './utils/getLocalDateString';
 
 export type ViewMode = 'calendar' | 'list';
-export type ActiveTab = 'schedule' | 'leagues';
+export type ActiveTab = 'schedule' | 'leagues' | 'leaderboard';
 
 /**
  * Main application component that orchestrates the state, data fetching, 

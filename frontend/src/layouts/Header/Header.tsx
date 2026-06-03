@@ -32,6 +32,12 @@ const Header: React.FC<HeaderProps> = ({
                         onClick={() => onTabChange('leagues')}>
                         Leagues
                     </button>
+
+                    <button
+                        className={activeTab === 'leaderboard' ? styles.active : ''}
+                        onClick={() => onTabChange('leaderboard')}>
+                        Leaderboard
+                    </button>
                 </div>
                 <div className={styles.configTabs}>
                     <button

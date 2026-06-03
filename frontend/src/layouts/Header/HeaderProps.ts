@@ -9,8 +9,8 @@
  * @property {() => void} onCloseSettings - Callback function to close the settings dropdown.
  */
 export interface HeaderProps {
-    activeTab: 'schedule' | 'leagues';
-    onTabChange: (tab: 'schedule' | 'leagues') => void;
+    activeTab: 'schedule' | 'leagues' | 'leaderboard';
+    onTabChange: (tab: 'schedule' | 'leagues'| 'leaderboard') => void;
     onLoginBox: () => void;
     onSettingsBox: () => void;
     isSettingsOpen: boolean;
