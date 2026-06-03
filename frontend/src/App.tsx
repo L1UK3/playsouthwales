@@ -4,13 +4,14 @@ import { useFetch } from './hooks/useFetch';
 import { useOverlay } from './hooks/useOverlay';
 import Header from './layouts/Header/Header';
 import LoginBox from './components/login/LoginBox';
-import SchedulePage from './pages/schedule/SchedulePage';
-import LeaguesPage from './pages/leagues/LeaguesPage';
+import SchedulePage from '@pages/schedule/SchedulePage';
+import LeaguesPage from '@pages/leagues/LeaguesPage';
+import RankingsPage from '@pages/rankings/RankingsPage';
 import styles from './App.module.css';
 import { getLocalDateString } from './utils/getLocalDateString';
 
 export type ViewMode = 'calendar' | 'list';
-export type ActiveTab = 'schedule' | 'leagues' | 'leaderboard';
+export type ActiveTab = 'schedule' | 'leagues' | 'rankings';
 
 /**
  * Main application component that orchestrates the state, data fetching, 
@@ -119,7 +120,7 @@ function App() {
 			{isLoginOpen && <LoginBox onClose={handleCloseLogin} />}
 
 			<main className={styles.appContainer}>
-				{activeTab === 'schedule' ? (
+				{activeTab === 'schedule' && (
 					<SchedulePage
 						currentDate={currentDate}
 						viewMode={viewMode}
@@ -139,8 +140,10 @@ function App() {
 						setSelectedDateKey={setSelectedDateKey}
 						selectedDayEvents={selectedDayEvents}
 					/>
-				) : (
+				)} {activeTab === 'leagues' && (
 					<LeaguesPage leagues={leagues} />
+				)} {activeTab === 'rankings' && (
+					<RankingsPage/>
 				)}
 			</main>
 		</div>

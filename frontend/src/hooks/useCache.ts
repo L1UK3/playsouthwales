@@ -1,7 +1,7 @@
 import { CACHE_SIZE, DEFAULT_DEPTH } from "@/constant";
 import { loadEvents } from "@/services/api";
 import type { Event } from "@/types/Event";
-import { CalendarCache } from "./CalendarCache";
+import { CalendarCache } from "../utils/CalendarCache";
 
 export const eventCache = new CalendarCache(CACHE_SIZE);
 
@@ -14,12 +14,7 @@ export const eventCache = new CalendarCache(CACHE_SIZE);
  * @param {(allEvents: Event[]) => void} onCacheUpdate - Optional callback triggered when new data is added to the cache.
  * @returns {Promise<Event[] | null>} A promise that resolves to the events for the requested month, or null if the fetch fails.
  */
-export async function fetchAndCache({ month, year, depth = DEFAULT_DEPTH, onCacheUpdate }:{
-        month: number;
-        year: number;
-        depth?: number;
-        onCacheUpdate?: (allEvents: Event[]) => void;
-    }
+export async function fetchAndCache({ month, year, depth = DEFAULT_DEPTH, onCacheUpdate }: { month: number; year: number; depth?: number; onCacheUpdate?: (allEvents: Event[]) => void; }
 ): Promise<Event[] | null> {
     const cacheKey = `${year}-${month}`;
 

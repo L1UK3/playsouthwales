@@ -8,16 +8,16 @@ import type { EventCardProps } from '../EventCardProps';
  * @param {EventCardProps & ListCardProps} props - The properties passed to the ListCard component, including event details, league mapping, event types, and expansion state/handlers.
  * @returns {JSX.Element} The rendered list card component.
  */
-const ListCard: React.FC<EventCardProps & ListCardProps> = ({ 
-    event, 
-    leagueMap, 
-    types, 
-    isExpanded, 
-    onToggle 
+const ListCard: React.FC<EventCardProps & ListCardProps> = ({
+    event,
+    leagueMap,
+    types,
+    isExpanded,
+    onToggle
 }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;
-    const leagueName = league?.name || event.leagueName || 'Unknown League';
-    const storeColor = league?.brandColor || `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
+    const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
+    const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
 
     return (
         <div
@@ -27,14 +27,14 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = ({
         >
             <div className={styles.listHeader}>
                 <div className={styles.primary}>
-                    <div className={styles.listTime}>{event.startTime?.slice(0, 5) || ''}</div>
+                    <div className={styles.listTime}>{event.startTime?.slice(0, 5) ?? ''}</div>
                     <div className={styles.mainInfo}>
                         <div className={styles.listStore}>{event.name}</div>
                         <div className={styles.sub}>{leagueName} • {event.game}</div>
                     </div>
                 </div>
                 <div className={styles.indicator}>
-                    <span className={styles.typeBadge}>{types[event.type] || ''}</span>
+                    <span className={styles.typeBadge}>{types[event.type] ?? ''}</span>
                     <span className={styles.expandIcon}>▼</span>
                 </div>
             </div>

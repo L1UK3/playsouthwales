@@ -20,10 +20,6 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
         .filter(dateKey => dateKey.startsWith(prefix))
         .sort();
 
-    if (sortedDates.length === 0) {
-        return <div className={styles.listNoEvents}>No events found.</div>;
-    }
-
     const handleToggleEvent = (eventId: number) => {
         setExpandedEventId(prev => (prev === eventId ? null : eventId));
     };
@@ -38,6 +34,10 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
         }, 100);
         return () => clearTimeout(timeoutId);
     }, [sortedDates]);
+
+    if (sortedDates.length === 0) {
+        return <div className={styles.listNoEvents}>No events found.</div>;
+    }
 
     return (
         <div id="list-view-events" className={styles.listViewEvents}>

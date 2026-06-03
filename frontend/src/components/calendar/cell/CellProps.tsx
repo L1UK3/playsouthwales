@@ -15,7 +15,7 @@ import type { EventTypes } from '@/types/EventTypes';
  * @property {string} todayKey - The key representing today's date.
  * @property {(dateKey: string) => void} onSelectDay - Callback function triggered when a cell is clicked.
  */
- 
+
 export interface CellProps {
     day: number;
     dateKey: string;

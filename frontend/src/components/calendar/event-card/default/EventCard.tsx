@@ -14,8 +14,8 @@ const EventCard: React.FC<EventCardProps> = ({
     types
 }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;
-    const leagueName = league?.name || event.leagueName || 'Unknown League';
-    const storeColor = league?.brandColor || `hsl(${(event.leagueId || 0) * 137 % 360}, 70%, 50%)`;
+    const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
+    const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
 
     return (
         <div className={`${styles.eventCard} gradient-card type-${event.type}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
@@ -30,7 +30,7 @@ const EventCard: React.FC<EventCardProps> = ({
                 <div className={styles.details}>
                     <div className={styles.league}>{leagueName}</div>
                     <div className={styles.time}>
-                        {event.startTime || ''} {event.entryFee ? `• ${event.entryFee}` : ''}
+                        {event.startTime ?? ''} {event.entryFee ? `• ${event.entryFee}` : ''}
                     </div>
                 </div>
 

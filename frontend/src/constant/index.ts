@@ -11,7 +11,7 @@ export const MONTH_NAMES = [
 ];
 
 /**
- * The maximum number of months to store in the event cache
+ * The default maximum number of months to store in the event cache.
  */
 export const CACHE_SIZE = 12;
 
