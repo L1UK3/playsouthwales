@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import type { HeaderProps } from './HeaderProps';
-import SettingsBox from '../../components/settings/SettingsBox';
 import styles from './Header.module.css';
+import { SettingsBox } from '@playwales/shared';
+import type { HeaderProps } from './HeaderProps';
 
 /**
  * Wrapper for the header component

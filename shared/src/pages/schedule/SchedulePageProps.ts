@@ -1,6 +1,4 @@
-import type { Event } from '../../types/Event';
-import type { EventTypes } from "../../types/EventTypes";
-import type { League } from "../../types/League";
+import type { Event, League, EventTypes } from '@playwales/shared';
 
 /**
  * Properties for the SchedulePage component, managing the display of events in calendar or list view.

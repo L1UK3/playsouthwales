@@ -1,10 +1,8 @@
 import React from 'react';
-import { getLocalDateString } from '../../utils/getLocalDateString';
-import type { CalendarViewProps } from './CalendarViewProps';
-import type { CellData } from '../../types/CellData';
 import styles from './CalendarView.module.css';
-import Cell from '../../components/calendar/cell/Cell';
-
+import { Cell, getLocalDateString } from '@playwales/shared';
+import type { CalendarViewProps } from './CalendarViewProps';
+import type { CellData } from '@playwales/shared';
 
 /**
  * CalendarView component manages the logic for generating the calendar grid data.
@@ -13,13 +11,13 @@ import Cell from '../../components/calendar/cell/Cell';
  * @param {CalendarViewProps} props - The properties passed to the component, including the current date, events, and selection handlers.
  * @returns {JSX.Element} The rendered calendar view.
  */
-const CalendarView: React.FC<CalendarViewProps> = ({ 
-    currentDate, 
-    events, 
-    leagueMap, 
-    types, 
-    selectedDateKey, 
-    onSelectDay 
+const CalendarView: React.FC<CalendarViewProps> = ({
+    currentDate,
+    events,
+    leagueMap,
+    types,
+    selectedDateKey,
+    onSelectDay
 }) => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();

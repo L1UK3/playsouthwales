@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import type { League } from "../types/League";
-import type { EventTypes } from "../types/EventTypes";
-import type { Event } from "../types/Event";
-import { loadLeagues, loadTypes } from '../services/api';
 import { getAllCachedEvents, fetchAndCache } from './useCache';
+import { loadLeagues, loadTypes } from '../services/api';
+import type { League, EventTypes, Event } from '@playwales/shared';
 
 /**
  * Fetches events for a specific month and year from the API.

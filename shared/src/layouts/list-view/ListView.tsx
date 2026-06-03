@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ListEventGroup from '../../components/calendar/list-event-group/ListEventGroup';
-import type { ListViewProps } from './ListViewProps';
 import styles from './ListView.module.css';
+import { ListEventGroup } from '@playwales/shared';
+import type { ListViewProps } from './ListViewProps';
 
 /**
  * ListView component displays a chronological list of events for the currently viewed month.

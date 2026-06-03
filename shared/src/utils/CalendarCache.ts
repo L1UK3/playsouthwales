@@ -1,4 +1,4 @@
-import type { Event } from "../types/Event";
+import type { Event } from "@playwales/shared";
 
 /**
  * A Least Recently Used (LRU) cache for storing event data and managing active fetch requests.

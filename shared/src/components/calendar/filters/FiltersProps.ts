@@ -1,5 +1,4 @@
-import type { League } from "../../../types/League";
-import type { EventTypes } from "../../../types/EventTypes";
+import type { League, EventTypes } from '@playwales/shared';
 
 /**
  * Properties for the Filters component, enabling users to refine the list of displayed events.

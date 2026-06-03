@@ -1,7 +1,7 @@
-import React from 'react';
-import Card from '../event-card/card/Card';
-import type { CellProps } from './CellProps';
-import styles from './Cell.module.css';
+import React from "react";
+import styles from "./Cell.module.css";
+import Card from "../event-card/card/Card";
+import type { CellProps } from "./CellProps";
 
 /**
  * Cell component represents an individual day in the calendar grid.
@@ -24,7 +24,7 @@ const Cell: React.FC<CellProps> = ({
     const isToday = dateKey === todayKey;
 
     return (
-        <div 
+        <div
             className={`${styles.calendarCell} ${isOtherMonth ? styles.empty : ''} ${isSelected ? styles.selected : ''} ${isToday ? styles.today : ''}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
         >
@@ -32,7 +32,7 @@ const Cell: React.FC<CellProps> = ({
             {eventsForDay.length > 0 && (
                 <div className={styles.eventList}>
                     {eventsForDay.slice(0, 2).map((event) => (
-                        <Card 
+                        <Card
                             key={event.id}
                             event={event}
                             leagueMap={leagueMap}

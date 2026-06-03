@@ -1,6 +1,4 @@
-import type { League } from "../types/League";
-import type { Event } from "../types/Event";
-import type { EventFilters } from "./EventFilters";
+import type { League, Event, EventFilters } from '@playwales/shared';
 
 /**
  * Creates a map of league IDs to league objects for efficient lookup.

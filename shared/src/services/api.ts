@@ -1,6 +1,4 @@
-import type { League } from "../types/League";
-import type { EventTypes } from "../types/EventTypes";
-import type { Event } from "../types/Event";
+import type { League, EventTypes, Event } from '@playwales/shared';
 
 /**
  * Fetches events for a specific month and year from the API.

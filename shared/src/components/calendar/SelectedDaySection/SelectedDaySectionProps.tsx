@@ -1,6 +1,4 @@
-import type { Event } from '../../../types/Event';
-import type { League } from '../../../types/League';
-import type { EventTypes } from '../../../types/EventTypes';
+import type { Event, League, EventTypes } from '@playwales/shared';
 
 /**
  * Properties for the SelectedDaySection component.

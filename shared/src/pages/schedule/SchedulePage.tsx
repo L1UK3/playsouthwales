@@ -1,10 +1,5 @@
 import React from 'react';
-import { MONTH_NAMES } from '../../constant/index';
-import Filters from '../../components/calendar/filters/Filters';
-import NavBar from '../../components/calendar/nav-bar/NavBar';
-import CalendarView from '../../layouts/calendar-view/CalendarView';
-import ListView from '../../layouts/list-view/ListView';
-import SelectedDaySection from '../../components/calendar/SelectedDaySection/SelectedDaySection';
+import { MONTH_NAMES, Filters, NavBar, CalendarView, ListView, SelectedDaySection } from '@playwales/shared';
 import type { SchedulePageProps } from './SchedulePageProps';
 import styles from './SchedulePage.module.css';
 
@@ -33,11 +28,11 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
     setSelectedDateKey,
     selectedDayEvents
 }) => {
-    const animationClass = 
-        direction === 'left' ? 'animate-swipe-left' : 
-        direction === 'right' ? 'animate-swipe-right' : 
-        direction === 'down' ? 'animate-swipe-down' : 
-        direction === 'up' ? 'animate-swipe-up' : '';
+    const animationClass =
+        direction === 'left' ? 'animate-swipe-left' :
+            direction === 'right' ? 'animate-swipe-right' :
+                direction === 'down' ? 'animate-swipe-down' :
+                    direction === 'up' ? 'animate-swipe-up' : '';
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
     return (
@@ -73,7 +68,7 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
                             selectedDateKey={selectedDateKey}
                             onSelectDay={setSelectedDateKey}
                         />
-                        <SelectedDaySection 
+                        <SelectedDaySection
                             selectedDateKey={selectedDateKey}
                             selectedDayEvents={selectedDayEvents}
                             leagueMap={leagueMap}
