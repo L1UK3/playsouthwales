@@ -24,27 +24,64 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@layouts/*": ["./src/layouts/*"],
-      "@services/*": ["./src/services/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@types/*": ["./src/types/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@constant": ["./src/constant/index.ts"],
-      "@constant/*": ["./src/constant/*"],
-      "@styles/*": ["./src/assets/styles/*"],
-      "@images/*": ["./src/assets/images/*"],
-      "@icons/*": ["./src/assets/icons/*"],
-      "@event-card": ["./src/components/calendar/event-card/index.ts"],
-      "@event-card/*": ["./src/components/calendar/event-card/*"],
-      "@calendar/*": ["./src/components/calendar/*"],
-      "@header/*": ["./src/layouts/header/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@layouts/*": [
+        "./src/layouts/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
+      ],
+      "@constant": [
+        "./src/constant/index.ts"
+      ],
+      "@constant/*": [
+        "./src/constant/*"
+      ],
+      "@styles/*": [
+        "./src/assets/styles/*"
+      ],
+      "@images/*": [
+        "./src/assets/images/*"
+      ],
+      "@icons/*": [
+        "./src/assets/icons/*"
+      ],
+      "@event-card": [
+        "./src/components/calendar/event-card/index.ts"
+      ],
+      "@event-card/*": [
+        "./src/components/calendar/event-card/*"
+      ],
+      "@calendar/*": [
+        "./src/components/calendar/*"
+      ],
+      "@header/*": [
+        "../shared/src/layouts/header/*"
+      ]
     }
   },
   "include": [
-    "src"
+    "src",
+    "../shared/src/layouts/header"
   ]
 }

@@ -1,4 +1,4 @@
-import type { League } from "@/types/League";
+import type { League } from '@playwales/shared';
 
 /**
  * Properties for the LeaguesPage component, displaying a list of available leagues.

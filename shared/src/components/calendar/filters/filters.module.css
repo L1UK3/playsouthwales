@@ -1,0 +1,39 @@
+.filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filters select {
+    min-width: 180px;
+    flex: 1;
+}
+
+.clearFilters {
+    background: #ef4444 !important;
+    width: 80px;
+}
+
+.clearFilters:hover {
+    background: #dc2626 !important;
+}
+
+.formControl {
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.formControl:hover {
+    background: var(--bg-card-hover);
+}
+
+.formControl:focus {
+    outline: none;
+    border-color: var(--primary);
+}

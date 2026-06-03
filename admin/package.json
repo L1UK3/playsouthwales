@@ -12,7 +12,7 @@
   "dependencies": {
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "@playwales/shared": "workspace:*"
+    "@playwales/shared": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

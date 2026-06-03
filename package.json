@@ -1,17 +1,14 @@
 {
-    "name": "playwales",
-    "version": "1.0.0",
-    "private": true,
-    "description": "PlayWales",
-    "workspaces": [
-        "admin",
-        "frontend",
-        "shared"
-    ],
-    "scripts": {
-        "dev": "npm run dev --workspaces",
-        "build": "npm run build --workspaces",
-        "lint": "npm run lint --workspaces",
-        "preview": "npm run preview --workspace=frontend"
-    }
+  "name": "playwales",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "admin",
+    "frontend",
+    "shared"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev": "npm run dev --workspaces"
+  }
 }

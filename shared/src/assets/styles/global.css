@@ -1,0 +1,139 @@
+@import './animations.css';
+@import './events.css';
+
+:root {
+    --bg-main: #0f172a;
+    /* slate-900 */
+    --bg-card: #1e293b;
+    /* slate-800 */
+    --bg-card-hover: #334155;
+    /* slate-700 */
+    --bg-cell-empty: #0f172a;
+    --bg-day-header: #1e293b;
+    --border-color: #334155;
+
+    --text-main: #f8fafc;
+    /* slate-50 */
+    --text-muted: #94a3b8;
+    /* slate-400 */
+    --text-darker: #cbd5e1;
+    /* slate-300 */
+
+    --primary: #3b82f6;
+    /* blue-500 */
+    --primary-hover: #60a5fa;
+    /* blue-400 */
+    --accent: #8b5cf6;
+    /* indigo-500 */
+
+    --event-bg: #1e3a8a;
+    /* blue-900 */
+    --event-text: #bfdbfe;
+    /* blue-200 */
+    --event-more-bg: #312e81;
+    /* indigo-900 */
+    --event-more-text: #c7d2fe;
+    /* indigo-200 */
+
+    --card-gradient-start: #1e3a8a;
+    --card-gradient-end: #172554;
+
+    --today-border: #f59e0b;
+    --selected-border: #60a5fa;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    /* Default Event Colors */
+    --type-bg: #1e3a8a;
+    --type-text: #bfdbfe;
+    --type-border: var(--primary);
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+header {
+    padding: 20px;
+}
+
+button {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Utility Classes */
+
+.appRoot {
+    width: 100%;
+}
+
+.appContainer {
+    padding: 24px;
+    width: 100%;
+    max-width: 100%;
+}
+
+
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    color: white !important;
+    font-weight: 600;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card-hover);
+}
