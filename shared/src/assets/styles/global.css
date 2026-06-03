@@ -2,49 +2,36 @@
 @import './events.css';
 
 :root {
-    --bg-main: #0f172a;
-    /* slate-900 */
-    --bg-card: #1e293b;
-    /* slate-800 */
-    --bg-card-hover: #334155;
-    /* slate-700 */
-    --bg-cell-empty: #0f172a;
-    --bg-day-header: #1e293b;
-    --border-color: #334155;
+    --bg-main: #0B0F19; /* Deep midnight blue */
+    --bg-card: #151A27; /* Slightly lighter card background */
+    --bg-card-hover: #1E2536; /* Hover state for cards */
+    --bg-cell-empty: rgba(255, 255, 255, 0.02); /* Glassy empty cell */
+    --bg-day-header: rgba(11, 15, 25, 0.85); /* Semi-transparent day header */
+    --border-color: rgba(255, 255, 255, 0.08); /* Subtle borders */
 
-    --text-main: #f8fafc;
-    /* slate-50 */
-    --text-muted: #94a3b8;
-    /* slate-400 */
-    --text-darker: #cbd5e1;
-    /* slate-300 */
+    --text-main: #F8FAFC; /* Crisp white */
+    --text-muted: #94A3B8; /* Slate gray */
+    --text-darker: #E2E8F0; /* Lighter slate */
 
-    --primary: #3b82f6;
-    /* blue-500 */
-    --primary-hover: #60a5fa;
-    /* blue-400 */
-    --accent: #8b5cf6;
-    /* indigo-500 */
+    --primary: #6366F1; /* Neon indigo */
+    --primary-hover: #818CF8; /* Lighter indigo */
+    --accent: #EC4899; /* Vibrant pink */
 
-    --event-bg: #1e3a8a;
-    /* blue-900 */
-    --event-text: #bfdbfe;
-    /* blue-200 */
-    --event-more-bg: #312e81;
-    /* indigo-900 */
-    --event-more-text: #c7d2fe;
-    /* indigo-200 */
+    --event-bg: rgba(99, 102, 241, 0.15); /* Translucent primary */
+    --event-text: #E0E7FF;
+    --event-more-bg: rgba(255, 255, 255, 0.05);
+    --event-more-text: #A5B4FC;
 
-    --card-gradient-start: #1e3a8a;
-    --card-gradient-end: #172554;
+    --card-gradient-start: #0F172A;
+    --card-gradient-end: #020617;
 
-    --today-border: #f59e0b;
-    --selected-border: #60a5fa;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --today-border: #F59E0B; /* Amber for today */
+    --selected-border: #6366F1;
+    --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5); /* Deep smooth shadow */
 
     /* Default Event Colors */
-    --type-bg: #1e3a8a;
-    --type-text: #bfdbfe;
+    --type-bg: rgba(99, 102, 241, 0.1);
+    --type-text: #E0E7FF;
     --type-border: var(--primary);
 }
 
@@ -58,6 +45,11 @@
 
 body {
     background-color: var(--bg-main);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+    background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
 }
@@ -120,8 +112,8 @@ button:active {
 
 .btn-primary:hover {
     background-color: var(--primary-hover) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
 }
 
 .btn-secondary {
