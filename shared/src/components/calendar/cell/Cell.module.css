@@ -64,3 +64,11 @@
         font-size: 12px;
     }
 }
+
+.calendarCell:nth-last-child(7) {
+    border-bottom-left-radius: 19px;
+}
+
+.calendarCell:last-child {
+    border-bottom-right-radius: 19px;
+}

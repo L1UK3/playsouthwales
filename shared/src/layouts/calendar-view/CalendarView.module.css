@@ -6,6 +6,8 @@
     text-align: center;
     color: var(--text-muted);
     font-weight: 600;
+    border: 3px solid var(--border-color);
+    border-radius: 22px 22px 0 0;
 }
 
 .dayName {
@@ -18,6 +20,10 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
     background: var(--border-color);
+    border: 3px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 22px 22px;
+    overflow: hidden;
 }
 
 @media (max-width: 640px) {

@@ -1,16 +1,17 @@
 import React from 'react';
-import type { LeaguesPageProps } from './LeaguesPageProps';
 import styles from './LeaguesPage.module.css';
 import LeagueMap from '@components/leagues-map/LeagueMap';
 import LeagueCard from '@/components/league-card/LeagueCard';
+import { useFetch } from '@playwales/shared';
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
- * @param {LeaguesPageProps} props - The properties passed to the component including the list of leagues.
  * @returns {JSX.Element} The rendered LeaguesPage.
  */
-const LeaguesPage: React.FC<LeaguesPageProps> = ({ leagues }) => {
+const LeaguesPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
+
+    const { leagues } = useFetch(new Date());
 
     const handleLeagueSelect = (id: number) => {
         setSelectedLeagueId(id);

@@ -1,39 +1,85 @@
-import React from 'react';
-import { MONTH_NAMES, Filters, NavBar, CalendarView, ListView, SelectedDaySection } from '@playwales/shared';
-import type { SchedulePageProps } from './SchedulePageProps';
+import React, { useState, useMemo } from 'react';
+import { MONTH_NAMES, Filters, NavBar, CalendarView, ListView, SelectedDaySection, getLocalDateString } from '@playwales/shared';
 import styles from './SchedulePage.module.css';
+import { useFetch } from '../../hooks/useFetch';
+import { createLeagueMap, filterAndGroupEvents } from '../../utils/dataProcessing';
+
+export type ViewMode = 'calendar' | 'list';
 
 /**
  * SchedulePage component handles the rendering of the event schedule,
  * providing both calendar and list views along with filtering capabilities.
- * @param props - The properties passed to the component including state and handlers.
  * @returns JSX.Element
  */
-const SchedulePage: React.FC<SchedulePageProps> = ({
-    currentDate,
-    viewMode,
-    handleToggleViewMode,
-    handleGoToToday,
-    handlePrevMonth,
-    handleNextMonth,
-    direction,
-    leagues,
-    types,
-    filters,
-    handleFilterChange,
-    handleClearFilters,
-    filteredEventsGrouped,
-    leagueMap,
-    selectedDateKey,
-    setSelectedDateKey,
-    selectedDayEvents
-}) => {
+const SchedulePage: React.FC = () => {
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+    const [viewMode, setViewMode] = useState<ViewMode>('calendar');
+    const [filters, setFilters] = useState({ league: '', type: '', game: '' });
+    const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>(null);
+
+    const handlePrevMonth = () => {
+        setDirection('right');
+        setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+        setSelectedDateKey(null);
+    };
+
+    const handleNextMonth = () => {
+        setDirection('left');
+        setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+        setSelectedDateKey(null);
+    };
+
+    const handleGoToToday = () => {
+        const today = new Date();
+        const todayMonth = today.getMonth();
+        const todayYear = today.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+
+        if (todayYear < currentYear || (todayYear === currentYear && todayMonth < currentMonth)) {
+            setDirection('right');
+        } else if (todayYear > currentYear || (todayYear === currentYear && todayMonth > currentMonth)) {
+            setDirection('left');
+        } else {
+            setDirection(null);
+        }
+
+        setCurrentDate(new Date(todayYear, todayMonth, 1));
+        setSelectedDateKey(getLocalDateString(today));
+    };
+
+    const handleToggleViewMode = () => {
+        setDirection('down');
+        setViewMode(prev => prev === 'calendar' ? 'list' : 'calendar');
+    };
+
+    const handleFilterChange = (name: string, value: string) => {
+        setFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleClearFilters = () => {
+        setFilters({ league: '', type: '', game: '' });
+    };
+
+    const { leagues, types, allEvents } = useFetch(currentDate);
+
+    const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
+
+    const filteredEventsGrouped = useMemo(
+        () => filterAndGroupEvents(allEvents, filters), [allEvents, filters]
+    );
+
+    const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] || []) : [];
+
     const animationClass =
         direction === 'left' ? 'animate-swipe-left' :
             direction === 'right' ? 'animate-swipe-right' :
                 direction === 'down' ? 'animate-swipe-down' :
                     direction === 'up' ? 'animate-swipe-up' : '';
+
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
+
 
     return (
         <div className={`${styles.tabContent} ${styles.active}`}>

@@ -3,9 +3,6 @@
     flex-direction: column;
     gap: 16px;
     margin-bottom: 24px;
-    position: sticky;
-    top: 100px;
-    z-index: 10;
     background: var(--bg-main, #ffffff);
     padding: 16px;
     margin-top: -16px;

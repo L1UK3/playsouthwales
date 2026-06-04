@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useOverlay } from './hooks/useOverlay';
-import { SchedulePage, useScheduleState, Header } from '@playwales/shared';
+import { SchedulePage, Header, useOverlay } from '@playwales/shared';
 import LoginBox from './components/login/LoginBox';
 import LeaguesPage from '@pages/leagues/LeaguesPage';
 import RankingsPage from '@pages/rankings/RankingsPage';
@@ -15,9 +14,6 @@ export type ActiveTab = 'schedule' | 'leagues' | 'rankings';
  */
 function App() {
 	const [activeTab, setActiveTab] = useState<ActiveTab>('schedule');
-
-	const scheduleState = useScheduleState();
-	const { leagues } = scheduleState;
 
 	// Overlay State
 	const {
@@ -39,9 +35,9 @@ function App() {
 
 			<main className={styles.appContainer}>
 				{activeTab === 'schedule' && (
-					<SchedulePage {...scheduleState} />
+					<SchedulePage />
 				)} {activeTab === 'leagues' && (
-					<LeaguesPage leagues={leagues} />
+					<LeaguesPage />
 				)} {activeTab === 'rankings' && (
 					<RankingsPage />
 				)}

@@ -1,14 +1,14 @@
-import { SchedulePage, useScheduleState, Header } from '@playwales/shared';
+import { SchedulePage, Header } from '@playwales/shared';
 import styles from './App.module.css';
 
 function App() {
-  const scheduleState = useScheduleState();
+
 
   return (
     <div className={styles.appRoot}>
       <Header />
       <div className={styles.appContainer}>
-        <SchedulePage {...scheduleState} />
+        <SchedulePage />
       </div>
     </div>
   );

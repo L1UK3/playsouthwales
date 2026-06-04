@@ -8,7 +8,6 @@ export type { ListViewProps } from './layouts/list-view/ListViewProps';
 
 // Pages
 export { default as SchedulePage } from './pages/schedule/SchedulePage';
-export type { SchedulePageProps } from './pages/schedule/SchedulePageProps';
 
 // Components
 export { default as Cell } from './components/calendar/cell/Cell';
@@ -31,10 +30,10 @@ export { default as SettingsBox } from './components/settings/SettingsBox';
 export type { SettingsBoxProps } from './components/settings/SettingsBoxProps';
 
 // Hooks
-export { useScheduleState } from './hooks/useScheduleState';
-export type { ViewMode } from './hooks/useScheduleState';
+export type { ViewMode } from './pages/schedule/SchedulePage';
 export { useFetch } from './hooks/useFetch';
 export { eventCache, fetchAndCache, preFetchNeighbors, getAllCachedEvents } from './hooks/useCache';
+export { useOverlay } from './hooks/useOverlay';
 
 // Types
 export type { League } from './types/League';

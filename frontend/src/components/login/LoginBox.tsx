@@ -10,7 +10,9 @@ const LoginBox: React.FC<loginBoxProps> = ({ onClose }) => {
         const username = (form.elements.namedItem('username') as HTMLInputElement).value;
         const password = (form.elements.namedItem('password') as HTMLInputElement).value;
         const success = await loginAdmin(username, password);
-        if (success) onClose();
+        if (success) {
+
+        }
     };
 
     return (
