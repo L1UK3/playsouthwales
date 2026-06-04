@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({
     return (
         <header className={styles.header}>
             <div className={styles.topNav}>
-                <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : 'Leagues'}</h1>
+                <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : activeTab === 'leagues' ? 'Leagues' : activeTab === 'rankings' ? 'Rankings' : 'Schedule'}</h1>
                 <div className={styles.tabToggle}>
                     <button
                         className={activeTab === 'schedule' ? styles.active : ''}
