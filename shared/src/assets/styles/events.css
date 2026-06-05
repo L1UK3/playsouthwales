@@ -1,14 +1,14 @@
 
 /* Event Type Color Schemes */
-.type-CASUAL { --type-bg: rgba(16, 185, 129, 0.22); --type-text: #A7F3D0; --type-border: #10B981; }
-.type-STANDARD { --type-bg: rgba(59, 130, 246, 0.22); --type-text: #BFDBFE; --type-border: #3B82F6; }
-.type-CHALLENGE { --type-bg: rgba(245, 158, 11, 0.22); --type-text: #FDE68A; --type-border: #F59E0B; }
-.type-CUP { --type-bg: rgba(239, 68, 68, 0.22); --type-text: #FECACA; --type-border: #EF4444; }
-.type-PRE-RELEASE { --type-bg: rgba(139, 92, 246, 0.22); --type-text: #DDD6FE; --type-border: #8B5CF6; }
-.type-SPECIAL { --type-bg: rgba(236, 72, 153, 0.22); --type-text: #FBCFE8; --type-border: #EC4899; }
-.type-REGIONAL { --type-bg: rgba(249, 115, 22, 0.22); --type-text: #FFEDD5; --type-border: #F97316; }
-.type-INTERNATIONAL { --type-bg: rgba(6, 182, 212, 0.22); --type-text: #CFFAFE; --type-border: #06B6D4; }
-.type-WORLDS { --type-bg: rgba(234, 179, 8, 0.22); --type-text: #FEF9C3; --type-border: #EAB308; }
+.type-CASUAL { --type-bg: rgba(52, 211, 153, 0.38); --type-text: #E6FDF4; --type-border: #34D399; }
+.type-STANDARD { --type-bg: rgba(96, 165, 250, 0.38); --type-text: #EFF6FF; --type-border: #60A5FA; }
+.type-CHALLENGE { --type-bg: rgba(251, 191, 36, 0.38); --type-text: #FFFBEB; --type-border: #FBBF24; }
+.type-CUP { --type-bg: rgba(248, 113, 113, 0.38); --type-text: #FEF2F2; --type-border: #F87171; }
+.type-PRE-RELEASE { --type-bg: rgba(167, 139, 250, 0.38); --type-text: #F5F3FF; --type-border: #A78BFA; }
+.type-SPECIAL { --type-bg: rgba(244, 114, 182, 0.38); --type-text: #FDF2F8; --type-border: #F472B6; }
+.type-REGIONAL { --type-bg: rgba(251, 146, 60, 0.38); --type-text: #FFF7ED; --type-border: #FB923C; }
+.type-INTERNATIONAL { --type-bg: rgba(34, 211, 238, 0.38); --type-text: #ECFEFF; --type-border: #22D3EE; }
+.type-WORLDS { --type-bg: rgba(250, 204, 21, 0.38); --type-text: #FEFCE8; --type-border: #FACC15; }
 
 .card-container {
     background: var(--bg-card);
@@ -19,14 +19,14 @@
 
 .gradient-card {
     background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
-    border: 1px solid color-mix(in srgb, var(--type-border) 25%, transparent) !important;
-    box-shadow: var(--shadow), 0 0 15px color-mix(in srgb, var(--type-border) 10%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--type-border) 40%, transparent) !important;
+    box-shadow: var(--shadow), 0 0 15px color-mix(in srgb, var(--type-border) 15%, transparent) !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gradient-card:hover {
-    border-color: color-mix(in srgb, var(--type-border) 45%, transparent) !important;
-    box-shadow: var(--shadow), 0 0 25px color-mix(in srgb, var(--type-border) 22%, transparent) !important;
+    border-color: color-mix(in srgb, var(--type-border) 60%, transparent) !important;
+    box-shadow: var(--shadow), 0 0 25px color-mix(in srgb, var(--type-border) 30%, transparent) !important;
 }
 
 .description-box {

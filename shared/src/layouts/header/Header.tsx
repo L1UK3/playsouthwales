@@ -10,13 +10,14 @@ import type { HeaderProps } from './HeaderProps';
  */
 const Header: React.FC<HeaderProps> = ({
     activeTab = 'schedule',
-    onTabChange = () => { },
-    onLoginBox = () => { },
-    onSettingsBox = () => { },
+    onTabChange,
+    onLoginBox,
+    onSettingsBox,
     isSettingsOpen = false,
-    onCloseSettings = () => { }
+    onCloseSettings = () => {}
 }) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -30,26 +31,47 @@ const Header: React.FC<HeaderProps> = ({
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isSettingsOpen, onCloseSettings]);
+
+    useEffect(() => {
+        const headerEl = headerRef.current;
+        if (!headerEl) return;
+
+        const updateHeight = () => {
+            const rect = headerEl.getBoundingClientRect();
+            document.documentElement.style.setProperty('--header-height', `${rect.height}px`);
+        };
+
+        const observer = new ResizeObserver(updateHeight);
+        observer.observe(headerEl);
+
+        // Initial measurement
+        updateHeight();
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
     return (
-        <header className={styles.header}>
+        <header ref={headerRef} className={styles.header}>
             <div className={styles.topNav}>
                 <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : activeTab === 'leagues' ? 'Leagues' : activeTab === 'rankings' ? 'Rankings' : 'Schedule'}</h1>
                 <div className={styles.tabToggle}>
                     <button
                         className={activeTab === 'schedule' ? styles.active : ''}
-                        onClick={() => onTabChange('schedule')}>
+                        onClick={() => onTabChange?.('schedule')}>
                         Schedule
                     </button>
 
                     <button
                         className={activeTab === 'leagues' ? styles.active : ''}
-                        onClick={() => onTabChange('leagues')}>
+                        onClick={() => onTabChange?.('leagues')}>
                         Leagues
                     </button>
 
                     <button
                         className={activeTab === 'rankings' ? styles.active : ''}
-                        onClick={() => onTabChange('rankings')}>
+                        onClick={() => onTabChange?.('rankings')}>
                         Rankings
                     </button>
                 </div>

@@ -30,9 +30,9 @@
     --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5); /* Deep smooth shadow */
 
     /* Default Event Colors */
-    --type-bg: rgba(99, 102, 241, 0.1);
-    --type-text: #E0E7FF;
-    --type-border: var(--primary);
+    --type-bg: rgba(99, 102, 241, 0.25);
+    --type-text: #EFF6FF;
+    --type-border: #818CF8;
 }
 
 
