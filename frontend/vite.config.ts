@@ -10,6 +10,8 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] })
   ],
   server: {
+    port: 5173,
+    strictPort: true,
     proxy: {
       '/events': 'http://127.0.0.1:5000',
       '/leagues': 'http://127.0.0.1:5000',
