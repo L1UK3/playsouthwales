@@ -1,20 +1,24 @@
-import { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { useOverlay } from '@hooks/useOverlay';
-import LoginBox from '@features/auth/components/LoginBox';
-import LeaguesPage from '@pages/leagues/LeaguesPage';
-import RankingsPage from '@pages/rankings/RankingsPage';
-import SchedulePage from '@pages/schedule/SchedulePage';
 import styles from './App.module.css';
 import Header from './layouts/Header';
+import SuspenseLoader from '~components/SuspenseLoader';
+
+// Lazy loaded page views and modal overlay components
+const LoginBox = lazy(() => import('@features/auth/components/LoginBox'));
+const SchedulePage = lazy(() => import('@pages/schedule/SchedulePage'));
+const LeaguesPage = lazy(() => import('@pages/leagues/LeaguesPage'));
+const RankingsPage = lazy(() => import('@pages/rankings/RankingsPage'));
 
 export type ActiveTab = 'schedule' | 'leagues' | 'rankings';
 
 /**
- * Main application component that orchestrates the state, data fetching, 
- * and routing between the Schedule and Leagues pages.
- * @returns {JSX.Element} The rendered application component.
+ * Main application component that orchestrates state, layout, and page routing
+ * with lazy loading and suspense boundaries.
+ * 
+ * @returns {JSX.Element} The rendered application.
  */
-function App() {
+const App: React.FC = () => {
 	const [activeTab, setActiveTab] = useState<ActiveTab>('schedule');
 
 	// Overlay State
@@ -33,19 +37,26 @@ function App() {
 				isSettingsOpen={isSettingsOpen}
 				onCloseSettings={handleCloseSettings}
 			/>
-			{isLoginOpen && <LoginBox onClose={handleCloseLogin} />}
+			
+			<Suspense fallback={null}>
+				{isLoginOpen && <LoginBox onClose={handleCloseLogin} />}
+			</Suspense>
 
 			<main className={styles.appContainer}>
-				{activeTab === 'schedule' && (
-					<SchedulePage />
-				)} {activeTab === 'leagues' && (
-					<LeaguesPage />
-				)} {activeTab === 'rankings' && (
-					<RankingsPage />
-				)}
+				<Suspense fallback={<SuspenseLoader />}>
+					{activeTab === 'schedule' && (
+						<SchedulePage />
+					)} 
+					{activeTab === 'leagues' && (
+						<LeaguesPage />
+					)} 
+					{activeTab === 'rankings' && (
+						<RankingsPage />
+					)}
+				</Suspense>
 			</main>
 		</div>
 	);
-}
+};
 
 export default App;

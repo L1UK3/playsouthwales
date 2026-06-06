@@ -62,6 +62,18 @@
       ],
       "@icons/*": [
         "./src/assets/icons/*"
+      ],
+      "~features/*": [
+        "./src/features/*"
+      ],
+      "~components/*": [
+        "./src/components/*"
+      ],
+      "~types/*": [
+        "./src/types/*"
+      ],
+      "~hooks/*": [
+        "./src/hooks/*"
       ]
     }
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './ListView.module.css';
 import ListEventGroup from '../list-event-group/ListEventGroup';
 import type { Event } from '@/types/Event'
@@ -37,9 +37,9 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
         .filter(dateKey => dateKey.startsWith(prefix))
         .sort();
 
-    const handleToggleEvent = (eventId: number) => {
+    const handleToggleEvent = useCallback((eventId: number) => {
         setExpandedEventId(prev => (prev === eventId ? null : eventId));
-    };
+    }, []);
 
     useEffect(() => {
         const todayStr = new Date().toISOString().split('T')[0];

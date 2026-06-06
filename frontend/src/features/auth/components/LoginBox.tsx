@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './LoginBox.module.css';
 import { loginAdmin } from '../api/authServices';
 
-export interface loginBoxProps {
+export interface LoginBoxProps {
     isAdmin?: boolean;
     onClose: () => void;
 }
 
-const LoginBox: React.FC<loginBoxProps> = ({ onClose }) => {
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+const LoginBox: React.FC<LoginBoxProps> = ({ onClose }) => {
+    const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget;
         const username = (form.elements.namedItem('username') as HTMLInputElement).value;
@@ -17,7 +17,7 @@ const LoginBox: React.FC<loginBoxProps> = ({ onClose }) => {
         if (greatSuccess) {
             console.log("great success");
         }
-    }
+    }, []);
 
     return (
         <div className={styles.overlay} onClick={onClose}>

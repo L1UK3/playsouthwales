@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './LeaguesPage.module.css';
 import { useFetch } from '@hooks/useFetch';
 import LeagueCard from '@/features/league-map/components/league-card/LeagueCard';
@@ -9,18 +9,18 @@ import LeagueMap from '@/features/league-map/components/map/LeagueMap';
  * @returns {JSX.Element} The rendered LeaguesPage.
  */
 const LeaguesPage: React.FC = () => {
-    const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
+    const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
 
     const { leagues } = useFetch(new Date());
 
-    const handleLeagueSelect = (id: number) => {
+    const handleLeagueSelect = useCallback((id: number) => {
         setSelectedLeagueId(id);
 
         const cardElement = document.getElementById(`league-card-${id}`);
         if (cardElement) {
             cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-    };
+    }, []);
 
     return (
         <div className={`${styles.tabContent} ${styles.active} ${styles.splitView}`}>

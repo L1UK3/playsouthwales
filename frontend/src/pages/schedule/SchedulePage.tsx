@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styles from './SchedulePage.module.css';
 import { useFetch } from '@hooks/useFetch';
 import { createLeagueMap, filterAndGroupEvents } from '@/features/calendar/utils/dataProcessing';
@@ -24,19 +24,19 @@ const SchedulePage: React.FC = () => {
     const [filters, setFilters] = useState({ league: '', type: '', game: '' });
     const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>(null);
 
-    const handlePrevMonth = () => {
+    const handlePrevMonth = useCallback(() => {
         setDirection('right');
         setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
         setSelectedDateKey(null);
-    };
+    }, []);
 
-    const handleNextMonth = () => {
+    const handleNextMonth = useCallback(() => {
         setDirection('left');
         setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
         setSelectedDateKey(null);
-    };
+    }, []);
 
-    const handleGoToToday = () => {
+    const handleGoToToday = useCallback(() => {
         const today = new Date();
         const todayMonth = today.getMonth();
         const todayYear = today.getFullYear();
@@ -53,20 +53,20 @@ const SchedulePage: React.FC = () => {
 
         setCurrentDate(new Date(todayYear, todayMonth, 1));
         setSelectedDateKey(getLocalDateString(today));
-    };
+    }, [currentDate]);
 
-    const handleToggleViewMode = () => {
+    const handleToggleViewMode = useCallback(() => {
         setDirection('down');
         setViewMode(prev => prev === 'calendar' ? 'list' : 'calendar');
-    };
+    }, []);
 
-    const handleFilterChange = (name: string, value: string) => {
+    const handleFilterChange = useCallback((name: string, value: string) => {
         setFilters(prev => ({ ...prev, [name]: value }));
-    };
+    }, []);
 
-    const handleClearFilters = () => {
+    const handleClearFilters = useCallback(() => {
         setFilters({ league: '', type: '', game: '' });
-    };
+    }, []);
 
     const { leagues, types, allEvents } = useFetch(currentDate);
 
