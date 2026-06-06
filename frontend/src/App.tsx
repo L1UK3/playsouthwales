@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import SchedulePage from '@pages/schedule/SchedulePage';
-import Header from '@layouts/header/Header';
 import { useOverlay } from '@hooks/useOverlay';
-import LoginBox from './components/login/LoginBox';
+import LoginBox from '@features/auth/components/LoginBox';
 import LeaguesPage from '@pages/leagues/LeaguesPage';
 import RankingsPage from '@pages/rankings/RankingsPage';
+import SchedulePage from '@pages/schedule/SchedulePage';
 import styles from './App.module.css';
+import Header from './layouts/Header';
 
 export type ActiveTab = 'schedule' | 'leagues' | 'rankings';
 

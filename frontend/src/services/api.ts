@@ -1,6 +1,6 @@
-import type { League } from '@types/League';
-import type { EventTypes } from '@types/EventTypes';
-import type { Event } from '@types/Event';
+import type { EventTypes } from "@/types/EventTypes";
+import type { League } from "@/types/League";
+import type { Event } from "@/types/Event";
 
 /**
  * Fetches events for a specific month and year from the API.

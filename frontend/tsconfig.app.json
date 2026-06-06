@@ -27,6 +27,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@features/*": [
+        "./src/features/*"
+      ],
       "@components/*": [
         "./src/components/*"
       ],
@@ -42,20 +45,14 @@
       "@pages/*": [
         "./src/pages/*"
       ],
-      "@utils/*": [
-        "./src/utils/*"
-      ],
       "@types/*": [
         "./src/types/*"
       ],
       "@assets/*": [
         "./src/assets/*"
       ],
-      "@constant": [
-        "./src/constant/index.ts"
-      ],
-      "@constant/*": [
-        "./src/constant/*"
+      "@constants": [
+        "./src/constants/index.ts"
       ],
       "@styles/*": [
         "./src/assets/styles/*"
@@ -65,15 +62,6 @@
       ],
       "@icons/*": [
         "./src/assets/icons/*"
-      ],
-      "@event-card": [
-        "./src/components/calendar/event-card/index.ts"
-      ],
-      "@event-card/*": [
-        "./src/components/calendar/event-card/*"
-      ],
-      "@calendar/*": [
-        "./src/components/calendar/*"
       ]
     }
   },

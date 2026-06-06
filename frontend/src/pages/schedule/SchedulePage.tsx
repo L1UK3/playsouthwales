@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from 'react';
-import { MONTH_NAMES } from '@constant';
-import Filters from '@components/calendar/filters/Filters';
-import NavBar from '@components/calendar/nav-bar/NavBar';
-import CalendarView from '@layouts/calendar-view/CalendarView';
-import ListView from '@layouts/list-view/ListView';
-import SelectedDaySection from '@components/calendar/SelectedDaySection/SelectedDaySection';
-import { getLocalDateString } from '@utils/getLocalDateString';
 import styles from './SchedulePage.module.css';
 import { useFetch } from '@hooks/useFetch';
-import { createLeagueMap, filterAndGroupEvents } from '@utils/dataProcessing';
+import { createLeagueMap, filterAndGroupEvents } from '@/features/calendar/utils/dataProcessing';
+import { getLocalDateString } from '@/features/calendar/utils/getLocalDateString';
+import NavBar from '@/features/calendar/components/nav-bar/NavBar';
+import { MONTH_NAMES } from '@/constants';
+import Filters from '@/features/calendar/components/filters/Filters';
+import CalendarView from '@/features/calendar/components/calendar-view/CalendarView';
+import SelectedDaySection from '@/features/calendar/components/selected-day-section/SelectedDaySection';
+import ListView from '@/features/calendar/components/list-view/ListView';
 
 export type ViewMode = 'calendar' | 'list';
 

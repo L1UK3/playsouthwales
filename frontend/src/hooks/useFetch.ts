@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getAllCachedEvents, fetchAndCache } from './useCache';
 import { loadLeagues, loadTypes } from '@services/api';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
 import type { Event } from '@/types/Event';
+import { fetchAndCache, getAllCachedEvents } from '@/features/calendar/hooks/useCache';
 
 /**
  * Fetches events for a specific month and year from the API.
