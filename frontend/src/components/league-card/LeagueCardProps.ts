@@ -1,4 +1,4 @@
-import type { League } from '@playwales/shared';
+import type { League } from '@types/League';
 
 /**
  * @interface LeagueCardProps

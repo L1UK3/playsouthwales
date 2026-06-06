@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { SchedulePage, Header, useOverlay } from '@playwales/shared';
+import SchedulePage from '@pages/schedule/SchedulePage';
+import Header from '@layouts/header/Header';
+import { useOverlay } from '@hooks/useOverlay';
 import LoginBox from './components/login/LoginBox';
 import LeaguesPage from '@pages/leagues/LeaguesPage';
 import RankingsPage from '@pages/rankings/RankingsPage';

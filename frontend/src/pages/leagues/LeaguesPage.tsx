@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './LeaguesPage.module.css';
 import LeagueMap from '@components/leagues-map/LeagueMap';
 import LeagueCard from '@/components/league-card/LeagueCard';
-import { useFetch } from '@playwales/shared';
+import { useFetch } from '@hooks/useFetch';
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.

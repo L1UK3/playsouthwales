@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import type { LeagueMapProps } from './LeagueMapProps';
 import styles from './LeagueMap.module.css';
-import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@playwales/shared';
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@constant';
 
 /**
  * LeagueMap component displays a Google Map with markers for each league.

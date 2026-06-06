@@ -74,14 +74,10 @@
       ],
       "@calendar/*": [
         "./src/components/calendar/*"
-      ],
-      "@header/*": [
-        "../shared/src/layouts/header/*"
       ]
     }
   },
   "include": [
-    "src",
-    "../shared/src/layouts/header"
+    "src"
   ]
 }
