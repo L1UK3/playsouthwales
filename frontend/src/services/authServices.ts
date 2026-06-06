@@ -5,8 +5,9 @@
  * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the login was successful.
  */
 export async function loginAdmin(username: string, password: string): Promise<boolean> {
-    try {
-        const response = await fetch('/admin/login', {
+  try {
+    //DONT EDIT THE URL IT WAS LOOKING ON PORT 5127 BEFORE THIS 5000 IS THE BACKEND PORT
+        const response = await fetch('http://127.0.0.1:5000/admin/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),

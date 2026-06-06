@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { SchedulePage, Header, useOverlay } from '@playwales/shared';
-import LoginBox from './components/login/LoginBox';
 import LeaguesPage from '@pages/leagues/LeaguesPage';
 import RankingsPage from '@pages/rankings/RankingsPage';
 import styles from './App.module.css';
@@ -17,7 +16,6 @@ function App() {
 
 	// Overlay State
 	const {
-		isLoginOpen, handleLoginBox, handleCloseLogin,
 		isSettingsOpen, handleSettingsBox, handleCloseSettings,
 	} = useOverlay();
 
@@ -26,12 +24,11 @@ function App() {
 			<Header
 				activeTab={activeTab}
 				onTabChange={setActiveTab}
-				onLoginBox={handleLoginBox}
+			
 				onSettingsBox={handleSettingsBox}
 				isSettingsOpen={isSettingsOpen}
 				onCloseSettings={handleCloseSettings}
 			/>
-			{isLoginOpen && <LoginBox onClose={handleCloseLogin} />}
 
 			<main className={styles.appContainer}>
 				{activeTab === 'schedule' && (

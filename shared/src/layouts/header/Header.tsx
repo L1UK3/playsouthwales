@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import styles from './Header.module.css';
 import { SettingsBox } from '@playwales/shared';
 import type { HeaderProps } from './HeaderProps';
+import { SignInButton } from '@clerk/react';
 
 /**
  * Wrapper for the header component
@@ -54,12 +55,8 @@ const Header: React.FC<HeaderProps> = ({
                     </button>
                 </div>
                 <div className={styles.configTabs}>
-                    <button
-                        className={styles.adminButton}
-                        onClick={onLoginBox}>
-                        Admin
-                    </button>
-
+                    <SignInButton>
+                    </SignInButton>
                     <div className={styles.dropdownAnchor} ref={dropdownRef}>
                         <button
                             className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}

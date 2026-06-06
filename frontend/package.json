@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@playwales/shared": "*",
     "@vis.gl/react-google-maps": "^1.8.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^6.14.1",
-    "@playwales/shared": "*"
+    "react-router-dom": "^6.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
