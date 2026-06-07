@@ -10,7 +10,6 @@ import LeagueMap from '@/features/map/components/map/LeagueMap';
  */
 const LeaguesPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-
     const { data: leagues = [] } = useLeagues();
 
     const handleLeagueSelect = useCallback((id: number) => {
@@ -23,7 +22,7 @@ const LeaguesPage: React.FC = () => {
     }, []);
 
     return (
-        <div className={`${styles.tabContent} ${styles.active} ${styles.splitView}`}>
+        <div className={styles.splitView}>
             <div className={styles.listSection}>
                 <div className={styles.leaguesContainer}>
                     {leagues.map(league => (

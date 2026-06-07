@@ -1,14 +1,57 @@
-
 /* Event Type Color Schemes */
-.type-CASUAL { --type-bg: rgba(52, 211, 153, 0.38); --type-text: #E6FDF4; --type-border: #34D399; }
-.type-STANDARD { --type-bg: rgba(96, 165, 250, 0.38); --type-text: #EFF6FF; --type-border: #60A5FA; }
-.type-CHALLENGE { --type-bg: rgba(251, 191, 36, 0.38); --type-text: #FFFBEB; --type-border: #FBBF24; }
-.type-CUP { --type-bg: rgba(248, 113, 113, 0.38); --type-text: #FEF2F2; --type-border: #F87171; }
-.type-PRE-RELEASE { --type-bg: rgba(167, 139, 250, 0.38); --type-text: #F5F3FF; --type-border: #A78BFA; }
-.type-SPECIAL { --type-bg: rgba(244, 114, 182, 0.38); --type-text: #FDF2F8; --type-border: #F472B6; }
-.type-REGIONAL { --type-bg: rgba(251, 146, 60, 0.38); --type-text: #FFF7ED; --type-border: #FB923C; }
-.type-INTERNATIONAL { --type-bg: rgba(34, 211, 238, 0.38); --type-text: #ECFEFF; --type-border: #22D3EE; }
-.type-WORLDS { --type-bg: rgba(250, 204, 21, 0.38); --type-text: #FEFCE8; --type-border: #FACC15; }
+.type-CASUAL {
+    --type-bg: oklch(0.78 0.25 150 / 0.15);
+    --type-text: oklch(0.98 0.05 150);
+    --type-border: oklch(0.78 0.25 150);
+}
+
+.type-STANDARD {
+    --type-bg: oklch(0.72 0.28 250 / 0.15);
+    --type-text: oklch(0.98 0.05 250);
+    --type-border: oklch(0.72 0.28 250);
+}
+
+.type-CHALLENGE {
+    --type-bg: oklch(0.75 0.25 45 / 0.15);
+    --type-text: oklch(0.98 0.05 45);
+    --type-border: oklch(0.75 0.25 45);
+}
+
+.type-CUP {
+    --type-bg: oklch(0.68 0.28 20 / 0.15);
+    --type-text: oklch(0.98 0.05 20);
+    --type-border: oklch(0.68 0.28 20);
+}
+
+.type-PRE-RELEASE {
+    --type-bg: oklch(0.70 0.30 300 / 0.15);
+    --type-text: oklch(0.98 0.05 300);
+    --type-border: oklch(0.70 0.30 300);
+}
+
+.type-SPECIAL {
+    --type-bg: oklch(0.72 0.30 340 / 0.15);
+    --type-text: oklch(0.98 0.05 340);
+    --type-border: oklch(0.72 0.30 340);
+}
+
+.type-REGIONAL {
+    --type-bg: oklch(0.70 0.25 35 / 0.15);
+    --type-text: oklch(0.98 0.05 35);
+    --type-border: oklch(0.70 0.25 35);
+}
+
+.type-INTERNATIONAL {
+    --type-bg: oklch(0.80 0.20 200 / 0.15);
+    --type-text: oklch(0.98 0.05 200);
+    --type-border: oklch(0.80 0.20 200);
+}
+
+.type-WORLDS {
+    --type-bg: oklch(0.88 0.25 95 / 0.15);
+    --type-text: oklch(0.98 0.05 95);
+    --type-border: oklch(0.88 0.25 95);
+}
 
 .card-container {
     background: var(--bg-card);
@@ -19,14 +62,15 @@
 
 .gradient-card {
     background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
-    border: 1px solid color-mix(in srgb, var(--type-border) 40%, transparent) !important;
-    box-shadow: var(--shadow), 0 0 15px color-mix(in srgb, var(--type-border) 15%, transparent) !important;
+    border: 1px solid color-mix(in oklch, var(--type-border) 60%, transparent) !important;
+    box-shadow: var(--shadow), 0 0 20px color-mix(in oklch, var(--type-border) 25%, transparent) !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gradient-card:hover {
-    border-color: color-mix(in srgb, var(--type-border) 60%, transparent) !important;
-    box-shadow: var(--shadow), 0 0 25px color-mix(in srgb, var(--type-border) 30%, transparent) !important;
+    border-color: var(--type-border) !important;
+    box-shadow: var(--shadow), 0 0 40px color-mix(in oklch, var(--type-border) 50%, transparent) !important;
+    transform: translateY(-2px);
 }
 
 .description-box {

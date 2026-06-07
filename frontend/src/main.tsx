@@ -16,6 +16,7 @@ declare module '@tanstack/react-router' {
 	}
 }
 
+// Query Client for React Query
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
