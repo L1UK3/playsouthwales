@@ -18,7 +18,7 @@ export type ViewMode = 'calendar' | 'list';
  * @returns JSX.Element
  */
 const SchedulePage: React.FC = () => {
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(() => new Date());
     const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
     const [filters, setFilters] = useState({ league: '', type: '', game: '' });

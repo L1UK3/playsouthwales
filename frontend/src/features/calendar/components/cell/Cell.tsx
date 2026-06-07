@@ -37,7 +37,7 @@ export interface CellProps {
  * @param {CellProps} props - The properties passed to the component including day, events, and selection state.
  * @returns {JSX.Element} The rendered calendar cell.
  */
-const Cell: React.FC<CellProps> = ({
+const Cell: React.FC<CellProps> = React.memo(({
     day,
     dateKey,
     isOtherMonth,
@@ -57,7 +57,7 @@ const Cell: React.FC<CellProps> = ({
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
         >
             <div className={styles.dateNumber}>{day}</div>
-            {eventsForDay.length > 0 && (
+            {eventsForDay.length > 0 ? (
                 <div className={styles.eventList}>
                     {eventsForDay.slice(0, 2).map((event) => (
                         <Card
@@ -68,15 +68,15 @@ const Cell: React.FC<CellProps> = ({
                             isOtherMonth={isOtherMonth}
                         />
                     ))}
-                    {eventsForDay.length > 2 && (
+                    {eventsForDay.length > 2 ? (
                         <div className={styles.eventSummary}>
                             {eventsForDay.length - 2} more event{eventsForDay.length - 2 === 1 ? '' : 's'}
                         </div>
-                    )}
+                    ) : null}
                 </div>
-            )}
+            ) : null}
         </div>
     );
-};
+});
 
 export default Cell;

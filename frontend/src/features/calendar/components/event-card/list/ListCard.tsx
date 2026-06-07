@@ -19,7 +19,7 @@ export interface ListCardProps {
  * @param {EventCardProps & ListCardProps} props - The properties passed to the ListCard component, including event details, league mapping, event types, and expansion state/handlers.
  * @returns {JSX.Element} The rendered list card component.
  */
-const ListCard: React.FC<EventCardProps & ListCardProps> = ({
+const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
     event,
     leagueMap,
     types,
@@ -53,12 +53,12 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = ({
                 <div className={styles.body}>
                     <div className={styles.meta}>
                         <span className={styles.metaItem}><strong>Format:</strong> {event.type}</span>
-                        {event.entryFee && <span className={styles.metaItem}><strong>Entry:</strong> {event.entryFee}</span>}
+                        {event.entryFee ? <span className={styles.metaItem}><strong>Entry:</strong> {event.entryFee}</span> : null}
                     </div>
-                    {event.description && <div className={`${styles.description} description-box`}>{event.description}</div>}
-                    {event.prizes && <div className={`${styles.prizes} prizes-box`}><strong>Prizes:</strong> {event.prizes}</div>}
+                    {event.description ? <div className={`${styles.description} description-box`}>{event.description}</div> : null}
+                    {event.prizes ? <div className={`${styles.prizes} prizes-box`}><strong>Prizes:</strong> {event.prizes}</div> : null}
                     <div className={styles.actions}>
-                        {event.ticketLink && (
+                        {event.ticketLink ? (
                             <a
                                 href={event.ticketLink}
                                 className={`${styles.link} btn btn-primary`}
@@ -68,12 +68,12 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = ({
                             >
                                 Tickets & Info
                             </a>
-                        )}
+                        ) : null}
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+});
 
 export default ListCard;

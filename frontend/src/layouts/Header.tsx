@@ -111,11 +111,11 @@ const Header: React.FC<HeaderProps> = ({
                             onClick={onSettingsBox}>
                             ⚙️
                         </button>
-                        {isSettingsOpen && (
+                        {isSettingsOpen ? (
                             <div className={styles.dropdown}>
                                 <SettingsBox onClose={onCloseSettings} />
                             </div>
-                        )}
+                        ) : null}
                     </div>
                 </div>
             </div>

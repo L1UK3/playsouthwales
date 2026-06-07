@@ -8,7 +8,7 @@ import type { EventCardProps } from '../EventCard.types';
  * @param {EventCardProps} props - The properties for the component.
  * @returns {JSX.Element} The rendered event card.
  */
-const EventCard: React.FC<EventCardProps> = ({
+const EventCard: React.FC<EventCardProps> = React.memo(({
     event,
     leagueMap,
     types
@@ -34,20 +34,20 @@ const EventCard: React.FC<EventCardProps> = ({
                     </div>
                 </div>
 
-                {event.description && <div className={`${styles.description} description-box`}>{event.description}</div>}
-                {event.prizes && (
+                {event.description ? <div className={`${styles.description} description-box`}>{event.description}</div> : null}
+                {event.prizes ? (
                     <div className={`${styles.prizes} prizes-box`}>
                         <strong>Prizes:</strong> {event.prizes}
                     </div>
-                )}
-                {event.ticketLink && (
+                ) : null}
+                {event.ticketLink ? (
                     <a href={event.ticketLink} className={`${styles.link} btn btn-primary`} target="_blank" rel="noopener noreferrer">
                         Tickets & Info
                     </a>
-                )}
+                ) : null}
             </div>
         </div>
     );
-};
+});
 
 export default EventCard;

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import React, { Suspense, useCallback, useState } from 'react';
 import SuspenseLoader from '~components/SuspenseLoader';
@@ -26,7 +27,7 @@ const RootComponent = () => {
 			/>
 
 			<Suspense fallback={null}>
-				{isLoginOpen && <LoginBox onClose={handleCloseLogin} />}
+				{isLoginOpen ? <LoginBox onClose={handleCloseLogin} /> : null}
 			</Suspense>
 
 			<main className={styles.appContainer}>

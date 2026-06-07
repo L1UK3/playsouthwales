@@ -16,7 +16,7 @@ const SuspenseLoader: React.FC<SuspenseLoaderProps> = ({
                 <div className={styles.glow} />
                 <div className={styles.spinner} />
             </div>
-            {message && <div className={styles.text}>{message}</div>}
+            {message ? <div className={styles.text}>{message}</div> : null}
         </div>
     );
 };

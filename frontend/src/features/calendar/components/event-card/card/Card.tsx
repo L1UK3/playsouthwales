@@ -15,7 +15,7 @@ export interface CardProps {
  * @param {EventCardProps} props - The properties passed to the component including the event, leagueMap, and event types.
  * @returns {JSX.Element} The rendered card component.
  */
-const Card: React.FC<EventCardProps & CardProps> = ({ event, leagueMap, types, isOtherMonth }) => {
+const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMap, types, isOtherMonth }) => {
     const storeColor = event.leagueId && leagueMap[event.leagueId]?.brandColor
         ? leagueMap[event.leagueId].brandColor
         : `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
@@ -29,6 +29,6 @@ const Card: React.FC<EventCardProps & CardProps> = ({ event, leagueMap, types, i
             <span className={styles.type}>{types[event.type] ?? event.type}</span>
         </div>
     );
-};
+});
 
 export default Card;

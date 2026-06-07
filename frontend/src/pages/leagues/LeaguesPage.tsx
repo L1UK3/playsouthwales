@@ -36,11 +36,11 @@ const LeaguesPage: React.FC = () => {
                     ))}
                 </div>
 
-                {leagues.length === 0 && (
+                {leagues.length === 0 ? (
                     <div className={styles.noLeagues}>
                         <p>No leagues found.</p>
                     </div>
-                )}
+                ) : null}
             </div>
 
             <div className={styles.mapSection}>
