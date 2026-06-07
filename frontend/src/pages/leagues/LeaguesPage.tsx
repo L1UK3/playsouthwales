@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import styles from './LeaguesPage.module.css';
 import { useFetch } from '@hooks/useFetch';
-import LeagueCard from '@/features/league-map/components/league-card/LeagueCard';
-import LeagueMap from '@/features/league-map/components/map/LeagueMap';
+import LeagueCard from '@/features/map/components/league-card/LeagueCard';
+import LeagueMap from '@/features/map/components/map/LeagueMap';
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.

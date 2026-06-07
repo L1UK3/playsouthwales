@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import React, { Suspense, useCallback, useState } from 'react';
-import SuspenseLoader from '~components/SuspenseLoader';
+import SuspenseLoader from '@/components/suspense-loader/SuspenseLoader';
 import styles from './App.module.css'
 import Header from '@/layouts/Header';
 
