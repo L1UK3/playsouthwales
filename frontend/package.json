@@ -10,18 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/react": "^6.7.3",
+    "@tanstack/react-query": "^5.0.0",
+    "@tanstack/react-router": "^1.95.5",
     "@vis.gl/react-google-maps": "^1.8.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "@tanstack/react-router": "^1.95.5",
-    "@tanstack/react-query": "^5.0.0",
-    "react-router-dom": "^6.14.1",
-    "@clerk/react": "^5.4.1"
+    "react-router-dom": "^6.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@eslint/js": "^10.0.1",
     "@rolldown/plugin-babel": "^0.2.3",
+    "@tanstack/react-query": "5.101.0",
+    "@tanstack/router-devtools": "^1.95.5",
+    "@tanstack/router-plugin": "^1.95.5",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.14",
@@ -34,9 +37,6 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.14",
-    "@tanstack/router-plugin": "^1.95.5",
-    "@tanstack/router-devtools": "^1.95.5",
-    "@tanstack/react-query": "5.101.0"
+    "vite": "^8.0.14"
   }
 }

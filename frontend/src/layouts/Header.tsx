@@ -30,14 +30,16 @@ const Header: React.FC<HeaderProps> = ({
     onLoginBox,
     onSettingsBox,
     isSettingsOpen = false,
-    onCloseSettings = () => { }
+    onCloseSettings = () => undefined
 }) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        if (!isSettingsOpen) return;
+
         const handleClickOutside = (event: MouseEvent) => {
-            if (isSettingsOpen && dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 onCloseSettings();
             }
         };
@@ -60,7 +62,6 @@ const Header: React.FC<HeaderProps> = ({
         const observer = new ResizeObserver(updateHeight);
         observer.observe(headerEl);
 
-        // Initial measurement
         updateHeight();
 
         return () => {
@@ -99,10 +100,8 @@ const Header: React.FC<HeaderProps> = ({
                     </Link>
                 </div>
                 <div className={styles.configTabs}>
-                    <button
-                        className={styles.adminButton}
-                        onClick={onLoginBox}>
-                        Admin
+                    <button className={styles.adminButton} onClick={onLoginBox}>
+                        Login
                     </button>
 
                     <div className={styles.dropdownAnchor} ref={dropdownRef}>
