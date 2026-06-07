@@ -10,16 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@playwales/shared": "*",
     "@vis.gl/react-google-maps": "^1.8.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-<<<<<<< HEAD
     "@tanstack/react-router": "^1.95.5",
-    "@tanstack/react-query": "^5.0.0"
-=======
-    "react-router-dom": "^6.14.1"
->>>>>>> 19ad77c63b5164f0321453f7161b73fea7b0cf81
+    "@tanstack/react-query": "^5.0.0",
+    "react-router-dom": "^6.14.1",
+    "@clerk/react": "^5.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
