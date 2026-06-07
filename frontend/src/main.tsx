@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+<<<<<<< HEAD
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import '@styles/global.css'
@@ -33,4 +34,20 @@ createRoot(document.getElementById('root')!).render(
 			<RouterProvider router={router} />
 		</QueryClientProvider>
 	</StrictMode>
+=======
+import './index.css'
+import '@playwales/shared/styles/global.css'
+import '@playwales/shared/styles/animations.css'
+import App from './App.tsx'
+import { ClerkProvider } from '@clerk/react'
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    //takes in api key for clerk
+    <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
+      <App />
+    </ClerkProvider>
+	</StrictMode>,
+>>>>>>> 19ad77c63b5164f0321453f7161b73fea7b0cf81
 )
