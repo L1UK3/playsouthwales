@@ -1,83 +1,87 @@
 .loaderWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 250px;
-  width: 100%;
-  animation: fadeIn 0.4s ease-out;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 250px;
+	width: 100%;
+	animation: fadeIn 0.4s ease-out;
 }
 
 .fullPage {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  min-height: 100vh;
-  background-color: var(--bg-primary, #121214);
-  z-index: 9999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	min-height: 100vh;
+	background-color: var(--bg-primary, #121214);
+	z-index: 9999;
 }
 
 .spinnerContainer {
-  position: relative;
-  width: 64px;
-  height: 64px;
+	position: relative;
+	width: 64px;
+	height: 64px;
 }
 
 .glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--color-primary-rgb, 100, 108, 255), 0.2) 0%, transparent 70%);
-  animation: pulse 2s infinite ease-in-out;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(var(--color-primary-rgb, 100, 108, 255), 0.2) 0%, transparent 70%);
+	animation: pulse 2s infinite ease-in-out;
 }
 
 .spinner {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  border: 4px solid rgba(255, 255, 255, 0.05);
-  border-top-color: var(--color-primary, #646cff);
-  border-radius: 50%;
-  animation: spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	border: 4px solid rgba(255, 255, 255, 0.05);
+	border-top-color: var(--color-primary, #646cff);
+	border-radius: 50%;
+	animation: spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
 }
 
 .text {
-  margin-top: 20px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-secondary, #a1a1aa);
-  letter-spacing: 0.05em;
-  animation: pulse 2s infinite ease-in-out;
+	margin-top: 20px;
+	font-family: 'Inter', system-ui, -apple-system, sans-serif;
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: var(--text-secondary, #a1a1aa);
+	letter-spacing: 0.05em;
+	animation: pulse 2s infinite ease-in-out;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(0.98);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.02);
-  }
+
+	0%,
+	100% {
+		opacity: 0.6;
+		transform: scale(0.98);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1.02);
+	}
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
 }

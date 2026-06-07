@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
+import { Link, useLocation } from '@tanstack/react-router';
 import styles from './Header.module.css';
-import SettingsBox from '@/features/settings/SettingsBox';
+
+const SettingsBox = React.lazy(() => import('@features/settings/SettingsBox'));
 
 /**
  * Properties for the Header component, managing top-level navigation between different sections of the application.
@@ -13,8 +15,6 @@ import SettingsBox from '@/features/settings/SettingsBox';
  * @property {() => void} onCloseSettings - Callback function to close the settings dropdown.
  */
 export interface HeaderProps {
-    activeTab?: 'schedule' | 'leagues' | 'rankings';
-    onTabChange?: (tab: 'schedule' | 'leagues' | 'rankings') => void;
     onLoginBox?: () => void;
     onSettingsBox?: () => void;
     isSettingsOpen?: boolean;
@@ -27,12 +27,10 @@ export interface HeaderProps {
  * @returns {JSX.Element} The header element.
  */
 const Header: React.FC<HeaderProps> = ({
-    activeTab = 'schedule',
-    onTabChange,
     onLoginBox,
     onSettingsBox,
     isSettingsOpen = false,
-    onCloseSettings = () => {}
+    onCloseSettings = () => { }
 }) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLElement>(null);
@@ -70,28 +68,35 @@ const Header: React.FC<HeaderProps> = ({
         };
     }, []);
 
+    const location = useLocation();
+    const path = location.pathname;
+    const title = path.includes('leagues') ? 'Leagues' : path.includes('rankings') ? 'Rankings' : 'Schedule';
+
     return (
         <header ref={headerRef} className={styles.header}>
             <div className={styles.topNav}>
-                <h1>Play! Wales | {activeTab === 'schedule' ? 'Schedule' : activeTab === 'leagues' ? 'Leagues' : activeTab === 'rankings' ? 'Rankings' : 'Schedule'}</h1>
+                <h1>Play! Wales | {title}</h1>
                 <div className={styles.tabToggle}>
-                    <button
-                        className={activeTab === 'schedule' ? styles.active : ''}
-                        onClick={() => onTabChange?.('schedule')}>
+                    <Link
+                        to="/schedule"
+                        activeProps={{ className: styles.active }}
+                        className="">
                         Schedule
-                    </button>
+                    </Link>
 
-                    <button
-                        className={activeTab === 'leagues' ? styles.active : ''}
-                        onClick={() => onTabChange?.('leagues')}>
+                    <Link
+                        to="/leagues"
+                        activeProps={{ className: styles.active }}
+                        className="">
                         Leagues
-                    </button>
+                    </Link>
 
-                    <button
-                        className={activeTab === 'rankings' ? styles.active : ''}
-                        onClick={() => onTabChange?.('rankings')}>
+                    <Link
+                        to="/rankings"
+                        activeProps={{ className: styles.active }}
+                        className="">
                         Rankings
-                    </button>
+                    </Link>
                 </div>
                 <div className={styles.configTabs}>
                     <button
