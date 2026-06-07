@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styles from './SchedulePage.module.css';
-import { useFetch } from '@hooks/useFetch';
+import { useLeagues } from '@/hooks/useLeagues';
+import { useEventTypes } from '@/hooks/useEventTypes';
+import { useEvents } from '@/features/calendar/hooks/useEvents';
 import { createLeagueMap, filterAndGroupEvents } from '@/features/calendar/utils/dataProcessing';
 import { getLocalDateString } from '@/features/calendar/utils/getLocalDateString';
 import NavBar from '@/features/calendar/components/nav-bar/NavBar';
@@ -68,7 +70,9 @@ const SchedulePage: React.FC = () => {
         setFilters({ league: '', type: '', game: '' });
     }, []);
 
-    const { leagues, types, allEvents } = useFetch(currentDate);
+    const { data: leagues = [] } = useLeagues();
+    const { data: types = {} } = useEventTypes();
+    const { data: allEvents = [] } = useEvents(currentDate);
 
     const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
 

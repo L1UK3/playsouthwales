@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import styles from './LeaguesPage.module.css';
-import { useFetch } from '@hooks/useFetch';
+import { useLeagues } from '@/hooks/useLeagues';
 import LeagueCard from '@/features/map/components/league-card/LeagueCard';
 import LeagueMap from '@/features/map/components/map/LeagueMap';
 
@@ -11,7 +11,7 @@ import LeagueMap from '@/features/map/components/map/LeagueMap';
 const LeaguesPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
 
-    const { leagues } = useFetch(new Date());
+    const { data: leagues = [] } = useLeagues();
 
     const handleLeagueSelect = useCallback((id: number) => {
         setSelectedLeagueId(id);
