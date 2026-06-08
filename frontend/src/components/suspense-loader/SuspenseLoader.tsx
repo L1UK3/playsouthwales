@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SuspenseLoader.module.css';
+import styles from '@components/suspense-loader/SuspenseLoader.module.css';
 
 export interface SuspenseLoaderProps {
     fullPage?: boolean;

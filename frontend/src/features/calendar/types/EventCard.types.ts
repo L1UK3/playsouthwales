@@ -1,6 +1,6 @@
-import type { Event } from "@/types/Event";
-import type { EventTypes } from "@/types/EventTypes";
-import type { League } from "@/types/League";
+import type { Event } from '@/types/Event';
+import type { EventTypes } from '@/types/EventTypes';
+import type { League } from '@/types/League';
 
 /**
  * @interface EventCardProps

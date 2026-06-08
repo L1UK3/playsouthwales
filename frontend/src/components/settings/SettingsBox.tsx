@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SettingsBox.module.css';
+import styles from '@components/settings/SettingsBox.module.css';
 
 export interface SettingsBoxProps {
     onClose: () => void;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './filters.module.css';
+import styles from '@calendar/components/filters/filters.module.css';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
 

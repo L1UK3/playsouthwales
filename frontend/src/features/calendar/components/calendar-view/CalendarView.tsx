@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './CalendarView.module.css';
+import styles from '@calendar/components/calendar-view/CalendarView.module.css';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
-import { getLocalDateString } from '../../utils/getLocalDateString';
-import type { CellData } from '../../types/CellData';
-import Cell from '../cell/Cell';
+import { getLocalDateString } from '@calendar/utils/getLocalDateString';
+import type { CellData } from '@calendar/types/CellData';
+import Cell from '@calendar/components/cell/Cell';
 
 /**
  * Properties for the CalendarView component.

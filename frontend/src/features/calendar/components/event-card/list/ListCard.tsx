@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './ListCard.module.css';
-import type { EventCardProps } from '../../../types/EventCard.types';
+import styles from '@calendar/components/event-card/list/ListCard.module.css';
+import type { EventCardProps } from '@calendar/types/EventCard.types';
 
 /**
  * @interface ListCardProps

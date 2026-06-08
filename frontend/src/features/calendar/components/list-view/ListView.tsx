@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import styles from './ListView.module.css';
-import ListEventGroup from '../list-event-group/ListEventGroup';
+import styles from '@calendar/components/list-view/ListView.module.css';
+import ListEventGroup from '@calendar/components/list-event-group/ListEventGroup';
 import type { Event } from '@/types/Event'
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';

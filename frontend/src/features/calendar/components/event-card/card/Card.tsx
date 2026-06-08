@@ -1,6 +1,6 @@
 import React from 'react';
-import type { EventCardProps } from '../../../types/EventCard.types';
-import styles from './Card.module.css';
+import type { EventCardProps } from '@calendar/types/EventCard.types';
+import styles from '@calendar/components/event-card/card/Card.module.css';
 
 /**
  * Additional props for the Card component.

@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './ListEventGroup.module.css';
-import ListCard from '../event-card/list/ListCard';
+import styles from '@calendar/components/list-event-group/ListEventGroup.module.css';
+import ListCard from '@calendar/components/event-card/list/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';

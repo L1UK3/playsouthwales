@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './NavBar.module.css';
+import styles from '@calendar/components/nav-bar/NavBar.module.css';
 
 /**
  * Properties for the NavBar component, providing navigation controls for the calendar and list views.

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
-import styles from './Header.module.css';
+import styles from '@layouts/Header.module.css';
 
-const SettingsBox = React.lazy(() => import('@/components/settings/SettingsBox'));
+const SettingsBox = React.lazy(() => import('@components/settings/SettingsBox'));
 
 /**
  * Properties for the Header component, managing top-level navigation between different sections of the application.

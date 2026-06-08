@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './LeagueCard.module.css';
+import styles from '@map/components/league-card/LeagueCard.module.css';
 import type { League } from '@/types/League';
 
 /**

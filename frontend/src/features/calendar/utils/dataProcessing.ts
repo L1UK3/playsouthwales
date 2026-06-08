@@ -1,6 +1,6 @@
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
-import type { EventFilters } from './EventFilters';
+import type { EventFilters } from '@calendar/utils/EventFilters';
 
 /**
  * Creates a map of league IDs to league objects for efficient lookup.

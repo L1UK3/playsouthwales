@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 
 const ScheduleLazyRouteImport = createFileRoute('/schedule')()
 const RankingsLazyRouteImport = createFileRoute('/rankings')()
+const PairingsLazyRouteImport = createFileRoute('/pairings')()
 const LeaguesLazyRouteImport = createFileRoute('/leagues')()
 
 const ScheduleLazyRoute = ScheduleLazyRouteImport.update({
@@ -27,6 +28,11 @@ const RankingsLazyRoute = RankingsLazyRouteImport.update({
   path: '/rankings',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/rankings.lazy').then((d) => d.Route))
+const PairingsLazyRoute = PairingsLazyRouteImport.update({
+  id: '/pairings',
+  path: '/pairings',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/pairings.lazy').then((d) => d.Route))
 const LeaguesLazyRoute = LeaguesLazyRouteImport.update({
   id: '/leagues',
   path: '/leagues',
@@ -41,12 +47,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/leagues': typeof LeaguesLazyRoute
+  '/pairings': typeof PairingsLazyRoute
   '/rankings': typeof RankingsLazyRoute
   '/schedule': typeof ScheduleLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/leagues': typeof LeaguesLazyRoute
+  '/pairings': typeof PairingsLazyRoute
   '/rankings': typeof RankingsLazyRoute
   '/schedule': typeof ScheduleLazyRoute
 }
@@ -54,20 +62,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/leagues': typeof LeaguesLazyRoute
+  '/pairings': typeof PairingsLazyRoute
   '/rankings': typeof RankingsLazyRoute
   '/schedule': typeof ScheduleLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leagues' | '/rankings' | '/schedule'
+  fullPaths: '/' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leagues' | '/rankings' | '/schedule'
-  id: '__root__' | '/' | '/leagues' | '/rankings' | '/schedule'
+  to: '/' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
+  id: '__root__' | '/' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LeaguesLazyRoute: typeof LeaguesLazyRoute
+  PairingsLazyRoute: typeof PairingsLazyRoute
   RankingsLazyRoute: typeof RankingsLazyRoute
   ScheduleLazyRoute: typeof ScheduleLazyRoute
 }
@@ -86,6 +96,13 @@ declare module '@tanstack/react-router' {
       path: '/rankings'
       fullPath: '/rankings'
       preLoaderRoute: typeof RankingsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pairings': {
+      id: '/pairings'
+      path: '/pairings'
+      fullPath: '/pairings'
+      preLoaderRoute: typeof PairingsLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leagues': {
@@ -108,6 +125,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LeaguesLazyRoute: LeaguesLazyRoute,
+  PairingsLazyRoute: PairingsLazyRoute,
   RankingsLazyRoute: RankingsLazyRoute,
   ScheduleLazyRoute: ScheduleLazyRoute,
 }

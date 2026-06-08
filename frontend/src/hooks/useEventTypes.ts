@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { loadTypes } from '@/services/api';
+import { loadTypes } from '@services/api';
 import type { EventTypes } from '@/types/EventTypes';
 
 export function useEventTypes() {

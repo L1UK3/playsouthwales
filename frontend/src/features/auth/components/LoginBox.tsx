@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import styles from './LoginBox.module.css';
-import { loginAdmin } from '../api/authServices';
+import styles from '@auth/components/LoginBox.module.css';
+import { loginAdmin } from '@auth/api/authServices';
 
 export interface LoginBoxProps {
     isAdmin?: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
-import EventCard from '../event-card/default/EventCard';
-import styles from './SelectedDaySection.module.css';
+import EventCard from '@calendar/components/event-card/default/EventCard';
+import styles from '@calendar/components/selected-day-section/SelectedDaySection.module.css';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';

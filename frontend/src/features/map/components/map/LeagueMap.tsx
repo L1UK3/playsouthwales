@@ -1,8 +1,8 @@
 import React from 'react';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
-import styles from './LeagueMap.module.css';
+import styles from '@map/components/map/LeagueMap.module.css';
 import type { League } from '@/types/League';
-import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/constants';
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@constants';
 
 /**
  * Properties for the LeagueMap component, displaying leagues on an interactive map.

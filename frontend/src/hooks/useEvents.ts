@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { loadEvents } from '@/services/api';
+import { loadEvents } from '@services/api';
 import type { Event } from '@/types/Event';
 
 /**

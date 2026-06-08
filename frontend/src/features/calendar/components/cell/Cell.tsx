@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./Cell.module.css";
-import Card from "../event-card/card/Card";
-import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
-import type { EventTypes } from "@/types/EventTypes";
+import styles from "@calendar/components/cell/Cell.module.css";
+import Card from "@calendar/components/event-card/card/Card";
+import type { Event } from '@/types/Event';
+import type { League } from '@/types/League';
+import type { EventTypes } from '@/types/EventTypes';
 
 /**
  * @interface CellProps

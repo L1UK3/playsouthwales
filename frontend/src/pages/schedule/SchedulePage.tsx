@@ -1,16 +1,16 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import styles from './SchedulePage.module.css';
-import { useLeagues } from '@/hooks/useLeagues';
-import { useEventTypes } from '@/hooks/useEventTypes';
-import { useEvents } from '@/hooks/useEvents';
-import { createLeagueMap, filterAndGroupEvents } from '@/features/calendar/utils/dataProcessing';
-import { getLocalDateString } from '@/features/calendar/utils/getLocalDateString';
-import NavBar from '@/features/calendar/components/nav-bar/NavBar';
-import { MONTH_NAMES } from '@/constants';
-import Filters from '@/features/calendar/components/filters/Filters';
-import CalendarView from '@/features/calendar/components/calendar-view/CalendarView';
-import SelectedDaySection from '@/features/calendar/components/selected-day-section/SelectedDaySection';
-import ListView from '@/features/calendar/components/list-view/ListView';
+import styles from '@pages/schedule/SchedulePage.module.css';
+import { useLeagues } from '@hooks/useLeagues';
+import { useEventTypes } from '@hooks/useEventTypes';
+import { useEvents } from '@hooks/useEvents';
+import { createLeagueMap, filterAndGroupEvents } from '@calendar/utils/dataProcessing';
+import { getLocalDateString } from '@calendar/utils/getLocalDateString';
+import NavBar from '@calendar/components/nav-bar/NavBar';
+import { MONTH_NAMES } from '@constants';
+import Filters from '@calendar/components/filters/Filters';
+import CalendarView from '@calendar/components/calendar-view/CalendarView';
+import SelectedDaySection from '@calendar/components/selected-day-section/SelectedDaySection';
+import ListView from '@calendar/components/list-view/ListView';
 
 export type ViewMode = 'calendar' | 'list';
 
