@@ -2,22 +2,35 @@
 @import './events.css';
 
 :root {
-    --bg-main: #0B0F19; /* Deep midnight blue */
-    --bg-card: #151A27; /* Slightly lighter card background */
-    --bg-card-hover: #1E2536; /* Hover state for cards */
-    --bg-cell-empty: rgba(255, 255, 255, 0.02); /* Glassy empty cell */
-    --bg-day-header: rgba(11, 15, 25, 0.85); /* Semi-transparent day header */
-    --border-color: rgba(255, 255, 255, 0.08); /* Subtle borders */
+    --bg-main: #0B0F19;
+    /* Deep midnight blue */
+    --bg-card: #151A27;
+    /* Slightly lighter card background */
+    --bg-card-hover: #1E2536;
+    /* Hover state for cards */
+    --bg-cell-empty: rgba(255, 255, 255, 0.02);
+    /* Glassy empty cell */
+    --bg-day-header: rgba(11, 15, 25, 0.85);
+    /* Semi-transparent day header */
+    --border-color: rgba(255, 255, 255, 0.08);
+    /* Subtle borders */
 
-    --text-main: #F8FAFC; /* Crisp white */
-    --text-muted: #94A3B8; /* Slate gray */
-    --text-darker: #E2E8F0; /* Lighter slate */
+    --text-main: #F8FAFC;
+    /* Crisp white */
+    --text-muted: #94A3B8;
+    /* Slate gray */
+    --text-darker: #E2E8F0;
+    /* Lighter slate */
 
-    --primary: #6366F1; /* Neon indigo */
-    --primary-hover: #818CF8; /* Lighter indigo */
-    --accent: #EC4899; /* Vibrant pink */
+    --primary: #6366F1;
+    /* Neon indigo */
+    --primary-hover: #818CF8;
+    /* Lighter indigo */
+    --accent: #EC4899;
+    /* Vibrant pink */
 
-    --event-bg: rgba(99, 102, 241, 0.15); /* Translucent primary */
+    --event-bg: rgba(99, 102, 241, 0.15);
+    /* Translucent primary */
     --event-text: #E0E7FF;
     --event-more-bg: rgba(255, 255, 255, 0.05);
     --event-more-text: #A5B4FC;
@@ -25,9 +38,11 @@
     --card-gradient-start: #0F172A;
     --card-gradient-end: #020617;
 
-    --today-border: #F59E0B; /* Amber for today */
+    --today-border: #F59E0B;
+    /* Amber for today */
     --selected-border: #6366F1;
-    --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5); /* Deep smooth shadow */
+    --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    /* Deep smooth shadow */
 
     /* Default Event Colors */
     --type-bg: rgba(99, 102, 241, 0.25);
@@ -45,7 +60,7 @@
 
 body {
     background-color: var(--bg-main);
-    background-image: 
+    background-image:
         radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
         radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
@@ -71,8 +86,6 @@ button:hover {
 button:active {
     transform: scale(0.95);
 }
-
-/* Utility Classes */
 
 .appRoot {
     width: 100%;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './EventCard.module.css';
-import type { EventCardProps } from '../EventCard.types';
+import type { EventCardProps } from '../../../types/EventCard.types';
 
 /**
  * EventCard component displays information about a single event.

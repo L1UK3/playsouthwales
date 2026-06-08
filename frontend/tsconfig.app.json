@@ -27,54 +27,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@features/*": [
-        "./src/features/*"
-      ],
-      "@components/*": [
-        "./src/components/*"
-      ],
-      "@layouts/*": [
-        "./src/layouts/*"
-      ],
-      "@services/*": [
-        "./src/services/*"
-      ],
-      "@hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@pages/*": [
-        "./src/pages/*"
-      ],
-      "@types/*": [
-        "./src/types/*"
-      ],
-      "@assets/*": [
-        "./src/assets/*"
-      ],
-      "@constants": [
-        "./src/constants/index.ts"
-      ],
-      "@styles/*": [
-        "./src/assets/styles/*"
-      ],
-      "@images/*": [
-        "./src/assets/images/*"
-      ],
-      "@icons/*": [
-        "./src/assets/icons/*"
-      ],
-      "~features/*": [
-        "./src/features/*"
-      ],
-      "~components/*": [
-        "./src/components/*"
-      ],
-      "~types/*": [
-        "./src/types/*"
-      ],
-      "~hooks/*": [
-        "./src/hooks/*"
       ]
     }
   },

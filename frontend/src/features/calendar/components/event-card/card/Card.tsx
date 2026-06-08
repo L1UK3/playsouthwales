@@ -1,5 +1,5 @@
 import React from 'react';
-import type { EventCardProps } from '../EventCard.types';
+import type { EventCardProps } from '../../../types/EventCard.types';
 import styles from './Card.module.css';
 
 /**

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
 import styles from './Header.module.css';
 
@@ -17,7 +17,9 @@ const SettingsBox = React.lazy(() => import('@/components/settings/SettingsBox')
 export interface HeaderProps {
     onLoginBox?: () => void;
     onSettingsBox?: () => void;
+    isLoginOpen?: boolean;
     isSettingsOpen?: boolean;
+    onCloseLogin?: () => void;
     onCloseSettings?: () => void;
 }
 
@@ -29,52 +31,19 @@ export interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({
     onLoginBox,
     onSettingsBox,
+    isLoginOpen = false,
     isSettingsOpen = false,
     onCloseSettings = () => undefined
 }) => {
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        if (!isSettingsOpen) return;
-
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                onCloseSettings();
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isSettingsOpen, onCloseSettings]);
-
-    useEffect(() => {
-        const headerEl = headerRef.current;
-        if (!headerEl) return;
-
-        const updateHeight = () => {
-            const rect = headerEl.getBoundingClientRect();
-            document.documentElement.style.setProperty('--header-height', `${rect.height}px`);
-        };
-
-        const observer = new ResizeObserver(updateHeight);
-        observer.observe(headerEl);
-
-        updateHeight();
-
-        return () => {
-            observer.disconnect();
-        };
-    }, []);
-
     const location = useLocation();
     const path = location.pathname;
-    const title = path.includes('leagues') ? 'Leagues' : path.includes('rankings') ? 'Rankings' : 'Schedule';
+    const title = path.includes('leagues') ? 'Leagues' :
+        path.includes('rankings') ? 'Rankings' :
+            path.includes('schedule') ? 'Schedule' :
+                "Pairings";
 
     return (
-        <header ref={headerRef} className={styles.header}>
+        <header className={styles.header}>
             <div className={styles.topNav}>
                 <h1>Play! Wales | {title}</h1>
                 <div className={styles.tabToggle}>
@@ -101,10 +70,10 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
                 <div className={styles.configTabs}>
                     <button className={styles.adminButton} onClick={onLoginBox}>
-                        Login
+                        {isLoginOpen ? 'Close' : 'Login'}
                     </button>
 
-                    <div className={styles.dropdownAnchor} ref={dropdownRef}>
+                    <div className={styles.dropdownAnchor}>
                         <button
                             className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
                             onClick={onSettingsBox}>

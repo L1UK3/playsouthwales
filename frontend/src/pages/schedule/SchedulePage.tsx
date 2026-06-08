@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import styles from './SchedulePage.module.css';
 import { useLeagues } from '@/hooks/useLeagues';
 import { useEventTypes } from '@/hooks/useEventTypes';
-import { useEvents } from '@/features/calendar/hooks/useEvents';
+import { useEvents } from '@/hooks/useEvents';
 import { createLeagueMap, filterAndGroupEvents } from '@/features/calendar/utils/dataProcessing';
 import { getLocalDateString } from '@/features/calendar/utils/getLocalDateString';
 import NavBar from '@/features/calendar/components/nav-bar/NavBar';
