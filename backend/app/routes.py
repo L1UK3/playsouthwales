@@ -8,16 +8,7 @@ main = Blueprint('main', __name__)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
 
-@main.route('/')
-def index():
-    """
-    Serve the frontend application.
-    Returns:
-        Response: The index.html file from the static folder.
-    """
-    return current_app.send_static_file('index.html')
-
-@main.route('/events')
+@main.route('/api/events')
 def getEvents():
     """
     Fetch events filtered by month and year.
@@ -53,7 +44,7 @@ def getEvents():
         
     return jsonify(output)
 
-@main.route('/leagues')
+@main.route('/api/leagues')
 def getLeagues():
     """
     Fetch all leagues.
@@ -75,7 +66,7 @@ def getLeagues():
         })
     return jsonify(output)
 
-@main.route('/types')
+@main.route('/api/types')
 def getTypes():
     """
     Fetch all types.
@@ -84,7 +75,7 @@ def getTypes():
     """
     return jsonify(load_types())
 
-@main.route('/admin/login', methods=['POST'])
+@main.route('/api/admin/login', methods=['POST'])
 def adminLogin():
     """
     Admin login endpoint.

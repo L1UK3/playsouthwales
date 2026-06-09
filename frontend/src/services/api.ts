@@ -11,7 +11,7 @@ import type { Event } from '@/types/Event';
  */
 export async function loadEvents(month: number, year: number): Promise<Event[]> {
     try {
-        const response = await fetch(`/events?month=${month}&year=${year}`);
+        const response = await fetch(`/api/events?month=${month}&year=${year}`);
         if (!response.ok) {
             throw new Error('Failed to fetch events: ' + response.statusText);
         }
@@ -28,7 +28,7 @@ export async function loadEvents(month: number, year: number): Promise<Event[]> 
  */
 export async function loadLeagues(): Promise<League[]> {
     try {
-        const response = await fetch('/leagues');
+        const response = await fetch('/api/leagues');
         if (!response.ok) {
             throw new Error('Failed to fetch leagues: ' + response.statusText);
         }
@@ -45,7 +45,7 @@ export async function loadLeagues(): Promise<League[]> {
  */
 export async function loadTypes(): Promise<EventTypes> {
     try {
-        const response = await fetch('/types');
+        const response = await fetch('/api/types');
         if (!response.ok) {
             throw new Error('Failed to fetch event types: ' + response.statusText);
         }

@@ -7,7 +7,7 @@
 export async function loginAdmin(username: string, password: string): Promise<boolean> {
   try {
     //DONT EDIT THE URL IT WAS LOOKING ON PORT 5127 BEFORE THIS 5000 IS THE BACKEND PORT
-        const response = await fetch('http://127.0.0.1:5000/admin/login', {
+        const response = await fetch('/api/admin/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
