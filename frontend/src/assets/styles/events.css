@@ -1,55 +1,46 @@
 /* Event Type Color Schemes */
 .type-CASUAL {
     --type-bg: oklch(0.78 0.25 150 / 0.15);
-    --type-text: oklch(0.98 0.05 150);
     --type-border: oklch(0.78 0.25 150);
 }
 
 .type-STANDARD {
     --type-bg: oklch(0.72 0.28 250 / 0.15);
-    --type-text: oklch(0.98 0.05 250);
     --type-border: oklch(0.72 0.28 250);
 }
 
 .type-CHALLENGE {
     --type-bg: oklch(0.75 0.25 45 / 0.15);
-    --type-text: oklch(0.98 0.05 45);
     --type-border: oklch(0.75 0.25 45);
 }
 
 .type-CUP {
     --type-bg: oklch(0.68 0.28 20 / 0.15);
-    --type-text: oklch(0.98 0.05 20);
     --type-border: oklch(0.68 0.28 20);
 }
 
 .type-PRE-RELEASE {
     --type-bg: oklch(0.70 0.30 300 / 0.15);
-    --type-text: oklch(0.98 0.05 300);
     --type-border: oklch(0.70 0.30 300);
 }
 
 .type-SPECIAL {
     --type-bg: oklch(0.72 0.30 340 / 0.15);
-    --type-text: oklch(0.98 0.05 340);
     --type-border: oklch(0.72 0.30 340);
 }
 
 .type-REGIONAL {
     --type-bg: oklch(0.70 0.25 35 / 0.15);
-    --type-text: oklch(0.98 0.05 35);
     --type-border: oklch(0.70 0.25 35);
 }
 
 .type-INTERNATIONAL {
     --type-bg: oklch(0.80 0.20 200 / 0.15);
-    --type-text: oklch(0.98 0.05 200);
     --type-border: oklch(0.80 0.20 200);
 }
 
 .type-WORLDS {
     --type-bg: oklch(0.88 0.25 95 / 0.15);
-    --type-text: oklch(0.98 0.05 95);
     --type-border: oklch(0.88 0.25 95);
 }
 

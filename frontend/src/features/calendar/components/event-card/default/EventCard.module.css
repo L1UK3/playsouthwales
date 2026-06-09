@@ -3,9 +3,9 @@
     flex-direction: column;
     gap: 12px;
     padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-left: 6px solid var(--store-color, var(--type-border));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border-left: 8px solid var(--store-color, var(--type-border));
 }
 
 .content {

@@ -1,13 +1,13 @@
 .event {
     background: var(--type-bg);
     padding: 8px 10px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     font-size: 12px;
-    color: var(--type-text);
+    color: var(--text-main);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-left: 4px solid var(--store-color, var(--type-border));
+    border-left: 6px solid var(--store-color, var(--type-border));
 }
 
 .otherMonth {

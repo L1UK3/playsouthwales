@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link, useLocation } from '@tanstack/react-router';
+import { useLocation } from '@tanstack/react-router';
 import styles from '@layouts/Header.module.css';
+import TabToggle from '@/components/tab-toggle/TabToggle';
 
 const SettingsBox = React.lazy(() => import('@components/settings/SettingsBox'));
 
@@ -46,28 +47,14 @@ const Header: React.FC<HeaderProps> = ({
         <header className={styles.header}>
             <div className={styles.topNav}>
                 <h1>Play! Wales | {title}</h1>
-                <div className={styles.tabToggle}>
-                    <Link
-                        to="/schedule"
-                        activeProps={{ className: styles.active }}
-                        className="">
-                        Schedule
-                    </Link>
 
-                    <Link
-                        to="/leagues"
-                        activeProps={{ className: styles.active }}
-                        className="">
-                        Leagues
-                    </Link>
+                <TabToggle tabs={[
+                    { to: '/schedule', label: 'Schedule' },
+                    { to: '/leagues', label: 'Leagues' },
+                    { to: '/rankings', label: 'Rankings' },
+                    { to: '/pairings', label: 'Pairings' },
+                ]} activeTab={path} />
 
-                    <Link
-                        to="/rankings"
-                        activeProps={{ className: styles.active }}
-                        className="">
-                        Rankings
-                    </Link>
-                </div>
                 <div className={styles.configTabs}>
                     <button className={styles.adminButton} onClick={onLoginBox}>
                         {isLoginOpen ? 'Close' : 'Login'}

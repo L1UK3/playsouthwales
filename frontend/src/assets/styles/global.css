@@ -2,52 +2,48 @@
 @import './events.css';
 
 :root {
-    --bg-main: #0B0F19;
-    /* Deep midnight blue */
-    --bg-card: #151A27;
-    /* Slightly lighter card background */
-    --bg-card-hover: #1E2536;
-    /* Hover state for cards */
-    --bg-cell-empty: rgba(255, 255, 255, 0.02);
-    /* Glassy empty cell */
-    --bg-day-header: rgba(11, 15, 25, 0.85);
-    /* Semi-transparent day header */
-    --border-color: rgba(255, 255, 255, 0.08);
-    /* Subtle borders */
+    --primary: #E3350D;
+    --primary-hover: #C62D0B;
+    --secondary: #3168B1;
+    --secondary-hover: #26538E;
+    --accent: #FFCC00;
 
-    --text-main: #F8FAFC;
-    /* Crisp white */
-    --text-muted: #94A3B8;
-    /* Slate gray */
-    --text-darker: #E2E8F0;
-    /* Lighter slate */
+    /* Backgrounds */
+    --bg-main: #F6F8FA;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F1F5F9;
+    --bg-cell-empty: rgba(0, 0, 0, 0.02);
+    --bg-day-header: rgba(246, 248, 250, 0.85);
 
-    --primary: #6366F1;
-    /* Neon indigo */
-    --primary-hover: #818CF8;
-    /* Lighter indigo */
-    --accent: #EC4899;
-    /* Vibrant pink */
+    /* Text */
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --text-darker: #111827;
 
-    --event-bg: rgba(99, 102, 241, 0.15);
-    /* Translucent primary */
-    --event-text: #E0E7FF;
-    --event-more-bg: rgba(255, 255, 255, 0.05);
-    --event-more-text: #A5B4FC;
+    /* Borders & Shadows */
+    --border-color: #E5E7EB;
+    --shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.08);
 
-    --card-gradient-start: #0F172A;
-    --card-gradient-end: #020617;
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
 
-    --today-border: #F59E0B;
-    /* Amber for today */
-    --selected-border: #6366F1;
-    --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
-    /* Deep smooth shadow */
+    /* Type */
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-    /* Default Event Colors */
-    --type-bg: rgba(99, 102, 241, 0.25);
-    --type-text: #EFF6FF;
-    --type-border: #818CF8;
+    --event-bg: rgba(227, 53, 13, 0.15);
+    --event-text: var(--primary);
+    --event-more-bg: rgba(0, 0, 0, 0.05);
+    --event-more-text: var(--secondary);
+
+    --today-border: var(--accent);
+    --selected-border: var(--secondary);
+
+    --type-bg: rgba(49, 104, 177, 0.15);
+    --type-text: var(--text-main);
+    --type-border: var(--secondary-hover);
 }
 
 
@@ -61,12 +57,13 @@
 body {
     background-color: var(--bg-main);
     background-image:
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(227, 53, 13, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(49, 104, 177, 0.05) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(255, 204, 0, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
+    font-family: var(--font-sans);
 }
 
 header {
@@ -97,48 +94,48 @@ button:active {
     max-width: 100%;
 }
 
-
-
 .btn {
     padding: 10px 16px;
-    border-radius: 10px;
+    border-radius: var(--radius-full);
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid transparent;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     line-height: 1.2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .btn-primary {
     background-color: var(--primary) !important;
     color: white !important;
-    font-weight: 600;
+    font-weight: 700;
     border: none !important;
-    padding: 10px 20px;
-    border-radius: 10px;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover) !important;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 16px rgba(227, 53, 13, 0.2);
 }
 
 .btn-secondary {
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+    padding: 12px 24px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-full);
     background: var(--bg-card);
     color: var(--text-main);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .btn-secondary:hover {
     background: var(--bg-card-hover);
+    border-color: var(--text-muted);
 }
