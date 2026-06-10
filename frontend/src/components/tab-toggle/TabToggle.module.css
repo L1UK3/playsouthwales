@@ -5,14 +5,12 @@
     gap: 6px;
     background: var(--bg-card);
     padding: 6px;
-    border-radius: var(--radius-full);
-    border: 3px solid var(--border-color);
 }
 
 .tab {
     padding: 10px 20px;
     border: 2px solid transparent;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     background: transparent;
     color: var(--text-muted);
     font-size: 14px;
@@ -26,11 +24,11 @@
 .tab:hover {
     color: var(--text-darker);
     background: var(--bg-card-hover);
+    transform: translateY(-1px);
 }
 
 .active {
     background: var(--primary) !important;
     color: white !important;
     border-color: var(--primary-hover) !important;
-    box-shadow: 0 4px 12px rgba(227, 53, 13, 0.2);
 }
