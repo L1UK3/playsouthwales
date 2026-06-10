@@ -25,6 +25,7 @@
     color: var(--text-darker);
     background: var(--bg-card-hover);
     transform: translateY(-1px);
+    border-color: var(--text-muted);
 }
 
 .active {

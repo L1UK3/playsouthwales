@@ -54,6 +54,7 @@
 .topNav a:hover {
     background: var(--bg-card-hover);
     color: var(--text-darker);
+    border-color: var(--text-muted);
 }
 
 .topNav h1 {

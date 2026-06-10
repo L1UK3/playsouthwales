@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from '@calendar/components/list-event-group/ListEventGroup.module.css';
 import ListCard from '@calendar/components/event-card/list/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
+import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 
 /**
  * Properties for the ListEventGroup component.
@@ -37,12 +38,14 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
     expandedEventId,
     onToggleEvent
 }) => {
-    const date = new Date(dateKey + 'T00:00:00');
-    const dateText = date.toLocaleDateString(undefined, {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    const dateText = new Date(dateKey + 'T00:00:00').toLocaleDateString(undefined, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
 
-    const isToday = dateKey === new Date().toISOString().split('T')[0];
+    const isToday = useMemo(() => dateKey === getLocalDateString(new Date()), [dateKey]);
 
     return (
         <div className={styles.listEventsGroup} id={`date-${dateKey}`}>

@@ -31,6 +31,10 @@
 
 .formControl:hover {
     background: var(--bg-card-hover);
+    border-color: var(--text-muted);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    color: var(--text-darker);
 }
 
 .formControl:focus {

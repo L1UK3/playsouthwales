@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from '@calendar/components/calendar-view/CalendarView.module.css';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
@@ -48,7 +48,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     const daysInPrevMonth = new Date(year, month, 0).getDate();
     const startDay = firstDay === 0 ? 6 : firstDay - 1;
 
-    const todayKey = getLocalDateString(new Date());
+    const today = useMemo(() => new Date(), []);
+    const todayKey = getLocalDateString(today);
 
     const generateCellData = (day: number, m: number, y: number, isOtherMonth: boolean): CellData => {
         const cellDate = new Date(y, m - 1, day);
