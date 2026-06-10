@@ -116,20 +116,24 @@ const SchedulePage: React.FC = () => {
             <div className={`${styles.calendarContainer} ${styles.active}`}>
                 {viewMode === 'calendar' ? (
                     <div key={calendarKey} className={animationClass}>
-                        <CalendarView
-                            currentDate={currentDate}
-                            events={filteredEventsGrouped}
-                            leagueMap={leagueMap}
-                            types={types}
-                            selectedDateKey={selectedDateKey}
-                            onSelectDay={setSelectedDateKey}
-                        />
-                        <SelectedDaySection
-                            selectedDateKey={selectedDateKey}
-                            selectedDayEvents={selectedDayEvents}
-                            leagueMap={leagueMap}
-                            types={types}
-                        />
+                        <div className={styles.scheduleSplit}>
+                            <div className={styles.calendarColumn}>
+                                <CalendarView
+                                    currentDate={currentDate}
+                                    events={filteredEventsGrouped}
+                                    leagueMap={leagueMap}
+                                    types={types}
+                                    selectedDateKey={selectedDateKey}
+                                    onSelectDay={setSelectedDateKey}
+                                />
+                            </div>
+                            <SelectedDaySection
+                                selectedDateKey={selectedDateKey}
+                                selectedDayEvents={selectedDayEvents}
+                                leagueMap={leagueMap}
+                                types={types}
+                            />
+                        </div>
                     </div>
                 ) : (
                     <div key={`list-${calendarKey}`} className={animationClass}>

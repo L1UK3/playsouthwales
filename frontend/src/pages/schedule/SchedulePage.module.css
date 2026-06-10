@@ -35,3 +35,22 @@
     color: var(--text-muted);
     font-size: 14px;
 }
+
+.scheduleSplit {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.calendarColumn {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Wide landscape screens: show the selected day as a side panel rather than below the calendar */
+@media (min-width: 1440px) and (orientation: landscape) {
+    .scheduleSplit {
+        flex-direction: row;
+    }
+}

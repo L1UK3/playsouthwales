@@ -79,7 +79,7 @@ def seed_data():
                         game="TCG",
                         entry_fee="£10",
                         description="A more competitive event where players compete for Championship Points.",
-                        prizes="Booster packs based on attendance + CP.",
+                        prizes="Booster packs based on attendance + Championship Points.",
                         ticket_link="https://example.com/ticket-link"
                     ))
 
@@ -98,7 +98,7 @@ def seed_data():
                         game="TCG",
                         entry_fee="£10",
                         description="A more competitive event where players compete for Championship Points.",
-                        prizes="Booster packs based on attendance + CP.",
+                        prizes="Booster packs based on attendance + Championship Points.",
                         ticket_link="https://example.com/ticket-link"
                     ))
 
@@ -134,7 +134,7 @@ def seed_data():
                         game="TCG",
                         entry_fee="£20",
                         description="A high-stakes tournament. The pinnacle of local League play.",
-                        prizes="Champion Playmat, Booster Boxes, and a large amount of CP.",
+                        prizes="Champion Playmat, Booster Boxes, and a large amount of Championship Points.",
                         ticket_link="https://example.com/ticket-link"
                     ))
 

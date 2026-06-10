@@ -59,3 +59,4 @@ Thumbs.db
 
 # Agent configs
 .agents/
+.playwright-mcp/
