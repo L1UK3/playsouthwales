@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import styles from '@calendar/components/calendar-view/CalendarView.module.css';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
@@ -6,6 +6,7 @@ import type { EventTypes } from '@/types/EventTypes';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 import type { CellData } from '@calendar/types/CellData';
 import Cell from '@calendar/components/cell/Cell';
+import PokeballOverlay from '@calendar/components/pokeball-overlay/PokeballOverlay';
 
 /**
  * Properties for the CalendarView component.
@@ -50,6 +51,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     const today = useMemo(() => new Date(), []);
     const todayKey = getLocalDateString(today);
+    const gridRef = useRef<HTMLDivElement>(null);
 
     const generateCellData = (day: number, m: number, y: number, isOtherMonth: boolean): CellData => {
         const cellDate = new Date(y, m - 1, day);
@@ -85,7 +87,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                     <div key={d} className={styles.dayName}>{d}</div>
                 ))}
             </div>
-            <div className={styles.calendarGrid} id="calendar-grid">
+            <div className={styles.calendarGrid} id="calendar-grid" ref={gridRef}>
                 {cells.map(cell => (
                     <Cell
                         key={cell.dateKey}
@@ -100,6 +102,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                         onSelectDay={onSelectDay}
                     />
                 ))}
+                <PokeballOverlay containerRef={gridRef} selectedDateKey={selectedDateKey} todayKey={todayKey} />
             </div>
         </div>
     );
