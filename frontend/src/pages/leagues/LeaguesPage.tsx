@@ -24,16 +24,16 @@ const LeaguesPage: React.FC = () => {
     return (
         <div className={styles.splitView}>
             <div className={styles.listSection}>
-                <div className={styles.leaguesContainer}>
-                    {leagues.map(league => (
-                        <LeagueCard
-                            key={league.leagueId}
-                            league={league}
-                            selectedLeagueID={selectedLeagueId}
-                            onLeagueSelect={handleLeagueSelect}
-                        />
-                    ))}
-                </div>
+
+                {leagues.map(league => (
+                    <LeagueCard
+                        key={league.leagueId}
+                        league={league}
+                        selectedLeagueID={selectedLeagueId}
+                        onLeagueSelect={handleLeagueSelect}
+                    />
+                ))}
+
 
                 {leagues.length === 0 ? (
                     <div className={styles.noLeagues}>

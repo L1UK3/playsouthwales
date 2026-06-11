@@ -10,14 +10,14 @@
 
 
 .leagueCard:hover {
-    border-color: var(--border-color);
-    background: var(--bg-card-hover);
+    border-color: color-mix(in srgb, var(--brand-color) 30%, var(--border-color));
+    background: color-mix(in srgb, var(--brand-color) 4%, var(--bg-card));
 }
 
 .selectedCard {
-    border-color: var(--primary) !important;
-    background: rgba(59, 130, 246, 0.08) !important;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    border-color: var(--brand-color) !important;
+    background: color-mix(in srgb, var(--brand-color) 8%, var(--bg-card)) !important;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--brand-color) 15%, transparent);
 }
 
 
@@ -45,4 +45,14 @@
 .leagueActions {
     display: flex;
     gap: 8px;
+}
+
+.leagueActions :global(.btn-secondary) {
+    border-color: color-mix(in srgb, var(--brand-color) 20%, var(--border-color));
+}
+
+.leagueActions :global(.btn-secondary):hover {
+    border-color: var(--brand-color) !important;
+    background-color: color-mix(in srgb, var(--brand-color) 8%, transparent) !important;
+    color: var(--brand-color) !important;
 }

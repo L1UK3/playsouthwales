@@ -28,11 +28,13 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     onLeagueSelect,
 }) => {
     const isSelected = selectedLeagueID === league.leagueId;
+    const brandColor = league.brandColor ?? 'var(--primary)';
 
     return (
         <div
             id={`league-card-${league.leagueId}`}
             className={`${styles.leagueCard} ${isSelected ? styles.selectedCard : ''}`}
+            style={{ '--brand-color': brandColor } as React.CSSProperties}
             onClick={() => onLeagueSelect(league.leagueId)}
         >
             <div className={styles.leagueHeader}>
