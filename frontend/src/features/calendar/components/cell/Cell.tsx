@@ -55,6 +55,7 @@ const Cell: React.FC<CellProps> = React.memo(({
         <div
             className={`${styles.calendarCell} ${isOtherMonth ? styles.empty : ''} ${isSelected ? styles.selected : ''} ${isToday ? styles.today : ''}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
+            data-date-key={dateKey}
         >
             <div className={styles.dateNumber}>{day}</div>
             {eventsForDay.length > 0 ? (
