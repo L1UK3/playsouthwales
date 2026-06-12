@@ -22,6 +22,8 @@ export interface ListEventGroupProps {
     types: EventTypes;
     expandedEventId: number | null;
     onToggleEvent: (eventId: number) => void;
+    onEdit?: (event: Event) => void;
+    onDelete?: (event: Event) => void;
 }
 
 /**
@@ -36,7 +38,9 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
     leagueMap,
     types,
     expandedEventId,
-    onToggleEvent
+    onToggleEvent,
+    onEdit,
+    onDelete,
 }) => {
     const dateText = new Date(dateKey + 'T00:00:00').toLocaleDateString(undefined, {
         weekday: 'long',
@@ -59,6 +63,8 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
                         types={types}
                         isExpanded={expandedEventId === event.id}
                         onToggle={() => onToggleEvent(event.id)}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
                     />
                 ))}
             </div>

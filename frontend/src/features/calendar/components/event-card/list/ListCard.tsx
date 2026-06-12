@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '@calendar/components/event-card/list/ListCard.module.css';
 import type { EventCardProps } from '@calendar/types/EventCard.types';
+import type { Event } from '@/types/Event';
 
 /**
  * @interface ListCardProps
@@ -12,6 +13,8 @@ import type { EventCardProps } from '@calendar/types/EventCard.types';
 export interface ListCardProps {
     isExpanded?: boolean;
     onToggle?: () => void;
+    onEdit?: (event: Event) => void;
+    onDelete?: (event: Event) => void;
 }
 
 /**
@@ -24,7 +27,9 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
     leagueMap,
     types,
     isExpanded,
-    onToggle
+    onToggle,
+    onEdit,
+    onDelete
 }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;
     const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
@@ -68,6 +73,37 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                             >
                                 Tickets & Info
                             </a>
+                        ) : null}
+                        {onEdit ? (
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                style={{ marginLeft: '8px' }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onEdit(event);
+                                }}
+                            >
+                                Edit
+                            </button>
+                        ) : null}
+                        {onDelete ? (
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                style={{
+                                    marginLeft: '8px',
+                                    borderColor: '#ef4444',
+                                    color: '#ef4444',
+                                    background: 'rgba(239, 68, 68, 0.05)'
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDelete(event);
+                                }}
+                            >
+                                Delete
+                            </button>
                         ) : null}
                     </div>
                 </div>

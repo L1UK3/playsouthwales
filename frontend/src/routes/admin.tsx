@@ -1,25 +1,21 @@
-import useHeaderLogic from '@/hooks/useHeaderLogic'
-import Header from '@/layouts/Header'
-import { createFileRoute } from '@tanstack/react-router'
-import "@/assets/styles/global.css";
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import AdminPage from '@/pages/admin/AdminPage'
+import { useAuth } from '@clerk/react'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/admin')({
-	component: RouteComponent,
+	component: AdminRouteComponent,
 })
 
-function RouteComponent() {
-	const { isSettingsOpen, handleSettingsBox, handleCloseSettings } = useHeaderLogic()
+function AdminRouteComponent() {
+	const { isLoaded, isSignedIn } = useAuth()
+	const navigate = useNavigate()
 
-	return (
-		<div className="appRoot">
-			<Header
-				onSettingsBox={handleSettingsBox}
-				isSettingsOpen={isSettingsOpen}
-				onCloseSettings={handleCloseSettings}
-			/>
+	useEffect(() => {
+		if (isLoaded && !isSignedIn) {
+			navigate({ to: '/' })
+		}
+	}, [isLoaded, isSignedIn, navigate])
 
-			<main className="appContainer">
-			</main>
-		</div>
-	)
+	return <AdminPage />
 }

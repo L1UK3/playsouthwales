@@ -15,11 +15,11 @@ import styles from '@calendar/components/nav-bar/NavBar.module.css';
 export interface NavBarProps {
     monthName: string;
     year: number;
-    viewMode: 'calendar' | 'list';
+    viewMode?: 'calendar' | 'list';
     onGoToToday: () => void;
     onPrevMonth: () => void;
     onNextMonth: () => void;
-    onToggleViewMode: () => void;
+    onToggleViewMode?: () => void;
 }
 
 /**
@@ -43,12 +43,14 @@ const NavBar: React.FC<NavBarProps> = ({
             <button className="btn btn-secondary" onClick={onGoToToday}>Today</button>
             <button className="btn btn-secondary" onClick={onPrevMonth}>&larr;</button>
             <button className="btn btn-secondary" onClick={onNextMonth}>&rarr;</button>
-            <button
-                className={`${styles.calendarToggle} btn btn-primary`}
-                onClick={onToggleViewMode}
-            >
-                {viewMode === 'calendar' ? 'List' : 'Calendar'}
-            </button>
+            {viewMode && onToggleViewMode && (
+                <button
+                    className={`${styles.calendarToggle} btn btn-primary`}
+                    onClick={onToggleViewMode}
+                >
+                    {viewMode === 'calendar' ? 'List' : 'Calendar'}
+                </button>
+            )}
         </div>
     );
 };

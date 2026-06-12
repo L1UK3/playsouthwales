@@ -3,15 +3,40 @@ import type { League } from '@/types/League';
 import type { Event } from '@/types/Event';
 
 /**
- * Fetches events for a specific month and year from the API.
+ * Fetches events from the API, optionally filtered by month, year, and leagueId.
  * 
- * @param {number} month - The month to fetch (1-12).
- * @param {number} year - The year to fetch.
+ * @param {number} [month] - The month to fetch (1-12).
+ * @param {number} [year] - The year to fetch.
+ * @param {number} [leagueId] - The ID of the league to fetch events for.
  * @returns {Promise<Event[]>} A promise that resolves to an array of Event objects.
  */
-export async function loadEvents(month: number, year: number): Promise<Event[]> {
+export async function loadEvents(month?: number, year?: number, leagueId?: number): Promise<Event[]> {
     try {
-        const response = await fetch(`/api/events?month=${month}&year=${year}`);
+        const queryParams = new URLSearchParams();
+        if (month !== undefined) queryParams.append('month', String(month));
+        if (year !== undefined) queryParams.append('year', String(year));
+        if (leagueId !== undefined) queryParams.append('leagueId', String(leagueId));
+
+        const response = await fetch(`/api/events?${queryParams.toString()}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch events: ' + response.statusText);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        throw error;
+    }
+}
+
+/**
+ * Fetches events for a specific league from the API.
+ * 
+ * @param {number} leagueId - The ID of the league to fetch events for.
+ * @returns {Promise<Event[]>} A promise that resolves to an array of Event objects.
+ */
+export async function loadEventsByLeagueId(leagueId: number): Promise<Event[]> {
+    try {
+        const response = await fetch(`/api/events?leagueId=${leagueId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch events: ' + response.statusText);
         }
@@ -55,4 +80,61 @@ export async function loadTypes(): Promise<EventTypes> {
         throw error;
     }
 }
+
+/**
+ * Creates a new event.
+ * @param {Omit<Event, 'id'>} event - The event data to create.
+ * @returns {Promise<Event>} A promise that resolves to the created Event object.
+ */
+export async function createEvent(event: Omit<Event, 'id'>): Promise<Event> {
+    const response = await fetch('/api/events', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error ?? 'Failed to create event: ' + response.statusText);
+    }
+    return await response.json();
+}
+
+/**
+ * Updates an existing event.
+ * @param {number} id - The ID of the event to update.
+ * @param {Partial<Event>} event - The partial event data to update.
+ * @returns {Promise<Event>} A promise that resolves to the updated Event object.
+ */
+export async function updateEvent(id: number, event: Partial<Event>): Promise<Event> {
+    const response = await fetch(`/api/events/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error ?? 'Failed to update event: ' + response.statusText);
+    }
+    return await response.json();
+}
+
+/**
+ * Deletes an event.
+ * @param {number} id - The ID of the event to delete.
+ * @returns {Promise<void>} A promise that resolves when the event is successfully deleted.
+ */
+export async function deleteEvent(id: number): Promise<void> {
+    const response = await fetch(`/api/events/${id}`, {
+        method: 'DELETE',
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error ?? 'Failed to delete event: ' + response.statusText);
+    }
+}
+
 

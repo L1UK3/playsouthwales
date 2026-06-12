@@ -94,3 +94,32 @@
         align-items: stretch;
     }
 }
+
+.adminButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border: 2px solid var(--border-color) !important;
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.adminButton:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-darker);
+    border-color: var(--text-muted) !important;
+}
+
+.adminButton.active {
+    background: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary-hover) !important;
+    box-shadow: 0 4px 12px rgba(227, 53, 13, 0.3);
+}

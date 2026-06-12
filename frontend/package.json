@@ -15,6 +15,7 @@
     "@tanstack/react-query": "^5.0.0",
     "@tanstack/react-router": "^1.95.5",
     "@vis.gl/react-google-maps": "^1.8.3",
+    "lucide-react": "^1.18.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^6.14.1",
