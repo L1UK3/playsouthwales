@@ -18,9 +18,7 @@ const SettingsBox = React.lazy(() => import('@components/settings/SettingsBox'))
  */
 export interface HeaderProps {
     onSettingsBox?: () => void;
-    isLoginOpen?: boolean;
     isSettingsOpen?: boolean;
-    onCloseLogin?: () => void;
     onCloseSettings?: () => void;
 }
 
@@ -32,7 +30,6 @@ export interface HeaderProps {
  */
 const Header: React.FC<HeaderProps> = ({
     onSettingsBox,
-    isLoginOpen = false,
     isSettingsOpen = false,
     onCloseSettings = () => undefined
 }) => {
@@ -41,7 +38,8 @@ const Header: React.FC<HeaderProps> = ({
     const title = path.includes('leagues') ? 'Leagues' :
         path.includes('rankings') ? 'Rankings' :
             path.includes('schedule') ? 'Schedule' :
-                "Pairings";
+                path.includes('admin') ? 'Admin' :
+                    "Pairings";
 
     return (
         <header className={styles.header}>

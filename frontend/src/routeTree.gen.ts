@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ScheduleLazyRouteImport = createFileRoute('/schedule')()
@@ -38,6 +39,11 @@ const LeaguesLazyRoute = LeaguesLazyRouteImport.update({
   path: '/leagues',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/leagues.lazy').then((d) => d.Route))
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -46,6 +52,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/leagues': typeof LeaguesLazyRoute
   '/pairings': typeof PairingsLazyRoute
   '/rankings': typeof RankingsLazyRoute
@@ -53,6 +60,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/leagues': typeof LeaguesLazyRoute
   '/pairings': typeof PairingsLazyRoute
   '/rankings': typeof RankingsLazyRoute
@@ -61,6 +69,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/leagues': typeof LeaguesLazyRoute
   '/pairings': typeof PairingsLazyRoute
   '/rankings': typeof RankingsLazyRoute
@@ -68,14 +77,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/leagues'
+    | '/pairings'
+    | '/rankings'
+    | '/schedule'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
-  id: '__root__' | '/' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
+  to: '/' | '/admin' | '/leagues' | '/pairings' | '/rankings' | '/schedule'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/leagues'
+    | '/pairings'
+    | '/rankings'
+    | '/schedule'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   LeaguesLazyRoute: typeof LeaguesLazyRoute
   PairingsLazyRoute: typeof PairingsLazyRoute
   RankingsLazyRoute: typeof RankingsLazyRoute
@@ -112,6 +135,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeaguesLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -124,6 +154,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   LeaguesLazyRoute: LeaguesLazyRoute,
   PairingsLazyRoute: PairingsLazyRoute,
   RankingsLazyRoute: RankingsLazyRoute,
