@@ -29,11 +29,11 @@ def getEvents():
     year = request.args.get('year')
     if not month or not year:
         return jsonify([])
-        
+
     date_prefix = f"{year}-{month.zfill(2)}"
-    
+
     events = Event.query.filter(Event.date.like(f"{date_prefix}%")).all()
-    
+
     output = []
     for event in events:
         output.append({
@@ -50,7 +50,7 @@ def getEvents():
             'prizes': event.prizes,
             'entryFee': event.entry_fee
         })
-        
+
     return jsonify(output)
 
 @main.route('/leagues')
@@ -92,8 +92,8 @@ def adminLogin():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
+    print(username + " " + password)
     if username == 'admin' and password == 'admin':
         return jsonify({'success': True})
     else:
         return jsonify({'success': False})
-        

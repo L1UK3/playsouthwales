@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@clerk/ui": "^1.16.1"
+  }
+}

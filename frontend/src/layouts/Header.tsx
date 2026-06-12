@@ -1,6 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
 import styles from './Header.module.css';
+import { SignInButton } from '@clerk/react';
+import { dark } from '@clerk/ui/themes';
+import { neobrutalism } from '@clerk/ui/themes'
 
 const SettingsBox = React.lazy(() => import('@/components/settings/SettingsBox'));
 
@@ -9,17 +12,16 @@ const SettingsBox = React.lazy(() => import('@/components/settings/SettingsBox')
  * 
  * @property {string} activeTab - The currently selected navigation tab ('schedule' or 'leagues').
  * @property {() => void} onTabChange - Callback function to handle switching between navigation tabs.
- * @property {() => void} onLoginBox - Callback function to handle opening the admin login modal.
  * @property {() => void} onSettingsBox - Callback function to handle opening the settings dropdown.
  * @property {boolean} isSettingsOpen - Whether the settings dropdown is currently open.
  * @property {() => void} onCloseSettings - Callback function to close the settings dropdown.
  */
 export interface HeaderProps {
-    onLoginBox?: () => void;
     onSettingsBox?: () => void;
     isSettingsOpen?: boolean;
     onCloseSettings?: () => void;
 }
+
 
 /**
  * Wrapper for the header component
@@ -27,7 +29,6 @@ export interface HeaderProps {
  * @returns {JSX.Element} The header element.
  */
 const Header: React.FC<HeaderProps> = ({
-    onLoginBox,
     onSettingsBox,
     isSettingsOpen = false,
     onCloseSettings = () => undefined
@@ -100,10 +101,13 @@ const Header: React.FC<HeaderProps> = ({
                     </Link>
                 </div>
                 <div className={styles.configTabs}>
-                    <button className={styles.adminButton} onClick={onLoginBox}>
-                        Login
-                    </button>
-
+                  <SignInButton mode="modal" appearance={{ 
+                    elements: {
+                      footerAction: { display: 'none' }
+                      
+                    },
+                    theme : neobrutalism
+                    }}></SignInButton>
                     <div className={styles.dropdownAnchor} ref={dropdownRef}>
                         <button
                             className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
