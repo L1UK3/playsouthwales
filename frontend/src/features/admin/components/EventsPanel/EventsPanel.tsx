@@ -97,16 +97,14 @@ export const EventsPanel: React.FC<EventsPanelProps> = ({
                 onNextMonth={handleNextMonth}
             />
 
-            <div>
-                <EventList
-                    events={events}
-                    leagueMap={leagueMap}
-                    eventTypes={eventTypes}
-                    onEdit={handleEditEventTrigger}
-                    onDelete={handleDeleteEventTrigger}
-                    isLoading={isEventsLoading}
-                />
-            </div>
+            <EventList
+                events={events}
+                leagueMap={leagueMap}
+                eventTypes={eventTypes}
+                onEdit={handleEditEventTrigger}
+                onDelete={handleDeleteEventTrigger}
+                isLoading={isEventsLoading}
+            />
 
             <EventFormModal
                 isOpen={isModalOpen}

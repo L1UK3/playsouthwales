@@ -30,7 +30,6 @@ class League(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     
-    
 class Event(db.Model):
     """
     Represents an event in the database.
@@ -49,11 +48,11 @@ class Event(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.String(50), nullable=False)  # Storing as string for now to match JSON prefix filtering
+    date = db.Column(db.String(50), nullable=False) 
     start_time = db.Column(db.String(50))
     league_id = db.Column(db.Integer, db.ForeignKey('league.id'), nullable=False)
     ticket_link = db.Column(db.String(255))
-    event_type = db.Column(db.String(50))  # 'type' is a reserved word in python, using event_type
+    event_type = db.Column(db.String(50)) 
     game = db.Column(db.String(20))
     description = db.Column(db.Text)
     prizes = db.Column(db.Text)

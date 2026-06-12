@@ -1,16 +1,16 @@
 from flask import Blueprint, request, jsonify, current_app
+import os
 
-from .utils import load_types
+from .utils import load_types, translate_snake_to_camel
 from .models import Event, League
 from . import db
-import os
 
 main = Blueprint('main', __name__)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
 
 @main.route('/api/events')
-def getEvents():
+def get_events():
     """
     Fetch events, optionally filtered by league, month, and year.
     Returns:
@@ -30,38 +30,32 @@ def getEvents():
         query = query.filter(Event.date.like(f"{date_prefix}%"))
 
     events = query.all()
-
-    output = []
+    event_list = []
     for event in events:
-        output.append({
-            'id': event.id,
+        event_list.append({
             'name': event.name,
             'date': event.date,
-            'startTime': event.start_time,
             'leagueId': event.league_id,
-            'leagueName': event.league.name if event.league else 'Unknown',
-            'ticketLink': event.ticket_link,
             'type': event.event_type,
             'game': event.game,
             'description': event.description,
             'prizes': event.prizes,
-            'entryFee': event.entry_fee
+            'entryFee': event.entry_fee,
         })
-
-    return jsonify(output)
+    return jsonify(event_list)
 
 @main.route('/api/leagues')
-def getLeagues():
+def get_leagues():
     """
     Fetch all leagues.
     Returns:
         Response: A JSON list of all leagues.
     """
     leagues = League.query.all()
-    output = []
+    league_list = []
     for league in leagues:
-        output.append({
-            'leagueId': league.id,
+        league_list.append({
+            'id': league.id,
             'name': league.name,
             'logo': league.logo,
             'website': league.website,
@@ -71,12 +65,12 @@ def getLeagues():
             'webLink': league.web_link,
             'location': league.location,
             'latitude': league.latitude,
-            'longitude': league.longitude
+            'longitude': league.longitude,
         })
-    return jsonify(output)
+    return jsonify(league_list)
 
 @main.route('/api/types')
-def getTypes():
+def get_types():
     """
     Fetch all types.
     Returns:
@@ -84,141 +78,153 @@ def getTypes():
     """
     return jsonify(load_types())
 
-@main.route('/api/admin/login', methods=['POST'])
-def adminLogin():
-    """
-    Admin login endpoint.
-    """
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-    print(username + " " + password)
-    if username == 'admin' and password == 'admin':
-        return jsonify({'success': True})
-    else:
-        return jsonify({'success': False})
-
 @main.route('/api/events', methods=['POST'])
-def createEvent():
+def create_event():
     """
     Create a new event.
     """
     data = request.get_json()
     if not data:
-        return jsonify({'error': 'No data provided'}), 400
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'No data provided'
+            }
+        }), 400
 
     name = data.get('name')
     date = data.get('date')
-    league_id = data.get('leagueId')
-    event_type = data.get('type')
+    leagueId = data.get('leagueId')
+    eventType = data.get('type')
     game = data.get('game')
 
-    if not name or not date or not league_id or not event_type or not game:
-        return jsonify({'error': 'Missing required fields: name, date, leagueId, type, game'}), 400
+    if not name or not date or not leagueId or not eventType or not game:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'Missing required fields: name, date, leagueId, type, game'
+            }
+        }), 400
 
     try:
-        new_event = Event(
+        newEvent = Event(
             name=name,
             date=date,
-            start_time=data.get('startTime'),
-            league_id=league_id,
-            ticket_link=data.get('ticketLink'),
-            event_type=event_type,
+            league_id=leagueId,
+            event_type=eventType,
             game=game,
             description=data.get('description'),
             prizes=data.get('prizes'),
             entry_fee=data.get('entryFee')
         )
-        db.session.add(new_event)
+        db.session.add(newEvent)
         db.session.commit()
 
         return jsonify({
-            'id': new_event.id,
-            'name': new_event.name,
-            'date': new_event.date,
-            'startTime': new_event.start_time,
-            'leagueId': new_event.league_id,
-            'leagueName': new_event.league.name if new_event.league else 'Unknown',
-            'ticketLink': new_event.ticket_link,
-            'type': new_event.event_type,
-            'game': new_event.game,
-            'description': new_event.description,
-            'prizes': new_event.prizes,
-            'entryFee': new_event.entry_fee
+            'success': True,
+            'message': 'Event created successfully'
         }), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': str(e)
+            }
+        }), 500
 
-@main.route('/api/events/<int:event_id>', methods=['PUT'])
-def updateEvent(event_id):
+@main.route('/api/events/<int:eventId>', methods=['PUT', 'PATCH'])
+def update_event(eventId):
     """
     Update an existing event.
     """
-    event = Event.query.get(event_id)
+    event = Event.query.get(eventId)
     if not event:
-        return jsonify({'error': 'Event not found'}), 404
-
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'No data provided'}), 400
-
-    if 'name' in data:
-        event.name = data['name']
-    if 'date' in data:
-        event.date = data['date']
-    if 'startTime' in data:
-        event.start_time = data['startTime']
-    if 'leagueId' in data:
-        event.league_id = data['leagueId']
-    if 'ticketLink' in data:
-        event.ticket_link = data['ticketLink']
-    if 'type' in data:
-        event.event_type = data['type']
-    if 'game' in data:
-        event.game = data['game']
-    if 'description' in data:
-        event.description = data['description']
-    if 'prizes' in data:
-        event.prizes = data['prizes']
-    if 'entryFee' in data:
-        event.entry_fee = data['entryFee']
+        return jsonify({
+            'error': {
+                'code': 'not_found',
+                'message': 'Event not found'
+            }
+        }), 404
 
     try:
+        data = request.get_json()
+    except Exception:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'Malformed JSON payload'
+            }
+        }), 400
+
+    if data is None:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'No data provided'
+            }
+        }), 400
+
+    name = data.get('name')
+    date = data.get('date')
+    leagueId = data.get('leagueId')
+    eventType = data.get('type')
+    game = data.get('game')
+
+    if not name or not date or not leagueId or not eventType or not game:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'Missing required fields: name, date, leagueId, type, game'
+            }
+        }), 400
+
+    try:
+        event.name = name
+        event.date = date
+        event.league_id = leagueId
+        event.event_type = eventType
+        event.game = game
+        event.description = data.get('description')
+        event.prizes = data.get('prizes')
+        event.entry_fee = data.get('entryFee')
         db.session.commit()
         return jsonify({
-            'id': event.id,
-            'name': event.name,
-            'date': event.date,
-            'startTime': event.start_time,
-            'leagueId': event.league_id,
-            'leagueName': event.league.name if event.league else 'Unknown',
-            'ticketLink': event.ticket_link,
-            'type': event.event_type,
-            'game': event.game,
-            'description': event.description,
-            'prizes': event.prizes,
-            'entryFee': event.entry_fee
+            'success': True,
+            'message': 'Event updated successfully'
         })
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        current_app.logger.error(f"Failed to update event {eventId}: {e}")
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': 'An unexpected database error occurred'
+            }
+        }), 500
+
 
 @main.route('/api/events/<int:event_id>', methods=['DELETE'])
-def deleteEvent(event_id):
+def delete_event(event_id):
     """
     Delete an event.
     """
     event = Event.query.get(event_id)
     if not event:
-        return jsonify({'error': 'Event not found'}), 404
+        return jsonify({
+            'error': {
+                'code': 'not_found',
+                'message': 'Event not found'
+            }
+        }), 404
 
     try:
         db.session.delete(event)
         db.session.commit()
-        return jsonify({'success': True, 'message': 'Event deleted successfully'})
+        return jsonify({
+            'success': True,
+            'message': 'Event deleted successfully'
+        })
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
-
-

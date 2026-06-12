@@ -246,7 +246,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                             className="btn btn-primary"
                             disabled={isSaving}
                         >
-                            {isSaving ? 'Saving...' : editingEvent ? '💾 Save Changes' : '🚀 Publish Event'}
+                            {isSaving ? 'Saving...' : editingEvent ? 'Save Changes' : 'Publish Event'}
                         </button>
                     </div>
                 </form>

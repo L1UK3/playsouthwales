@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import styles from './EventList.module.css';
 import ListView from '@calendar/components/list-view/ListView';
-import { Calendar } from 'lucide-react';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
@@ -42,7 +41,6 @@ export const EventList: React.FC<EventListProps> = ({
     if (events.length === 0) {
         return (
             <div className={styles.noEvents}>
-                <Calendar className={styles.noEventsIcon} size={36} />
                 <h4>No Events Scheduled</h4>
                 <p>There are no events matching your filters. Click "Add New Event" to create one.</p>
             </div>
