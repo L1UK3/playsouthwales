@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLocation } from '@tanstack/react-router';
-import styles from '@layouts/Header.module.css';
+import styles from './Header.module.css';
+import { SignInButton } from '@clerk/react';
+import { neobrutalism } from '@clerk/ui/themes'
 import TabToggle from '@/components/tab-toggle/TabToggle';
 
 const SettingsBox = React.lazy(() => import('@components/settings/SettingsBox'));
@@ -10,13 +12,11 @@ const SettingsBox = React.lazy(() => import('@components/settings/SettingsBox'))
  * 
  * @property {string} activeTab - The currently selected navigation tab ('schedule' or 'leagues').
  * @property {() => void} onTabChange - Callback function to handle switching between navigation tabs.
- * @property {() => void} onLoginBox - Callback function to handle opening the admin login modal.
  * @property {() => void} onSettingsBox - Callback function to handle opening the settings dropdown.
  * @property {boolean} isSettingsOpen - Whether the settings dropdown is currently open.
  * @property {() => void} onCloseSettings - Callback function to close the settings dropdown.
  */
 export interface HeaderProps {
-    onLoginBox?: () => void;
     onSettingsBox?: () => void;
     isLoginOpen?: boolean;
     isSettingsOpen?: boolean;
@@ -24,13 +24,13 @@ export interface HeaderProps {
     onCloseSettings?: () => void;
 }
 
+
 /**
  * Wrapper for the header component
  * @param {HeaderProps} props - The properties passed to the component including activeTab and onTabChange.
  * @returns {JSX.Element} The header element.
  */
 const Header: React.FC<HeaderProps> = ({
-    onLoginBox,
     onSettingsBox,
     isLoginOpen = false,
     isSettingsOpen = false,
@@ -56,10 +56,13 @@ const Header: React.FC<HeaderProps> = ({
                 ]} activeTab={path} />
 
                 <div className={styles.configTabs}>
-                    <button className={styles.adminButton} onClick={onLoginBox}>
-                        {isLoginOpen ? 'Close' : 'Login'}
-                    </button>
+                    <SignInButton mode="modal" appearance={{
+                        elements: {
+                            footerAction: { display: 'none' }
 
+                        },
+                        theme: neobrutalism
+                    }}></SignInButton>
                     <div className={styles.dropdownAnchor}>
                         <button
                             className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
