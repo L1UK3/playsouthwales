@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import styles from '@pages/leagues/LeaguesPage.module.css';
 import { useLeagues } from '@hooks/useLeagues';
-import LeagueCard from '@map/components/league-card/LeagueCard';
-import LeagueMap from '@map/components/map/LeagueMap';
+import LeagueMap from '@map/components/LeagueMap';
+import { LeagueSelector } from '@features/league-selector';
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
@@ -25,14 +25,11 @@ const LeaguesPage: React.FC = () => {
         <div className={styles.splitView}>
             <div className={styles.listSection}>
 
-                {leagues.map(league => (
-                    <LeagueCard
-                        key={league.leagueId}
-                        league={league}
-                        selectedLeagueID={selectedLeagueId}
-                        onLeagueSelect={handleLeagueSelect}
-                    />
-                ))}
+                <LeagueSelector
+                    leagues={leagues}
+                    selectedLeagueId={selectedLeagueId}
+                    setSelectedLeagueId={handleLeagueSelect}
+                />
 
 
                 {leagues.length === 0 ? (

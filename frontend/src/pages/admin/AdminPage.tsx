@@ -3,7 +3,8 @@ import styles from './AdminPage.module.css';
 import { useLeagues } from '@hooks/useLeagues';
 import { useEventTypes } from '@hooks/useEventTypes';
 import type { League } from '@/types/League';
-import { LeagueSelector, EventsPanel } from '@features/admin';
+import { EventsPanel } from '@features/admin';
+import { LeagueSelector } from '@features/league-selector';
 
 /**
  * AdminPage component orchestrates subcomponents and custom hooks for tournament administration.

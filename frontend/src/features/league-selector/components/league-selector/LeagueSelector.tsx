@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './LeagueSelector.module.css';
-import LeagueCard from '@map/components/league-card/LeagueCard';
+import LeagueCard from '@/features/league-selector/components/league-card/LeagueCard';
 import type { League } from '@/types/League';
 
 export interface LeagueSelectorProps {
