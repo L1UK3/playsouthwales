@@ -231,3 +231,153 @@ def delete_event(event_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
+
+@main.route('/api/leagues', methods=['POST'])
+def create_league():
+    """
+    Create a new league.
+    """
+    data = request.get_json()
+    if not data:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'No data provided'
+            }
+        }), 400
+
+    name = data.get('name')
+    if not name:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'Missing required fields: name'
+            }
+        }), 400
+
+    try:
+        new_league = League(
+            name=name,
+            logo=data.get('logo'),
+            website=data.get('website'),
+            social_link=data.get('socialLink'),
+            pokemon_link=data.get('pokemonLink'),
+            brand_color=data.get('brandColor'),
+            web_link=data.get('webLink'),
+            location=data.get('location'),
+            latitude=data.get('latitude'),
+            longitude=data.get('longitude')
+        )
+        db.session.add(new_league)
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'leagueId': new_league.id,
+            'message': 'League created successfully'
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': str(e)
+            }
+        }), 500
+
+
+@main.route('/api/leagues/<int:league_id>', methods=['PUT', 'PATCH'])
+def update_league(league_id):
+    """
+    Update an existing league.
+    """
+    league = League.query.get(league_id)
+    if not league:
+        return jsonify({
+            'error': {
+                'code': 'not_found',
+                'message': 'League not found'
+            }
+        }), 404
+
+    try:
+        data = request.get_json()
+    except Exception:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'Malformed JSON payload'
+            }
+        }), 400
+
+    if data is None:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'No data provided'
+            }
+        }), 400
+
+    name = data.get('name')
+    if not name:
+        return jsonify({
+            'error': {
+                'code': 'bad_request',
+                'message': 'Missing required fields: name'
+            }
+        }), 400
+
+    try:
+        league.name = name
+        league.logo = data.get('logo')
+        league.website = data.get('website')
+        league.social_link = data.get('socialLink')
+        league.pokemon_link = data.get('pokemonLink')
+        league.brand_color = data.get('brandColor')
+        league.web_link = data.get('webLink')
+        league.location = data.get('location')
+        league.latitude = data.get('latitude')
+        league.longitude = data.get('longitude')
+        db.session.commit()
+        return jsonify({
+            'success': True,
+            'message': 'League updated successfully'
+        })
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Failed to update league {league_id}: {e}")
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': 'An unexpected database error occurred'
+            }
+        }), 500
+
+
+@main.route('/api/leagues/<int:league_id>', methods=['DELETE'])
+def delete_league(league_id):
+    """
+    Delete a league.
+    """
+    league = League.query.get(league_id)
+    if not league:
+        return jsonify({
+            'error': {
+                'code': 'not_found',
+                'message': 'League not found'
+            }
+        }), 404
+
+    try:
+        # Cascade delete all events belonging to the league
+        Event.query.filter(Event.league_id == league_id).delete()
+        db.session.delete(league)
+        db.session.commit()
+        return jsonify({
+            'success': True,
+            'message': 'League deleted successfully'
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

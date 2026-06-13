@@ -15,6 +15,8 @@ export interface LeagueCardProps {
     league: League;
     selectedLeagueID: number | null;
     onLeagueSelect: (id: number) => void;
+    onEdit?: (league: League) => void;
+    onDelete?: (league: League) => void;
 }
 
 /**
@@ -26,6 +28,8 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     league,
     selectedLeagueID,
     onLeagueSelect,
+    onEdit,
+    onDelete,
 }) => {
     const isSelected = selectedLeagueID === league.leagueId;
     const brandColor = league.brandColor ?? 'var(--primary)';
@@ -66,6 +70,34 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                     </a>
                 )}
             </div>
+            {(onEdit || onDelete) && (
+                <div className={styles.leagueActions}>
+                    {onEdit && (
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onEdit(league);
+                            }}
+                        >
+                            Edit
+                        </button>
+                    )}
+                    {onDelete && (
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDelete(league);
+                            }}
+                        >
+                            Delete
+                        </button>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

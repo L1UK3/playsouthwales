@@ -7,6 +7,10 @@ export interface LeagueSelectorProps {
     leagues: League[];
     selectedLeagueId: number | null;
     setSelectedLeagueId: (id: number) => void;
+    onEdit?: (league: League) => void;
+    onDelete?: (league: League) => void;
+    onAdd?: () => void;
+    showAdminControls?: boolean;
 }
 
 /**
@@ -17,6 +21,10 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
     leagues,
     selectedLeagueId,
     setSelectedLeagueId,
+    onEdit,
+    onDelete,
+    onAdd,
+    showAdminControls,
 }) => {
     return (
         <div className={styles.leaguesSection}>
@@ -36,9 +44,23 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                             league={league}
                             selectedLeagueID={selectedLeagueId}
                             onLeagueSelect={setSelectedLeagueId}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
                         />
                     </div>
                 ))}
+
+                {showAdminControls && (
+                    <div
+                        className={`${styles.selectableCard} ${styles.addLeagueCard}`}
+                        onClick={onAdd}
+                    >
+                        <div className={styles.addLeagueContent}>
+                            <span className={styles.addLeagueIcon}>+</span>
+                            <span>Add New League</span>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

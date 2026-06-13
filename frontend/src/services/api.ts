@@ -137,4 +137,60 @@ export async function deleteEvent(id: number): Promise<void> {
     }
 }
 
+/**
+ * Creates a new league.
+ * @param {Omit<League, 'leagueId'>} league - The league data to create.
+ * @returns {Promise<League>} A promise that resolves to the created League object.
+ */
+export async function createLeague(league: Omit<League, 'leagueId'>): Promise<League> {
+    const response = await fetch('/api/leagues', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(league),
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error((errData.error?.message ?? errData.error) ?? 'Failed to create league: ' + response.statusText);
+    }
+    return await response.json();
+}
+
+/**
+ * Updates an existing league.
+ * @param {number} id - The ID of the league to update.
+ * @param {Partial<League>} league - The partial league data to update.
+ * @returns {Promise<League>} A promise that resolves to the updated League object.
+ */
+export async function updateLeague(id: number, league: Partial<League>): Promise<League> {
+    const response = await fetch(`/api/leagues/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(league),
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error((errData.error?.message ?? errData.error) ?? 'Failed to update league: ' + response.statusText);
+    }
+    return await response.json();
+}
+
+/**
+ * Deletes a league.
+ * @param {number} id - The ID of the league to delete.
+ * @returns {Promise<void>} A promise that resolves when the league is successfully deleted.
+ */
+export async function deleteLeague(id: number): Promise<void> {
+    const response = await fetch(`/api/leagues/${id}`, {
+        method: 'DELETE',
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error((errData.error?.message ?? errData.error) ?? 'Failed to delete league: ' + response.statusText);
+    }
+}
+
 

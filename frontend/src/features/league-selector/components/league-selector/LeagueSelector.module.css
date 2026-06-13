@@ -20,3 +20,34 @@
 }
 
 .activeCard {}
+
+.addLeagueCard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    background: transparent;
+    min-height: 160px;
+    height: 100%;
+    color: var(--text-muted);
+}
+
+.addLeagueCard:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 4%, transparent);
+}
+
+.addLeagueContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.addLeagueIcon {
+    font-size: 24px;
+}

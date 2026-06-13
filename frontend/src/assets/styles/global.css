@@ -138,3 +138,15 @@ button:active {
     background: var(--bg-card-hover);
     border-color: var(--text-muted);
 }
+
+.not-yet-implemented {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 16px;
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
