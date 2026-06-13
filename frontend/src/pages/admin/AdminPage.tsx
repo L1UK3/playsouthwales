@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import { EventsPanel } from "@/features/admin";
+import LeagueSelector from "@/features/league-selector";
+import { useEventTypes } from "@/hooks/useEventTypes";
+import { useLeagues } from "@/hooks/useLeagues";
+import type { League } from "@/types/League";
+import { useMemo, useState } from "react";
 import styles from './AdminPage.module.css';
-import { useLeagues } from '@hooks/useLeagues';
-import { useEventTypes } from '@hooks/useEventTypes';
-import type { League } from '@/types/League';
-import { EventsPanel } from '@features/admin';
-import { LeagueSelector } from '@features/league-selector';
 
 /**
  * AdminPage component orchestrates subcomponents and custom hooks for tournament administration.

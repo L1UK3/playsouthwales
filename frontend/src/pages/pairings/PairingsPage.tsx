@@ -1,5 +1,5 @@
 import React from "react";
-import styles from '@pages/pairings/PairingsPage.module.css';
+import styles from './PairingsPage.module.css';
 
 const PairingsPage: React.FC = () => {
     return (

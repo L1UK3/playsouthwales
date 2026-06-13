@@ -1,7 +1,6 @@
 import React from 'react';
-import styles from '@pages/rankings/RankingsPage.module.css';
-import Leaderboard from '@leaderboard/Leaderboard';
-
+import styles from './RankingsPage.module.css';
+import { Leaderboard } from '@leaderboard';
 
 const RankingsPage: React.FC = () => {
     return (
