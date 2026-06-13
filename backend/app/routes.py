@@ -1,7 +1,7 @@
+from .utils import load_types
 from flask import Blueprint, request, jsonify, current_app
 import os
 
-from .utils import load_types, translate_snake_to_camel
 from .models import Event, League
 from . import db
 
@@ -33,9 +33,12 @@ def get_events():
     event_list = []
     for event in events:
         event_list.append({
+            'id': event.id,
             'name': event.name,
             'date': event.date,
+            'startTime': event.start_time,
             'leagueId': event.league_id,
+            'ticketLink': event.ticket_link,
             'type': event.event_type,
             'game': event.game,
             'description': event.description,
@@ -55,7 +58,7 @@ def get_leagues():
     league_list = []
     for league in leagues:
         league_list.append({
-            'id': league.id,
+            'leagueId': league.id,
             'name': league.name,
             'logo': league.logo,
             'website': league.website,

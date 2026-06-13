@@ -3,7 +3,7 @@ import json
 
 TYPES_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'types.json')
 
-def load_types() -> dict[str, str]:
+def load_types():
     """
     Load event types from the types.json file.
     Returns:

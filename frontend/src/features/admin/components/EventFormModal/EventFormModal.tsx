@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import styles from './EventFormModal.module.css';
-import { X } from 'lucide-react';
 import type { Event } from '@/types/Event';
 import { useEventForm } from '../../hooks/useEventForm';
 
@@ -89,7 +88,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                 <div className={styles.modalHeader}>
                     <h3>{editingEvent ? 'Edit Tournament Event' : 'Schedule New Event'}</h3>
                     <button type="button" className={styles.closeButton} onClick={onClose}>
-                        <X size={20} />
+                        X
                     </button>
                 </div>
                 <form onSubmit={handleFormSubmit} className={styles.form}>

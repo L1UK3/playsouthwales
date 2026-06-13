@@ -13,15 +13,10 @@
 .selectableCard {
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid transparent !important;
 }
 
 .selectableCard:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
-.activeCard {
-    border-color: var(--active-border-color, var(--primary)) !important;
-    box-shadow: 0 8px 20px rgba(227, 53, 13, 0.15);
-}
+.activeCard {}
