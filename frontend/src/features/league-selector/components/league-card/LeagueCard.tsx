@@ -70,7 +70,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                     </a>
                 )}
             </div>
-            {(onEdit || onDelete) && (
+            {(onEdit ?? onDelete) && (
                 <div className={styles.leagueActions}>
                     {onEdit && (
                         <button

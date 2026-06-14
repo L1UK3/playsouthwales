@@ -16,7 +16,7 @@ export function useAdminLeagues() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['leagues'] });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('League Creation Failed', error);
         }
     });
@@ -27,7 +27,7 @@ export function useAdminLeagues() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['leagues'] });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('League Update Failed', error);
         }
     });
@@ -38,7 +38,7 @@ export function useAdminLeagues() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['leagues'] });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('League Deletion Failed', error);
         }
     });

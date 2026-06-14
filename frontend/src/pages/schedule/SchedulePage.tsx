@@ -81,7 +81,7 @@ const SchedulePage: React.FC = () => {
         () => filterAndGroupEvents(allEvents, filters), [allEvents, filters]
     );
 
-    const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] || []) : [];
+    const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] ?? []) : [];
 
     const animationClass =
         direction === 'left' ? 'animate-swipe-left' :

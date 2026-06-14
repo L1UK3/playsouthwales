@@ -23,6 +23,6 @@ export function mapLeaguesToMarkers(leagues: League[]): MarkerData[] {
  */
 export function getSelectedLeague(leagues: League[], selectedId: number | null): League | null {
     if (selectedId === null) return null;
-    return leagues.find(l => l.leagueId === selectedId) || null;
+    return leagues.find(l => l.leagueId === selectedId) ?? null;
 }
 

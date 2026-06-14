@@ -24,7 +24,7 @@ export function useAdminEvents(selectedLeagueId: number | null, month?: number, 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['events'] });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('Event Creation Failed', error);
         }
     });
@@ -35,7 +35,7 @@ export function useAdminEvents(selectedLeagueId: number | null, month?: number, 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['events'] });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('Event Update Failed', error);
         }
     });
@@ -46,7 +46,7 @@ export function useAdminEvents(selectedLeagueId: number | null, month?: number, 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['events'] });
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('Event Deletion Failed', error);
         }
     });

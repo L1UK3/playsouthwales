@@ -42,10 +42,10 @@ interface Point {
  */
 const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selectedDateKey, todayKey }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const activeKeyRef = useRef<string>(selectedDateKey || todayKey);
+    const activeKeyRef = useRef<string>(selectedDateKey ?? todayKey);
 
     useEffect(() => {
-        activeKeyRef.current = selectedDateKey || todayKey;
+        activeKeyRef.current = selectedDateKey ?? todayKey;
     }, [selectedDateKey, todayKey]);
 
     useEffect(() => {

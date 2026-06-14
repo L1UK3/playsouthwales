@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import type { League } from '@/types/League';
-import { getSelectedLeague } from '@map/helper';
-import { mapLeaguesToMarkers } from '@map/helper';
+import { getSelectedLeague, mapLeaguesToMarkers } from '@map/helper';
 
 interface UseMarkerProps {
     leagues: League[];

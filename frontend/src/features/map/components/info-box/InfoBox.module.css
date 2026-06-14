@@ -44,7 +44,7 @@
 .infoWindowLink {
     display: inline-block;
     font-size: 12px;
-    color: var(--brand-color, #2563eb);
+    color: color-mix(in srgb, var(--brand-color, #2563eb) 60%, #0f172a);
     text-decoration: none;
     font-weight: 600;
 }
