@@ -141,12 +141,37 @@ button:active {
 
 .not-yet-implemented {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    min-height: 480px;
+    max-width: 900px;
+    width: 100%;
+    margin: auto;
+    padding: 64px 48px;
     color: var(--text-muted);
+    text-align: center;
+    gap: 16px;
+    animation: swipeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.not-yet-implemented:hover {
+    transform: translateY(-4px);
+}
+
+.not-yet-implemented p {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-darker);
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.not-yet-implemented-subtext {
     font-size: 16px;
-    border-radius: var(--radius-md);
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    font-weight: 500;
+    color: var(--text-muted);
+    max-width: 500px;
+    line-height: 1.6;
+    margin-top: 4px;
 }
