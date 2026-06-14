@@ -19,7 +19,8 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^6.14.1",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "@clerk/tanstack-react-start": "^1.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

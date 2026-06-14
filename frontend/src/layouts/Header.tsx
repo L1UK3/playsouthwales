@@ -4,7 +4,7 @@ import { SignInButton, UserButton, useAuth } from '@clerk/react';
 import styles from './Header.module.css';
 import TabToggle from '@/components/tab-toggle/TabToggle';
 
-const SettingsBox = React.lazy(() => import('@components/settings/SettingsBox'));
+import SettingsBox from '@/components/settings/SettingsBox';
 
 /**
  * Properties for the Header component, managing top-level navigation between different sections of the application.
