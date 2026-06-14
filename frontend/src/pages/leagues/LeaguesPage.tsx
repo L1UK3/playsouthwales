@@ -24,7 +24,7 @@ const LeaguesPage: React.FC = () => {
     }, []);
 
     return (
-        <div className={styles.splitView}>
+        <div className={`${styles.splitView} animate-swipe-up`}>
             <div className={styles.listSection}>
 
                 <LeagueSelector

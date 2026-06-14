@@ -30,24 +30,14 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
         <div className={styles.leaguesSection}>
             <div className={styles.leaguesGrid}>
                 {leagues.map(league => (
-                    <div
+                    <LeagueCard
                         key={league.leagueId}
-                        onClick={() => setSelectedLeagueId(league.leagueId)}
-                        className={`${styles.selectableCard} ${selectedLeagueId === league.leagueId ? styles.activeCard : ''}`}
-                        style={{
-                            '--active-border-color': league.brandColor ?? 'var(--primary)',
-                            '--brand-color': league.brandColor ?? 'var(--primary)'
-                        } as React.CSSProperties}
-                    >
-                        <LeagueCard
-                            key={league.leagueId}
-                            league={league}
-                            selectedLeagueID={selectedLeagueId}
-                            onLeagueSelect={setSelectedLeagueId}
-                            onEdit={onEdit}
-                            onDelete={onDelete}
-                        />
-                    </div>
+                        league={league}
+                        selectedLeagueID={selectedLeagueId}
+                        onLeagueSelect={setSelectedLeagueId}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                    />
                 ))}
 
                 {showAdminControls && (
