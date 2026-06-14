@@ -93,7 +93,7 @@ const SchedulePage: React.FC = () => {
 
 
     return (
-        <div className={`${styles.tabContent} ${styles.active}`}>
+        <div className={`${styles.tabContent} ${styles.active} animate-swipe-up`}>
             <div className={styles.scheduleHeader}>
                 <NavBar
                     monthName={MONTH_NAMES[currentDate.getMonth()]}

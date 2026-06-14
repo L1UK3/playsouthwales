@@ -45,7 +45,9 @@ const Header: React.FC<HeaderProps> = ({
     return (
         <header className={styles.header}>
             <div className={styles.topNav}>
-                <h1>Play! Wales | {title}</h1>
+                <h1>
+                    Play! Wales | <span key={title} className={`${styles.animatedTitle} animate-swipe-left`}>{title}</span>
+                </h1>
 
                 <TabToggle tabs={[
                     { to: '/schedule', label: 'Schedule' },
@@ -67,12 +69,12 @@ const Header: React.FC<HeaderProps> = ({
                         </>
                     )}
                     {isLoaded && !isSignedIn && (
-                      <SignInButton mode="modal" appearance={{ 
-                        elements: {
-                          footerAction: { display: 'none' }
-                          
-                        },
-                        theme : neobrutalism
+                        <SignInButton mode="modal" appearance={{
+                            elements: {
+                                footerAction: { display: 'none' }
+
+                            },
+                            theme: neobrutalism
                         }}>
                             <button type="button" className={styles.adminButton}>
                                 Sign In
