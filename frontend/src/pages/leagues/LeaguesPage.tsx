@@ -12,12 +12,14 @@ const LeaguesPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
     const { data: leagues = [] } = useLeagues();
 
-    const handleLeagueSelect = useCallback((id: number) => {
+    const handleLeagueSelect = useCallback((id: number | null) => {
         setSelectedLeagueId(id);
 
-        const cardElement = document.getElementById(`league-card-${id}`);
-        if (cardElement) {
-            cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (id !== null) {
+            const cardElement = document.getElementById(`league-card-${id}`);
+            if (cardElement) {
+                cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
     }, []);
 
@@ -43,7 +45,7 @@ const LeaguesPage: React.FC = () => {
                 <LeagueMap
                     leagues={leagues}
                     selectedLeagueId={selectedLeagueId}
-                    onLeagueSelect={setSelectedLeagueId}
+                    onLeagueSelect={handleLeagueSelect}
                 />
             </div>
         </div>

@@ -1,0 +1,54 @@
+.infoWindow {
+    color: #0f172a;
+    padding: 6px;
+    font-family: system-ui, -apple-system, sans-serif;
+    min-width: 180px;
+}
+
+.infoWindowHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.infoWindowLogo {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+}
+
+.infoWindowTitle {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.infoWindowLocation {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+    color: #475569;
+}
+
+.infoWindowActions {
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.infoWindowLink {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--brand-color, #2563eb);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.infoWindowLink:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,12 @@
+.mapContainer {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.mapCanvas {
+    width: 100%;
+    height: 100%;
+}
