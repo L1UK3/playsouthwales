@@ -20,11 +20,9 @@ const AdminPage: React.FC = () => {
 
     const { createLeague, updateLeague, deleteLeague, isSaving: isSavingLeague } = useAdminLeagues();
 
-    const currentLeagueId = selectedLeagueId ?? (leagues[0]?.leagueId ?? null);
-
     const activeLeague = useMemo(() => {
-        return leagues.find(l => l.leagueId === currentLeagueId) ?? null;
-    }, [leagues, currentLeagueId]);
+        return leagues.find(l => l.leagueId === selectedLeagueId) ?? null;
+    }, [leagues, selectedLeagueId]);
 
     const leagueMap = useMemo(() => {
         return leagues.reduce<Record<number, League>>((acc, l) => {
@@ -47,7 +45,7 @@ const AdminPage: React.FC = () => {
         if (window.confirm(`Are you sure you want to delete "${league.name}"? This will also delete all events scheduled for this store.`)) {
             try {
                 await deleteLeague(league.leagueId);
-                if (currentLeagueId === league.leagueId) {
+                if (selectedLeagueId === league.leagueId) {
                     setSelectedLeagueId(null);
                 }
             } catch (error) {
@@ -71,27 +69,31 @@ const AdminPage: React.FC = () => {
     };
 
     return (
-        <div className={styles.dashboard}>
-            <div className={styles.dashboardHeader}>
+        <div className={`${styles.dashboard} animate-swipe-up`}>
+            <div className={`${styles.dashboardHeader} ${styles.animateIn}`} style={{ animationDelay: '0ms' }}>
                 <h2>League Manager</h2>
             </div>
 
-            <LeagueSelector
-                leagues={leagues}
-                selectedLeagueId={currentLeagueId}
-                setSelectedLeagueId={setSelectedLeagueId}
-                showAdminControls={true}
-                onAdd={handleAddLeagueTrigger}
-                onEdit={handleEditLeagueTrigger}
-                onDelete={handleDeleteLeagueTrigger}
-            />
+            <div className={styles.animateIn} style={{ animationDelay: '80ms' }}>
+                <LeagueSelector
+                    leagues={leagues}
+                    selectedLeagueId={selectedLeagueId}
+                    setSelectedLeagueId={setSelectedLeagueId}
+                    showAdminControls={true}
+                    onAdd={handleAddLeagueTrigger}
+                    onEdit={handleEditLeagueTrigger}
+                    onDelete={handleDeleteLeagueTrigger}
+                />
+            </div>
 
             {activeLeague && (
-                <EventsPanel
-                    activeLeague={activeLeague}
-                    leagueMap={leagueMap}
-                    eventTypes={eventTypes}
-                />
+                <div key={activeLeague.leagueId} className="animate-swipe-down">
+                    <EventsPanel
+                        activeLeague={activeLeague}
+                        leagueMap={leagueMap}
+                        eventTypes={eventTypes}
+                    />
+                </div>
             )}
 
             <LeagueFormModal

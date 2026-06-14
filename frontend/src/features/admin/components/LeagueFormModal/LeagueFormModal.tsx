@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './LeagueFormModal.module.css';
 import type { League } from '@/types/League';
 import { useLeagueForm } from '../../hooks/useLeagueForm';
@@ -87,7 +88,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
         }
     };
 
-    return (
+    return createPortal(
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
@@ -259,7 +260,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

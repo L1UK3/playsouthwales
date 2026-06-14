@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './EventFormModal.module.css';
 import type { Event } from '@/types/Event';
 import { useEventForm } from '../../hooks/useEventForm';
@@ -82,7 +83,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
         }
     };
 
-    return (
+    return createPortal(
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
@@ -250,7 +251,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
