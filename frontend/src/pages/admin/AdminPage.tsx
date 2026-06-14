@@ -6,6 +6,7 @@ import type { League } from "@/types/League";
 import { useMemo, useState } from "react";
 import styles from './AdminPage.module.css';
 
+
 /**
  * AdminPage component orchestrates subcomponents and custom hooks for tournament administration.
  */

@@ -3,6 +3,7 @@ import { useLocation, Link } from '@tanstack/react-router';
 import { SignInButton, UserButton, useAuth } from '@clerk/react';
 import styles from './Header.module.css';
 import TabToggle from '@/components/tab-toggle/TabToggle';
+import { neobrutalism } from '@clerk/ui/themes'
 
 import SettingsBox from '@/components/settings/SettingsBox';
 
@@ -66,7 +67,13 @@ const Header: React.FC<HeaderProps> = ({
                         </>
                     )}
                     {isLoaded && !isSignedIn && (
-                        <SignInButton mode="modal">
+                      <SignInButton mode="modal" appearance={{ 
+                        elements: {
+                          footerAction: { display: 'none' }
+                          
+                        },
+                        theme : neobrutalism
+                        }}>
                             <button type="button" className={styles.adminButton}>
                                 Sign In
                             </button>
