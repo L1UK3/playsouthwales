@@ -1,4 +1,4 @@
-from .utils import load_types
+from .utils import load_top_20, load_types
 from flask import Blueprint, request, jsonify, current_app
 import os
 
@@ -381,3 +381,9 @@ def delete_league(league_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
+@main.route('/api/players/top20')
+def load_top20_players():
+    return jsonify(load_top_20())
+        
+    

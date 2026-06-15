@@ -198,8 +198,11 @@
         max-width: 900px;
         width: 100%;
         margin: auto;
-        padding: 64px 48px;
+        padding: 32px;
         color: var(--color-text-muted);
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border-color);
+        border-radius: var(--radius-lg);
         text-align: center;
         gap: 16px;
         animation: swipeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;

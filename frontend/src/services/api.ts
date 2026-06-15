@@ -223,3 +223,41 @@ export async function deleteLeague(id: number): Promise<void> {
     );
   }
 }
+
+/**
+ * Fetches the top 20 players in Wales from the API.
+ * @returns {Promise<any[]>} A promise that resolves to an array of top 20 player objects.
+ */
+export async function loadTop20Players(leagueId: string | number): Promise<any[]> {
+  try {
+    const response = await fetch("/api/players/top20");
+    if (!response.ok) {
+      throw new Error("Failed to fetch top 20 players: " + response.statusText);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching top 20 players:", error);
+    throw error;
+  }
+}
+
+
+/**
+ * Fetches the local leaderboard for a specific league from the API.
+ * @param {number} leagueId - The ID of the league for which to fetch the leaderboard.
+ * @returns {Promise<any[]>} A promise that resolves to an array of leaderboard entries.
+ */
+export async function loadLocalLeaderboard(leagueId: number): Promise<any[]> {
+  try {
+    const response = await fetch(`/api/leaderboard/${leagueId}`);
+    if (!response.ok) {
+      throw new Error(
+        "Failed to fetch local leaderboard: " + response.statusText,
+      );
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching local leaderboard:", error);
+    throw error;
+  }
+}

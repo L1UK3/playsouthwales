@@ -31,6 +31,7 @@
  * @property {number} [longitude] - Optional geographic longitude for mapping.
  */
 export interface League {
+    id?: number;
     leagueId: number;
     name: string;
     logo?: string;

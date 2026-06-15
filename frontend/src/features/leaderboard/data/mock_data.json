@@ -1,0 +1,74 @@
+{
+    "1": [
+        { "position": 1, "name": "Dylan Hughes", "cp": 120 },
+        { "position": 2, "name": "Megan Davies", "cp": 110 },
+        { "position": 3, "name": "Harri Owen", "cp": 95 },
+        { "position": 4, "name": "Lowri Roberts", "cp": 80 },
+        { "position": 5, "name": "Rhys Vaughan", "cp": 75 },
+        { "position": 6, "name": "Carys Evans", "cp": 60 },
+        { "position": 7, "name": "Osian Griffiths", "cp": 50 },
+        { "position": 8, "name": "Bethan Lewis", "cp": 45 },
+        { "position": 9, "name": "Ioan Thomas", "cp": 30 },
+        { "position": 10, "name": "Sian Williams", "cp": 20 }
+    ],
+    "2": [
+        { "position": 1, "name": "Connor Rees", "cp": 115 },
+        { "position": 2, "name": "Ffion Jones", "cp": 105 },
+        { "position": 3, "name": "Gavin Morgan", "cp": 90 },
+        { "position": 4, "name": "Elin Roberts", "cp": 85 },
+        { "position": 5, "name": "Dewi Jenkins", "cp": 70 },
+        { "position": 6, "name": "Catrin Lloyd", "cp": 65 },
+        { "position": 7, "name": "Geraint Bowen", "cp": 55 },
+        { "position": 8, "name": "Anwen Morris", "cp": 40 },
+        { "position": 9, "name": "Iestyn Powell", "cp": 35 },
+        { "position": 10, "name": "Mari Davies", "cp": 15 }
+    ],
+    "3": [
+        { "position": 1, "name": "Oliver Smith", "cp": 95 },
+        { "position": 2, "name": "Amelia Taylor", "cp": 90 },
+        { "position": 3, "name": "Jack Davies", "cp": 85 },
+        { "position": 4, "name": "Isabella Jones", "cp": 70 },
+        { "position": 5, "name": "Harry Evans", "cp": 65 },
+        { "position": 6, "name": "Sophia Roberts", "cp": 50 },
+        { "position": 7, "name": "Charlie Williams", "cp": 45 },
+        { "position": 8, "name": "Mia Thomas", "cp": 40 },
+        { "position": 9, "name": "George Hughes", "cp": 30 },
+        { "position": 10, "name": "Emily Lewis", "cp": 10 }
+    ],
+    "4": [
+        { "position": 1, "name": "Liam Jenkins", "cp": 105 },
+        { "position": 2, "name": "Chloe Davies", "cp": 100 },
+        { "position": 3, "name": "Ethan Evans", "cp": 85 },
+        { "position": 4, "name": "Nia Jones", "cp": 80 },
+        { "position": 5, "name": "Owen Roberts", "cp": 75 },
+        { "position": 6, "name": "Lily Hughes", "cp": 60 },
+        { "position": 7, "name": "Mason Thomas", "cp": 50 },
+        { "position": 8, "name": "Ella Williams", "cp": 40 },
+        { "position": 9, "name": "Jacob Lloyd", "cp": 35 },
+        { "position": 10, "name": "Ruby Rees", "cp": 20 }
+    ],
+    "5": [
+        { "position": 1, "name": "Logan Thomas", "cp": 110 },
+        { "position": 2, "name": "Ruby Evans", "cp": 95 },
+        { "position": 3, "name": "Leo Davies", "cp": 90 },
+        { "position": 4, "name": "Grace Jones", "cp": 80 },
+        { "position": 5, "name": "Noah Roberts", "cp": 70 },
+        { "position": 6, "name": "Evie Hughes", "cp": 65 },
+        { "position": 7, "name": "Freddie Williams", "cp": 55 },
+        { "position": 8, "name": "Scarlett Rees", "cp": 40 },
+        { "position": 9, "name": "Alfie Lloyd", "cp": 30 },
+        { "position": 10, "name": "Isla Morris", "cp": 15 }
+    ],
+    "6": [
+        { "position": 1, "name": "Lucas Williams", "cp": 100 },
+        { "position": 2, "name": "Freya Jones", "cp": 95 },
+        { "position": 3, "name": "Max Davies", "cp": 80 },
+        { "position": 4, "name": "Phoebe Evans", "cp": 75 },
+        { "position": 5, "name": "Theo Hughes", "cp": 70 },
+        { "position": 6, "name": "Sienna Roberts", "cp": 60 },
+        { "position": 7, "name": "Arthur Thomas", "cp": 45 },
+        { "position": 8, "name": "Harper Williams", "cp": 40 },
+        { "position": 9, "name": "Oscar Lloyd", "cp": 30 },
+        { "position": 10, "name": "Mila Rees", "cp": 15 }
+    ]
+}

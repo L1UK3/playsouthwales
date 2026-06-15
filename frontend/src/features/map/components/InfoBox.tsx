@@ -30,7 +30,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
             onCloseClick={onCloseClick}
         >
             <div
-                className="text-[#0f172a] p-1.5 font-sans min-w-[200px]"
+                className="text-[#0f172a] p-1.5 font-sans min-w-50"
                 style={{ '--brand-color': brandColor } as React.CSSProperties}
             >
                 <div className="flex items-center gap-2 mb-2">
