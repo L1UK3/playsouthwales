@@ -1,10 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
-import { loadTypes } from '@services/api';
-import type { EventTypes } from '@/types/EventTypes';
+import { type EventTypes } from '@/types/EventTypes';
+
+export const EVENT_TYPES: EventTypes = {
+    "CASUAL": "C",
+    "STANDARD": "S",
+    "CHALLENGE": "🏅",
+    "CUP": "🏆",
+    "PRE-RELEASE": "PR",
+    "SPECIAL": "📍",
+    "REGIONAL": "📍",
+    "INTERNATIONAL": "INT",
+    "WORLDS": "🌍"
+};
 
 export function useEventTypes() {
-    return useQuery<EventTypes>({
-        queryKey: ['eventTypes'],
-        queryFn: loadTypes,
-    });
+    return {
+        data: EVENT_TYPES,
+        isLoading: false,
+        error: null as Error | null
+    };
 }

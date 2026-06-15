@@ -72,15 +72,6 @@ def get_leagues():
         })
     return jsonify(league_list)
 
-@main.route('/api/types')
-def get_types():
-    """
-    Fetch all types.
-    Returns:
-        Response: A JSON list of all types.
-    """
-    return jsonify(load_types())
-
 @main.route('/api/events', methods=['POST'])
 def create_event():
     """

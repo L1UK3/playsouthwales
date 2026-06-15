@@ -1,4 +1,3 @@
-import type { EventTypes } from "@/types/EventTypes";
 import type { League } from "@/types/League";
 import type { Event } from "@/types/Event";
 
@@ -65,23 +64,6 @@ export async function loadLeagues(): Promise<League[]> {
     return await response.json();
   } catch (error) {
     console.error("Error fetching leagues:", error);
-    throw error;
-  }
-}
-
-/**
- * Fetches event types.
- * @returns {Promise<EventTypes>} A promise that resolves to an EventTypes object.
- */
-export async function loadTypes(): Promise<EventTypes> {
-  try {
-    const response = await fetch("/api/types");
-    if (!response.ok) {
-      throw new Error("Failed to fetch event types: " + response.statusText);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching event types:", error);
     throw error;
   }
 }
@@ -170,8 +152,8 @@ export async function createLeague(
     const errData = await response.json().catch(() => ({}));
     throw new Error(
       errData.error?.message ??
-        errData.error ??
-        "Failed to create league: " + response.statusText,
+      errData.error ??
+      "Failed to create league: " + response.statusText,
     );
   }
   return await response.json();
@@ -198,8 +180,8 @@ export async function updateLeague(
     const errData = await response.json().catch(() => ({}));
     throw new Error(
       errData.error?.message ??
-        errData.error ??
-        "Failed to update league: " + response.statusText,
+      errData.error ??
+      "Failed to update league: " + response.statusText,
     );
   }
   return await response.json();
@@ -218,8 +200,8 @@ export async function deleteLeague(id: number): Promise<void> {
     const errData = await response.json().catch(() => ({}));
     throw new Error(
       errData.error?.message ??
-        errData.error ??
-        "Failed to delete league: " + response.statusText,
+      errData.error ??
+      "Failed to delete league: " + response.statusText,
     );
   }
 }

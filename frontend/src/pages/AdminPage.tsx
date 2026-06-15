@@ -1,7 +1,6 @@
-﻿import { EventsPanel, LeagueFormModal, useAdminLeagues } from "@/features/admin";
+import { EventsPanel, LeagueFormModal, useAdminLeagues } from "@/features/admin";
+import { useLeagues, useEventTypes } from "@/hooks";
 import LeagueSelector from "@/features/league-selector";
-import { useEventTypes } from "@/hooks/useEventTypes";
-import { useLeagues } from "@/hooks/useLeagues";
 import type { League } from "@/types/League";
 import { useMemo, useState } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
