@@ -53,28 +53,50 @@ const Cell: React.FC<CellProps> = React.memo(({
 
     return (
         <div
-            className={`min-h-[120px] min-w-[120px] p-3.5 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px max-sm:min-h-[110px] max-sm:p-3 last:rounded-br-[19px] [&:nth-last-child(7)]:rounded-bl-[19px] ${isOtherMonth ? "!bg-bg-cell-empty !cursor-default" : ""} ${isSelected ? "!outline !outline-3 !outline-selected-border !-outline-offset-3" : ""} ${isToday ? "!border-2 !border-today-border" : ""}`}
+            className={`min-h-16 sm:min-h-25 sm:h-full min-w-0 w-full p-2 sm:p-3.5 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[19px] nth-last-7:rounded-bl-[19px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
             data-date-key={dateKey}
         >
-            <div className="text-sm font-bold text-text-main mb-2.5 max-sm:text-xs">{day}</div>
+            <div className="text-sm font-bold text-text-main mb-1 sm:mb-2.5 max-sm:text-xs">{day}</div>
             {eventsForDay.length > 0 ? (
-                <div className="grid gap-2">
-                    {eventsForDay.slice(0, 2).map((event) => (
-                        <Card
-                            key={event.id}
-                            event={event}
-                            leagueMap={leagueMap}
-                            types={types}
-                            isOtherMonth={isOtherMonth}
-                        />
-                    ))}
-                    {eventsForDay.length > 2 ? (
-                        <div className="py-2 px-2.5 rounded-[10px] bg-event-more-bg text-event-more-text text-xs text-center">
-                            {eventsForDay.length - 2} more event{eventsForDay.length - 2 === 1 ? '' : 's'}
-                        </div>
-                    ) : null}
-                </div>
+                <>
+                    {/* Desktop/Tablet view: show full card list */}
+                    <div className="hidden sm:grid gap-2">
+                        {eventsForDay.slice(0, 2).map((event) => (
+                            <Card
+                                key={event.id}
+                                event={event}
+                                leagueMap={leagueMap}
+                                types={types}
+                                isOtherMonth={isOtherMonth}
+                            />
+                        ))}
+                        {eventsForDay.length > 2 ? (
+                            <div className="py-2 px-2.5 rounded-[10px] bg-event-more-bg text-event-more-text text-xs text-center">
+                                {eventsForDay.length - 2} more
+                            </div>
+                        ) : null}
+                    </div>
+
+                    {/* Mobile view: show small dots representing events */}
+                    <div className="flex sm:hidden justify-center gap-1 mt-1 flex-wrap">
+                        {eventsForDay.slice(0, 3).map((event) => {
+                            const league = event.leagueId ? leagueMap[event.leagueId] : null;
+                            const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
+                            return (
+                                <span
+                                    key={event.id}
+                                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                                    style={{ backgroundColor: storeColor }}
+                                    title={league?.name ?? event.leagueName}
+                                />
+                            );
+                        })}
+                        {eventsForDay.length > 3 ? (
+                            <span className="text-[9px] leading-none text-text-muted font-bold select-none">+</span>
+                        ) : null}
+                    </div>
+                </>
             ) : null}
         </div>
     );

@@ -11,6 +11,7 @@ export interface LeagueSelectorProps {
     onDelete?: (league: League) => void;
     onAdd?: () => void;
     showAdminControls?: boolean;
+    columns?: number;
 }
 
 /**
@@ -25,10 +26,13 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
     onDelete,
     onAdd,
     showAdminControls,
+    columns
 }) => {
+    
+
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className={`grid grid-cols-${columns ?? 3} gap-4`}>
                 {leagues.map(league => (
                     <LeagueCard
                         key={league.leagueId}

@@ -81,13 +81,18 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     }
 
     return (
-        <div className={"card-container"}>
-            <div className="grid grid-cols-7 bg-bg-day-header border-b border-border-color text-center text-text-muted font-semibold border-3 border-border-color rounded-t-[22px]">
+        <div className={"card-container sm:h-full sm:flex sm:flex-col sm:min-h-0"}>
+            <div className="grid grid-cols-7 bg-bg-day-header border-b border-border-color text-center text-text-muted font-semibold border-3 rounded-t-[22px] shrink-0">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
                     <div key={d} className="py-4 px-2.5 text-sm max-sm:text-xs">{d}</div>
                 ))}
             </div>
-            <div className="relative grid grid-cols-7 gap-px bg-border-color border-3 border-border-color border-t-0 rounded-b-[22px] overflow-hidden" id="calendar-grid" ref={gridRef}>
+            <div
+                className="relative grid grid-cols-7 gap-px bg-border-color border-3 border-border-color border-t-0 rounded-b-[22px] overflow-hidden sm:flex-1 sm:min-h-0"
+                id="calendar-grid"
+                ref={gridRef}
+                style={{ '--num-rows': cells.length / 7 } as React.CSSProperties}
+            >
                 {cells.map(cell => (
                     <Cell
                         key={cell.dateKey}
