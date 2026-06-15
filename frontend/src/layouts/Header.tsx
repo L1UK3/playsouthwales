@@ -58,13 +58,14 @@ const Header: React.FC<HeaderProps> = ({
                 <div className="flex-1 flex gap-2.5 items-center justify-end">
                     {isLoaded && isSignedIn && (
                         <>
+                            <UserButton />
                             <Link
                                 to="/admin"
                                 className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
                             >
                                 Admin
                             </Link>
-                            <UserButton />
+                            
                         </>
                     )}
                     {isLoaded && !isSignedIn && (
