@@ -67,6 +67,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                 <option value="">All Games</option>
                 <option value="TCG">TCG</option>
                 <option value="VGC">VGC</option>
+                <option value="GO">GO</option>
             </select>
 
             <button type="button" className={"btn btn-primary shrink-0 min-w-20"} onClick={onClear}>Clear</button>
