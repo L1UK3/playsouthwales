@@ -1,4 +1,4 @@
-from .utils import load_top_20, load_types
+from .utils import load_top_20
 from flask import Blueprint, request, jsonify, current_app
 import os
 
