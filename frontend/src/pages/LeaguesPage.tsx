@@ -2,6 +2,7 @@
 import { useLeagues } from "@/hooks/useLeagues";
 import { useCallback, useState } from "react";
 import { LeagueMap } from "@map";
+import SuspenseLoader from "@/components/SuspenseLoader";
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
@@ -9,7 +10,7 @@ import { LeagueMap } from "@map";
  */
 const LeaguesPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-    const { data: leagues = [] } = useLeagues();
+    const { data: leagues = [], isLoading } = useLeagues();
 
     const handleLeagueSelect = useCallback((id: number | null) => {
         setSelectedLeagueId(id);
@@ -21,6 +22,10 @@ const LeaguesPage: React.FC = () => {
             }
         }
     }, []);
+
+    if (isLoading) {
+        return <SuspenseLoader message="Loading leagues map..." />;
+    }
 
     return (
         <div className="grid grid-cols-[minmax(360px,420px)_1fr] h-[calc(100vh-180px)] overflow-hidden bg-bg-card border-4 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[992px]:grid-cols-1 max-[992px]:grid-rows-[40vh_1fr] max-[576px]:grid-rows-[35vh_1fr] max-[576px]:rounded-md max-[576px]:border-2">

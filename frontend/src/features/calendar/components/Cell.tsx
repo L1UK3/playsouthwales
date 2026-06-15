@@ -86,8 +86,8 @@ const Cell: React.FC<CellProps> = React.memo(({
                             return (
                                 <span
                                     key={event.id}
-                                    className="w-1.5 h-1.5 rounded-full shrink-0"
-                                    style={{ backgroundColor: storeColor }}
+                                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOtherMonth ? "opacity-40 bg-gray-400" : ""}`}
+                                    style={isOtherMonth ? {} : { backgroundColor: storeColor }}
                                     title={league?.name ?? event.leagueName}
                                 />
                             );

@@ -60,8 +60,8 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                         <span className=""><strong>Format:</strong> {event.type}</span>
                         {event.entryFee ? <span className=""><strong>Entry:</strong> {event.entryFee}</span> : null}
                     </div>
-                    {event.description ? <div className={"description-box"}>{event.description}</div> : null}
-                    {event.prizes ? <div className={"prizes-box"}><strong>Prizes:</strong> {event.prizes}</div> : null}
+                    {event.description ? <div className={"text-sm leading-relaxed text-text-darker bg-white/5 p-3 rounded-lg"}>{event.description}</div> : null}
+                    {event.prizes ? <div className={"text-sm text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-amber-400/20 flex gap-2"}><strong>Prizes:</strong> {event.prizes}</div> : null}
                     <div className="flex justify-end">
                         {event.ticketLink ? (
                             <a

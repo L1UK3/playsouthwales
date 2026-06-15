@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import ListView from '@calendar/components/ListView';
 import type { Event } from '@/types/Event';
+import SuspenseLoader from '@/components/SuspenseLoader';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
 
@@ -35,7 +36,7 @@ export const EventList: React.FC<EventListProps> = ({
     }, [events]);
 
     if (isLoading) {
-        return <div className="loading">Loading events list...</div>;
+        return <SuspenseLoader message="Loading events..." />;
     }
 
     if (events.length === 0) {

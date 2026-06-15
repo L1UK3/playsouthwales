@@ -4,14 +4,15 @@ import { useEventTypes } from "@/hooks/useEventTypes";
 import { useLeagues } from "@/hooks/useLeagues";
 import type { League } from "@/types/League";
 import { useMemo, useState } from "react";
+import SuspenseLoader from "@/components/SuspenseLoader";
 
 
 /**
  * AdminPage component orchestrates subcomponents and custom hooks for tournament administration.
  */
 const AdminPage: React.FC = () => {
-    const { data: leagues = [] } = useLeagues();
-    const { data: eventTypes = {} } = useEventTypes();
+    const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
+    const { data: eventTypes = {}, isLoading: isEventTypesLoading } = useEventTypes();
 
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
     const [isLeagueModalOpen, setIsLeagueModalOpen] = useState(false);
@@ -66,6 +67,10 @@ const AdminPage: React.FC = () => {
             throw error;
         }
     };
+
+    if (isLeaguesLoading || isEventTypesLoading) {
+        return <SuspenseLoader message="Loading admin manager..." />;
+    }
 
     return (
         <div className="max-w-400 mx-auto pb-10 flex flex-col gap-8 animate-swipe-up">

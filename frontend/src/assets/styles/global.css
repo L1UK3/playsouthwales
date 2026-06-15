@@ -1,5 +1,5 @@
 ﻿@import "tailwindcss";
-@import './events.css';
+
 
 @theme {
     /* Colors */
@@ -224,5 +224,64 @@
         max-width: 500px;
         line-height: 1.6;
         margin-top: 4px;
+    }
+}
+
+/* Event Type Color Schemes */
+.type-CASUAL {
+    --type-bg: oklch(0.78 0.25 150 / 0.15);
+    --type-border: oklch(0.78 0.25 150);
+}
+
+.type-STANDARD {
+    --type-bg: oklch(0.72 0.28 250 / 0.15);
+    --type-border: oklch(0.72 0.28 250);
+}
+
+.type-CHALLENGE {
+    --type-bg: oklch(0.75 0.25 45 / 0.15);
+    --type-border: oklch(0.75 0.25 45);
+}
+
+.type-CUP {
+    --type-bg: oklch(0.68 0.28 20 / 0.15);
+    --type-border: oklch(0.68 0.28 20);
+}
+
+.type-PRE-RELEASE {
+    --type-bg: oklch(0.70 0.30 300 / 0.15);
+    --type-border: oklch(0.70 0.30 300);
+}
+
+.type-SPECIAL {
+    --type-bg: oklch(0.72 0.30 340 / 0.15);
+    --type-border: oklch(0.72 0.30 340);
+}
+
+.type-REGIONAL {
+    --type-bg: oklch(0.70 0.25 35 / 0.15);
+    --type-border: oklch(0.70 0.25 35);
+}
+
+.type-INTERNATIONAL {
+    --type-bg: oklch(0.80 0.20 200 / 0.15);
+    --type-border: oklch(0.80 0.20 200);
+}
+
+.type-WORLDS {
+    --type-bg: oklch(0.88 0.25 95 / 0.15);
+    --type-border: oklch(0.88 0.25 95);
+}
+
+@utility gradient-card {
+    background: linear-gradient(135deg, var(--type-bg) 0%, var(--color-bg-card) 100%);
+    border: 1px solid color-mix(in oklch, var(--type-border) 60%, transparent) !important;
+    box-shadow: var(--shadow-main), 0 0 20px color-mix(in oklch, var(--type-border) 25%, transparent) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+        border-color: var(--type-border) !important;
+        box-shadow: var(--shadow-main), 0 0 40px color-mix(in oklch, var(--type-border) 50%, transparent) !important;
+        transform: translateY(-2px);
     }
 }

@@ -37,7 +37,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     if (!selectedDateKey) return null;
 
     return (
-        <div className="block! animate-swipe-left card-container min-[1440px]:landscape:flex! min-[1440px]:landscape:flex-col min-[1440px]:landscape:flex-[0_0_480px] min-[1440px]:landscape:max-w-120 min-[1440px]:landscape:animate-slide-in-right min-[1440px]:landscape:mt-0 min-[1440px]:landscape:h-full">
+        <div className="block! animate-swipe-left bg-bg-card rounded-[20px] shadow-main overflow-hidden min-[1440px]:landscape:flex! min-[1440px]:landscape:flex-col min-[1440px]:landscape:flex-[0_0_480px] min-[1440px]:landscape:max-w-120 min-[1440px]:landscape:animate-slide-in-right min-[1440px]:landscape:mt-0 min-[1440px]:landscape:h-full">
             <div className="text-xl font-bold p-5 bg-bg-day-header text-text-main border-3 border-border-color border-b-0 rounded-t-[22px] min-[1440px]:landscape:shrink-0 min-[1440px]:landscape:h-13.5 min-[1440px]:landscape:flex min-[1440px]:landscape:items-center min-[1440px]:landscape:px-5 min-[1440px]:landscape:py-0 flex items-center justify-between">
                 <span>
                     {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
@@ -47,7 +47,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
                 {onClose && (
                     <button
                         onClick={onClose}
-                        className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-text-muted hover:text-text-main transition-colors duration-200 focus:outline-none"
+                        className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-text-muted hover:text-text-main transition-colors duration-200 focus:outline-none cursor-pointer"
                         aria-label="Close details"
                     >
                         <X size={20} />

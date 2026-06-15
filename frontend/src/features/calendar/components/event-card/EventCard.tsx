@@ -34,9 +34,9 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
                     </div>
                 </div>
 
-                {event.description ? <div className={"description-box text-sm text-text-muted leading-relaxed"}>{event.description}</div> : null}
+                {event.description ? <div className={"text-sm leading-relaxed text-text-muted bg-white/5 p-3 rounded-lg"}>{event.description}</div> : null}
                 {event.prizes ? (
-                    <div className={"prizes-box text-sm text-text-muted [&_strong]:text-text-main"}>
+                    <div className={"text-sm text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-amber-400/20 flex gap-2 [&_strong]:text-text-main"}>
                         <strong>Prizes:</strong> {event.prizes}
                     </div>
                 ) : null}

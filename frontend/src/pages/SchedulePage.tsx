@@ -11,6 +11,7 @@ import {
     SelectedDaySection
 } from "@calendar";
 import { useCallback, useMemo, useState } from "react";
+import SuspenseLoader from "@/components/SuspenseLoader";
 
 export type ViewMode = 'calendar' | 'list';
 
@@ -70,9 +71,21 @@ const SchedulePage: React.FC = () => {
         setFilters({ league: '', type: '', game: '' });
     }, []);
 
-    const { data: leagues = [] } = useLeagues();
-    const { data: types = {} } = useEventTypes();
-    const { data: allEvents = [] } = useEvents(currentDate);
+    const prevMonthDate = useMemo(() => new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1), [currentDate]);
+    const nextMonthDate = useMemo(() => new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1), [currentDate]);
+
+    const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
+    const { data: types = {}, isLoading: isTypesLoading } = useEventTypes();
+    
+    const { data: currentEvents = [], isLoading: isCurrentEventsLoading } = useEvents(currentDate);
+    const { data: prevEvents = [] } = useEvents(prevMonthDate);
+    const { data: nextEvents = [] } = useEvents(nextMonthDate);
+
+    const isLoading = isLeaguesLoading || isTypesLoading || isCurrentEventsLoading;
+
+    const allEvents = useMemo(() => {
+        return [...prevEvents, ...currentEvents, ...nextEvents];
+    }, [prevEvents, currentEvents, nextEvents]);
 
     const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
 
@@ -90,6 +103,10 @@ const SchedulePage: React.FC = () => {
 
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
+
+    if (isLoading) {
+        return <SuspenseLoader message="Loading schedule..." />;
+    }
 
     return (
         <div className="flex flex-col sm:h-full sm:min-h-0 p-0 animate-swipe-up">
