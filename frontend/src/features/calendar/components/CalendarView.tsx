@@ -5,8 +5,8 @@ import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 import type { CellData } from '@calendar/types/CellData';
-import Cell from '@calendar/components/cell/Cell';
-import PokeballOverlay from '@calendar/components/pokeball-overlay/PokeballOverlay';
+import Cell from '@calendar/components/Cell';
+import PokeballOverlay from '@calendar/components/PokeballOverlay';
 
 /**
  * Properties for the CalendarView component.

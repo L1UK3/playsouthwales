@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LeagueCard from '@/features/league-selector/components/league-card/LeagueCard';
+import LeagueCard from '@/features/league-selector/components/LeagueCard';
 import type { League } from '@/types/League';
 
 export interface LeagueSelectorProps {
@@ -28,11 +28,16 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
     showAdminControls,
     columns
 }) => {
-    
+    const gridColsClass = {
+        1: 'grid-cols-1',
+        2: 'grid-cols-2',
+        3: 'grid-cols-3',
+        4: 'grid-cols-4',
+    }[columns ?? 3] ?? 'grid-cols-3';
 
     return (
         <div className="flex flex-col gap-4">
-            <div className={`grid grid-cols-${columns ?? 3} gap-4`}>
+            <div className={`grid ${gridColsClass} gap-4`}>
                 {leagues.map(league => (
                     <LeagueCard
                         key={league.leagueId}

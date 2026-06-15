@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { League } from '@/types/League';
-import { useLeagueForm } from '../../hooks/useLeagueForm';
+import { useLeagueForm } from '../hooks/useLeagueForm';
 
 export interface LeagueFormModalProps {
     isOpen: boolean;
@@ -89,8 +89,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     };
 
     return createPortal(
-        <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-[8px] z-[1000] flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
-            <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-[650px] max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
+            <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-162.5 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
                 <div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
                     <h3>{editingLeague ? 'Edit League / Store' : 'Add New League / Store'}</h3>
                     <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
@@ -112,7 +112,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formName}
                                     onChange={(e) => setFormName(e.target.value)}
                                     placeholder="e.g. Firestorm Games Cardiff"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.name ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.name ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                     required
                                 />
                                 {errors.name && <span className="text-[11px] text-red-500 font-semibold">{errors.name}</span>}
@@ -141,7 +141,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formLatitude}
                                     onChange={(e) => setFormLatitude(e.target.value)}
                                     placeholder="e.g. 51.4816"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.latitude ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.latitude ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.latitude && <span className="text-[11px] text-red-500 font-semibold">{errors.latitude}</span>}
                             </div>
@@ -156,7 +156,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formLongitude}
                                     onChange={(e) => setFormLongitude(e.target.value)}
                                     placeholder="e.g. -3.1791"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.longitude ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.longitude ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.longitude && <span className="text-[11px] text-red-500 font-semibold">{errors.longitude}</span>}
                             </div>
@@ -193,7 +193,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formLogo}
                                     onChange={(e) => setFormLogo(e.target.value)}
                                     placeholder="https://example.com/logo.png"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.logo ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.logo ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.logo && <span className="text-[11px] text-red-500 font-semibold">{errors.logo}</span>}
                             </div>
@@ -207,7 +207,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formWebsite}
                                     onChange={(e) => setFormWebsite(e.target.value)}
                                     placeholder="https://example.com"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.website ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.website ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.website && <span className="text-[11px] text-red-500 font-semibold">{errors.website}</span>}
                             </div>
@@ -221,7 +221,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formPokemonLink}
                                     onChange={(e) => setFormPokemonLink(e.target.value)}
                                     placeholder="https://events.pokemon.com/..."
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.pokemonLink ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.pokemonLink ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.pokemonLink && <span className="text-[11px] text-red-500 font-semibold">{errors.pokemonLink}</span>}
                             </div>
@@ -235,7 +235,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formSocialLink}
                                     onChange={(e) => setFormSocialLink(e.target.value)}
                                     placeholder="https://facebook.com/..."
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.socialLink ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.socialLink ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.socialLink && <span className="text-[11px] text-red-500 font-semibold">{errors.socialLink}</span>}
                             </div>

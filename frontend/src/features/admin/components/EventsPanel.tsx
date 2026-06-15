@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 
-import NavBar from '@calendar/components/nav-bar/NavBar';
+import NavBar from '@calendar/components/NavBar';
 import { MONTH_NAMES } from '@constants';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
-import { EventList } from '../EventList/EventList';
-import { EventFormModal } from '../EventFormModal/EventFormModal';
-import { useAdminEvents } from '../../hooks/useAdminEvents';
+import { EventList } from './EventList';
+import { EventFormModal } from './EventFormModal';
+import { useAdminEvents } from '../hooks/useAdminEvents';
 
 export interface EventsPanelProps {
     activeLeague: League;

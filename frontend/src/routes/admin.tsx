@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import AdminPage from "@/pages/admin/AdminPage";
+import AdminPage from "@/pages/AdminPage";
 
 export const Route = createFileRoute("/admin")({
   component: AdminRouteComponent,

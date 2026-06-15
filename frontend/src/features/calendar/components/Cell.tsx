@@ -1,6 +1,6 @@
 import React from "react";
 
-import Card from "@calendar/components/event-card/card/Card";
+import Card from "@calendar/components/event-card/Card";
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';

@@ -31,10 +31,10 @@ export interface FiltersProps {
  */
 const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChange, onClear }) => {
     return (
-        <div className="flex gap-2 flex-wrap items-center" id="view-filters">
+        <div className="flex gap-2 flex-wrap items-center w-full" id="view-filters">
             <select
                 id="league-filter"
-                className="py-2.5 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                className="flex-1 py-2.5 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-37.5"
                 value={filters.league}
                 onChange={(e) => onFilterChange('league', e.target.value)}
             >
@@ -46,7 +46,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
 
             <select
                 id="type-filter"
-                className="py-2.5 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                className="flex-1 py-2.5 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-37.5"
                 value={filters.type}
                 onChange={(e) => onFilterChange('type', e.target.value)}
             >
@@ -60,7 +60,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
 
             <select
                 id="game-filter"
-                className="py-2.5 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                className="flex-1 py-2.5 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-30"
                 value={filters.game}
                 onChange={(e) => onFilterChange('game', e.target.value)}
             >
@@ -69,7 +69,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                 <option value="VGC">VGC</option>
             </select>
 
-            <button type="button" className={"btn btn-primary"} onClick={onClear}>Clear</button>
+            <button type="button" className={"btn btn-primary shrink-0 min-w-20"} onClick={onClear}>Clear</button>
         </div>
     );
 };

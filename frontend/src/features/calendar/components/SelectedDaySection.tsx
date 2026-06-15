@@ -1,5 +1,5 @@
 import React from 'react';
-import EventCard from '@calendar/components/event-card/default/EventCard';
+import EventCard from '@calendar/components/event-card/EventCard';
 import { X } from 'lucide-react';
 
 import type { Event } from '@/types/Event';

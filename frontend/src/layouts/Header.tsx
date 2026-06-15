@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation, Link } from '@tanstack/react-router';
 import { SignInButton, UserButton, useAuth } from '@clerk/react';
-import TabToggle from '@/components/tab-toggle/TabToggle';
+import TabToggle from '@/components/TabToggle';
 import { neobrutalism } from '@clerk/ui/themes'
 
-import SettingsBox from '@/components/settings/SettingsBox';
+import SettingsBox from '@/components/SettingsBox';
 
 /**
  * Properties for the Header component, managing top-level navigation between different sections of the application.
@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({
                         <>
                             <Link
                                 to="/admin"
-                                className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? '!bg-primary !text-white !border-primary-hover shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
+                                className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
                             >
                                 Admin
                             </Link>
@@ -82,12 +82,12 @@ const Header: React.FC<HeaderProps> = ({
                     )}
                     <div className="relative">
                         <button
-                            className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${isSettingsOpen ? '!bg-primary !text-white !border-primary-hover shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
+                            className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${isSettingsOpen ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
                             onClick={onSettingsBox}>
                             &#9881;
                         </button>
                         {isSettingsOpen ? (
-                            <div className="absolute top-[calc(100%+8px)] right-0 z-200 min-w-[220px] animate-[dropFadeDown_0.15s_ease_forwards]">
+                            <div className="absolute top-[calc(100%+8px)] right-0 z-200 min-w-55 animate-[dropFadeDown_0.15s_ease_forwards]">
                                 <SettingsBox onClose={onCloseSettings} />
                             </div>
                         ) : null}

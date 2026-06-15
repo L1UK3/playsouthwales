@@ -1,7 +1,7 @@
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
 import { Suspense } from 'react';
 import useHeaderLogic from '@/hooks/useHeaderLogic';
-import SuspenseLoader from '@components/suspense-loader/SuspenseLoader';
+import SuspenseLoader from '@/components/SuspenseLoader';
 import Header from '@layouts/Header';
 import "@/assets/styles/global.css";
 import type { useAuth } from '@clerk/react';

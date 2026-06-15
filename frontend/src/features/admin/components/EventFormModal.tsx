@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { Event } from '@/types/Event';
-import { useEventForm } from '../../hooks/useEventForm';
+import { useEventForm } from '../hooks/useEventForm';
 
 export interface EventFormModalProps {
     isOpen: boolean;
@@ -84,8 +84,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
     };
 
     return createPortal(
-        <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-[8px] z-[1000] flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
-            <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-[600px] max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
+            <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-150 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
                 <div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
                     <h3>{editingEvent ? 'Edit Tournament Event' : 'Schedule New Event'}</h3>
                     <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
@@ -106,7 +106,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     value={formName}
                                     onChange={(e) => setFormName(e.target.value)}
                                     placeholder="e.g. Standard League Challenge"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.name ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.name ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                     required
                                 />
                                 {errors.name && <span className="text-[11px] text-red-500 font-semibold">{errors.name}</span>}
@@ -122,7 +122,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     id="eventDate"
                                     value={formDate}
                                     onChange={(e) => setFormDate(e.target.value)}
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.date ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.date ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                     required
                                 />
                                 {errors.date && <span className="text-[11px] text-red-500 font-semibold">{errors.date}</span>}
@@ -198,7 +198,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     value={formTicketLink}
                                     onChange={(e) => setFormTicketLink(e.target.value)}
                                     placeholder="https://example.com/tickets"
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.ticketLink ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.ticketLink ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                                 {errors.ticketLink ? (
                                     <span className="text-[11px] text-red-500 font-semibold">{errors.ticketLink}</span>
@@ -215,7 +215,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     value={formDescription}
                                     onChange={(e) => setFormDescription(e.target.value)}
                                     placeholder="Describe tournament rounds, standard regulations, match rules, etc."
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-[80px]"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
 
@@ -227,7 +227,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     value={formPrizes}
                                     onChange={(e) => setFormPrizes(e.target.value)}
                                     placeholder="e.g. Championship points, booster packs for participating"
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-[80px]"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
                         </div>

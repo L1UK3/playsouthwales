@@ -37,13 +37,13 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
 
     return (
         <div
-            className={`rounded-xl border border-border-color overflow-hidden cursor-pointer transition-all duration-200 border-l-[5px] border-l-[var(--store-color,var(--color-primary))] hover:translate-x-1 hover:border-primary gradient-card type-${event.type} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-[500px] [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
+            className={`rounded-xl border border-border-color overflow-hidden cursor-pointer transition-all duration-200 border-l-[5px] border-l-(--store-color,var(--color-primary)) hover:translate-x-1 hover:border-primary gradient-card type-${event.type} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >
             <div className="py-4 px-5 flex justify-between items-center gap-4">
                 <div className="flex items-center gap-5 grow">
-                    <div className="text-base font-bold text-primary min-w-[50px]">{event.startTime?.slice(0, 5) ?? ''}</div>
+                    <div className="text-base font-bold text-primary min-w-12.5">{event.startTime?.slice(0, 5) ?? ''}</div>
                     <div className="flex flex-col gap-1">
                         <div className="text-[17px] font-bold text-text-main">{event.name}</div>
                         <div className="text-[13px] text-text-muted">{leagueName} • {event.game}</div>

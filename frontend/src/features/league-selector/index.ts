@@ -1,2 +1,2 @@
-export * from './components/league-selector/LeagueSelector';
-export { default } from './components/league-selector/LeagueSelector';
+export * from './components/LeagueSelector';
+export { default } from './components/LeagueSelector';

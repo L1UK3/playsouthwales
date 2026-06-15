@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import ListView from '@calendar/components/list-view/ListView';
+import ListView from '@calendar/components/ListView';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';

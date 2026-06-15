@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import ListCard from '@calendar/components/event-card/list/ListCard';
+import ListCard from '@calendar/components/event-card/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
@@ -53,7 +53,7 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 
     return (
         <div className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0" id={`date-${dateKey}`}>
-            <div className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? "!border-l-4 !border-l-today-border" : ""}`}>{dateText}</div>
+            <div className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? "border-l-4! border-l-today-border!" : ""}`}>{dateText}</div>
             <div className="flex flex-col gap-3">
                 {eventsForDay.map(event => (
                     <ListCard

@@ -2,9 +2,9 @@ import React from 'react';
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 import type { League } from '@/types/League';
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@constants';
-import MapHandler from '../../helper/MapHandler';
-import InfoBox from '../info-box/InfoBox';
-import useMarker from '../../hooks/useMarker';
+import MapHandler from '../helper/MapHandler';
+import InfoBox from './InfoBox';
+import useMarker from '../hooks/useMarker';
 
 
 /**
