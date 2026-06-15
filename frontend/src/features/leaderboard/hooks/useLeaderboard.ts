@@ -14,7 +14,7 @@ export function useLeaderboard(leagueId: string | number) {
         queryKey: ['leaderboard', leagueId],
         queryFn: async () => {
             if (leagueId === 'global') {
-                const globalData = await loadTop20Players(leagueId);
+                const globalData = await loadTop20Players();
                 return globalData.map((player: any) => ({
                     position: player.position,
                     name: player.name,

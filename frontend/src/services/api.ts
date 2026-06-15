@@ -210,7 +210,7 @@ export async function deleteLeague(id: number): Promise<void> {
  * Fetches the top 20 players in Wales from the API.
  * @returns {Promise<any[]>} A promise that resolves to an array of top 20 player objects.
  */
-export async function loadTop20Players(leagueId: string | number): Promise<any[]> {
+export async function loadTop20Players(): Promise<any[]> {
   try {
     const response = await fetch("/api/players/top20");
     if (!response.ok) {
