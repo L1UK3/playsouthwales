@@ -3,16 +3,20 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import '@/assets/styles/global.css'
-import '@/assets/styles/animations.css'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ClerkProvider, useAuth } from '@clerk/react'
+
+import SuspenseLoader from '@/components/SuspenseLoader'
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
   context: {
     auth:undefined!,
-  }})
+  },
+  defaultPendingComponent: () => <SuspenseLoader fullPage />,
+})
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
