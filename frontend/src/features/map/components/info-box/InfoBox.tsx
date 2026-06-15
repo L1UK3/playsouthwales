@@ -1,7 +1,7 @@
 import React from 'react';
 import { InfoWindow } from '@vis.gl/react-google-maps';
 import type { League } from '@/types/League';
-import styles from './InfoBox.module.css';
+
 
 interface InfoBoxProps {
     selectedLeague: League;
@@ -30,31 +30,31 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
             onCloseClick={onCloseClick}
         >
             <div
-                className={styles.infoWindow}
+                className="text-[#0f172a] p-1.5 font-sans min-w-[200px]"
                 style={{ '--brand-color': brandColor } as React.CSSProperties}
             >
-                <div className={styles.infoWindowHeader}>
+                <div className="flex items-center gap-2 mb-2">
                     {selectedLeague.logo && (
                         <img
                             src={selectedLeague.logo}
                             alt={`${selectedLeague.name} Logo`}
-                            className={styles.infoWindowLogo}
+                            className="w-7 h-7 rounded-md object-contain bg-white border border-[#e2e8f0] p-px"
                         />
                     )}
-                    <h3 className={styles.infoWindowTitle}>{selectedLeague.name}</h3>
+                    <h3 className="m-0 text-[15px] font-bold text-[#0f172a] leading-tight">{selectedLeague.name}</h3>
                 </div>
                 {selectedLeague.location && (
-                    <p className={styles.infoWindowLocation}>
+                    <p className="m-0 mb-2.5 text-[13px] text-[#475569]">
                         📍 {selectedLeague.location}
                     </p>
                 )}
-                <div className={styles.infoWindowActions}>
+                <div className="flex gap-3 border-t border-[#e2e8f0] pt-2 mt-2">
                     {selectedLeague.website && (
                         <a
                             href={selectedLeague.website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.infoWindowLink}
+                            className="inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)] no-underline font-bold transition-colors duration-200 hover:underline"
                         >
                             Website
                         </a>
@@ -64,7 +64,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
                             href={selectedLeague.pokemonLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.infoWindowLink}
+                            className="inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)] no-underline font-bold transition-colors duration-200 hover:underline"
                         >
                             Pokémon Events
                         </a>

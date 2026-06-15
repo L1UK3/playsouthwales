@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@calendar/components/event-card/list/ListCard.module.css';
+
 import type { EventCardProps } from '@calendar/types/EventCard.types';
 import type { Event } from '@/types/Event';
 
@@ -37,36 +37,36 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
 
     return (
         <div
-            className={`${styles.listEventCard} gradient-card type-${event.type} ${isExpanded ? styles.expanded : ''}`}
+            className={`rounded-xl border border-border-color overflow-hidden cursor-pointer transition-all duration-200 border-l-[5px] border-l-[var(--store-color,var(--color-primary))] hover:translate-x-1 hover:border-primary gradient-card type-${event.type} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-[500px] [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >
-            <div className={styles.listHeader}>
-                <div className={styles.primary}>
-                    <div className={styles.listTime}>{event.startTime?.slice(0, 5) ?? ''}</div>
-                    <div className={styles.mainInfo}>
-                        <div className={styles.listStore}>{event.name}</div>
-                        <div className={styles.sub}>{leagueName} • {event.game}</div>
+            <div className="py-4 px-5 flex justify-between items-center gap-4">
+                <div className="flex items-center gap-5 grow">
+                    <div className="text-base font-bold text-primary min-w-[50px]">{event.startTime?.slice(0, 5) ?? ''}</div>
+                    <div className="flex flex-col gap-1">
+                        <div className="text-[17px] font-bold text-text-main">{event.name}</div>
+                        <div className="text-[13px] text-text-muted">{leagueName} • {event.game}</div>
                     </div>
                 </div>
-                <div className={styles.indicator}>
-                    <span className={styles.typeBadge}>{types[event.type] ?? ''}</span>
-                    <span className={styles.expandIcon}>▼</span>
+                <div className="flex items-center gap-3">
+                    <span className="text-lg opacity-80">{types[event.type] ?? ''}</span>
+                    <span className="expand-icon text-xs text-text-muted transition-transform duration-300">▼</span>
                 </div>
             </div>
-            <div className={styles.expandable}>
-                <div className={styles.body}>
-                    <div className={styles.meta}>
-                        <span className={styles.metaItem}><strong>Format:</strong> {event.type}</span>
-                        {event.entryFee ? <span className={styles.metaItem}><strong>Entry:</strong> {event.entryFee}</span> : null}
+            <div className="expandable-content max-h-0 overflow-hidden transition-all duration-300 bg-black/10">
+                <div className="p-5 flex flex-col gap-4">
+                    <div className="flex gap-5 text-sm [&_strong]:text-text-muted [&_strong]:font-semibold [&_strong]:mr-1">
+                        <span className=""><strong>Format:</strong> {event.type}</span>
+                        {event.entryFee ? <span className=""><strong>Entry:</strong> {event.entryFee}</span> : null}
                     </div>
-                    {event.description ? <div className={`${styles.description} description-box`}>{event.description}</div> : null}
-                    {event.prizes ? <div className={`${styles.prizes} prizes-box`}><strong>Prizes:</strong> {event.prizes}</div> : null}
-                    <div className={styles.actions}>
+                    {event.description ? <div className={"description-box"}>{event.description}</div> : null}
+                    {event.prizes ? <div className={"prizes-box"}><strong>Prizes:</strong> {event.prizes}</div> : null}
+                    <div className="flex justify-end">
                         {event.ticketLink ? (
                             <a
                                 href={event.ticketLink}
-                                className={`${styles.link} btn btn-primary`}
+                                className={"btn btn-primary"}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}

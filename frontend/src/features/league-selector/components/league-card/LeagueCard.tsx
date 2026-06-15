@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './LeagueCard.module.css';
+
 import type { League } from '@/types/League';
 
 /**
@@ -37,16 +37,16 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     return (
         <div
             id={`league-card-${league.leagueId}`}
-            className={`${styles.leagueCard} ${isSelected ? styles.selectedCard : ''}`}
+            className={`flex flex-col gap-3 p-5 rounded-lg border-2 border-border-color bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:border-text-muted hover:-translate-y-px ${isSelected ? "!border-primary !bg-[rgba(227,53,13,0.05)] !shadow-[0_4px_12px_rgba(227,53,13,0.15)]" : ""}`}
             style={{ '--brand-color': brandColor } as React.CSSProperties}
             onClick={() => onLeagueSelect(league.leagueId)}
         >
-            <div className={styles.leagueHeader}>
-                {league.logo && <img src={league.logo} alt={league.name} className={styles.leagueLogo} />}
+            <div className="flex items-center gap-3 [&_h3]:text-base [&_h3]:font-bold [&_h3]:text-text-darker">
+                {league.logo && <img src={league.logo} alt={league.name} className="w-10 h-10 rounded-md object-contain bg-white border border-border-color p-px shrink-0" />}
                 <h3>{league.name}</h3>
             </div>
-            {league.location && <p className={styles.leagueLocation}>📍 {league.location}</p>}
-            <div className={styles.leagueActions}>
+            {league.location && <p className="text-sm text-text-muted">📍 {league.location}</p>}
+            <div className="flex gap-2 flex-wrap">
                 {league.website && (
                     <a
                         href={league.website}
@@ -71,7 +71,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                 )}
             </div>
             {(onEdit || onDelete) && (
-                <div className={styles.leagueActions}>
+                <div className="flex gap-2 flex-wrap">
                     {onEdit && (
                         <button
                             type="button"

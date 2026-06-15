@@ -1,4 +1,4 @@
-/* Event Type Color Schemes */
+﻿/* Event Type Color Schemes */
 .type-CASUAL {
     --type-bg: oklch(0.78 0.25 150 / 0.15);
     --type-border: oklch(0.78 0.25 150);
@@ -45,29 +45,29 @@
 }
 
 .card-container {
-    background: var(--bg-card);
+    background: var(--color-bg-card);
     border-radius: 20px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-main);
     overflow: hidden;
 }
 
 .gradient-card {
-    background: linear-gradient(135deg, var(--type-bg) 0%, var(--bg-card) 100%);
+    background: linear-gradient(135deg, var(--type-bg) 0%, var(--color-bg-card) 100%);
     border: 1px solid color-mix(in oklch, var(--type-border) 60%, transparent) !important;
-    box-shadow: var(--shadow), 0 0 20px color-mix(in oklch, var(--type-border) 25%, transparent) !important;
+    box-shadow: var(--shadow-main), 0 0 20px color-mix(in oklch, var(--type-border) 25%, transparent) !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gradient-card:hover {
     border-color: var(--type-border) !important;
-    box-shadow: var(--shadow), 0 0 40px color-mix(in oklch, var(--type-border) 50%, transparent) !important;
+    box-shadow: var(--shadow-main), 0 0 40px color-mix(in oklch, var(--type-border) 50%, transparent) !important;
     transform: translateY(-2px);
 }
 
 .description-box {
     font-size: 14px;
     line-height: 1.6;
-    color: var(--text-darker);
+    color: var(--color-text-darker);
     background: rgba(255, 255, 255, 0.05);
     padding: 12px;
     border-radius: 8px;

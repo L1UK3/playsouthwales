@@ -5,7 +5,7 @@ import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@constants';
 import MapHandler from '../../helper/MapHandler';
 import InfoBox from '../info-box/InfoBox';
 import useMarker from '../../hooks/useMarker';
-import styles from './LeagueMap.module.css';
+
 
 /**
  * Properties for the LeagueMap component, displaying leagues on an interactive map.
@@ -41,11 +41,11 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 
     return (
         <APIProvider apiKey={apiKey}>
-            <div className={styles.mapContainer}>
+            <div className="w-full h-full overflow-hidden">
                 <Map
                     defaultCenter={DEFAULT_CENTER}
                     defaultZoom={DEFAULT_ZOOM}
-                    className={styles.mapCanvas}
+                    className="w-full h-full"
                     mapId="DEMO_MAP_ID"
                     onClick={handleMapClick}
                 >

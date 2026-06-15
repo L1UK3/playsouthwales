@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import pokeballUrl from '@assets/Pokeball/pokeball.glb?url';
 import { playPokeballPop } from '@calendar/utils/playPokeballPop';
-import styles from '@calendar/components/pokeball-overlay/PokeballOverlay.module.css';
+
 
 /**
  * Properties for the PokeballOverlay component.
@@ -250,7 +250,7 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
         };
     }, [containerRef]);
 
-    return <canvas ref={canvasRef} className={styles.canvas} />;
+    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-5" />;
 };
 
 export default PokeballOverlay;

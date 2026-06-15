@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import styles from '@calendar/components/list-view/ListView.module.css';
+
 import ListEventGroup from '@calendar/components/list-event-group/ListEventGroup';
 import type { Event } from '@/types/Event'
 import type { League } from '@/types/League';
@@ -47,11 +47,11 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
     }, []);
 
     if (sortedDates.length === 0) {
-        return <div className={styles.listNoEvents}>No events found.</div>;
+        return <div className="py-10 px-5 text-center text-text-muted text-base">No events found.</div>;
     }
 
     return (
-        <div id="list-view-events" className={styles.listViewEvents}>
+        <div id="list-view-events" className="flex flex-col gap-3">
             {sortedDates.map(dateKey => (
                 <ListEventGroup
                     key={dateKey}

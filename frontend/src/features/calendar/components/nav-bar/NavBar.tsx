@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@calendar/components/nav-bar/NavBar.module.css';
+
 
 /**
  * Properties for the NavBar component, providing navigation controls for the calendar and list views.
@@ -38,14 +38,14 @@ const NavBar: React.FC<NavBarProps> = ({
     onToggleViewMode
 }) => {
     return (
-        <div className={styles.navBar}>
+        <div className="flex gap-2 flex-wrap items-center max-[900px]:flex-col max-[900px]:items-stretch [&_h2]:mr-auto">
             <h2>{monthName} {year}</h2>
             <button className="btn btn-secondary" onClick={onGoToToday}>Today</button>
             <button className="btn btn-secondary" onClick={onPrevMonth}>&larr;</button>
             <button className="btn btn-secondary" onClick={onNextMonth}>&rarr;</button>
             {viewMode && onToggleViewMode && (
                 <button
-                    className={`${styles.calendarToggle} btn btn-primary`}
+                    className={"btn btn-primary ml-2 max-[900px]:ml-0"}
                     onClick={onToggleViewMode}
                 >
                     {viewMode === 'calendar' ? 'List' : 'Calendar'}

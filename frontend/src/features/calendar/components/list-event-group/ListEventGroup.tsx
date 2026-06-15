@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styles from '@calendar/components/list-event-group/ListEventGroup.module.css';
+
 import ListCard from '@calendar/components/event-card/list/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
@@ -52,9 +52,9 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
     const isToday = useMemo(() => dateKey === getLocalDateString(new Date()), [dateKey]);
 
     return (
-        <div className={styles.listEventsGroup} id={`date-${dateKey}`}>
-            <div className={`${styles.listGroupDate} ${isToday ? styles.today : ''}`}>{dateText}</div>
-            <div className={styles.listEventsInGroup}>
+        <div className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0" id={`date-${dateKey}`}>
+            <div className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? "!border-l-4 !border-l-today-border" : ""}`}>{dateText}</div>
+            <div className="flex flex-col gap-3">
                 {eventsForDay.map(event => (
                     <ListCard
                         key={event.id}

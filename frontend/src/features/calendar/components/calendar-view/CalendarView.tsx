@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import styles from '@calendar/components/calendar-view/CalendarView.module.css';
+
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
@@ -81,13 +81,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     }
 
     return (
-        <div className={`${styles.calendar} card-container`}>
-            <div className={styles.daysOfWeek}>
+        <div className={"card-container"}>
+            <div className="grid grid-cols-7 bg-bg-day-header border-b border-border-color text-center text-text-muted font-semibold border-3 border-border-color rounded-t-[22px]">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-                    <div key={d} className={styles.dayName}>{d}</div>
+                    <div key={d} className="py-4 px-2.5 text-sm max-sm:text-xs">{d}</div>
                 ))}
             </div>
-            <div className={styles.calendarGrid} id="calendar-grid" ref={gridRef}>
+            <div className="relative grid grid-cols-7 gap-px bg-border-color border-3 border-border-color border-t-0 rounded-b-[22px] overflow-hidden" id="calendar-grid" ref={gridRef}>
                 {cells.map(cell => (
                     <Cell
                         key={cell.dateKey}

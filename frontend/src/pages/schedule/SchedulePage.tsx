@@ -1,4 +1,4 @@
-import { MONTH_NAMES } from "@/constants";
+﻿import { MONTH_NAMES } from "@/constants";
 import { useEvents, useEventTypes, useLeagues } from "@/hooks";
 import {
     CalendarView,
@@ -11,7 +11,6 @@ import {
     SelectedDaySection
 } from "@calendar";
 import { useCallback, useMemo, useState } from "react";
-import styles from './SchedulePage.module.css';
 
 export type ViewMode = 'calendar' | 'list';
 
@@ -93,8 +92,8 @@ const SchedulePage: React.FC = () => {
 
 
     return (
-        <div className={`${styles.tabContent} ${styles.active} animate-swipe-up`}>
-            <div className={styles.scheduleHeader}>
+        <div className="block p-0 animate-swipe-up">
+            <div className="flex flex-col gap-4 mb-6 z-10 bg-bg-main p-4 rounded-[20px] border-3 border-border-color">
                 <NavBar
                     monthName={MONTH_NAMES[currentDate.getMonth()]}
                     year={currentDate.getFullYear()}
@@ -114,11 +113,11 @@ const SchedulePage: React.FC = () => {
                 />
             </div>
 
-            <div className={`${styles.calendarContainer} ${styles.active}`}>
+            <div className="block opacity-100">
                 {viewMode === 'calendar' ? (
                     <div key={calendarKey} className={animationClass}>
-                        <div className={styles.scheduleSplit}>
-                            <div className={styles.calendarColumn}>
+                        <div className="flex flex-col items-stretch gap-5 min-[1440px]:landscape:flex-row">
+                            <div className="flex-1 min-w-0">
                                 <CalendarView
                                     currentDate={currentDate}
                                     events={filteredEventsGrouped}

@@ -1,6 +1,6 @@
 import React from 'react';
 import EventCard from '@calendar/components/event-card/default/EventCard';
-import styles from '@calendar/components/selected-day-section/SelectedDaySection.module.css';
+
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypes } from '@/types/EventTypes';
@@ -34,15 +34,15 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     if (!selectedDateKey) return null;
 
     return (
-        <div className={`${styles.selectedDaySection} ${styles.active} card-container`}>
-            <div className={styles.eventListTitle}>
+        <div className={"!block animate-[slideInDown_0.4s_ease_forwards] card-container min-[1440px]:landscape:!flex min-[1440px]:landscape:flex-col min-[1440px]:landscape:flex-[0_0_480px] min-[1440px]:landscape:max-w-[480px] min-[1440px]:landscape:animate-[slideInRight_0.4s_ease_forwards] min-[1440px]:landscape:mt-0"}>
+            <div className="text-xl font-bold p-5 bg-bg-day-header text-text-main border-3 border-border-color border-b-0 rounded-t-[22px] min-[1440px]:landscape:shrink-0 min-[1440px]:landscape:h-[54px] min-[1440px]:landscape:flex min-[1440px]:landscape:items-center min-[1440px]:landscape:px-5 min-[1440px]:landscape:py-0">
                 {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
                     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
                 })}
             </div>
-            <div className={styles.eventList}>
+            <div className="grid gap-3.5 p-5 border-3 border-border-color rounded-b-[22px] min-[1440px]:landscape:flex-1 min-[1440px]:landscape:min-h-0 min-[1440px]:landscape:overflow-y-auto">
                 {selectedDayEvents.length === 0 ? (
-                    <div className={styles.noEvents}>No events scheduled for this day.</div>
+                    <div className="text-text-muted text-sm p-3.5 rounded-xl bg-bg-main text-center">No events scheduled for this day.</div>
                 ) : (
                     selectedDayEvents.map(event => (
                         <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />

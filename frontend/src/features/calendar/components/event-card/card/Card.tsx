@@ -1,6 +1,6 @@
-import React from 'react';
+﻿import React from 'react';
 import type { EventCardProps } from '@calendar/types/EventCard.types';
-import styles from '@calendar/components/event-card/card/Card.module.css';
+
 
 /**
  * Additional props for the Card component.
@@ -12,7 +12,7 @@ export interface CardProps {
 
 /**
  * Card component represents a single event entry within a calendar cell.
- * @param {EventCardProps} props - The properties passed to the component including the event, leagueMap, and event types.
+ * @param {EventCardProps & CardProps} props - The properties passed to the component including the event, leagueMap, and event types.
  * @returns {JSX.Element} The rendered card component.
  */
 const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMap, types, isOtherMonth }) => {
@@ -22,11 +22,11 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMa
 
     return (
         <div
-            className={`${styles.event} type-${event.type} ${isOtherMonth ? styles.otherMonth : ''}`}
+            className={`flex justify-between items-center gap-1.5 py-2 px-2.5 rounded-[10px] bg-[var(--type-bg)] text-text-main text-xs font-bold cursor-pointer transition-all duration-200 border-l-[6px] border-l-[var(--store-color,var(--type-border))] hover:bg-[var(--type-border)]/20 max-sm:text-[11px] max-sm:py-1.5 max-sm:px-2 type-${event.type} ${isOtherMonth ? "opacity-50" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
         >
-            <span>{leagueName}</span>
-            <span className={styles.type}>{types[event.type] ?? event.type}</span>
+            <span className="truncate min-w-0">{leagueName}</span>
+            <span className="shrink-0 text-[11px] text-text-muted">{types[event.type] ?? event.type}</span>
         </div>
     );
 });

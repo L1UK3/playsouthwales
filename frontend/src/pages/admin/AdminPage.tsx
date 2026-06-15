@@ -1,10 +1,9 @@
-import { EventsPanel, LeagueFormModal, useAdminLeagues } from "@/features/admin";
+﻿import { EventsPanel, LeagueFormModal, useAdminLeagues } from "@/features/admin";
 import LeagueSelector from "@/features/league-selector";
 import { useEventTypes } from "@/hooks/useEventTypes";
 import { useLeagues } from "@/hooks/useLeagues";
 import type { League } from "@/types/League";
 import { useMemo, useState } from "react";
-import styles from './AdminPage.module.css';
 
 
 /**
@@ -69,12 +68,12 @@ const AdminPage: React.FC = () => {
     };
 
     return (
-        <div className={`${styles.dashboard} animate-swipe-up`}>
-            <div className={`${styles.dashboardHeader} ${styles.animateIn}`} style={{ animationDelay: '0ms' }}>
+        <div className="max-w-300 mx-auto pb-10 flex flex-col gap-8 animate-swipe-up">
+            <div className="flex flex-col gap-2 [&_h2]:text-[28px] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[15px]" style={{ animationDelay: '0ms' }}>
                 <h2>League Manager</h2>
             </div>
 
-            <div className={styles.animateIn} style={{ animationDelay: '80ms' }}>
+            <div style={{ animationDelay: '80ms' }}>
                 <LeagueSelector
                     leagues={leagues}
                     selectedLeagueId={selectedLeagueId}

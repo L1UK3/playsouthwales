@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@calendar/components/event-card/default/EventCard.module.css';
+
 import type { EventCardProps } from '@calendar/types/EventCard.types';
 
 /**
@@ -18,30 +18,30 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
     const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
 
     return (
-        <div className={`${styles.eventCard} gradient-card type-${event.type}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
-            <div className={styles.content}>
-                <div className={styles.header}>
-                    <div className={styles.store}>{event.name}</div>
-                    <div className={styles.type}>
+        <div className={`flex flex-col gap-3 p-5 rounded-lg shadow-main border-l-[8px] border-l-[var(--store-color,var(--type-border))] gradient-card type-${event.type}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
+            <div className="flex flex-col gap-2.5">
+                <div className="flex flex-col gap-1">
+                    <div className="font-bold text-text-main text-lg">{event.name}</div>
+                    <div className="text-sm font-semibold text-type-text">
                         {types[event.type] ? `${types[event.type]} ` : ''}{event.type} • {event.game}
                     </div>
                 </div>
 
-                <div className={styles.details}>
-                    <div className={styles.league}>{leagueName}</div>
-                    <div className={styles.time}>
+                <div className="flex flex-col gap-1">
+                    <div className="text-sm font-medium text-text-darker">{leagueName}</div>
+                    <div className="text-[13px] text-text-muted">
                         {event.startTime ?? ''} {event.entryFee ? `• ${event.entryFee}` : ''}
                     </div>
                 </div>
 
-                {event.description ? <div className={`${styles.description} description-box`}>{event.description}</div> : null}
+                {event.description ? <div className={"description-box text-sm text-text-muted leading-relaxed"}>{event.description}</div> : null}
                 {event.prizes ? (
-                    <div className={`${styles.prizes} prizes-box`}>
+                    <div className={"prizes-box text-sm text-text-muted [&_strong]:text-text-main"}>
                         <strong>Prizes:</strong> {event.prizes}
                     </div>
                 ) : null}
                 {event.ticketLink ? (
-                    <a href={event.ticketLink} className={`${styles.link} btn btn-primary`} target="_blank" rel="noopener noreferrer">
+                    <a href={event.ticketLink} className={"btn btn-primary mt-2"} target="_blank" rel="noopener noreferrer">
                         Tickets & Info
                     </a>
                 ) : null}

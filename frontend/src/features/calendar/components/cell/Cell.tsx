@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "@calendar/components/cell/Cell.module.css";
+
 import Card from "@calendar/components/event-card/card/Card";
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
@@ -53,13 +53,13 @@ const Cell: React.FC<CellProps> = React.memo(({
 
     return (
         <div
-            className={`${styles.calendarCell} ${isOtherMonth ? styles.empty : ''} ${isSelected ? styles.selected : ''} ${isToday ? styles.today : ''}`}
+            className={`min-h-[120px] min-w-[120px] p-3.5 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px max-sm:min-h-[110px] max-sm:p-3 last:rounded-br-[19px] [&:nth-last-child(7)]:rounded-bl-[19px] ${isOtherMonth ? "!bg-bg-cell-empty !cursor-default" : ""} ${isSelected ? "!outline !outline-3 !outline-selected-border !-outline-offset-3" : ""} ${isToday ? "!border-2 !border-today-border" : ""}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
             data-date-key={dateKey}
         >
-            <div className={styles.dateNumber}>{day}</div>
+            <div className="text-sm font-bold text-text-main mb-2.5 max-sm:text-xs">{day}</div>
             {eventsForDay.length > 0 ? (
-                <div className={styles.eventList}>
+                <div className="grid gap-2">
                     {eventsForDay.slice(0, 2).map((event) => (
                         <Card
                             key={event.id}
@@ -70,7 +70,7 @@ const Cell: React.FC<CellProps> = React.memo(({
                         />
                     ))}
                     {eventsForDay.length > 2 ? (
-                        <div className={styles.eventSummary}>
+                        <div className="py-2 px-2.5 rounded-[10px] bg-event-more-bg text-event-more-text text-xs text-center">
                             {eventsForDay.length - 2} more event{eventsForDay.length - 2 === 1 ? '' : 's'}
                         </div>
                     ) : null}

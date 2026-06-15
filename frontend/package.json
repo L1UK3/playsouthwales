@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@clerk/react": "^6.9.1",
+    "@clerk/tanstack-react-start": "^1.4.2",
     "@clerk/ui": "^1.16.1",
+    "@tailwindcss/vite": "^4.3.1",
     "@tanstack/react-query": "^5.0.0",
     "@tanstack/react-router": "^1.95.5",
     "@vis.gl/react-google-maps": "^1.8.3",
@@ -19,8 +21,8 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^6.14.1",
-    "three": "^0.184.0",
-    "@clerk/tanstack-react-start": "^1.4.2"
+    "tailwindcss": "^4.3.1",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

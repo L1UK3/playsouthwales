@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import styles from './EventsPanel.module.css';
+
 import NavBar from '@calendar/components/nav-bar/NavBar';
 import { MONTH_NAMES } from '@constants';
 import type { Event } from '@/types/Event';
@@ -81,8 +81,8 @@ export const EventsPanel: React.FC<EventsPanelProps> = ({
     }, [editingEvent, activeLeague.leagueId, createEvent, updateEvent]);
 
     return (
-        <div className={styles.eventsPanel}>
-            <div className={styles.panelHeader}>
+        <div className="bg-bg-card border border-border-color rounded-lg p-8 shadow-main flex flex-col gap-6">
+            <div className="flex justify-between items-center border-b border-border-color pb-4">
                 <h3>Scheduled Events ({activeLeague.name})</h3>
                 <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>
                     Schedule New Event

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import styles from './LeagueFormModal.module.css';
+
 import type { League } from '@/types/League';
 import { useLeagueForm } from '../../hooks/useLeagueForm';
 
@@ -89,21 +89,21 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     };
 
     return createPortal(
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <div className={styles.modalHeader}>
+        <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-[8px] z-[1000] flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
+            <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-[650px] max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
+                <div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
                     <h3>{editingLeague ? 'Edit League / Store' : 'Add New League / Store'}</h3>
-                    <button type="button" className={styles.closeButton} onClick={onClose}>
+                    <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
                         X
                     </button>
                 </div>
-                <form onSubmit={handleFormSubmit} className={styles.form}>
-                    <div className={styles.modalBody}>
-                        <div className={styles.formGrid}>
+                <form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
+                    <div className="p-7 overflow-y-auto">
+                        <div className="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
                             {/* Store Name */}
-                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
-                                <label htmlFor="leagueName" className={styles.label}>
-                                    Store Name <span className={styles.required}>*</span>
+                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                                <label htmlFor="leagueName" className="text-[13px] font-bold text-text-main flex justify-between items-center">
+                                    Store Name <span className="text-primary text-[11px] font-semibold">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -112,28 +112,28 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formName}
                                     onChange={(e) => setFormName(e.target.value)}
                                     placeholder="e.g. Firestorm Games Cardiff"
-                                    className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.name ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                     required
                                 />
-                                {errors.name && <span className={styles.errorText}>{errors.name}</span>}
+                                {errors.name && <span className="text-[11px] text-red-500 font-semibold">{errors.name}</span>}
                             </div>
 
                             {/* Location */}
-                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
-                                <label htmlFor="leagueLocation" className={styles.label}>Location / Address</label>
+                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                                <label htmlFor="leagueLocation" className="text-[13px] font-bold text-text-main flex justify-between items-center">Location / Address</label>
                                 <input
                                     type="text"
                                     id="leagueLocation"
                                     value={formLocation}
                                     onChange={(e) => setFormLocation(e.target.value)}
                                     placeholder="e.g. Cardiff, UK"
-                                    className={styles.input}
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 />
                             </div>
 
                             {/* Latitude */}
-                            <div className={styles.formGroup}>
-                                <label htmlFor="leagueLatitude" className={styles.label}>Latitude</label>
+                            <div className="flex flex-col gap-1.5 relative">
+                                <label htmlFor="leagueLatitude" className="text-[13px] font-bold text-text-main flex justify-between items-center">Latitude</label>
                                 <input
                                     type="number"
                                     step="any"
@@ -141,14 +141,14 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formLatitude}
                                     onChange={(e) => setFormLatitude(e.target.value)}
                                     placeholder="e.g. 51.4816"
-                                    className={`${styles.input} ${errors.latitude ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.latitude ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                 />
-                                {errors.latitude && <span className={styles.errorText}>{errors.latitude}</span>}
+                                {errors.latitude && <span className="text-[11px] text-red-500 font-semibold">{errors.latitude}</span>}
                             </div>
 
                             {/* Longitude */}
-                            <div className={styles.formGroup}>
-                                <label htmlFor="leagueLongitude" className={styles.label}>Longitude</label>
+                            <div className="flex flex-col gap-1.5 relative">
+                                <label htmlFor="leagueLongitude" className="text-[13px] font-bold text-text-main flex justify-between items-center">Longitude</label>
                                 <input
                                     type="number"
                                     step="any"
@@ -156,21 +156,21 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={formLongitude}
                                     onChange={(e) => setFormLongitude(e.target.value)}
                                     placeholder="e.g. -3.1791"
-                                    className={`${styles.input} ${errors.longitude ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.longitude ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                 />
-                                {errors.longitude && <span className={styles.errorText}>{errors.longitude}</span>}
+                                {errors.longitude && <span className="text-[11px] text-red-500 font-semibold">{errors.longitude}</span>}
                             </div>
 
                             {/* Brand Color */}
-                            <div className={styles.formGroup}>
-                                <label htmlFor="leagueBrandColor" className={styles.label}>Brand Color</label>
-                                <div className={styles.colorPickerGroup}>
+                            <div className="flex flex-col gap-1.5 relative">
+                                <label htmlFor="leagueBrandColor" className="text-[13px] font-bold text-text-main flex justify-between items-center">Brand Color</label>
+                                <div className="flex items-center gap-3">
                                     <input
                                         type="color"
                                         id="leagueBrandColor"
                                         value={formBrandColor}
                                         onChange={(e) => setFormBrandColor(e.target.value)}
-                                        className={styles.colorInput}
+                                        className="p-0.5 w-11 h-11 rounded-md border border-border-color cursor-pointer bg-transparent focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                     />
                                     <input
                                         type="text"
@@ -178,70 +178,70 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                         onChange={(e) => setFormBrandColor(e.target.value)}
                                         placeholder="#FF0000"
                                         maxLength={7}
-                                        className={styles.input}
+                                        className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                         style={{ flex: 1 }}
                                     />
                                 </div>
                             </div>
 
                             {/* Logo URL */}
-                            <div className={styles.formGroup}>
-                                <label htmlFor="leagueLogo" className={styles.label}>Logo Image URL</label>
+                            <div className="flex flex-col gap-1.5 relative">
+                                <label htmlFor="leagueLogo" className="text-[13px] font-bold text-text-main flex justify-between items-center">Logo Image URL</label>
                                 <input
                                     type="url"
                                     id="leagueLogo"
                                     value={formLogo}
                                     onChange={(e) => setFormLogo(e.target.value)}
                                     placeholder="https://example.com/logo.png"
-                                    className={`${styles.input} ${errors.logo ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.logo ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                 />
-                                {errors.logo && <span className={styles.errorText}>{errors.logo}</span>}
+                                {errors.logo && <span className="text-[11px] text-red-500 font-semibold">{errors.logo}</span>}
                             </div>
 
                             {/* Website URL */}
-                            <div className={styles.formGroup}>
-                                <label htmlFor="leagueWebsite" className={styles.label}>Official Website URL</label>
+                            <div className="flex flex-col gap-1.5 relative">
+                                <label htmlFor="leagueWebsite" className="text-[13px] font-bold text-text-main flex justify-between items-center">Official Website URL</label>
                                 <input
                                     type="url"
                                     id="leagueWebsite"
                                     value={formWebsite}
                                     onChange={(e) => setFormWebsite(e.target.value)}
                                     placeholder="https://example.com"
-                                    className={`${styles.input} ${errors.website ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.website ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                 />
-                                {errors.website && <span className={styles.errorText}>{errors.website}</span>}
+                                {errors.website && <span className="text-[11px] text-red-500 font-semibold">{errors.website}</span>}
                             </div>
 
                             {/* Pokémon Link */}
-                            <div className={styles.formGroup}>
-                                <label htmlFor="leaguePokemonLink" className={styles.label}>Pokémon Event Page URL</label>
+                            <div className="flex flex-col gap-1.5 relative">
+                                <label htmlFor="leaguePokemonLink" className="text-[13px] font-bold text-text-main flex justify-between items-center">Pokémon Event Page URL</label>
                                 <input
                                     type="url"
                                     id="leaguePokemonLink"
                                     value={formPokemonLink}
                                     onChange={(e) => setFormPokemonLink(e.target.value)}
                                     placeholder="https://events.pokemon.com/..."
-                                    className={`${styles.input} ${errors.pokemonLink ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.pokemonLink ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                 />
-                                {errors.pokemonLink && <span className={styles.errorText}>{errors.pokemonLink}</span>}
+                                {errors.pokemonLink && <span className="text-[11px] text-red-500 font-semibold">{errors.pokemonLink}</span>}
                             </div>
 
                             {/* Social Link */}
-                            <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
-                                <label htmlFor="leagueSocialLink" className={styles.label}>Social Media URL (e.g. Facebook)</label>
+                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                                <label htmlFor="leagueSocialLink" className="text-[13px] font-bold text-text-main flex justify-between items-center">Social Media URL (e.g. Facebook)</label>
                                 <input
                                     type="url"
                                     id="leagueSocialLink"
                                     value={formSocialLink}
                                     onChange={(e) => setFormSocialLink(e.target.value)}
                                     placeholder="https://facebook.com/..."
-                                    className={`${styles.input} ${errors.socialLink ? styles.inputError : ''}`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.socialLink ? "!border-red-500 focus:!shadow-[0_0_0_3px_rgba(239,68,68,0.15)]" : ""}`}
                                 />
-                                {errors.socialLink && <span className={styles.errorText}>{errors.socialLink}</span>}
+                                {errors.socialLink && <span className="text-[11px] text-red-500 font-semibold">{errors.socialLink}</span>}
                             </div>
                         </div>
                     </div>
-                    <div className={styles.formActions}>
+                    <div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main">
                         <button
                             type="button"
                             className="btn btn-secondary"
