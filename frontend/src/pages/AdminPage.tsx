@@ -132,7 +132,7 @@ const AdminPage: React.FC = () => {
     // confirms deletion of a league and deletes it
     const handleDeleteLeagueTrigger = useCallback((league: League) => {
         if (window.confirm(`Are you sure you want to delete ${league.name}?`)) {
-            deleteLeagueMutation.mutate(league.leagueId);
+            deleteLeagueMutation.mutate({ id: league.leagueId });
         }
     }, [deleteLeagueMutation]);
 
