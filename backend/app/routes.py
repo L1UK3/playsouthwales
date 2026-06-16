@@ -1,5 +1,6 @@
 from .utils import load_top_20
 from flask import Blueprint, request, jsonify, current_app
+from .auth import require_auth
 import os
 
 from .models import Event, League
@@ -73,6 +74,7 @@ def get_leagues():
     return jsonify(league_list)
 
 @main.route('/api/events', methods=['POST'])
+@require_auth
 def create_event():
     """
     Create a new event.
@@ -128,6 +130,7 @@ def create_event():
         }), 500
 
 @main.route('/api/events/<int:eventId>', methods=['PUT', 'PATCH'])
+@require_auth
 def update_event(eventId):
     """
     Update an existing event.
@@ -199,6 +202,7 @@ def update_event(eventId):
 
 
 @main.route('/api/events/<int:event_id>', methods=['DELETE'])
+@require_auth
 def delete_event(event_id):
     """
     Delete an event.
@@ -225,6 +229,7 @@ def delete_event(event_id):
 
 
 @main.route('/api/leagues', methods=['POST'])
+@require_auth
 def create_league():
     """
     Create a new league.
@@ -279,6 +284,7 @@ def create_league():
 
 
 @main.route('/api/leagues/<int:league_id>', methods=['PUT', 'PATCH'])
+@require_auth
 def update_league(league_id):
     """
     Update an existing league.
@@ -347,6 +353,7 @@ def update_league(league_id):
 
 
 @main.route('/api/leagues/<int:league_id>', methods=['DELETE'])
+@require_auth
 def delete_league(league_id):
     """
     Delete a league.

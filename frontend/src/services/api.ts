@@ -73,11 +73,12 @@ export async function loadLeagues(): Promise<League[]> {
  * @param {Omit<Event, 'id'>} event - The event data to create.
  * @returns {Promise<Event>} A promise that resolves to the created Event object.
  */
-export async function createEvent(event: Omit<Event, "id">): Promise<Event> {
+export async function createEvent(event: Omit<Event, "id">,token:string): Promise<Event> {
   const response = await fetch("/api/events", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(event),
   });
@@ -99,11 +100,13 @@ export async function createEvent(event: Omit<Event, "id">): Promise<Event> {
 export async function updateEvent(
   id: number,
   event: Partial<Event>,
+  token:string
 ): Promise<Event> {
   const response = await fetch(`/api/events/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(event),
   });
@@ -121,9 +124,12 @@ export async function updateEvent(
  * @param {number} id - The ID of the event to delete.
  * @returns {Promise<void>} A promise that resolves when the event is successfully deleted.
  */
-export async function deleteEvent(id: number): Promise<void> {
+export async function deleteEvent(id: number,token:string): Promise<void> {
   const response = await fetch(`/api/events/${id}`, {
     method: "DELETE",
+    headers:{
+      'Authorization': `Bearer ${token}`
+  }
   });
   if (!response.ok) {
     const errData = await response.json().catch(() => ({}));
@@ -140,11 +146,13 @@ export async function deleteEvent(id: number): Promise<void> {
  */
 export async function createLeague(
   league: Omit<League, "leagueId">,
+  token:string
 ): Promise<League> {
   const response = await fetch("/api/leagues", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(league),
   });
@@ -168,11 +176,13 @@ export async function createLeague(
 export async function updateLeague(
   id: number,
   league: Partial<League>,
+  token:string 
 ): Promise<League> {
   const response = await fetch(`/api/leagues/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(league),
   });
@@ -192,9 +202,12 @@ export async function updateLeague(
  * @param {number} id - The ID of the league to delete.
  * @returns {Promise<void>} A promise that resolves when the league is successfully deleted.
  */
-export async function deleteLeague(id: number): Promise<void> {
+export async function deleteLeague(id: number,token:string): Promise<void> {
   const response = await fetch(`/api/leagues/${id}`, {
     method: "DELETE",
+    headers:{
+    'Authorization': `Bearer ${token}`
+  }
   });
   if (!response.ok) {
     const errData = await response.json().catch(() => ({}));
