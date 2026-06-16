@@ -37,8 +37,8 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     if (!selectedDateKey) return null;
 
     return (
-        <div className="block! animate-swipe-left bg-bg-card rounded-[20px] shadow-main overflow-hidden min-[1440px]:landscape:flex! min-[1440px]:landscape:flex-col min-[1440px]:landscape:flex-[0_0_480px] min-[1440px]:landscape:max-w-120 min-[1440px]:landscape:animate-slide-in-right min-[1440px]:landscape:mt-0 min-[1440px]:landscape:h-full">
-            <div className="text-xl font-bold p-5 bg-bg-day-header text-text-main border-3 border-border-color border-b-0 rounded-t-[22px] min-[1440px]:landscape:shrink-0 min-[1440px]:landscape:h-13.5 min-[1440px]:landscape:flex min-[1440px]:landscape:items-center min-[1440px]:landscape:px-5 min-[1440px]:landscape:py-0 flex items-center justify-between">
+        <div className="block! animate-swipe-left bg-bg-card rounded-lg shadow-main overflow-hidden min-[1440px]:landscape:flex! min-[1440px]:landscape:flex-col min-[1440px]:landscape:flex-[0_0_420px] min-[1440px]:landscape:max-w-105 min-[1440px]:landscape:animate-slide-in-right min-[1440px]:landscape:mt-0 min-[1440px]:landscape:h-full">
+            <div className="text-base font-bold p-3.5 bg-bg-day-header text-text-main border-2 border-border-color border-b-0 rounded-t-lg min-[1440px]:landscape:shrink-0 min-[1440px]:landscape:h-11 min-[1440px]:landscape:flex min-[1440px]:landscape:items-center min-[1440px]:landscape:px-4 min-[1440px]:landscape:py-0 flex items-center justify-between">
                 <span>
                     {new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
                         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
@@ -54,9 +54,9 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
                     </button>
                 )}
             </div>
-            <div className="flex flex-col gap-3.5 p-5 border-3 border-border-color rounded-b-[22px] min-[1440px]:landscape:flex-1 min-[1440px]:landscape:min-h-0 min-[1440px]:landscape:overflow-y-auto">
+            <div className="flex flex-col gap-2.5 p-3.5 border-2 border-border-color rounded-b-lg min-[1440px]:landscape:flex-1 min-[1440px]:landscape:min-h-0 min-[1440px]:landscape:overflow-y-auto">
                 {selectedDayEvents.length === 0 ? (
-                    <div className="text-text-muted text-sm p-3.5 rounded-xl bg-bg-main text-center">No events scheduled for this day.</div>
+                    <div className="text-text-muted text-sm p-2.5 rounded-xl bg-bg-main text-center">No events scheduled for this day.</div>
                 ) : (
                     selectedDayEvents.map(event => (
                         <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />

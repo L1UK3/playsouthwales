@@ -25,9 +25,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
 
                     <thead className='sticky top-0 bg-bg-card border-b border-border-color z-10'>
                         <tr className='text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md'>
-                            <th className='py-3.5 px-4 w-16 text-center'>Rank</th>
-                            <th className='py-3.5 px-4'>Player</th>
-                            <th className='py-3.5 px-4 text-right pr-6'>CP</th>
+                            <th className='py-2 px-3 w-16 text-center'>Rank</th>
+                            <th className='py-2 px-3'>Player</th>
+                            <th className='py-2 px-3 text-right pr-4'>CP</th>
                         </tr>
                     </thead>
 
@@ -50,15 +50,15 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
                                         key={player.position}
                                         className={`hover:bg-bg-card-hover/60 transition-colors duration-150 group cursor-pointer`}
                                     >
-                                        <td className='py-3 px-4 flex justify-center items-center'>
+                                        <td className='py-1.5 px-3 flex justify-center items-center'>
                                             <RankBadge position={player.position} />
                                         </td>
-                                        <td className='py-3 px-4 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
+                                        <td className='py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
                                             <div className='flex items-center gap-2'>
                                                 <span>{player.name}</span>
                                             </div>
                                         </td>
-                                        <td className='py-3 px-4 text-right pr-6 text-sm font-bold text-primary'>
+                                        <td className='py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary'>
                                             <span className='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10'>
                                                 {player.cp}
                                             </span>

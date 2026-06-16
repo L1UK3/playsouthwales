@@ -39,7 +39,7 @@ const NavBar: React.FC<NavBarProps> = ({
 }) => {
     return (
         <div className="flex gap-2 flex-wrap items-center max-[900px]:flex-col max-[900px]:items-stretch [&_h2]:mr-auto">
-            <h2>{monthName} {year}</h2>
+            <h2 className="text-lg font-bold text-text-darker">{monthName} {year}</h2>
             <button className="btn btn-secondary" onClick={onGoToToday}>Today</button>
             <button className="btn btn-secondary" onClick={onPrevMonth}>&larr;</button>
             <button className="btn btn-secondary" onClick={onNextMonth}>&rarr;</button>

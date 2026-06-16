@@ -27,10 +27,10 @@ const RankingsPage: React.FC = () => {
     }
 
     return (
-        <div className='grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] h-[calc(100vh-180px)] overflow-hidden bg-bg-card border-4 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[992px]:h-[calc(100vh-140px)] max-[992px]:grid-cols-1 max-[992px]:grid-rows-[1fr_1fr] max-[576px]:rounded-md max-[576px]:border-2'>
+        <div className='grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] h-[calc(100vh-140px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[992px]:h-[calc(100vh-120px)] max-[992px]:grid-cols-1 max-[992px]:grid-rows-[1fr_1fr] max-[576px]:rounded-md max-[576px]:border-2'>
 
             {/* Left Column: Global Leaderboard */}
-            <div className='flex flex-col p-6 h-full min-h-0 border-r-2 border-border-color max-[992px]:border-r-0 max-[992px]:border-b-2 max-[992px]:border-border-color max-[992px]:p-5 max-[576px]:p-4'>
+            <div className='flex flex-col p-4 h-full min-h-0 border-r-2 border-border-color max-[992px]:border-r-0 max-[992px]:border-b-2 max-[992px]:border-border-color max-[992px]:p-4 max-[576px]:p-3'>
                 <div className='flex justify-between items-center mb-3 flex-none'>
                     <h1 className='text-lg font-bold text-text-main flex items-center gap-2 m-0'>
                         <Trophy className='w-5 h-5 text-amber-500' />
@@ -46,7 +46,7 @@ const RankingsPage: React.FC = () => {
             </div>
 
             {/* Right Column: Local Leaderboards */}
-            <div className='flex flex-col p-6 h-full min-h-0 gap-4 max-[992px]:p-5 max-[576px]:p-4 bg-bg-main/10'>
+            <div className='flex flex-col p-4 h-full min-h-0 gap-3 max-[992px]:p-4 max-[576px]:p-3 bg-bg-main/10'>
                 <div className='flex flex-col gap-3 flex-none'>
                     <div className='flex justify-between items-center'>
                         <h2 className='text-lg font-bold text-text-main m-0'>Local Standings</h2>

@@ -1,4 +1,4 @@
-﻿import { MONTH_NAMES } from "@/constants";
+import { MONTH_NAMES } from "@/constants";
 import { useEvents, useEventTypes, useLeagues } from "@/hooks";
 import {
     CalendarView,
@@ -109,8 +109,8 @@ const SchedulePage: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col sm:h-full sm:min-h-0 p-0 animate-swipe-up">
-            <div className="flex flex-col gap-4 mb-6 z-10 bg-bg-main p-4 rounded-[20px] border-3 border-border-color shrink-0">
+        <div className="flex flex-col p-0 animate-swipe-up">
+            <div className="flex flex-col gap-3 mb-4 z-10 bg-bg-main p-3.5 rounded-lg border-2 border-border-color shrink-0">
                 <NavBar
                     monthName={MONTH_NAMES[currentDate.getMonth()]}
                     year={currentDate.getFullYear()}
@@ -130,11 +130,11 @@ const SchedulePage: React.FC = () => {
                 />
             </div>
 
-            <div className="flex-1 min-h-0 block opacity-100">
+            <div className="flex-1 block opacity-100">
                 {viewMode === 'calendar' ? (
-                    <div key={calendarKey} className={`${animationClass} sm:h-full sm:min-h-0`}>
-                        <div className="flex flex-col items-stretch gap-5 min-[1440px]:landscape:flex-row sm:h-full sm:min-h-0">
-                            <div className="flex-1 min-w-0 sm:h-full sm:flex sm:flex-col sm:min-h-0">
+                    <div key={calendarKey} className={animationClass}>
+                        <div className="flex flex-col items-stretch gap-4 min-[1440px]:landscape:flex-row">
+                            <div className="flex-1 min-w-0 sm:flex sm:flex-col">
                                 <CalendarView
                                     currentDate={currentDate}
                                     events={filteredEventsGrouped}

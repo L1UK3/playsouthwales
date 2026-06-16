@@ -53,15 +53,15 @@ const Cell: React.FC<CellProps> = React.memo(({
 
     return (
         <div
-            className={`min-h-16 sm:min-h-25 sm:h-full min-w-0 w-full p-2 sm:p-3.5 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[19px] nth-last-7:rounded-bl-[19px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
+            className={`min-h-12 sm:min-h-20 min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
             data-date-key={dateKey}
         >
-            <div className="text-sm font-bold text-text-main mb-1 sm:mb-2.5 max-sm:text-xs">{day}</div>
+            <div className="text-xs font-bold text-text-main mb-1 sm:mb-1.5">{day}</div>
             {eventsForDay.length > 0 ? (
                 <>
                     {/* Desktop/Tablet view: show full card list */}
-                    <div className="hidden sm:grid gap-2">
+                    <div className="hidden sm:grid gap-1">
                         {eventsForDay.slice(0, 2).map((event) => (
                             <Card
                                 key={event.id}
@@ -72,7 +72,7 @@ const Cell: React.FC<CellProps> = React.memo(({
                             />
                         ))}
                         {eventsForDay.length > 2 ? (
-                            <div className="py-2 px-2.5 rounded-[10px] bg-event-more-bg text-event-more-text text-xs text-center">
+                            <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
                                 {eventsForDay.length - 2} more
                             </div>
                         ) : null}

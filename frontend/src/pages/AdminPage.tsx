@@ -180,8 +180,8 @@ const AdminPage: React.FC = () => {
     }
 
     return (
-        <div className="max-w-6xl mx-auto pb-10 flex flex-col gap-8 animate-swipe-up">
-            <div className="flex flex-col gap-2 [&_h2]:text-[28px] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[15px]" style={{ animationDelay: '0ms' }}>
+        <div className="max-w-6xl mx-auto pb-6 flex flex-col gap-5 animate-swipe-up">
+            <div className="flex flex-col gap-1.5 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[14px]" style={{ animationDelay: '0ms' }}>
                 <h2>League Manager</h2>
             </div>
 
@@ -199,9 +199,9 @@ const AdminPage: React.FC = () => {
             </div>
 
             {activeLeague && (
-                <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border border-border-color rounded-lg p-8 shadow-main flex flex-col gap-6">
-                    <div className="flex justify-between items-center border-b border-border-color pb-4">
-                        <h3>Scheduled Events ({activeLeague.name})</h3>
+                <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border border-border-color rounded-lg p-5 shadow-main flex flex-col gap-4">
+                    <div className="flex justify-between items-center border-b border-border-color pb-2.5">
+                        <h3 className="text-base font-bold">Scheduled Events ({activeLeague.name})</h3>
                         <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>
                             Schedule New Event
                         </button>

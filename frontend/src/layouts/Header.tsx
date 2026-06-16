@@ -40,9 +40,9 @@ const Header: React.FC<HeaderProps> = ({
             path.includes('schedule') ? 'Schedule' :
                 'Admin';
     return (
-        <header className="sticky top-0 z-100 px-6 pt-6">
-            <div className="flex gap-5 flex-wrap justify-between py-3 px-5 items-center bg-bg-card rounded-lg shadow-main relative border-4 border-border-color max-md:flex-col max-md:items-stretch">
-                <h1 className="text-2xl text-text-main flex-1">
+        <header className="sticky top-0 z-100 px-4 pt-4">
+            <div className="flex gap-4 flex-wrap justify-between py-2 px-4 items-center bg-bg-card rounded-lg shadow-main relative border-2 border-border-color max-md:flex-col max-md:items-stretch">
+                <h1 className="text-xl text-text-main flex-1">
                     Play! Wales | <span key={title} className="inline-block animate-swipe-left">{title}</span>
                 </h1>
 
@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({
                             <UserButton />
                             <Link
                                 to="/admin"
-                                className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
+                                className={`inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
                             >
                                 Admin
                             </Link>
@@ -73,14 +73,14 @@ const Header: React.FC<HeaderProps> = ({
                             },
                             theme: neobrutalism
                         }}>
-                            <button type="button" className="inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted">
+                            <button type="button" className="inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted">
                                 Sign In
                             </button>
                         </SignInButton>
                     )}
                     <div className="relative">
                         <button
-                            className={`inline-flex items-center gap-1.5 py-2 px-4 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${isSettingsOpen ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
+                            className={`inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${isSettingsOpen ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
                             onClick={onSettingsBox}>
                             &#9881;
                         </button>
