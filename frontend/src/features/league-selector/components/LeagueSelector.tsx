@@ -6,12 +6,14 @@ import type { League } from '@/types/League';
 export interface LeagueSelectorProps {
     leagues: League[];
     selectedLeagueId: number | null;
-    setSelectedLeagueId: (id: number) => void;
+    setSelectedLeagueId: (id: number | null) => void;
     onEdit?: (league: League) => void;
     onDelete?: (league: League) => void;
     onAdd?: () => void;
     showAdminControls?: boolean;
     columns?: number;
+    showInfo?: boolean;
+    layout?: 'grid' | 'scroll';
 }
 
 /**
@@ -26,7 +28,9 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
     onDelete,
     onAdd,
     showAdminControls,
-    columns
+    columns,
+    showInfo,
+    layout = 'grid'
 }) => {
     const gridColsClass = {
         1: 'grid-cols-1',
@@ -35,9 +39,17 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
         4: 'grid-cols-4',
     }[columns ?? 3] ?? 'grid-cols-3';
 
+    const isScroll = layout === 'scroll';
+
     return (
         <div className="flex flex-col gap-4">
-            <div className={`grid ${gridColsClass} gap-4`}>
+            <div
+                className={
+                    isScroll
+                        ? "flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border-color/70 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb:hover]:bg-text-muted"
+                        : `grid ${gridColsClass} gap-4`
+                }
+            >
                 {leagues.map(league => (
                     <LeagueCard
                         key={league.leagueId}
@@ -46,12 +58,18 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                         onLeagueSelect={setSelectedLeagueId}
                         onEdit={onEdit}
                         onDelete={onDelete}
+                        showInfo={showInfo}
+                        className={isScroll ? "w-[240px] shrink-0" : ""}
                     />
                 ))}
 
                 {showAdminControls && (
                     <div
-                        className="flex flex-col items-center justify-center min-h-30 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-all duration-300 hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]"
+                        className={
+                            isScroll
+                                ? "flex flex-col items-center justify-center min-h-30 w-[240px] shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-all duration-300 hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]"
+                                : "flex flex-col items-center justify-center min-h-30 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-all duration-300 hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]"
+                        }
                         onClick={onAdd}
                     >
                         <div className="flex flex-col items-center gap-2 font-bold text-[15px]">

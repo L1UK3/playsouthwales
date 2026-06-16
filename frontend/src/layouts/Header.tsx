@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({
             path.includes('schedule') ? 'Schedule' :
                 'Admin';
     return (
-        <header className="sticky top-0 z-100 px-4 pt-4">
+        <header className="top-0 z-100 px-4 pt-4">
             <div className="flex gap-4 flex-wrap justify-between py-2 px-4 items-center bg-bg-card rounded-lg shadow-main relative border-2 border-border-color max-md:flex-col max-md:items-stretch">
                 <h1 className="text-xl text-text-main flex-1">
                     Play! Wales | <span key={title} className="inline-block animate-swipe-left">{title}</span>

@@ -195,6 +195,7 @@ const AdminPage: React.FC = () => {
                     onEdit={handleEditLeagueTrigger}
                     onDelete={handleDeleteLeagueTrigger}
                     columns={4}
+                    showInfo={false}
                 />
             </div>
 

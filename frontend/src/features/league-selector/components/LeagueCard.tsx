@@ -17,6 +17,8 @@ export interface LeagueCardProps {
     onLeagueSelect: (id: number) => void;
     onEdit?: (league: League) => void;
     onDelete?: (league: League) => void;
+    showInfo?: boolean;
+    className?: string;
 }
 
 /**
@@ -30,14 +32,16 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     onLeagueSelect,
     onEdit,
     onDelete,
+    showInfo = true,
+    className = ''
 }) => {
     const isSelected = selectedLeagueID === league.leagueId;
-    const brandColor = league.brandColor ?? 'var(--primary)';
+    const brandColor = league.brandColor ?? 'var(--color-primary)';
 
     return (
         <div
             id={`league-card-${league.leagueId}`}
-            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:border-text-muted hover:-translate-y-px ${isSelected ? "border-primary! bg-[rgba(227,53,13,0.05)]! shadow-[0_4px_12px_rgba(227,53,13,0.15)]!" : ""}`}
+            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? "border-[var(--brand-color)]! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!" : ""} ${className}`}
             style={{ '--brand-color': brandColor } as React.CSSProperties}
             onClick={() => onLeagueSelect(league.leagueId)}
         >
@@ -45,31 +49,35 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                 {league.logo && <img src={league.logo} alt={league.name} className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0" />}
                 <h3>{league.name}</h3>
             </div>
-            {league.location && <p className="text-[13px] text-text-muted">📍 {league.location}</p>}
-            <div className="flex gap-2 flex-wrap">
-                {league.website && (
-                    <a
-                        href={league.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-secondary"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        League Website
-                    </a>
-                )}
-                {league.pokemonLink && (
-                    <a
-                        href={league.pokemonLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-secondary"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        Pokémon Website
-                    </a>
-                )}
-            </div>
+            {showInfo && (
+                <>
+                    {league.location && <p className="text-[13px] text-text-muted">📍 {league.location}</p>}
+                    <div className="flex gap-2 flex-wrap">
+                        {league.website && (
+                            <a
+                                href={league.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-secondary"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                League Website
+                            </a>
+                        )}
+                        {league.pokemonLink && (
+                            <a
+                                href={league.pokemonLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-secondary"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                Pokémon Website
+                            </a>
+                        )}
+                    </div>
+                </>
+            )}
             {(onEdit ?? onDelete) && (
                 <div className="flex gap-2 flex-wrap">
                     {onEdit && (

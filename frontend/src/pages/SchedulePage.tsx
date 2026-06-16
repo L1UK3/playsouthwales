@@ -22,7 +22,7 @@ export type ViewMode = 'calendar' | 'list';
  */
 const SchedulePage: React.FC = () => {
     const [currentDate, setCurrentDate] = useState(() => new Date());
-    const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+    const [selectedDateKey, setSelectedDateKey] = useState<string | null>(() => getLocalDateString(new Date()));
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
     const [filters, setFilters] = useState({ league: '', type: '', game: '' });
     const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>(null);
@@ -76,7 +76,7 @@ const SchedulePage: React.FC = () => {
 
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
     const { data: types = {}, isLoading: isTypesLoading } = useEventTypes();
-    
+
     const { data: currentEvents = [], isLoading: isCurrentEventsLoading } = useEvents(currentDate);
     const { data: prevEvents = [] } = useEvents(prevMonthDate);
     const { data: nextEvents = [] } = useEvents(nextMonthDate);
@@ -94,6 +94,21 @@ const SchedulePage: React.FC = () => {
     );
 
     const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] ?? []) : [];
+
+    const activeMonthEvents = useMemo(() => {
+        const year = currentDate.getFullYear();
+        const monthStr = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const monthKeyPrefix = `${year}-${monthStr}`;
+        return allEvents.filter(event => {
+            if (!event.date.startsWith(monthKeyPrefix)) return false;
+            if (filters.league && String(event.leagueId) !== filters.league) return false;
+            if (filters.type && event.type !== filters.type) return false;
+            if (filters.game && event.game !== filters.game) return false;
+            return true;
+        }).sort((a, b) => a.date.localeCompare(b.date) || (a.startTime ?? '').localeCompare(b.startTime ?? ''));
+    }, [allEvents, currentDate, filters]);
+
+    const eventsToDisplay = selectedDateKey ? selectedDayEvents : activeMonthEvents;
 
     const animationClass =
         direction === 'left' ? 'animate-swipe-left' :
@@ -132,9 +147,9 @@ const SchedulePage: React.FC = () => {
 
             <div className="flex-1 block opacity-100">
                 {viewMode === 'calendar' ? (
-                    <div key={calendarKey} className={animationClass}>
-                        <div className="flex flex-col items-stretch gap-4 min-[1440px]:landscape:flex-row">
-                            <div className="flex-1 min-w-0 sm:flex sm:flex-col">
+                    <div key={calendarKey} className={`${animationClass}`}>
+                        <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-start">
+                            <div className="flex-1 min-w-0 lg:flex lg:flex-col">
                                 <CalendarView
                                     currentDate={currentDate}
                                     events={filteredEventsGrouped}
@@ -146,10 +161,10 @@ const SchedulePage: React.FC = () => {
                             </div>
                             <SelectedDaySection
                                 selectedDateKey={selectedDateKey}
-                                selectedDayEvents={selectedDayEvents}
+                                selectedDayEvents={eventsToDisplay}
+                                currentDate={currentDate}
                                 leagueMap={leagueMap}
                                 types={types}
-                                onClose={() => setSelectedDateKey(null)}
                             />
                         </div>
                     </div>

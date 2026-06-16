@@ -53,7 +53,7 @@ const Cell: React.FC<CellProps> = React.memo(({
 
     return (
         <div
-            className={`min-h-12 sm:min-h-20 min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
+            className={`min-h-12 sm:min-h-[148px] sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
             data-date-key={dateKey}
         >
@@ -62,7 +62,7 @@ const Cell: React.FC<CellProps> = React.memo(({
                 <>
                     {/* Desktop/Tablet view: show full card list */}
                     <div className="hidden sm:grid gap-1">
-                        {eventsForDay.slice(0, 2).map((event) => (
+                        {eventsForDay.slice(0, 3).map((event) => (
                             <Card
                                 key={event.id}
                                 event={event}
@@ -71,9 +71,9 @@ const Cell: React.FC<CellProps> = React.memo(({
                                 isOtherMonth={isOtherMonth}
                             />
                         ))}
-                        {eventsForDay.length > 2 ? (
+                        {eventsForDay.length > 3 ? (
                             <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
-                                {eventsForDay.length - 2} more
+                                {eventsForDay.length - 3} more
                             </div>
                         ) : null}
                     </div>
