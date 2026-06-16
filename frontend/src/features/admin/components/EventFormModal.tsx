@@ -1,24 +1,86 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import type { Event } from '@/types/Event';
 
 export interface EventFormModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSubmit: (data: Omit<Event, 'id'>) => void;
+    initialData?: Event | null;
+    leagueId: number;
 }
 
-export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose }) => {
+export const EventFormModal: React.FC<EventFormModalProps> = ({
+    isOpen,
+    onClose,
+    onSubmit,
+    initialData,
+    leagueId
+}) => {
+    const [name, setName] = useState('');
+    const [date, setDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [type, setType] = useState('STANDARD');
+    const [game, setGame] = useState('TCG');
+    const [entryFee, setEntryFee] = useState('');
+    const [ticketLink, setTicketLink] = useState('');
+    const [description, setDescription] = useState('');
+    const [prizes, setPrizes] = useState('');
+
+    useEffect(() => {
+        if (isOpen) {
+            if (initialData) {
+                setName(initialData.name || '');
+                setDate(initialData.date ? initialData.date.slice(0, 10) : '');
+                setStartTime(initialData.startTime || '');
+                setType(initialData.type || 'STANDARD');
+                setGame(initialData.game || 'TCG');
+                setEntryFee(initialData.entryFee || '');
+                setTicketLink(initialData.ticketLink || '');
+                setDescription(initialData.description || '');
+                setPrizes(initialData.prizes || '');
+            } else {
+                setName('');
+                setDate('');
+                setStartTime('');
+                setType('STANDARD');
+                setGame('TCG');
+                setEntryFee('');
+                setTicketLink('');
+                setDescription('');
+                setPrizes('');
+            }
+        }
+    }, [isOpen, initialData]);
+
     if (!isOpen) return null;
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSubmit({
+            name,
+            date,
+            startTime: startTime || undefined,
+            type,
+            game,
+            entryFee: entryFee || undefined,
+            ticketLink: ticketLink || undefined,
+            description: description || undefined,
+            prizes: prizes || undefined,
+            leagueId: initialData ? initialData.leagueId : leagueId
+        });
+    };
 
     return createPortal(
         <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
             <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-150 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
                 <div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
-                    <h3>Schedule New Event</h3>
+                    <h3>{initialData ? 'Edit Event' : 'Schedule New Event'}</h3>
                     <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
                         X
                     </button>
                 </div>
-                <form className="flex flex-col gap-5">
+                <form className="flex flex-col gap-5 overflow-hidden" onSubmit={handleSubmit}>
                     <div className="p-7 overflow-y-auto">
                         <div className="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
                             {/* Event Title */}
@@ -30,6 +92,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                     type="text"
                                     id="eventName"
                                     placeholder="e.g. Standard League Challenge"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                     required
                                 />
@@ -43,6 +107,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                 <input
                                     type="date"
                                     id="eventDate"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                     required
                                 />
@@ -54,6 +120,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                 <input
                                     type="time"
                                     id="eventStartTime"
+                                    value={startTime}
+                                    onChange={(e) => setStartTime(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 />
                             </div>
@@ -65,6 +133,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                 </label>
                                 <select
                                     id="eventType"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
                                     <option value="STANDARD">Standard</option>
@@ -82,6 +152,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                 </label>
                                 <select
                                     id="eventGame"
+                                    value={game}
+                                    onChange={(e) => setGame(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
                                     <option value="TCG">TCG (Trading Card Game)</option>
@@ -97,6 +169,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                     type="text"
                                     id="eventEntryFee"
                                     placeholder="e.g. £10 or Free"
+                                    value={entryFee}
+                                    onChange={(e) => setEntryFee(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 />
                             </div>
@@ -108,6 +182,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                     type="url"
                                     id="eventTicketLink"
                                     placeholder="https://example.com/tickets"
+                                    value={ticketLink}
+                                    onChange={(e) => setTicketLink(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                 />
                             </div>
@@ -118,6 +194,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                 <textarea
                                     id="eventDescription"
                                     placeholder="Describe tournament rounds, standard regulations, match rules, etc."
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
@@ -128,13 +206,15 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                                 <textarea
                                     id="eventPrizes"
                                     placeholder="e.g. Championship points, booster packs for participating"
+                                    value={prizes}
+                                    onChange={(e) => setPrizes(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main">
+                    <div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0">
                         <button
                             type="button"
                             className="btn btn-secondary"
@@ -146,7 +226,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose 
                             type="submit"
                             className="btn btn-primary"
                         >
-                            Save Changes
+                            {initialData ? 'Save Changes' : 'Schedule Event'}
                         </button>
                     </div>
                 </form>

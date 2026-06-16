@@ -2,8 +2,8 @@ import React from 'react';
 import { Trophy } from 'lucide-react';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useLeagues } from '@/hooks';
-import { Leaderboard } from '@leaderboard';
-import { LeagueSelector } from '@/features/league-selector/components/LeagueSelector';
+import Leaderboard from '@leaderboard/components/Leaderboard';
+import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 
 const RankingsPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
@@ -28,7 +28,7 @@ const RankingsPage: React.FC = () => {
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] h-[calc(100vh-180px)] overflow-hidden bg-bg-card border-4 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[992px]:h-[calc(100vh-140px)] max-[992px]:grid-cols-1 max-[992px]:grid-rows-[1fr_1fr] max-[576px]:rounded-md max-[576px]:border-2'>
-            
+
             {/* Left Column: Global Leaderboard */}
             <div className='flex flex-col p-6 h-full min-h-0 border-r-2 border-border-color max-[992px]:border-r-0 max-[992px]:border-b-2 max-[992px]:border-border-color max-[992px]:p-5 max-[576px]:p-4'>
                 <div className='flex justify-between items-center mb-3 flex-none'>
@@ -51,7 +51,7 @@ const RankingsPage: React.FC = () => {
                     <div className='flex justify-between items-center'>
                         <h2 className='text-lg font-bold text-text-main m-0'>Local Standings</h2>
                         {selectedLeague && (
-                            <span 
+                            <span
                                 className='text-xs font-semibold px-2.5 py-0.5 rounded-full text-white transition-all duration-300 shadow-xs'
                                 style={{ backgroundColor: selectedLeague.brandColor ?? 'var(--color-primary)' }}
                             >

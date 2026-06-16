@@ -5,12 +5,18 @@ import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import { createLeagueMap, filterAndGroupEvents, ListView, NavBar } from "@calendar";
 import { MONTH_NAMES } from "@/constants";
+import { createEvent, createLeague, deleteEvent, deleteLeague, updateEvent, updateLeague } from "@/services/api";
+import type { League } from "@/types/League";
+import type { Event } from "@/types/Event";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AdminPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [isEditingLeague, setIsEditingLeague] = useState<boolean>(false);
     const [isEditingEvent, setIsEditingEvent] = useState<boolean>(false);
+    const [editingLeague, setEditingLeague] = useState<League | null>(null);
+    const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
     const { data: events = [], isLoading: isEventsLoading } = useEvents(currentDate);
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
@@ -45,28 +51,129 @@ const AdminPage: React.FC = () => {
         setCurrentDate(new Date(todayYear, todayMonth, 1));
     }, []);
 
+    const queryClient = useQueryClient();
 
+    // League mutations
+    const createLeagueMutation = useMutation({
+        mutationFn: (data: Omit<League, 'leagueId'>) => createLeague(data), // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leagues'] });
+        },
+        onError: (error: Error) => {
+            console.error('League Creation Failed', error);
+        }
+    });
+
+    const updateLeagueMutation = useMutation({
+        mutationFn: ({ id, data }: { id: number; data: Partial<League> }) => updateLeague(id, data), // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leagues'] });
+        },
+        onError: (error: Error) => {
+            console.error('League Update Failed', error);
+        }
+    });
+
+    const deleteLeagueMutation = useMutation({
+        mutationFn: (data: { id: number }) => deleteLeague(data.id), // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leagues'] });
+        },
+        onError: (error: Error) => {
+            console.error('League Deletion Failed', error);
+        }
+    });
+
+    // Event mutations
+    const createEventMutation = useMutation({
+        mutationFn: (data: Omit<Event, 'id'>) => createEvent(data), // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+        },
+        onError: (error: Error) => {
+            console.error('Event Creation Failed', error);
+        }
+    });
+
+    const updateEventMutation = useMutation({
+        mutationFn: ({ id, data }: { id: number; data: Partial<Event> }) => updateEvent(id, data), // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+        },
+        onError: (error: Error) => {
+            console.error('Event Update Failed', error);
+        }
+    });
+
+    const deleteEventMutation = useMutation({
+        mutationFn: (data: { id: number }) => deleteEvent(data.id), // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+        },
+        onError: (error: Error) => {
+            console.error('Event Deletion Failed', error);
+        }
+    });
+
+    // triggers for buttons
+
+    // opens league creation modal
     const handleAddLeagueTrigger = useCallback(() => {
+        setEditingLeague(null);
         setIsEditingLeague(true);
     }, []);
 
-    const handleEditLeagueTrigger = useCallback(() => {
+    // opens league editing modal
+    const handleEditLeagueTrigger = useCallback((league: League) => {
+        setEditingLeague(league);
         setIsEditingLeague(true);
     }, []);
 
-    const handleDeleteLeagueTrigger = useCallback(() => {
-    }, []);
+    // confirms deletion of a league and deletes it
+    const handleDeleteLeagueTrigger = useCallback((league: League) => {
+        if (window.confirm(`Are you sure you want to delete ${league.name}?`)) {
+            deleteLeagueMutation.mutate(league.leagueId);
+        }
+    }, [deleteLeagueMutation]);
 
+    // opens event creation modal
     const handleAddEventTrigger = useCallback(() => {
+        setEditingEvent(null);
         setIsEditingEvent(true);
     }, []);
 
-    const handleEditEventTrigger = useCallback(() => {
+    // opens event editing modal
+    const handleEditEventTrigger = useCallback((event: Event) => {
+        setEditingEvent(event);
         setIsEditingEvent(true);
     }, []);
 
-    const handleDeleteEventTrigger = useCallback(() => {
-    }, []);
+    // confirms deletion of an event and deletes it
+    const handleDeleteEventTrigger = useCallback((event: Event) => {
+        if (window.confirm(`Are you sure you want to delete "${event.name}"?`)) {
+            deleteEventMutation.mutate({ id: event.id });
+        }
+    }, [deleteEventMutation]);
+
+    // handles league submission, creating or updating
+    const handleLeagueSubmit = useCallback((data: Omit<League, 'leagueId'>) => {
+        if (editingLeague) {
+            updateLeagueMutation.mutate({ id: editingLeague.leagueId, data });
+        } else {
+            createLeagueMutation.mutate(data);
+        }
+        setIsEditingLeague(false);
+    }, [editingLeague, createLeagueMutation, updateLeagueMutation]);
+
+    // handles event submission, creating or updating
+    const handleEventSubmit = useCallback((data: Omit<Event, 'id'>) => {
+        if (editingEvent) {
+            updateEventMutation.mutate({ id: editingEvent.id, data });
+        } else {
+            createEventMutation.mutate(data);
+        }
+        setIsEditingEvent(false);
+    }, [editingEvent, createEventMutation, updateEventMutation]);
 
     if (isLeaguesLoading || isEventTypesLoading || isEventsLoading) {
         return <SuspenseLoader message="Loading admin manager..." />;
@@ -125,8 +232,19 @@ const AdminPage: React.FC = () => {
                 </div>
             )}
 
-            <LeagueFormModal isOpen={isEditingLeague} onClose={() => setIsEditingLeague(false)} />
-            <EventFormModal isOpen={isEditingEvent} onClose={() => setIsEditingEvent(false)} />
+            <LeagueFormModal
+                isOpen={isEditingLeague}
+                onClose={() => setIsEditingLeague(false)}
+                onSubmit={handleLeagueSubmit}
+                initialData={editingLeague}
+            />
+            <EventFormModal
+                isOpen={isEditingEvent}
+                onClose={() => setIsEditingEvent(false)}
+                onSubmit={handleEventSubmit}
+                initialData={editingEvent}
+                leagueId={selectedLeagueId || 0}
+            />
         </div>
     );
 };
