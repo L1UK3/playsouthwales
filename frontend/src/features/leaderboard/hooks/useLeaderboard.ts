@@ -1,13 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { loadTop20Players } from '@services/api';
 import mockData from '../data/mock_data.json';
-
-export interface LeaderboardPosition {
-    position: number;
-    name: string;
-    cp: number;
-    userId?: number;
-}
+import type { LeaderboardPosition } from '../types/LeaderboardPosition';
 
 export function useLeaderboard(leagueId: string | number) {
     return useQuery<LeaderboardPosition[]>({

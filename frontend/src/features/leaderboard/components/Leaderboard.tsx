@@ -1,25 +1,12 @@
 import React from 'react';
-import { renderRankBadge } from './RankBadge';
+import { RankBadge } from './RankBadge';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import SuspenseLoader from '@/components/SuspenseLoader';
+import { SkeletonRow } from './SkeletonRow';
 
 export interface LeaderboardProps {
     leagueId?: number | string;
 }
-
-const SkeletonRow: React.FC = () => (
-    <tr className='animate-pulse'>
-        <td className='py-4 px-4 flex justify-center items-center'>
-            <div className='w-7 h-7 bg-border-color/60 rounded-full' />
-        </td>
-        <td className='py-4 px-4'>
-            <div className='h-4 bg-border-color/60 rounded-sm w-32' />
-        </td>
-        <td className='py-4 px-4 text-right pr-6 flex justify-end items-center'>
-            <div className='h-5 bg-border-color/60 rounded-full w-12' />
-        </td>
-    </tr>
-);
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
     const { data: players = [], isLoading } = useLeaderboard(leagueId);
@@ -64,7 +51,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
                                         className={`hover:bg-bg-card-hover/60 transition-colors duration-150 group cursor-pointer`}
                                     >
                                         <td className='py-3 px-4 flex justify-center items-center'>
-                                            {renderRankBadge(player.position)}
+                                            <RankBadge position={player.position} />
                                         </td>
                                         <td className='py-3 px-4 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
                                             <div className='flex items-center gap-2'>
