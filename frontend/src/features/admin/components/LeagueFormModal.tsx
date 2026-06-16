@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { League } from '@/types/League';
 
@@ -15,43 +15,17 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     onSubmit,
     initialData
 }) => {
-    const [name, setName] = useState('');
-    const [location, setLocation] = useState('');
-    const [latitude, setLatitude] = useState('');
-    const [longitude, setLongitude] = useState('');
-    const [brandColor, setBrandColor] = useState('#ff0000');
-    const [logo, setLogo] = useState('');
-    const [website, setWebsite] = useState('');
-    const [pokemonLink, setPokemonLink] = useState('');
-    const [socialLink, setSocialLink] = useState('');
+    const [name, setName] = useState(initialData?.name ?? '');
+    const [location, setLocation] = useState(initialData?.location ?? '');
+    const [latitude, setLatitude] = useState(initialData?.latitude ? String(initialData.latitude) : '');
+    const [longitude, setLongitude] = useState(initialData?.longitude ? String(initialData.longitude) : '');
+    const [brandColor, setBrandColor] = useState(initialData?.brandColor ?? '#ff0000');
+    const [logo, setLogo] = useState(initialData?.logo ?? '');
+    const [website, setWebsite] = useState(initialData?.website ?? '');
+    const [pokemonLink, setPokemonLink] = useState(initialData?.pokemonLink ?? '');
+    const [socialLink, setSocialLink] = useState(initialData?.socialLink ?? '');
 
     const errors: Record<string, string> = {};
-
-    useEffect(() => {
-        if (isOpen) {
-            if (initialData) {
-                setName(initialData.name || '');
-                setLocation(initialData.location || '');
-                setLatitude(initialData.latitude ? String(initialData.latitude) : '');
-                setLongitude(initialData.longitude ? String(initialData.longitude) : '');
-                setBrandColor(initialData.brandColor || '#ff0000');
-                setLogo(initialData.logo || '');
-                setWebsite(initialData.website || '');
-                setPokemonLink(initialData.pokemonLink || '');
-                setSocialLink(initialData.socialLink || '');
-            } else {
-                setName('');
-                setLocation('');
-                setLatitude('');
-                setLongitude('');
-                setBrandColor('#ff0000');
-                setLogo('');
-                setWebsite('');
-                setPokemonLink('');
-                setSocialLink('');
-            }
-        }
-    }, [isOpen, initialData]);
 
     if (!isOpen) return null;
 

@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AdminPage: React.FC = () => {
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-    const [currentDate, setCurrentDate] = useState<Date>(new Date());
+    const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
     const [isEditingLeague, setIsEditingLeague] = useState<boolean>(false);
     const [isEditingEvent, setIsEditingEvent] = useState<boolean>(false);
     const [editingLeague, setEditingLeague] = useState<League | null>(null);
@@ -233,17 +233,19 @@ const AdminPage: React.FC = () => {
             )}
 
             <LeagueFormModal
+                key={isEditingLeague ? (editingLeague?.leagueId ?? 'new') : 'closed'}
                 isOpen={isEditingLeague}
                 onClose={() => setIsEditingLeague(false)}
                 onSubmit={handleLeagueSubmit}
                 initialData={editingLeague}
             />
             <EventFormModal
+                key={isEditingEvent ? (editingEvent?.id ?? 'new') : 'closed'}
                 isOpen={isEditingEvent}
                 onClose={() => setIsEditingEvent(false)}
                 onSubmit={handleEventSubmit}
                 initialData={editingEvent}
-                leagueId={selectedLeagueId || 0}
+                leagueId={selectedLeagueId ?? 0}
             />
         </div>
     );

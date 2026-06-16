@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Event } from '@/types/Event';
 
@@ -17,41 +17,15 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
     initialData,
     leagueId
 }) => {
-    const [name, setName] = useState('');
-    const [date, setDate] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [type, setType] = useState('STANDARD');
-    const [game, setGame] = useState('TCG');
-    const [entryFee, setEntryFee] = useState('');
-    const [ticketLink, setTicketLink] = useState('');
-    const [description, setDescription] = useState('');
-    const [prizes, setPrizes] = useState('');
-
-    useEffect(() => {
-        if (isOpen) {
-            if (initialData) {
-                setName(initialData.name || '');
-                setDate(initialData.date ? initialData.date.slice(0, 10) : '');
-                setStartTime(initialData.startTime || '');
-                setType(initialData.type || 'STANDARD');
-                setGame(initialData.game || 'TCG');
-                setEntryFee(initialData.entryFee || '');
-                setTicketLink(initialData.ticketLink || '');
-                setDescription(initialData.description || '');
-                setPrizes(initialData.prizes || '');
-            } else {
-                setName('');
-                setDate('');
-                setStartTime('');
-                setType('STANDARD');
-                setGame('TCG');
-                setEntryFee('');
-                setTicketLink('');
-                setDescription('');
-                setPrizes('');
-            }
-        }
-    }, [isOpen, initialData]);
+    const [name, setName] = useState(initialData?.name ?? '');
+    const [date, setDate] = useState(initialData?.date ? initialData.date.slice(0, 10) : '');
+    const [startTime, setStartTime] = useState(initialData?.startTime ?? '');
+    const [type, setType] = useState(initialData?.type ?? 'STANDARD');
+    const [game, setGame] = useState(initialData?.game ?? 'TCG');
+    const [entryFee, setEntryFee] = useState(initialData?.entryFee ?? '');
+    const [ticketLink, setTicketLink] = useState(initialData?.ticketLink ?? '');
+    const [description, setDescription] = useState(initialData?.description ?? '');
+    const [prizes, setPrizes] = useState(initialData?.prizes ?? '');
 
     if (!isOpen) return null;
 
@@ -60,13 +34,13 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
         onSubmit({
             name,
             date,
-            startTime: startTime || undefined,
+            startTime: startTime ?? undefined,
             type,
             game,
-            entryFee: entryFee || undefined,
-            ticketLink: ticketLink || undefined,
-            description: description || undefined,
-            prizes: prizes || undefined,
+            entryFee: entryFee ?? undefined,
+            ticketLink: ticketLink ?? undefined,
+            description: description ?? undefined,
+            prizes: prizes ?? undefined,
             leagueId: initialData ? initialData.leagueId : leagueId
         });
     };

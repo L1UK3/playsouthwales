@@ -12,6 +12,7 @@ export const EVENT_TYPES: EventTypes = {
     "WORLDS": "🌍"
 };
 
+// eslint-disable-next-line react-x/no-unnecessary-use-prefix
 export function useEventTypes() {
     return {
         data: EVENT_TYPES,

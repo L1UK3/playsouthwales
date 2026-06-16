@@ -1,27 +1,30 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
-import '@/assets/styles/global.css'
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ClerkProvider, useAuth } from '@clerk/react'
-
-import SuspenseLoader from '@/components/SuspenseLoader'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen';
+import '@/assets/styles/global.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ClerkProvider, useAuth } from '@clerk/react';
+import SuspenseLoader from '@/components/SuspenseLoader';
 
 // Create a new router instance
 const router = createRouter({
-  routeTree,
-  context: {
-    auth:undefined!,
-  },
-  defaultPendingComponent: () => <SuspenseLoader fullPage />,
-})
+	routeTree,
+	context: {
+		auth: undefined!,
+	},
+	defaultPendingComponent: () => <SuspenseLoader fullPage />,
+});
+
+export function AuthenticatedApp() {
+	const auth = useAuth();
+	return <RouterProvider router={router} context={{ auth }} />;
+}
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
 	interface Register {
-		router: typeof router
+		router: typeof router;
 	}
 }
 
@@ -34,20 +37,14 @@ const queryClient = new QueryClient({
 			retry: 1
 		}
 	}
-})
-
-// Wrapper to inject Clerk auth into router context
-function AuthenticatedApp() {
-  const auth = useAuth()
-  return <RouterProvider router={router} context={{ auth }} />
-}
+});
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
 			<QueryClientProvider client={queryClient}>
-				<AuthenticatedApp/>
+				<AuthenticatedApp />
 			</QueryClientProvider>
 		</ClerkProvider>
 	</StrictMode>
-)
+);

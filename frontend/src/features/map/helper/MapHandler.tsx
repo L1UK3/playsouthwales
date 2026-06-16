@@ -22,7 +22,7 @@ export const MapHandler: React.FC<MapHandlerProps> = ({
     useEffect(() => {
         if (!map) return;
 
-        if (selectedLeague && selectedLeague.latitude !== undefined && selectedLeague.longitude !== undefined) {
+        if (selectedLeague?.latitude !== undefined && selectedLeague?.longitude !== undefined) {
             map.panTo({ lat: selectedLeague.latitude, lng: selectedLeague.longitude });
             map.setZoom(13);
         } else {

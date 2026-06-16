@@ -1,9 +1,7 @@
 let audioContext: AudioContext | null = null;
 
 const getAudioContext = (): AudioContext => {
-    if (!audioContext) {
-        audioContext = new AudioContext();
-    }
+    audioContext ??= new AudioContext();
     if (audioContext.state === 'suspended') {
         void audioContext.resume();
     }

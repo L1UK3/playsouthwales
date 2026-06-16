@@ -33,8 +33,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
 
                     <tbody className='divide-y divide-border-color/50'>
                         {isLoading ? (
-                            Array.from({ length: 8 }).map((_, index) => (
-                                <SkeletonRow key={index} />
+                            [1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
+                                <SkeletonRow key={id} />
                             ))
                         ) : players.length === 0 ? (
                             <tr>
