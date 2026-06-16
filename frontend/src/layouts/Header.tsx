@@ -38,9 +38,7 @@ const Header: React.FC<HeaderProps> = ({
     const title = path.includes('leagues') ? 'Leagues' :
         path.includes('rankings') ? 'Rankings' :
             path.includes('schedule') ? 'Schedule' :
-                path.includes('admin') ? 'Admin' :
-                    "Pairings";
-
+                'Admin';
     return (
         <header className="sticky top-0 z-100 px-6 pt-6">
             <div className="flex gap-5 flex-wrap justify-between py-3 px-5 items-center bg-bg-card rounded-lg shadow-main relative border-4 border-border-color max-md:flex-col max-md:items-stretch">
@@ -52,7 +50,6 @@ const Header: React.FC<HeaderProps> = ({
                     { to: '/schedule', label: 'Schedule' },
                     { to: '/leagues', label: 'Leagues' },
                     { to: '/rankings', label: 'Rankings' },
-                    { to: '/pairings', label: 'Pairings' }
                 ]} activeTab={path} />
 
                 <div className="flex-1 flex gap-2.5 items-center justify-end">
@@ -65,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({
                             >
                                 Admin
                             </Link>
-                            
+
                         </>
                     )}
                     {isLoaded && !isSignedIn && (
