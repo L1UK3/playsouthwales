@@ -1,73 +1,74 @@
-import { EventsPanel, LeagueFormModal, useAdminLeagues } from "@/features/admin";
-import { useLeagues, useEventTypes } from "@/hooks";
+import { EventFormModal, LeagueFormModal } from "@/features/admin";
+import { useLeagues, useEventTypes, useEvents } from "@/hooks";
 import LeagueSelector from "@/features/league-selector";
-import type { League } from "@/types/League";
-import { useMemo, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import { createLeagueMap, filterAndGroupEvents, ListView, NavBar } from "@calendar";
+import { MONTH_NAMES } from "@/constants";
 
-
-/**
- * AdminPage component orchestrates subcomponents and custom hooks for tournament administration.
- */
 const AdminPage: React.FC = () => {
+    const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
+    const [currentDate, setCurrentDate] = useState<Date>(new Date());
+    const [isEditingLeague, setIsEditingLeague] = useState<boolean>(false);
+    const [isEditingEvent, setIsEditingEvent] = useState<boolean>(false);
+
+    const { data: events = [], isLoading: isEventsLoading } = useEvents(currentDate);
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
     const { data: eventTypes = {}, isLoading: isEventTypesLoading } = useEventTypes();
 
-    const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-    const [isLeagueModalOpen, setIsLeagueModalOpen] = useState(false);
-    const [editingLeague, setEditingLeague] = useState<League | null>(null);
+    const activeLeague = leagues.find(l => l.leagueId === selectedLeagueId);
 
-    const { createLeague, updateLeague, deleteLeague, isSaving: isSavingLeague } = useAdminLeagues();
+    const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
 
-    const activeLeague = useMemo(() => {
-        return leagues.find(l => l.leagueId === selectedLeagueId) ?? null;
-    }, [leagues, selectedLeagueId]);
+    const groupedEvents = useMemo(() => {
+        const filters = {
+            league: selectedLeagueId ? String(selectedLeagueId) : '',
+            type: '',
+            game: ''
+        };
+        return filterAndGroupEvents(events, filters);
+    }, [events, selectedLeagueId]);
 
-    const leagueMap = useMemo(() => {
-        return leagues.reduce<Record<number, League>>((acc, l) => {
-            acc[l.leagueId] = l;
-            return acc;
-        }, {});
-    }, [leagues]);
+    const handlePrevMonth = useCallback(() => {
+        setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+    }, []);
 
-    const handleAddLeagueTrigger = () => {
-        setEditingLeague(null);
-        setIsLeagueModalOpen(true);
-    };
+    const handleNextMonth = useCallback(() => {
+        setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+    }, []);
 
-    const handleEditLeagueTrigger = (league: League) => {
-        setEditingLeague(league);
-        setIsLeagueModalOpen(true);
-    };
+    const handleGoToToday = useCallback(() => {
+        const today = new Date();
+        const todayMonth = today.getMonth();
+        const todayYear = today.getFullYear();
 
-    const handleDeleteLeagueTrigger = async (league: League) => {
-        if (window.confirm(`Are you sure you want to delete "${league.name}"? This will also delete all events scheduled for this store.`)) {
-            try {
-                await deleteLeague(league.leagueId);
-                if (selectedLeagueId === league.leagueId) {
-                    setSelectedLeagueId(null);
-                }
-            } catch (error) {
-                console.error('Failed to delete league:', error);
-            }
-        }
-    };
+        setCurrentDate(new Date(todayYear, todayMonth, 1));
+    }, []);
 
-    const handleSaveLeague = async (leagueData: Omit<League, 'leagueId'>) => {
-        try {
-            if (editingLeague) {
-                await updateLeague({ id: editingLeague.leagueId, data: leagueData });
-            } else {
-                await createLeague(leagueData);
-            }
-            setIsLeagueModalOpen(false);
-        } catch (error) {
-            console.error('Failed to save league:', error);
-            throw error;
-        }
-    };
 
-    if (isLeaguesLoading || isEventTypesLoading) {
+    const handleAddLeagueTrigger = useCallback(() => {
+        setIsEditingLeague(true);
+    }, []);
+
+    const handleEditLeagueTrigger = useCallback(() => {
+        setIsEditingLeague(true);
+    }, []);
+
+    const handleDeleteLeagueTrigger = useCallback(() => {
+    }, []);
+
+    const handleAddEventTrigger = useCallback(() => {
+        setIsEditingEvent(true);
+    }, []);
+
+    const handleEditEventTrigger = useCallback(() => {
+        setIsEditingEvent(true);
+    }, []);
+
+    const handleDeleteEventTrigger = useCallback(() => {
+    }, []);
+
+    if (isLeaguesLoading || isEventTypesLoading || isEventsLoading) {
         return <SuspenseLoader message="Loading admin manager..." />;
     }
 
@@ -77,7 +78,7 @@ const AdminPage: React.FC = () => {
                 <h2>League Manager</h2>
             </div>
 
-            <div style={{ animationDelay: '80ms' }}>
+            <div>
                 <LeagueSelector
                     leagues={leagues}
                     selectedLeagueId={selectedLeagueId}
@@ -91,22 +92,41 @@ const AdminPage: React.FC = () => {
             </div>
 
             {activeLeague && (
-                <div key={activeLeague.leagueId} className="animate-swipe-down">
-                    <EventsPanel
-                        activeLeague={activeLeague}
-                        leagueMap={leagueMap}
-                        eventTypes={eventTypes}
+                <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border border-border-color rounded-lg p-8 shadow-main flex flex-col gap-6">
+                    <div className="flex justify-between items-center border-b border-border-color pb-4">
+                        <h3>Scheduled Events ({activeLeague.name})</h3>
+                        <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>
+                            Schedule New Event
+                        </button>
+                    </div>
+
+                    <NavBar
+                        monthName={MONTH_NAMES[currentDate.getMonth()]}
+                        year={currentDate.getFullYear()}
+                        onGoToToday={handleGoToToday}
+                        onPrevMonth={handlePrevMonth}
+                        onNextMonth={handleNextMonth}
                     />
+
+                    {events.length === 0 ? (
+                        <div className="text-center py-12 px-5 text-text-muted [&_h4]:text-lg [&_h4]:font-bold [&_h4]:mb-2 [&_p]:text-[15px]">
+                            <h4>No Events Scheduled</h4>
+                            <p>There are no events matching your filters. Click "Add New Event" to create one.</p>
+                        </div>
+                    ) : (
+                        <ListView
+                            events={groupedEvents}
+                            leagueMap={leagueMap}
+                            types={eventTypes}
+                            onEdit={handleEditEventTrigger}
+                            onDelete={handleDeleteEventTrigger}
+                        />
+                    )}
                 </div>
             )}
 
-            <LeagueFormModal
-                isOpen={isLeagueModalOpen}
-                onClose={() => setIsLeagueModalOpen(false)}
-                editingLeague={editingLeague}
-                onSave={handleSaveLeague}
-                isSaving={isSavingLeague}
-            />
+            <LeagueFormModal isOpen={isEditingLeague} onClose={() => setIsEditingLeague(false)} />
+            <EventFormModal isOpen={isEditingEvent} onClose={() => setIsEditingEvent(false)} />
         </div>
     );
 };
