@@ -1,4 +1,5 @@
 import React from 'react';
+import { Calendar } from 'lucide-react';
 import EventCard from '@calendar/components/event-card/EventCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
@@ -28,20 +29,19 @@ export interface SelectedDaySectionProps {
 const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
     selectedDateKey,
     selectedDayEvents,
-    currentDate,
     leagueMap,
     types
 }) => {
-    const title = selectedDateKey
+    const isDateSelected = selectedDateKey !== null;
+
+    const title = isDateSelected
         ? new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(undefined, {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         })
-        : currentDate
-            ? `${currentDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })} Events`
-            : 'Events';
+        : 'Selected Day';
 
     return (
-        <div className="block! animate-swipe-left overflow-hidden bg-bg-card rounded-lg border-2 border-border-color shadow-main lg:flex! lg:flex-col lg:flex-[0_0_400px] lg:max-w-100 lg:animate-slide-in-right lg:mt-0">
+        <div key={selectedDateKey ?? 'empty'} className="block! animate-swipe-up overflow-hidden lg:absolute lg:inset-0 lg:flex! lg:flex-col">
             <div className="text-base font-bold p-3.5 bg-bg-day-header text-text-main lg:shrink-0 lg:h-11 lg:flex lg:items-center lg:px-4 lg:py-0 flex items-center justify-between border-b border-border-color">
                 <span>{title}</span>
             </div>
@@ -51,7 +51,13 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
                             [&::-webkit-scrollbar-thumb]:bg-border-color/70
                             [&::-webkit-scrollbar-thumb]:rounded-[10px]
                             [&::-webkit-scrollbar-thumb:hover]:bg-text-muted">
-                {selectedDayEvents.length === 0 ? (
+                {!isDateSelected ? (
+                    <div className="flex flex-col items-center justify-center h-full text-center p-6 text-text-muted gap-2">
+                        <Calendar className="w-12 h-12 text-border-color stroke-[1.5]" />
+                        <p className="font-bold text-sm">No Date Selected</p>
+                        <p className="text-xs">Click a date on the calendar to view its scheduled events.</p>
+                    </div>
+                ) : selectedDayEvents.length === 0 ? (
                     <div className="text-text-muted text-sm p-2.5 rounded-xl bg-bg-main text-center">No events scheduled.</div>
                 ) : (
                     selectedDayEvents.map(event => (

@@ -58,6 +58,10 @@ const SchedulePage: React.FC = () => {
         setSelectedDateKey(getLocalDateString(today));
     }, [currentDate]);
 
+    const handleSelectDay = useCallback((dateKey: string) => {
+        setSelectedDateKey(prev => prev === dateKey ? null : dateKey);
+    }, []);
+
     const handleToggleViewMode = useCallback(() => {
         setDirection('down');
         setViewMode(prev => prev === 'calendar' ? 'list' : 'calendar');
@@ -156,16 +160,18 @@ const SchedulePage: React.FC = () => {
                                     leagueMap={leagueMap}
                                     types={types}
                                     selectedDateKey={selectedDateKey}
-                                    onSelectDay={setSelectedDateKey}
+                                    onSelectDay={handleSelectDay}
                                 />
                             </div>
-                            <SelectedDaySection
-                                selectedDateKey={selectedDateKey}
-                                selectedDayEvents={eventsToDisplay}
-                                currentDate={currentDate}
-                                leagueMap={leagueMap}
-                                types={types}
-                            />
+                            <div className="lg:relative lg:flex-[0_0_400px] lg:max-w-100 w-full lg:w-auto">
+                                <SelectedDaySection
+                                    selectedDateKey={selectedDateKey}
+                                    selectedDayEvents={eventsToDisplay}
+                                    currentDate={currentDate}
+                                    leagueMap={leagueMap}
+                                    types={types}
+                                />
+                            </div>
                         </div>
                     </div>
                 ) : (
