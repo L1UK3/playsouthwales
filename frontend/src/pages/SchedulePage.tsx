@@ -148,7 +148,7 @@ const SchedulePage: React.FC = () => {
             <div className="flex-1 block opacity-100">
                 {viewMode === 'calendar' ? (
                     <div key={calendarKey} className={`${animationClass}`}>
-                        <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-start">
+                        <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
                             <div className="flex-1 min-w-0 lg:flex lg:flex-col">
                                 <CalendarView
                                     currentDate={currentDate}
