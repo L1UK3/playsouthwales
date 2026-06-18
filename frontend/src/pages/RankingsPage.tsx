@@ -40,6 +40,13 @@ const RankingsPage: React.FC = () => {
                         National
                     </span>
                 </div>
+                <p className='text-sm text-text-muted mb-3 flex-none'>
+                    The Welsh Top 20 shows the players with the highest CP (Championship Points) across Wales.
+                    Those players with the most points are eligible to compete in the Welsh National Championship, which is held annually in the summer and boasts a prize pool of over £1,000.
+                    Players earn CP by participating in official Pokémon TCG and VGC events, with more points awarded for higher placements.
+                    In order to sign up to be included in the Welsh Top 20, contact us at <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or join the discord server and message an admin.
+                </p>
+                <h2 className='text-lg font-bold text-text-main mb-2 flex-none'>Season 2026-2027</h2>
                 <div className='flex-1 min-h-0'>
                     <Leaderboard leagueId='global' />
                 </div>
@@ -50,6 +57,8 @@ const RankingsPage: React.FC = () => {
                 <div className='flex flex-col gap-3 flex-none'>
                     <div className='flex justify-between items-center border-b border-border-color pb-2'>
                         <h2 className='text-lg font-bold text-text-main m-0'>Local Standings</h2>
+
+
                         {selectedLeague && (
                             <span
                                 className='text-xs font-semibold px-2.5 py-0.5 rounded-full text-white transition-all duration-300 shadow-xs'
@@ -59,6 +68,10 @@ const RankingsPage: React.FC = () => {
                             </span>
                         )}
                     </div>
+
+                    <p className='text-sm text-text-muted mb-3 flex-none'>
+                        These are the local leaderboards for each league in Wales. Players can compete in their local league's weekly events in TCG for each major set release and for each regulation change in VGC to earn points and climb the standings.
+                    </p>
 
                     <LeagueSelector
                         leagues={leagues}

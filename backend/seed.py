@@ -12,11 +12,11 @@ def seed_data():
 
         # Add Leagues
         leagues = [
-            League(name="Firestorm Games Cardiff", logo="https://example.com/logo1.png", website="https://cardiffpokemon.com", social_link="https://facebook.com/cardiffpokemon", brand_color="#FF0000", location="Cardiff, UK", latitude=51.4816, longitude=-3.1791),
+            League(name="FS - Cardiff", logo="https://example.com/logo1.png", website="https://cardiffpokemon.com", social_link="https://facebook.com/cardiffpokemon", brand_color="#FF0000", location="Cardiff, UK", latitude=51.4816, longitude=-3.1791),
             League(name="Gamers Emporium", logo="https://example.com/logo2.png", website="https://swanseapokemon.com", brand_color="#00533A", location="Swansea, UK", latitude=51.6214, longitude=-3.9436),
-            League(name="Badger Badger", logo="https://example.com/logo3.png", website="https://thecomicality.com", brand_color="#FFE600", location="Newport, UK", latitude=51.5883, longitude=-2.9978),
+            League(name="Brown Bear", logo="https://example.com/logo3.png", website="https://thecomicality.com", brand_color="#FFE600", location="Newport, UK", latitude=51.5883, longitude=-2.9978),
             League(name="Swansea Jack", logo="https://example.com/logo4.png", website="https://thegameshub.co.uk", brand_color="#FFFFFF", location="Swansea, UK", latitude=51.6214, longitude=-3.9436),
-            League(name="Firestorm Games Bridgend", logo="https://example.com/logo5.png", website="https://firestormgames.co.uk", brand_color="#633434", location="Bridgend, UK", latitude=51.5008, longitude=-3.5758),
+            League(name="FS - Bridgend", logo="https://example.com/logo5.png", website="https://firestormgames.co.uk", brand_color="#633434", location="Bridgend, UK", latitude=51.5008, longitude=-3.5758),
             League(name="Common Meeple", logo="https://example.com/logo6.png", website="https://commonmeeple.co.uk", brand_color="#7800BD", location="Swansea, UK", latitude=51.6214, longitude=-3.9436),
         ]
 
@@ -28,10 +28,10 @@ def seed_data():
         weekly_rules = [
             (0, 4, "18:00", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # Cardiff: Friday
             (1, 1, "18:00", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # GE: Tuesday
-            (2, 3, "18:30", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # Badger: Thursday
+            (2, 3, "18:30", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # Brown Bear: Thursday
             (3, 0, "19:00", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # Jack: Monday
-            (4, 2, "18:00", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # Bridgend: Wednesday
-            (5, 6, "15:00", "CASUAL", "Sunday Casual play. Bring any deck and meet other players!", "Promo cards for participation"), # Meeple: Sunday
+            (4, 2, "18:00", "STANDARD", "Weekly Standard tournament. 3 rounds of Swiss.", "1 Pack per win"), # FS - Bridgend: Wednesday
+            (5, 6, "15:00", "CASUAL", "Sunday Casual play. Bring any deck and meet other players!", "Promo cards for participation"), # Common Meeple: Sunday
         ]
 
         start_date = datetime(2025, 11, 23)
@@ -144,13 +144,13 @@ def seed_data():
             # Window 2026: May 4 (Mon) to May 17 (Sun)
             if year == 2026 and month == 5:
                 # Store-by-store assignments to avoid clashes
-                # Cardiff (0): Sat 9th (11:00), Sun 10th (11:00) - Clashes with Challenge on Sat 9th? No, Cardiff Challenge is 1st Sat (2nd May).
-                # GE (1): Sat 16th (11:00), Sun 17th (11:00) - Clashes with Challenge on Sat 16th? GE Challenge is 2nd Sat (9th May).
-                # Badger (2): Sat 9th (11:00), Sun 10th (11:00) - Badger Challenge is 3rd Sat (16th May).
-                # Jack (3): Sat 16th (11:00), Sun 17th (11:00) - Jack Challenge is 4th Sat (23rd May).
-                # Bridgend (4): Sat 9th (11:00), Sun 10th (11:00) - Bridgend Challenge is 1st Sun (3rd May).
-                # Meeple (5): Sat 16th (11:00), Sun 17th (11:00) - Meeple Challenge is 2nd Sun (10th May).
-                
+                # FS - Cardiff (0): Sat 9th (11:00), Sun 10th (11:00) - Clashes with Challenge on Sat 9th? No, FS - Cardiff Challenge is 1st Sat (2nd May).
+                # FS - GE (1): Sat 16th (11:00), Sun 17th (11:00) - Clashes with Challenge on Sat 16th? FS - GE Challenge is 2nd Sat (9th May).
+                # FS - Badger (2): Sat 9th (11:00), Sun 10th (11:00) - FS - Badger Challenge is 3rd Sat (16th May).
+                # FS - Jack (3): Sat 16th (11:00), Sun 17th (11:00) - FS - Jack Challenge is 4th Sat (23rd May).
+                # FS - Bridgend (4): Sat 9th (11:00), Sun 10th (11:00) - FS - Bridgend Challenge is 1st Sun (3rd May).
+                # FS - Meeple (5): Sat 16th (11:00), Sun 17th (11:00) - FS - Meeple Challenge is 2nd Sun (10th May).
+
                 pre_release_assignments = {
                     (2026, 5, 9): [0, 2, 4],
                     (2026, 5, 10): [0, 2, 4],

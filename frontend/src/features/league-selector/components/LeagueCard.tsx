@@ -41,7 +41,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     return (
         <div
             id={`league-card-${league.leagueId}`}
-            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? "border-[var(--brand-color)]! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!" : ""} ${className}`}
+            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color border-l-4 border-l-[var(--brand-color)] bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? "border-[var(--brand-color)]! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!" : ""} ${className}`}
             style={{ '--brand-color': brandColor } as React.CSSProperties}
             onClick={() => onLeagueSelect(league.leagueId)}
         >

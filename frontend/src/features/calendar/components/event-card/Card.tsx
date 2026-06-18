@@ -22,7 +22,7 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMa
 
     return (
         <div
-            className={`flex justify-between items-center gap-1.5 py-1 px-1.5 rounded-md bg-(--type-bg) text-text-main text-[11px] font-bold cursor-pointer transition-all duration-200 border-l-[4px] border-l-(--store-color,var(--type-border)) hover:bg-(--type-border)/20 max-sm:text-[10px] max-sm:py-1 max-sm:px-1.5 type-${event.type} ${isOtherMonth ? "opacity-35! grayscale! pointer-events-none!" : ""}`}
+            className={`flex justify-between items-center gap-1.5 py-1 px-1.5 rounded-md bg-(--type-bg) text-text-main text-[11px] font-bold cursor-pointer transition-all duration-200 border-l-4 border-l-(--store-color,var(--type-border)) hover:bg-(--type-border)/20 max-sm:text-[10px] max-sm:py-1 max-sm:px-1.5 type-${event.type} ${isOtherMonth ? "opacity-35! grayscale! pointer-events-none!" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
         >
             <span className="truncate min-w-0">{leagueName}</span>
