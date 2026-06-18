@@ -1,4 +1,4 @@
-from . import db
+﻿from . import db
 
 class League(db.Model):
     """
@@ -50,7 +50,7 @@ class Event(db.Model):
     name = db.Column(db.String(100), nullable=False)
     date = db.Column(db.String(50), nullable=False) 
     start_time = db.Column(db.String(50))
-    league_id = db.Column(db.Integer, db.ForeignKey('league.id'), nullable=False)
+    league_id = db.Column(db.Integer, db.ForeignKey('league.id'), nullable=False, index=True)
     ticket_link = db.Column(db.String(255))
     event_type = db.Column(db.String(50)) 
     game = db.Column(db.String(20))
