@@ -1,7 +1,9 @@
 import os
+from supabase import Client as SupabaseClient
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from supabase import create_client
 from config import Config
 
 db = SQLAlchemy()
@@ -21,6 +23,14 @@ def create_app(config_class: type[Config] = Config):
         static_url_path='/',
         instance_path=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
     )
+
+    supabase: SupabaseClient = create_client(
+        os.environ.get("SUPABASE_URL"),
+        os.environ.get("SUPABASE_KEY")
+    )
+
+    app.supabase = supabase
+
     app.config.from_object(config_class)
     
     CORS(app)
@@ -31,7 +41,5 @@ def create_app(config_class: type[Config] = Config):
         from .routes import main
         
         app.register_blueprint(main)
-        
-        db.create_all()
-        
+                
     return app
