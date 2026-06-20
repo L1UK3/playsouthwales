@@ -3,9 +3,6 @@ from flask import Blueprint, request, jsonify, current_app
 from .auth import require_auth
 import os
 
-from .models import Event, League
-from . import db
-
 main = Blueprint('main', __name__)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
@@ -21,30 +18,41 @@ def get_events():
     year = request.args.get('year')
     league_id = request.args.get('leagueId')
 
-    query = Event.query
+    query = current_app.supabase.table('event').select('*')
 
     if league_id:
-        query = query.filter(Event.league_id == league_id)
+        query = query.eq('league_id', league_id)
 
     if month and year:
         date_prefix = f"{year}-{month.zfill(2)}"
-        query = query.filter(Event.date.like(f"{date_prefix}%"))
+        query = query.like('date', f"{date_prefix}%")
 
-    events = query.all()
+    try:
+        res = query.execute()
+        events = res.data or []
+    except Exception as e:
+        current_app.logger.error(f"Failed to fetch events from Supabase: {e}")
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': 'Failed to fetch events'
+            }
+        }), 500
+
     event_list = []
     for event in events:
         event_list.append({
-            'id': event.id,
-            'name': event.name,
-            'date': event.date,
-            'startTime': event.start_time,
-            'leagueId': event.league_id,
-            'ticketLink': event.ticket_link,
-            'type': event.event_type,
-            'game': event.game,
-            'description': event.description,
-            'prizes': event.prizes,
-            'entryFee': event.entry_fee,
+            'id': event.get('id'),
+            'name': event.get('name'),
+            'date': event.get('date'),
+            'startTime': event.get('start_time'),
+            'leagueId': event.get('league_id'),
+            'ticketLink': event.get('ticket_link'),
+            'type': event.get('event_type'),
+            'game': event.get('game'),
+            'description': event.get('description'),
+            'prizes': event.get('prizes'),
+            'entryFee': event.get('entry_fee'),
         })
     return jsonify(event_list)
 
@@ -55,21 +63,32 @@ def get_leagues():
     Returns:
         Response: A JSON list of all leagues.
     """
-    leagues = League.query.all()
+    try:
+        res = current_app.supabase.table('league').select('*').execute()
+        leagues = res.data or []
+    except Exception as e:
+        current_app.logger.error(f"Failed to fetch leagues from Supabase: {e}")
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': 'Failed to fetch leagues'
+            }
+        }), 500
+
     league_list = []
     for league in leagues:
         league_list.append({
-            'leagueId': league.id,
-            'name': league.name,
-            'logo': league.logo,
-            'website': league.website,
-            'socialLink': league.social_link,
-            'pokemonLink': league.pokemon_link,
-            'brandColor': league.brand_color,
-            'webLink': league.web_link,
-            'location': league.location,
-            'latitude': league.latitude,
-            'longitude': league.longitude,
+            'leagueId': league.get('id'),
+            'name': league.get('name'),
+            'logo': league.get('logo'),
+            'website': league.get('website'),
+            'socialLink': league.get('social_link'),
+            'pokemonLink': league.get('pokemon_link'),
+            'brandColor': league.get('brand_color'),
+            'webLink': league.get('web_link'),
+            'location': league.get('location'),
+            'latitude': league.get('latitude'),
+            'longitude': league.get('longitude'),
         })
     return jsonify(league_list)
 
@@ -103,25 +122,24 @@ def create_event():
         }), 400
 
     try:
-        newEvent = Event(
-            name=name,
-            date=date,
-            league_id=leagueId,
-            event_type=eventType,
-            game=game,
-            description=data.get('description'),
-            prizes=data.get('prizes'),
-            entry_fee=data.get('entryFee')
-        )
-        db.session.add(newEvent)
-        db.session.commit()
+        event_data = {
+            'name': name,
+            'date': date,
+            'league_id': leagueId,
+            'event_type': eventType,
+            'game': game,
+            'description': data.get('description'),
+            'prizes': data.get('prizes'),
+            'entry_fee': data.get('entryFee')
+        }
+        current_app.supabase.table('event').insert(event_data).execute()
 
         return jsonify({
             'success': True,
             'message': 'Event created successfully'
         }), 201
     except Exception as e:
-        db.session.rollback()
+        current_app.logger.error(f"Failed to create event: {e}")
         return jsonify({
             'error': {
                 'code': 'internal_error',
@@ -135,14 +153,23 @@ def update_event(eventId):
     """
     Update an existing event.
     """
-    event = Event.query.get(eventId)
-    if not event:
+    try:
+        res = current_app.supabase.table('event').select('id').eq('id', eventId).execute()
+        if not res.data:
+            return jsonify({
+                'error': {
+                    'code': 'not_found',
+                    'message': 'Event not found'
+                }
+            }), 404
+    except Exception as e:
+        current_app.logger.error(f"Failed to query event {eventId}: {e}")
         return jsonify({
             'error': {
-                'code': 'not_found',
-                'message': 'Event not found'
+                'code': 'internal_error',
+                'message': 'An unexpected database error occurred'
             }
-        }), 404
+        }), 500
 
     try:
         data = request.get_json()
@@ -177,21 +204,22 @@ def update_event(eventId):
         }), 400
 
     try:
-        event.name = name
-        event.date = date
-        event.league_id = leagueId
-        event.event_type = eventType
-        event.game = game
-        event.description = data.get('description')
-        event.prizes = data.get('prizes')
-        event.entry_fee = data.get('entryFee')
-        db.session.commit()
+        event_data = {
+            'name': name,
+            'date': date,
+            'league_id': leagueId,
+            'event_type': eventType,
+            'game': game,
+            'description': data.get('description'),
+            'prizes': data.get('prizes'),
+            'entry_fee': data.get('entryFee')
+        }
+        current_app.supabase.table('event').update(event_data).eq('id', eventId).execute()
         return jsonify({
             'success': True,
             'message': 'Event updated successfully'
         })
     except Exception as e:
-        db.session.rollback()
         current_app.logger.error(f"Failed to update event {eventId}: {e}")
         return jsonify({
             'error': {
@@ -207,25 +235,38 @@ def delete_event(event_id):
     """
     Delete an event.
     """
-    event = Event.query.get(event_id)
-    if not event:
+    try:
+        res = current_app.supabase.table('event').select('id').eq('id', event_id).execute()
+        if not res.data:
+            return jsonify({
+                'error': {
+                    'code': 'not_found',
+                    'message': 'Event not found'
+                }
+            }), 404
+    except Exception as e:
+        current_app.logger.error(f"Failed to query event {event_id}: {e}")
         return jsonify({
             'error': {
-                'code': 'not_found',
-                'message': 'Event not found'
+                'code': 'internal_error',
+                'message': 'An unexpected database error occurred'
             }
-        }), 404
+        }), 500
 
     try:
-        db.session.delete(event)
-        db.session.commit()
+        current_app.supabase.table('event').delete().eq('id', event_id).execute()
         return jsonify({
             'success': True,
             'message': 'Event deleted successfully'
         })
     except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        current_app.logger.error(f"Failed to delete event {event_id}: {e}")
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': str(e)
+            }
+        }), 500
 
 
 @main.route('/api/leagues', methods=['POST'])
@@ -253,28 +294,30 @@ def create_league():
         }), 400
 
     try:
-        new_league = League(
-            name=name,
-            logo=data.get('logo'),
-            website=data.get('website'),
-            social_link=data.get('socialLink'),
-            pokemon_link=data.get('pokemonLink'),
-            brand_color=data.get('brandColor'),
-            web_link=data.get('webLink'),
-            location=data.get('location'),
-            latitude=data.get('latitude'),
-            longitude=data.get('longitude')
-        )
-        db.session.add(new_league)
-        db.session.commit()
+        league_data = {
+            'name': name,
+            'logo': data.get('logo'),
+            'website': data.get('website'),
+            'social_link': data.get('socialLink'),
+            'pokemon_link': data.get('pokemonLink'),
+            'brand_color': data.get('brandColor'),
+            'web_link': data.get('webLink'),
+            'location': data.get('location'),
+            'latitude': data.get('latitude'),
+            'longitude': data.get('longitude')
+        }
+        res = current_app.supabase.table('league').insert(league_data).execute()
+        if not res.data:
+            raise Exception("Failed to insert league")
+        new_league_id = res.data[0]['id']
 
         return jsonify({
             'success': True,
-            'leagueId': new_league.id,
+            'leagueId': new_league_id,
             'message': 'League created successfully'
         }), 201
     except Exception as e:
-        db.session.rollback()
+        current_app.logger.error(f"Failed to create league: {e}")
         return jsonify({
             'error': {
                 'code': 'internal_error',
@@ -289,14 +332,23 @@ def update_league(league_id):
     """
     Update an existing league.
     """
-    league = League.query.get(league_id)
-    if not league:
+    try:
+        res = current_app.supabase.table('league').select('id').eq('id', league_id).execute()
+        if not res.data:
+            return jsonify({
+                'error': {
+                    'code': 'not_found',
+                    'message': 'League not found'
+                }
+            }), 404
+    except Exception as e:
+        current_app.logger.error(f"Failed to query league {league_id}: {e}")
         return jsonify({
             'error': {
-                'code': 'not_found',
-                'message': 'League not found'
+                'code': 'internal_error',
+                'message': 'An unexpected database error occurred'
             }
-        }), 404
+        }), 500
 
     try:
         data = request.get_json()
@@ -326,23 +378,24 @@ def update_league(league_id):
         }), 400
 
     try:
-        league.name = name
-        league.logo = data.get('logo')
-        league.website = data.get('website')
-        league.social_link = data.get('socialLink')
-        league.pokemon_link = data.get('pokemonLink')
-        league.brand_color = data.get('brandColor')
-        league.web_link = data.get('webLink')
-        league.location = data.get('location')
-        league.latitude = data.get('latitude')
-        league.longitude = data.get('longitude')
-        db.session.commit()
+        league_data = {
+            'name': name,
+            'logo': data.get('logo'),
+            'website': data.get('website'),
+            'social_link': data.get('socialLink'),
+            'pokemon_link': data.get('pokemonLink'),
+            'brand_color': data.get('brandColor'),
+            'web_link': data.get('webLink'),
+            'location': data.get('location'),
+            'latitude': data.get('latitude'),
+            'longitude': data.get('longitude')
+        }
+        current_app.supabase.table('league').update(league_data).eq('id', league_id).execute()
         return jsonify({
             'success': True,
             'message': 'League updated successfully'
         })
     except Exception as e:
-        db.session.rollback()
         current_app.logger.error(f"Failed to update league {league_id}: {e}")
         return jsonify({
             'error': {
@@ -358,30 +411,41 @@ def delete_league(league_id):
     """
     Delete a league.
     """
-    league = League.query.get(league_id)
-    if not league:
+    try:
+        res = current_app.supabase.table('league').select('id').eq('id', league_id).execute()
+        if not res.data:
+            return jsonify({
+                'error': {
+                    'code': 'not_found',
+                    'message': 'League not found'
+                }
+            }), 404
+    except Exception as e:
+        current_app.logger.error(f"Failed to query league {league_id}: {e}")
         return jsonify({
             'error': {
-                'code': 'not_found',
-                'message': 'League not found'
+                'code': 'internal_error',
+                'message': 'An unexpected database error occurred'
             }
-        }), 404
+        }), 500
 
     try:
-        # Cascade delete all events belonging to the league
-        Event.query.filter(Event.league_id == league_id).delete()
-        db.session.delete(league)
-        db.session.commit()
+        # Cascade delete all events belonging to the league in Supabase
+        current_app.supabase.table('event').delete().eq('league_id', league_id).execute()
+        current_app.supabase.table('league').delete().eq('id', league_id).execute()
         return jsonify({
             'success': True,
             'message': 'League deleted successfully'
         })
     except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        current_app.logger.error(f"Failed to delete league {league_id}: {e}")
+        return jsonify({
+            'error': {
+                'code': 'internal_error',
+                'message': str(e)
+            }
+        }), 500
 
 @main.route('/api/players/top20')
 def load_top20_players():
     return jsonify(load_top_20())
-        
-    
