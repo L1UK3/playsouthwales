@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypeMap';
+import type { EventTypeMap } from '@/types/EventTypeMap';
 
 /**
  * Properties for the Filters component, enabling users to refine the list of displayed events.
@@ -14,7 +14,7 @@ import type { EventTypes } from '@/types/EventTypeMap';
  */
 export interface FiltersProps {
     leagues: League[];
-    types: EventTypes;
+    types: EventTypeMap;
     filters: {
         league: string;
         eventType: string;

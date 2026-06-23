@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import ListCard from '@calendar/components/event-card/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypeMap';
+import type { EventTypeMap } from '@/types/EventTypeMap';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 
 /**
@@ -19,7 +19,7 @@ export interface ListEventGroupProps {
     dateKey: string;
     eventsForDay: Event[];
     leagueMap: Record<number, League>;
-    types: EventTypes;
+    types: EventTypeMap;
     expandedEventId: number | null;
     onToggleEvent: (eventId: number) => void;
     onEdit?: (event: Event) => void;
