@@ -14,24 +14,24 @@ from utils import loadTop20
 load_dotenv()
 
 supabaseUrl = os.environ.get("SUPABASE_URL")
-supabaseKey = (
-    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    or os.environ.get("SUPABASE_SECRET_KEY")
-    or os.environ.get("SUPABASE_KEY")
-)
+supabaseKey = os.environ.get("SUPABASE_SECRET_KEY")
 
 supabase: Client = create_client(
     supabaseUrl, 
     supabaseKey
 )
 
-app = FastAPI()
+app = FastAPI(
+    title="play wales API",
+    description="API for managing events and leagues for Play Wales",
+    version="1.0.0",
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 # --- API Routes ---
