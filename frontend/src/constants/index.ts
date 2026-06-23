@@ -37,6 +37,4 @@ export const DEFAULT_ZOOM = 9;
 /**
  * 
  */
-export const API_BASE_URL = import.meta.env.DEV 
-    ? "http://localhost:5000/api" 
-    : "https://playwales.onrender.com/api";
+export const API_BASE_URL = "https://playwales.onrender.com/api";
