@@ -1,11 +1,16 @@
 import React from 'react';
 import { Trophy } from 'lucide-react';
 import SuspenseLoader from '@/components/SuspenseLoader';
-import { useLeagues } from '@/hooks';
+import { useLeagues, useDocumentMetadata } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 
 const RankingsPage: React.FC = () => {
+    useDocumentMetadata({
+        title: 'Championship Rankings',
+        description: 'See the Welsh Top 20 national championship points standings and local league rankings for the TCG and VGC players.'
+    });
+
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
     const { data: leagues = [], isLoading } = useLeagues();
 

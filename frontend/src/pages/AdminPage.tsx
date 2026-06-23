@@ -1,5 +1,5 @@
 import { EventFormModal, LeagueFormModal } from "@/features/admin";
-import { useLeagues, useEventTypes, useEvents } from "@/hooks";
+import { useLeagues, useEventTypes, useEvents, useDocumentMetadata } from "@/hooks";
 import LeagueSelector from "@/features/league-selector";
 import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
@@ -12,6 +12,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 
 const AdminPage: React.FC = () => {
+    useDocumentMetadata({
+        title: 'Admin Dashboard',
+        description: 'Admin area for managing events and leagues.'
+    });
+
     const { getToken } = useAuth();
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
     const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
@@ -209,6 +214,7 @@ const AdminPage: React.FC = () => {
 
     return (
         <div className="max-w-6xl mx-auto pb-6 flex flex-col gap-5 animate-swipe-up">
+            <h1 className="sr-only">Play Wales Admin Dashboard</h1>
             <div className="flex flex-col gap-1.5 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[14px]" style={{ animationDelay: '0ms' }}>
                 <h2>League Manager</h2>
             </div>

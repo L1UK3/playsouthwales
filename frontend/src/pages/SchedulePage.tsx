@@ -1,5 +1,5 @@
 import { MONTH_NAMES } from "@/constants";
-import { useEvents, useEventTypes, useLeagues } from "@/hooks";
+import { useEvents, useEventTypes, useLeagues, useDocumentMetadata } from "@/hooks";
 import {
     CalendarView,
     createLeagueMap,
@@ -21,6 +21,11 @@ export type ViewMode = 'calendar' | 'list';
  * @returns JSX.Element
  */
 const SchedulePage: React.FC = () => {
+    useDocumentMetadata({
+        title: 'Event Schedule',
+        description: 'Check the upcoming Pokémon TCG and VGC event schedules, local tournaments, and leagues across Wales.'
+    });
+
     const [currentDate, setCurrentDate] = useState(() => new Date());
     const [selectedDateKey, setSelectedDateKey] = useState<string | null>(() => getLocalDateString(new Date()));
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
@@ -129,6 +134,7 @@ const SchedulePage: React.FC = () => {
 
     return (
         <div className="flex flex-col p-0 animate-swipe-up">
+            <h1 className="sr-only">Pokémon Events Schedule Wales</h1>
             <div className="flex flex-col gap-3 mb-4 z-10 bg-bg-main p-3.5 rounded-lg border-2 border-border-color shrink-0">
                 <NavBar
                     monthName={MONTH_NAMES[currentDate.getMonth()]}
