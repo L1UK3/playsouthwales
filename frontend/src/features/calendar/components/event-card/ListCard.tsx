@@ -37,7 +37,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
 
     return (
         <div
-            className={`rounded-xl border border-border-color overflow-hidden cursor-pointer transition-all duration-200 border-l-[3.5px] border-l-(--store-color,var(--color-primary)) hover:translate-x-1 hover:border-primary gradient-card type-${event.type} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
+            className={`rounded-xl border border-border-color overflow-hidden cursor-pointer transition-all duration-200 border-l-[3.5px] border-l-(--store-color,var(--color-primary)) hover:translate-x-1 hover:border-primary gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >
@@ -50,14 +50,14 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <span className="text-base opacity-80">{types[event.type] ?? ''}</span>
+                    <span className="text-base opacity-80">{types[event.eventType] ?? ''}</span>
                     <span className="expand-icon text-xs text-text-muted transition-transform duration-300">▼</span>
                 </div>
             </div>
             <div className="expandable-content max-h-0 overflow-hidden transition-all duration-300 bg-black/10">
                 <div className="p-4 flex flex-col gap-3">
                     <div className="flex gap-4 text-xs [&_strong]:text-text-muted [&_strong]:font-semibold [&_strong]:mr-1">
-                        <span className=""><strong>Format:</strong> {event.type}</span>
+                        <span className=""><strong>Format:</strong> {event.eventType}</span>
                         {event.entryFee ? <span className=""><strong>Entry:</strong> {event.entryFee}</span> : null}
                     </div>
                     {event.description ? <div className={"text-xs leading-relaxed text-text-darker bg-white/5 p-2 rounded-lg"}>{event.description}</div> : null}

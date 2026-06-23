@@ -1,4 +1,4 @@
 export * from "./useEvents";
 export * from "./useLeagues";
-export * from "./useEventTypes";
+export * from "./useEventTypeMap";
 export * from "./useDocumentMetadata";

@@ -19,7 +19,7 @@ export const createLeagueMap = (leagues: League[]): Record<number, League> =>
 export const filterAndGroupEvents = (allEvents: Event[], filters: EventFilters): Record<string, Event[]> => {
 	const filtered = allEvents.filter(event => {
 		if (filters.league && String(event.leagueId) !== filters.league) return false;
-		if (filters.type && event.type !== filters.type) return false;
+		if (filters.eventType && event.eventType !== filters.eventType) return false;
 		if (filters.game && event.game !== filters.game) return false;
 		return true;
 	});

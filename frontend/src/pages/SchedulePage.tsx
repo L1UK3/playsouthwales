@@ -1,5 +1,5 @@
 import { MONTH_NAMES } from "@/constants";
-import { useEvents, useEventTypes, useLeagues, useDocumentMetadata } from "@/hooks";
+import { useEvents, useEventTypeMap, useLeagues, useDocumentMetadata } from "@/hooks";
 import {
     CalendarView,
     createLeagueMap,
@@ -29,7 +29,7 @@ const SchedulePage: React.FC = () => {
     const [currentDate, setCurrentDate] = useState(() => new Date());
     const [selectedDateKey, setSelectedDateKey] = useState<string | null>(() => getLocalDateString(new Date()));
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
-    const [filters, setFilters] = useState({ league: '', type: '', game: '' });
+    const [filters, setFilters] = useState({ league: '', eventType: '', game: '' });
     const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>(null);
 
     const handlePrevMonth = useCallback(() => {
@@ -77,14 +77,14 @@ const SchedulePage: React.FC = () => {
     }, []);
 
     const handleClearFilters = useCallback(() => {
-        setFilters({ league: '', type: '', game: '' });
+        setFilters({ league: '', eventType: '', game: '' });
     }, []);
 
     const prevMonthDate = useMemo(() => new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1), [currentDate]);
     const nextMonthDate = useMemo(() => new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1), [currentDate]);
 
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
-    const { data: types = {}, isLoading: isTypesLoading } = useEventTypes();
+    const { data: types = {}, isLoading: isTypesLoading } = useEventTypeMap();
 
     const { data: currentEvents = [], isLoading: isCurrentEventsLoading } = useEvents(currentDate);
     const { data: prevEvents = [] } = useEvents(prevMonthDate);
@@ -111,10 +111,10 @@ const SchedulePage: React.FC = () => {
         return allEvents.filter(event => {
             if (!event.date.startsWith(monthKeyPrefix)) return false;
             if (filters.league && String(event.leagueId) !== filters.league) return false;
-            if (filters.type && event.type !== filters.type) return false;
+            if (filters.eventType && event.eventType !== filters.eventType) return false;
             if (filters.game && event.game !== filters.game) return false;
             return true;
-        }).sort((a, b) => a.date.localeCompare(b.date) || (a.startTime ?? '').localeCompare(b.startTime ?? ''));
+        }).sort((a, b) => a.date.localeCompare(b.date) ?? (a.startTime ?? '').localeCompare(b.startTime ?? ''));
     }, [allEvents, currentDate, filters]);
 
     const eventsToDisplay = selectedDateKey ? selectedDayEvents : activeMonthEvents;

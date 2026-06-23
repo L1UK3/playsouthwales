@@ -34,11 +34,12 @@ export interface Event {
     leagueId: number;
     leagueName?: string;
     ticketLink?: string;
-    type: string;
+    eventType: string;
     game: string;
     description?: string;
     prizes?: string;
     entryFee?: string;
+    isRecurring?: boolean;
 }
 
 

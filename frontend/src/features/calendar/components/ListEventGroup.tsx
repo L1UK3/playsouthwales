@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import ListCard from '@calendar/components/event-card/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypes';
+import type { EventTypes } from '@/types/EventTypeMap';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 
 /**

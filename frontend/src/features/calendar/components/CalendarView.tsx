@@ -1,12 +1,11 @@
 import React, { useMemo, useRef } from 'react';
-
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypes';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 import type { CellData } from '@calendar/types/CellData';
 import Cell from '@calendar/components/Cell';
 import PokeballOverlay from '@calendar/components/PokeballOverlay';
+import type { EventTypeMap } from '@/types/EventTypeMap';
 
 /**
  * Properties for the CalendarView component.
@@ -21,7 +20,7 @@ export interface CalendarViewProps {
     currentDate: Date;
     events: Record<string, Event[]>;
     leagueMap: Record<number, League>;
-    types: EventTypes;
+    types: EventTypeMap;
     selectedDateKey: string | null;
     onSelectDay: (dateKey: string) => void;
 }

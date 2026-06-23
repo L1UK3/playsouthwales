@@ -20,12 +20,13 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
     const [name, setName] = useState(initialData?.name ?? '');
     const [date, setDate] = useState(initialData?.date ? initialData.date.slice(0, 10) : '');
     const [startTime, setStartTime] = useState(initialData?.startTime ?? '');
-    const [type, setType] = useState(initialData?.type ?? 'STANDARD');
+    const [eventType, setEventType] = useState(initialData?.eventType ?? 'STANDARD');
     const [game, setGame] = useState(initialData?.game ?? 'TCG');
     const [entryFee, setEntryFee] = useState(initialData?.entryFee ?? '');
     const [ticketLink, setTicketLink] = useState(initialData?.ticketLink ?? '');
     const [description, setDescription] = useState(initialData?.description ?? '');
     const [prizes, setPrizes] = useState(initialData?.prizes ?? '');
+    const [isRecurring, setIsRecurring] = useState(initialData?.isRecurring ?? false);
 
     if (!isOpen) return null;
 
@@ -35,13 +36,14 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
             name,
             date,
             startTime: startTime ?? undefined,
-            type,
+            eventType,
             game,
             entryFee: entryFee ?? undefined,
             ticketLink: ticketLink ?? undefined,
             description: description ?? undefined,
             prizes: prizes ?? undefined,
-            leagueId: initialData ? initialData.leagueId : leagueId
+            leagueId: initialData ? initialData.leagueId : leagueId,
+            isRecurring
         });
     };
 
@@ -107,8 +109,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                 </label>
                                 <select
                                     id="eventType"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
+                                    value={eventType}
+                                    onChange={(e) => setEventType(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
                                     <option value="STANDARD">Standard</option>
@@ -161,6 +163,23 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                 />
                             </div>
+
+                            {/* Recurring Event Options */}
+                            <div className="col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2">
+                                <label className="flex items-center gap-3 cursor-pointer min-h-[44px] select-none">
+                                    <input
+                                        type="checkbox"
+                                        id="eventIsRecurring"
+                                        checked={isRecurring}
+                                        onChange={(e) => setIsRecurring(e.target.checked)}
+                                        className="w-5 h-5 rounded border border-border-color text-secondary focus:ring-secondary cursor-pointer transition-all duration-200"
+                                    />
+                                    <span className="text-sm font-bold text-text-main">
+                                        Repeat Weekly
+                                    </span>
+                                </label>
+                            </div>
+
 
                             {/* Description */}
                             <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>

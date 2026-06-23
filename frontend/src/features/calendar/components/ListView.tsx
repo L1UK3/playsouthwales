@@ -3,7 +3,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import ListEventGroup from '@calendar/components/ListEventGroup';
 import type { Event } from '@/types/Event'
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypes';
+import type { EventTypes } from '@/types/EventTypeMap';
 
 /**
  * Properties for the ListView component.

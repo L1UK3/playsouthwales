@@ -34,6 +34,23 @@ export async function loadEvents(
 }
 
 /**
+ * Fetches weekly events from the API.
+ * @returns {Promise<Event[]>} A promise that resolves to an array of weekly Event objects.
+ */
+export async function loadWeeklyEvents(): Promise<Event[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/weekly-events`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch weekly events: " + response.statusText);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching weekly events:", error);
+    throw error;
+  }
+}
+
+/**
  * Fetches events for a specific league from the API.
  *
  * @param {number} leagueId - The ID of the league to fetch events for.

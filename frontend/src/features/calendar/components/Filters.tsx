@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypes';
+import type { EventTypes } from '@/types/EventTypeMap';
 
 /**
  * Properties for the Filters component, enabling users to refine the list of displayed events.
@@ -17,7 +17,7 @@ export interface FiltersProps {
     types: EventTypes;
     filters: {
         league: string;
-        type: string;
+        eventType: string;
         game: string;
     };
     onFilterChange: (name: string, value: string) => void;
@@ -47,13 +47,13 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
             <select
                 id="type-filter"
                 className="flex-1 py-1.5 px-2.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-37.5"
-                value={filters.type}
-                onChange={(e) => onFilterChange('type', e.target.value)}
+                value={filters.eventType}
+                onChange={(e) => onFilterChange('eventType', e.target.value)}
             >
                 <option value="">All Event Types</option>
-                {Object.keys(types).map(type => (
-                    <option key={type} value={type}>
-                        {types[type] ? `[${types[type]}] ${type}` : type}
+                {Object.keys(types).map(eventType => (
+                    <option key={eventType} value={eventType}>
+                        {types[eventType] ? `[${types[eventType]}] ${eventType}` : eventType}
                     </option>
                 ))}
             </select>

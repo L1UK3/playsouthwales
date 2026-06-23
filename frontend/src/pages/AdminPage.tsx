@@ -1,5 +1,5 @@
 import { EventFormModal, LeagueFormModal } from "@/features/admin";
-import { useLeagues, useEventTypes, useEvents, useDocumentMetadata } from "@/hooks";
+import { useLeagues, useEventTypeMap, useEvents, useDocumentMetadata } from "@/hooks";
 import LeagueSelector from "@/features/league-selector";
 import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
@@ -27,7 +27,7 @@ const AdminPage: React.FC = () => {
 
     const { data: events = [], isLoading: isEventsLoading } = useEvents(currentDate);
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
-    const { data: eventTypes = {}, isLoading: isEventTypesLoading } = useEventTypes();
+    const { data: eventTypes = {}, isLoading: isEventTypesLoading } = useEventTypeMap();
 
     const activeLeague = leagues.find(l => l.leagueId === selectedLeagueId);
 
@@ -36,7 +36,7 @@ const AdminPage: React.FC = () => {
     const groupedEvents = useMemo(() => {
         const filters = {
             league: selectedLeagueId ? String(selectedLeagueId) : '',
-            type: '',
+            eventType: '',
             game: ''
         };
         return filterAndGroupEvents(events, filters);
@@ -99,6 +99,8 @@ const AdminPage: React.FC = () => {
          }, // TODO: add token
            onSuccess: () => {
                queryClient.invalidateQueries({ queryKey: ['leagues'] });
+               queryClient.invalidateQueries({ queryKey: ['events'] });
+               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
            },
            onError: (error: Error) => {
                console.error('League Deletion Failed', error);
@@ -114,6 +116,7 @@ const AdminPage: React.FC = () => {
          }, 
            onSuccess: () => {
                queryClient.invalidateQueries({ queryKey: ['events'] });
+               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
            },
            onError: (error: Error) => {
                console.error('Event Creation Failed', error);
@@ -128,6 +131,7 @@ const AdminPage: React.FC = () => {
          },
            onSuccess: () => {
                queryClient.invalidateQueries({ queryKey: ['events'] });
+               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
            },
            onError: (error: Error) => {
                console.error('Event Update Failed', error);
@@ -142,6 +146,7 @@ const AdminPage: React.FC = () => {
          },
            onSuccess: () => {
                queryClient.invalidateQueries({ queryKey: ['events'] });
+               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
            },
            onError: (error: Error) => {
                console.error('Event Deletion Failed', error);

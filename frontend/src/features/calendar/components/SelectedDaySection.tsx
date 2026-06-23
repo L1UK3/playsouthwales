@@ -3,7 +3,7 @@ import { Calendar } from 'lucide-react';
 import EventCard from '@calendar/components/event-card/EventCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
-import type { EventTypes } from '@/types/EventTypes';
+import type { EventTypes } from '@/types/EventTypeMap';
 
 /**
  * Properties for the SelectedDaySection component.

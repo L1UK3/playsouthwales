@@ -1,6 +1,7 @@
 import os
+import logging
 from typing import Optional
-from fastapi import FastAPI, Depends, HTTPException, logger, status
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from supabase import create_client, Client
 from dotenv import load_dotenv
@@ -10,6 +11,8 @@ from models import (
     EventCreate, EventUpdate, EventResponse
 )
 from utils import loadTop20
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -43,23 +46,20 @@ async def getEvents(
     leagueId: Optional[int] = None
 ):
     """
-    Fetch events, optionally filtered by leagueId, month, and year.
+    Fetch standard events, optionally filtered by leagueId, month, and year.
     """
-    query = supabase.table('event').select('*')
+    mainQuery = supabase.table('events').select('*')
 
     if leagueId is not None:
-        query = query.eq('leagueId', leagueId)
+        mainQuery = mainQuery.eq('leagueId', leagueId)
 
     if month and year:
         datePrefix = f"{year}-{month.zfill(2)}"
-        query = query.like('date', f"{datePrefix}%")
+        mainQuery = mainQuery.like('date', f"{datePrefix}%")
 
     try:
-        res = query.execute()
-        events = res.data or []
-        for event in events:
-            if 'eventType' in event:
-                event['type'] = event.pop('eventType')
+        mainResult = mainQuery.execute()
+        events = mainResult.data or []
     except Exception as e:
         logger.error(f"Failed to fetch events from Supabase: {e}")
         raise HTTPException(
@@ -70,6 +70,46 @@ async def getEvents(
     return events
 
 
+@app.get("/api/weekly-events", response_model=list[EventResponse])
+async def getWeeklyEvents():
+    """
+    Fetch all weekly events.
+    """
+    try:
+        res = supabase.table('weekly_events').select('*').execute()
+        events = res.data or []
+    except Exception as e:
+        logger.error(f"Failed to fetch weekly events from Supabase: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": "Failed to fetch weekly events"}
+        )
+
+    return events
+
+
+@app.get("/api/weekly-events/{leagueId}", response_model=EventResponse)
+async def getWeeklyEvent(leagueId: int):
+    """
+    Fetch a specific weekly event by its league ID.
+    """
+    try:
+        res = supabase.table('weekly_events').select('*').eq('leagueId', leagueId).execute()
+        if not res.data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"code": "not_found", "message": "Weekly event not found"}
+            )
+        return res.data[0]
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to fetch weekly event {leagueId} from Supabase: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": "Failed to fetch weekly event"}
+        )
+    
 
 @app.post("/api/events", status_code=status.HTTP_201_CREATED)
 async def createEvent(
@@ -81,16 +121,19 @@ async def createEvent(
     """
     try:
         eventData = event.model_dump()
-        if 'type' in eventData:
-            eventData['eventType'] = eventData.pop('type')
-        res = supabase.table('event').insert(eventData).execute()
+        tableName = 'weekly_events' if event.isRecurring else 'events'
+
+        res = supabase.table(tableName).insert(eventData).execute()
         if not res.data:
+            logger.error(f"No data returned from Supabase insert for event: {eventData}")
             raise Exception("No data returned from Supabase insert.")
         
         return {
             'success': True,
             'message': 'Event created successfully'
         }
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Failed to create event: {e}")
         raise HTTPException(
@@ -108,15 +151,42 @@ async def patchEvent(
 ):
     """
     Partially update an existing event. Requires Clerk authorization.
+    Supports virtual IDs for weekly recurring events.
     """
-    # Verify event exists
+    # 1. Identify virtual ID and set baseline variables
+    realId = eventId
+    is_weekly = False
+    if eventId >= 10000000:
+        realId = eventId // 10000000
+        is_weekly = True
+
+    # 2. Verify event exists and determine table name
+    tableName = None
     try:
-        res = supabase.table('event').select('id').eq('id', eventId).execute()
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "Event not found"}
-            )
+        if is_weekly:
+            res = supabase.table('weekly_events').select('id').eq('id', realId).execute()
+            if res.data:
+                tableName = 'weekly_events'
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail={"code": "not_found", "message": "Event not found"}
+                )
+        else:
+            # Check events table
+            res = supabase.table('events').select('id').eq('id', realId).execute()
+            if res.data:
+                tableName = 'events'
+            else:
+                # Check weekly_events table
+                res_weekly = supabase.table('weekly_events').select('id').eq('id', realId).execute()
+                if res_weekly.data:
+                    tableName = 'weekly_events'
+                else:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail={"code": "not_found", "message": "Event not found"}
+                    )
     except HTTPException:
         raise
     except Exception as e:
@@ -126,13 +196,25 @@ async def patchEvent(
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
 
-    # Perform updates
+    # 3. Perform updates
     try:
         eventData = event.model_dump(exclude_unset=True)
-        if 'type' in eventData:
-            eventData['eventType'] = eventData.pop('type')
+
         if eventData:
-            supabase.table('event').update(eventData).eq('id', eventId).execute()
+            supabase.table(tableName).update(eventData).eq('id', realId).execute()
+            
+        # Write to audit logs
+        try:
+            admin_id = _auth.get("sub") if _auth else "unknown"
+            audit_entry = {
+                "adminId": admin_id,
+                "eventType": "UPDATE_EVENT",
+                "deltaPayload": {"eventId": realId, "table": tableName, "delta": eventData}
+            }
+            supabase.table('audit_logs').insert(audit_entry).execute()
+        except Exception as audit_err:
+            logger.error(f"Failed to write audit log: {audit_err}")
+
         return {
             'success': True,
             'message': 'Event updated successfully'
@@ -144,6 +226,7 @@ async def patchEvent(
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
 
+
 @app.delete("/api/events/{eventId}")
 async def deleteEvent(
     eventId: int,
@@ -151,15 +234,42 @@ async def deleteEvent(
 ):
     """
     Delete an event. Requires Clerk authorization.
+    Supports virtual IDs for weekly recurring events.
     """
-    # Verify event exists
+    # 1. Identify virtual ID
+    realId = eventId
+    is_weekly = False
+    if eventId >= 10000000:
+        realId = eventId // 10000000
+        is_weekly = True
+
+    # 2. Verify event exists and determine table name
+    tableName = None
     try:
-        res = supabase.table('event').select('id').eq('id', eventId).execute()
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "Event not found"}
-            )
+        if is_weekly:
+            res = supabase.table('weekly_events').select('id').eq('id', realId).execute()
+            if res.data:
+                tableName = 'weekly_events'
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail={"code": "not_found", "message": "Event not found"}
+                )
+        else:
+            # Check events table first
+            res = supabase.table('events').select('id').eq('id', realId).execute()
+            if res.data:
+                tableName = 'events'
+            else:
+                # Check weekly_events table
+                res_weekly = supabase.table('weekly_events').select('id').eq('id', realId).execute()
+                if res_weekly.data:
+                    tableName = 'weekly_events'
+                else:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail={"code": "not_found", "message": "Event not found"}
+                    )
     except HTTPException:
         raise
     except Exception as e:
@@ -169,9 +279,22 @@ async def deleteEvent(
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
 
-    # Delete event
+    # 3. Delete event
     try:
-        supabase.table('event').delete().eq('id', eventId).execute()
+        supabase.table(tableName).delete().eq('id', realId).execute()
+        
+        # Write to audit logs
+        try:
+            admin_id = _auth.get("sub") if _auth else "unknown"
+            audit_entry = {
+                "adminId": admin_id,
+                "eventType": "DELETE_EVENT",
+                "deltaPayload": {"eventId": realId, "table": tableName}
+            }
+            supabase.table('audit_logs').insert(audit_entry).execute()
+        except Exception as audit_err:
+            logger.error(f"Failed to write audit log: {audit_err}")
+
         return {
             'success': True,
             'message': 'Event deleted successfully'
@@ -183,13 +306,14 @@ async def deleteEvent(
             detail={"code": "internal_error", "message": str(e)}
         )
 
+
 @app.get("/api/leagues", response_model=list[LeagueResponse])
 async def getLeagues():
     """
     Fetch all leagues.
     """
     try:
-        res = supabase.table('league').select('*').execute()
+        res = supabase.table('leagues').select('*').execute()
         leagues = res.data or []
     except Exception as e:
         logger.error(f"Failed to fetch leagues from Supabase: {e}")
@@ -211,7 +335,7 @@ async def createLeague(
     """
     try:
         leagueData = league.model_dump()
-        res = supabase.table('league').insert(leagueData).execute()
+        res = supabase.table('leagues').insert(leagueData).execute()
         if not res.data:
             raise Exception("Failed to insert league, no data returned.")
         
@@ -241,7 +365,7 @@ async def patchLeague(
     """
     # Verify league exists
     try:
-        res = supabase.table('league').select('id').eq('id', leagueId).execute()
+        res = supabase.table('leagues').select('id').eq('id', leagueId).execute()
         if not res.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -260,7 +384,7 @@ async def patchLeague(
     try:
         leagueData = league.model_dump(exclude_unset=True)
         if leagueData:
-            supabase.table('league').update(leagueData).eq('id', leagueId).execute()
+            supabase.table('leagues').update(leagueData).eq('id', leagueId).execute()
         return {
             'success': True,
             'message': 'League updated successfully'
@@ -283,7 +407,7 @@ async def deleteLeague(
     """
     # Verify league exists
     try:
-        res = supabase.table('league').select('id').eq('id', leagueId).execute()
+        res = supabase.table('leagues').select('id').eq('id', leagueId).execute()
         if not res.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -300,9 +424,9 @@ async def deleteLeague(
 
     # Perform deletion
     try:
-        # Cascade delete all events belonging to the league in Supabase
-        supabase.table('event').delete().eq('leagueId', leagueId).execute()
-        supabase.table('league').delete().eq('id', leagueId).execute()
+        supabase.table('events').delete().eq('leagueId', leagueId).execute()
+        supabase.table('weekly_events').delete().eq('leagueId', leagueId).execute()
+        supabase.table('leagues').delete().eq('id', leagueId).execute()
         return {
             'success': True,
             'message': 'League deleted successfully'

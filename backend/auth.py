@@ -1,7 +1,7 @@
 import os
 import httpx
 import logging
-from fastapi import Request, HTTPException, logger, status
+from fastapi import Request, HTTPException, status
 from clerk_backend_api import Clerk
 from clerk_backend_api.security import AuthenticateRequestOptions
 from dotenv import load_dotenv

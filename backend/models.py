@@ -37,14 +37,14 @@ class EventBase(BaseModel):
     startTime: Optional[str] = None
     leagueId: int
     ticketLink: Optional[str] = None
-    type: str
+    eventType: str
     game: str
     description: Optional[str] = None
     prizes: Optional[str] = None
     entryFee: Optional[str] = None
-
+        
 class EventCreate(EventBase):
-    pass
+    isRecurring: Optional[bool] = None
 
 class EventUpdate(BaseModel):
     name: Optional[str] = None
@@ -52,11 +52,12 @@ class EventUpdate(BaseModel):
     startTime: Optional[str] = None
     leagueId: Optional[int] = None
     ticketLink: Optional[str] = None
-    type: Optional[str] = None
+    eventType: Optional[str] = None
     game: Optional[str] = None
     description: Optional[str] = None
     prizes: Optional[str] = None
     entryFee: Optional[str] = None
+    isRecurring: Optional[bool] = None
 
 class EventResponse(EventBase):
     id: int
