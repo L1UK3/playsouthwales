@@ -1,0 +1,20 @@
+{
+    "experimentalServices": {
+        "frontend": {
+            "root": "frontend",
+            "routePrefix": "/",
+            "framework": "vite"
+        },
+        "backend": {
+            "root": "backend",
+            "routePrefix": "/_/backend",
+            "framework": "flask"
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/((?!api|assets|_).*)",
+            "destination": "/index.html"
+        }
+    ]
+}
