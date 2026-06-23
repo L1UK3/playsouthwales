@@ -74,7 +74,7 @@ async def getEvents(
 @app.post("/api/events", status_code=status.HTTP_201_CREATED)
 async def createEvent(
     event: EventCreate,
-    auth: dict = Depends(require_auth)
+    _auth: dict = Depends(require_auth)
 ):
     """
     Create a new event. Requires Clerk authorization.
@@ -104,7 +104,7 @@ async def createEvent(
 async def patchEvent(
     eventId: int,
     event: EventUpdate,
-    auth: dict = Depends(require_auth)
+    _auth: dict = Depends(require_auth)
 ):
     """
     Partially update an existing event. Requires Clerk authorization.
@@ -147,7 +147,7 @@ async def patchEvent(
 @app.delete("/api/events/{eventId}")
 async def deleteEvent(
     eventId: int,
-    auth: dict = Depends(require_auth)
+    _auth: dict = Depends(require_auth)
 ):
     """
     Delete an event. Requires Clerk authorization.
@@ -204,7 +204,7 @@ async def getLeagues():
 @app.post("/api/leagues", status_code=status.HTTP_201_CREATED)
 async def createLeague(
     league: LeagueCreate,
-    auth: dict = Depends(require_auth)
+    _auth: dict = Depends(require_auth)
 ):
     """
     Create a new league. Requires Clerk authorization.
@@ -234,7 +234,7 @@ async def createLeague(
 async def patchLeague(
     leagueId: int,
     league: LeagueUpdate,
-    auth: dict = Depends(require_auth)
+    _auth: dict = Depends(require_auth)
 ):
     """
     Partially update an existing league. Requires Clerk authorization.
@@ -276,7 +276,7 @@ async def patchLeague(
 @app.delete("/api/leagues/{leagueId}")
 async def deleteLeague(
     leagueId: int,
-    auth: dict = Depends(require_auth)
+    _auth: dict = Depends(require_auth)
 ):
     """
     Delete a league and its associated events. Requires Clerk authorization.
