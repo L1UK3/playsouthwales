@@ -40,6 +40,18 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
                         <strong>Prizes:</strong> {event.prizes}
                     </div>
                 ) : null}
+                {event.directions ? (
+                    <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                        <div className="font-semibold text-text-main flex items-center gap-1">📍 Directions</div>
+                        <div className="leading-relaxed">{event.directions}</div>
+                    </div>
+                ) : null}
+                {event.accessibility ? (
+                    <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                        <div className="font-semibold text-text-main flex items-center gap-1">♿ Accessibility</div>
+                        <div className="leading-relaxed">{event.accessibility}</div>
+                    </div>
+                ) : null}
                 {event.ticketLink ? (
                     <a href={event.ticketLink} className={"btn btn-primary mt-2"} target="_blank" rel="noopener noreferrer">
                         Tickets & Info

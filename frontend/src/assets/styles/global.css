@@ -290,32 +290,32 @@
 
 /* --- Dark Mode Variables --- */
 html.dark {
-    --color-bg-main: #090A0C;
-    --color-bg-card: #121316;
-    --color-bg-card-hover: #1C1E22;
-    --color-bg-cell-empty: rgba(255, 255, 255, 0.01);
-    --color-bg-day-header: rgba(18, 19, 22, 0.85);
+    --color-bg-main: #121212;
+    --color-bg-card: #27272a;
+    --color-bg-card-hover: #3f3f46;
+    --color-bg-cell-empty: rgba(255, 255, 255, 0.02);
+    --color-bg-day-header: rgba(39, 39, 42, 0.9);
 
-    --color-text-main: #E5E7EB;
-    --color-text-muted: #9CA3AF;
-    --color-text-darker: #F9FAFB;
+    --color-text-main: #f4f4f5;
+    --color-text-muted: #d4d4d8;
+    --color-text-darker: #ffffff;
 
-    --color-border-color: #1F2228;
-    --color-primary: #FF5A36;
-    --color-primary-hover: #E3350D;
+    --color-border-color: #3f3f46;
+    --color-primary: #ff4d4d;
+    --color-primary-hover: #e62e2e;
     --color-secondary: #5C9CE6;
     --color-secondary-hover: #4A90E2;
 
-    --color-event-bg: rgba(255, 90, 54, 0.15);
-    --color-event-more-bg: rgba(255, 255, 255, 0.08);
+    --color-event-bg: rgba(255, 77, 77, 0.2);
+    --color-event-more-bg: rgba(255, 255, 255, 0.1);
 }
 
 html.dark body {
     background-color: var(--color-bg-main);
     background-image:
-        radial-gradient(at 0% 0%, rgba(255, 90, 54, 0.02) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(92, 156, 230, 0.02) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(255, 204, 0, 0.02) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(255, 77, 77, 0.04) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.03) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(255, 204, 0, 0.03) 0px, transparent 50%);
 }
 
 /* --- High Contrast Variables --- */

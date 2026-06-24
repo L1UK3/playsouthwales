@@ -62,6 +62,18 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                     </div>
                     {event.description ? <div className={"text-xs leading-relaxed text-text-darker bg-white/5 p-2 rounded-lg"}>{event.description}</div> : null}
                     {event.prizes ? <div className={"text-xs text-amber-400 bg-amber-400/10 p-2 rounded-lg border border-amber-400/20 flex gap-2"}><strong>Prizes:</strong> {event.prizes}</div> : null}
+                    {event.directions ? (
+                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                            <div className="font-semibold text-text-main flex items-center gap-1">📍 Directions</div>
+                            <div className="leading-relaxed">{event.directions}</div>
+                        </div>
+                    ) : null}
+                    {event.accessibility ? (
+                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                            <div className="font-semibold text-text-main flex items-center gap-1">♿ Accessibility</div>
+                            <div className="leading-relaxed">{event.accessibility}</div>
+                        </div>
+                    ) : null}
                     <div className="flex justify-end">
                         {event.ticketLink ? (
                             <a

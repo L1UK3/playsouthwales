@@ -12,13 +12,36 @@ interface SettingsContextType {
     toggleSetting: (key: keyof Settings) => void;
 }
 
+const COOKIE_NAME = 'playwales-settings';
+
+function getCookie(name: string): string | null {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function setCookie(name: string, value: string, days = 365) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=Lax";
+}
+
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [settings, setSettings] = useState<Settings>(() => {
         try {
-            const saved = localStorage.getItem('playwales-settings');
-            const parsed = saved ? JSON.parse(saved) : {};
+            const saved = getCookie(COOKIE_NAME);
+            const parsed = saved ? JSON.parse(decodeURIComponent(saved)) : {};
             return {
                 highContrast: parsed.highContrast ?? false,
                 largeText: parsed.largeText ?? false,
@@ -36,7 +59,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
 
     useEffect(() => {
-        localStorage.setItem('playwales-settings', JSON.stringify(settings));
+        setCookie(COOKIE_NAME, encodeURIComponent(JSON.stringify(settings)));
 
         const root = document.documentElement;
         
