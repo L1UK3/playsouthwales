@@ -12,6 +12,7 @@ const RankingsPage: React.FC = () => {
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
+    const [rankingsTab, setRankingsTab] = React.useState<'national' | 'local'>('national');
     const { data: leagues = [], isLoading } = useLeagues();
 
     const activeLeagueId = selectedLeagueId ?? leagues[0]?.leagueId ?? null;
@@ -32,10 +33,28 @@ const RankingsPage: React.FC = () => {
     }
 
     return (
-        <div className='grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] h-[calc(100vh-140px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[992px]:h-[calc(100vh-120px)] max-[992px]:grid-cols-1 max-[992px]:grid-rows-[1fr_1fr] max-[576px]:rounded-md max-[576px]:border-2'>
+        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:h-[calc(100vh-140px)] h-[calc(100vh-200px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[576px]:rounded-md max-[576px]:border-2">
+            
+            {/* Mobile Tab Toggle for Rankings */}
+            <div className="flex border-b border-border-color bg-bg-card p-1 lg:hidden shrink-0">
+                <button
+                    type="button"
+                    className={`flex-1 py-2 text-center text-sm font-bold rounded-md transition-colors border-none cursor-pointer ${rankingsTab === 'national' ? 'bg-primary text-white!' : 'bg-transparent text-text-muted hover:bg-bg-card-hover'}`}
+                    onClick={() => setRankingsTab('national')}
+                >
+                    National Standings
+                </button>
+                <button
+                    type="button"
+                    className={`flex-1 py-2 text-center text-sm font-bold rounded-md transition-colors border-none cursor-pointer ${rankingsTab === 'local' ? 'bg-primary text-white!' : 'bg-transparent text-text-muted hover:bg-bg-card-hover'}`}
+                    onClick={() => setRankingsTab('local')}
+                >
+                    Local Standings
+                </button>
+            </div>
 
             {/* Left Column: Global Leaderboard */}
-            <div className='flex flex-col p-4 h-full min-h-0 min-w-0 border-r-2 border-border-color max-[992px]:border-r-0 max-[992px]:border-b-2 max-[992px]:border-border-color max-[992px]:p-4 max-[576px]:p-3'>
+            <div className={`flex-col p-4 h-full min-h-0 min-w-0 border-r-2 border-border-color max-[992px]:border-r-0 max-[992px]:p-4 max-[576px]:p-3 ${rankingsTab === 'national' ? 'flex' : 'hidden lg:flex'}`}>
                 <div className='flex justify-between items-center pb-2 border-b border-border-color mb-3 flex-none'>
                     <h1 className='text-lg font-bold text-text-main flex items-center gap-2 m-0'>
                         <Trophy className='w-5 h-5 text-amber-500' />
@@ -45,24 +64,23 @@ const RankingsPage: React.FC = () => {
                         National
                     </span>
                 </div>
-                <p className='text-sm text-text-muted mb-3 flex-none'>
+                <p className='text-xs text-text-muted mb-3 flex-none leading-relaxed'>
                     The South Welsh Top 20 shows the players with the highest CP (Championship Points) across South Wales.
-                    Those players with the most points are eligible to compete in the South Welsh National Championship, which is held annually in the summer and boasts a prize pool of over £1,000.
-                    Players earn CP by participating in official Pokémon TCG and VGC events, with more points awarded for higher placements.
-                    In order to sign up to be included in the South Welsh Top 20, contact us at <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or join the discord server and message an admin.
+                    Top players are eligible to compete in the South Welsh National Championship, held annually.
+                    Players earn CP by participating in official Pokémon TCG and VGC events.
+                    To register, contact <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or message an admin on Discord.
                 </p>
-                <h2 className='text-lg font-bold text-text-main mb-2 flex-none'>Season 2026-2027</h2>
+                <h2 className='text-sm font-bold text-text-main mb-2 flex-none'>Season 2026-2027</h2>
                 <div className='flex-1 min-h-0'>
                     <Leaderboard leagueId='global' />
                 </div>
             </div>
 
             {/* Right Column: Local Leaderboards */}
-            <div className='flex flex-col p-4 h-full min-h-0 min-w-0 gap-3 max-[992px]:p-4 max-[576px]:p-3 bg-bg-main/10'>
+            <div className={`flex-col p-4 h-full min-h-0 min-w-0 gap-3 max-[992px]:p-4 max-[576px]:p-3 bg-bg-main/10 ${rankingsTab === 'local' ? 'flex' : 'hidden lg:flex'}`}>
                 <div className='flex flex-col gap-3 flex-none'>
                     <div className='flex justify-between items-center border-b border-border-color pb-2'>
                         <h2 className='text-lg font-bold text-text-main m-0'>Local Standings</h2>
-
 
                         {selectedLeague && (
                             <span
@@ -74,8 +92,8 @@ const RankingsPage: React.FC = () => {
                         )}
                     </div>
 
-                    <p className='text-sm text-text-muted mb-3 flex-none'>
-                        These are the local leaderboards for each league in South Wales. Players can compete in their local league's weekly events in TCG for each major set release and for each regulation change in VGC to earn points and climb the standings.
+                    <p className='text-xs text-text-muted mb-3 flex-none leading-relaxed'>
+                        These are the local standings for each league in South Wales. Participate in weekly events to earn points and climb the ladder.
                     </p>
 
                     <LeagueSelector

@@ -287,3 +287,108 @@
         transform: translateY(-2px);
     }
 }
+
+/* --- Dark Mode Variables --- */
+html.dark {
+    --color-bg-main: #090A0C;
+    --color-bg-card: #121316;
+    --color-bg-card-hover: #1C1E22;
+    --color-bg-cell-empty: rgba(255, 255, 255, 0.01);
+    --color-bg-day-header: rgba(18, 19, 22, 0.85);
+
+    --color-text-main: #E5E7EB;
+    --color-text-muted: #9CA3AF;
+    --color-text-darker: #F9FAFB;
+
+    --color-border-color: #1F2228;
+    --color-primary: #FF5A36;
+    --color-primary-hover: #E3350D;
+    --color-secondary: #5C9CE6;
+    --color-secondary-hover: #4A90E2;
+
+    --color-event-bg: rgba(255, 90, 54, 0.15);
+    --color-event-more-bg: rgba(255, 255, 255, 0.08);
+}
+
+html.dark body {
+    background-color: var(--color-bg-main);
+    background-image:
+        radial-gradient(at 0% 0%, rgba(255, 90, 54, 0.02) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(92, 156, 230, 0.02) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(255, 204, 0, 0.02) 0px, transparent 50%);
+}
+
+/* --- High Contrast Variables --- */
+html.high-contrast {
+    --color-bg-main: #FFFFFF;
+    --color-bg-card: #FFFFFF;
+    --color-bg-card-hover: #E5E7EB;
+    --color-bg-cell-empty: #F3F4F6;
+    --color-bg-day-header: #E5E7EB;
+
+    --color-text-main: #000000;
+    --color-text-muted: #111827;
+    --color-text-darker: #000000;
+
+    --color-border-color: #000000;
+    --color-primary: #B30000;
+    --color-primary-hover: #800000;
+    --color-secondary: #002B66;
+    --color-secondary-hover: #001A3D;
+
+    --shadow-main: none;
+}
+
+html.high-contrast body {
+    background-image: none !important;
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+html.high-contrast * {
+    border-color: #000000 !important;
+    box-shadow: none !important;
+}
+
+html.high-contrast a, 
+html.high-contrast button {
+    outline: 2px solid #000000;
+    font-weight: 800 !important;
+}
+
+html.high-contrast a:hover, 
+html.high-contrast button:hover {
+    outline: 3px solid #000000;
+    background-color: #E5E7EB !important;
+    color: #000000 !important;
+}
+
+/* --- Large Text Scale --- */
+html.large-text {
+    font-size: 115%;
+}
+
+html.large-text .btn {
+    font-size: 15px;
+    padding: 8px 16px;
+}
+
+html.large-text p,
+html.large-text span,
+html.large-text h1,
+html.large-text h2,
+html.large-text h3 {
+    line-height: 1.6;
+}
+
+/* --- Disable Animations (CSS Overrides) --- */
+html.disable-animations *,
+html.disable-animations *::before,
+html.disable-animations *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+}

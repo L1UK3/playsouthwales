@@ -6,6 +6,7 @@ import "@/assets/styles/global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, useAuth } from "@clerk/react";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import { SettingsProvider } from "./context/SettingsContext";
 
 // Create a new router instance
 const router = createRouter({
@@ -43,7 +44,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
       <QueryClientProvider client={queryClient}>
-        <AuthenticatedApp />
+        <SettingsProvider>
+          <AuthenticatedApp />
+        </SettingsProvider>
       </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>,

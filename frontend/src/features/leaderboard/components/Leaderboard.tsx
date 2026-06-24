@@ -32,10 +32,10 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
                                 <th className='py-2 px-3 text-right pr-4'>Championship Points</th>
                             ) : (
                                 <>
-                                    <th className='py-2 px-3 text-center w-12'>W</th>
-                                    <th className='py-2 px-3 text-center w-12'>L</th>
-                                    <th className='py-2 px-3 text-center w-12'>D</th>
-                                    <th className='py-2 px-3 text-center w-24'>Attendance</th>
+                                    <th className='py-2 px-3 text-center w-12 hidden md:table-cell'>W</th>
+                                    <th className='py-2 px-3 text-center w-12 hidden md:table-cell'>L</th>
+                                    <th className='py-2 px-3 text-center w-12 hidden md:table-cell'>D</th>
+                                    <th className='py-2 px-3 text-center w-24 hidden sm:table-cell'>Attendance</th>
                                     <th className='py-2 px-3 text-right pr-4 w-20'>Points</th>
                                 </>
                             )}
@@ -77,16 +77,16 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
                                             </td>
                                         ) : (
                                             <>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main'>
+                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
                                                     {player.wins ?? 0}
                                                 </td>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main'>
+                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
                                                     {player.losses ?? 0}
                                                 </td>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main'>
+                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
                                                     {player.draws ?? 0}
                                                 </td>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main'>
+                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell'>
                                                     {player.attendance ?? 0}
                                                 </td>
                                                 <td className='py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary'>

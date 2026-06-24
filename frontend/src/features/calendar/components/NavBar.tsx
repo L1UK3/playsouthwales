@@ -38,19 +38,23 @@ const NavBar: React.FC<NavBarProps> = ({
     onToggleViewMode
 }) => {
     return (
-        <div className="flex gap-2 flex-wrap items-center max-[900px]:flex-col max-[900px]:items-stretch [&_h2]:mr-auto">
-            <h2 className="text-lg font-bold text-text-darker">{monthName} {year}</h2>
-            <button className="btn btn-secondary" onClick={onGoToToday}>Today</button>
-            <button className="btn btn-secondary" onClick={onPrevMonth}>&larr;</button>
-            <button className="btn btn-secondary" onClick={onNextMonth}>&rarr;</button>
-            {viewMode && onToggleViewMode && (
-                <button
-                    className={"btn btn-primary ml-2 max-[900px]:ml-0"}
-                    onClick={onToggleViewMode}
-                >
-                    {viewMode === 'calendar' ? 'List' : 'Calendar'}
-                </button>
-            )}
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-between sm:items-center">
+            <h2 className="text-base sm:text-lg font-bold text-text-darker m-0 shrink-0 text-center sm:text-left">
+                {monthName} {year}
+            </h2>
+            <div className="flex items-center gap-1.5 justify-center sm:justify-end w-full sm:w-auto">
+                <button className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial" onClick={onGoToToday}>Today</button>
+                <button className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial" onClick={onPrevMonth}>&larr;</button>
+                <button className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial" onClick={onNextMonth}>&rarr;</button>
+                {viewMode && onToggleViewMode && (
+                    <button
+                        className="btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold cursor-pointer flex-1 sm:flex-initial"
+                        onClick={onToggleViewMode}
+                    >
+                        {viewMode === 'calendar' ? 'List' : 'Calendar'}
+                    </button>
+                )}
+            </div>
         </div>
     );
 };

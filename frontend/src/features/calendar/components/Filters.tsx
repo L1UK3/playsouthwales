@@ -31,10 +31,10 @@ export interface FiltersProps {
  */
 const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChange, onClear }) => {
     return (
-        <div className="flex gap-2 flex-wrap items-center w-full" id="view-filters">
+        <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2.5 w-full" id="view-filters">
             <select
                 id="league-filter"
-                className="flex-1 py-1.5 px-2.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-37.5"
+                className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] w-full sm:flex-1 sm:min-w-[150px] cursor-pointer"
                 value={filters.league}
                 onChange={(e) => onFilterChange('league', e.target.value)}
             >
@@ -46,7 +46,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
 
             <select
                 id="type-filter"
-                className="flex-1 py-1.5 px-2.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-37.5"
+                className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] w-full sm:flex-1 sm:min-w-[150px] cursor-pointer"
                 value={filters.eventType}
                 onChange={(e) => onFilterChange('eventType', e.target.value)}
             >
@@ -60,7 +60,7 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
 
             <select
                 id="game-filter"
-                className="flex-1 py-1.5 px-2.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] min-w-30"
+                className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] w-full sm:flex-1 sm:min-w-[110px] cursor-pointer"
                 value={filters.game}
                 onChange={(e) => onFilterChange('game', e.target.value)}
             >
@@ -70,7 +70,13 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                 <option value="GO">GO</option>
             </select>
 
-            <button type="button" className={"btn btn-primary shrink-0 min-w-20"} onClick={onClear}>Clear</button>
+            <button 
+                type="button" 
+                className="btn btn-primary py-1.5 w-full sm:w-auto sm:shrink-0 sm:min-w-[80px]" 
+                onClick={onClear}
+            >
+                Clear
+            </button>
         </div>
     );
 };

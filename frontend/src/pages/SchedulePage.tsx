@@ -64,7 +64,20 @@ const SchedulePage: React.FC = () => {
     }, [currentDate]);
 
     const handleSelectDay = useCallback((dateKey: string) => {
-        setSelectedDateKey(prev => prev === dateKey ? null : dateKey);
+        setSelectedDateKey(prev => {
+            const nextVal = prev === dateKey ? null : dateKey;
+            if (nextVal !== null) {
+                setTimeout(() => {
+                    if (window.innerWidth < 1024) {
+                        const element = document.getElementById('selected-day-section');
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                }, 100);
+            }
+            return nextVal;
+        });
     }, []);
 
     const handleToggleViewMode = useCallback(() => {
@@ -128,9 +141,7 @@ const SchedulePage: React.FC = () => {
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
 
-    if (isLoading) {
-        return <SuspenseLoader message="Loading schedule..." />;
-    }
+    
 
     return (
         <div className="flex flex-col p-0 animate-swipe-up">
@@ -156,7 +167,9 @@ const SchedulePage: React.FC = () => {
             </div>
 
             <div className="flex-1 block opacity-100">
-                {viewMode === 'calendar' ? (
+                {(isLoading) ? (
+                    <SuspenseLoader message="Loading schedule..." />
+                ) : (viewMode === 'calendar') ? (                  
                     <div key={calendarKey} className={`${animationClass}`}>
                         <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
                             <div className="flex-1 min-w-0 lg:flex lg:flex-col">

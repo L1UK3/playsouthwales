@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import pokeballUrl from '@assets/Pokeball/pokeball.glb?url';
 import { playPokeballPop } from '@calendar/utils/playPokeballPop';
-
+import { useSettings } from '@/context/SettingsContext';
 
 /**
  * Properties for the PokeballOverlay component.
@@ -41,6 +41,7 @@ interface Point {
  * @returns {JSX.Element} A transparent canvas overlaid on the calendar grid.
  */
 const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selectedDateKey, todayKey }) => {
+    const { settings } = useSettings();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const activeKeyRef = useRef<string>(selectedDateKey ?? todayKey);
 
@@ -49,6 +50,8 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
     }, [selectedDateKey, todayKey]);
 
     useEffect(() => {
+        if (settings.disableAnimations) return;
+
         const canvas = canvasRef.current;
         const container = containerRef.current;
         if (!canvas || !container) return;
@@ -248,7 +251,11 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
                 }
             });
         };
-    }, [containerRef]);
+    }, [containerRef, settings.disableAnimations]);
+
+    if (settings.disableAnimations) {
+        return null;
+    }
 
     return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-5" />;
 };

@@ -41,7 +41,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
         : 'Selected Day';
 
     return (
-        <div key={selectedDateKey ?? 'empty'} className="block! animate-swipe-up overflow-hidden lg:absolute lg:inset-0 lg:flex! lg:flex-col">
+        <div id="selected-day-section" key={selectedDateKey ?? 'empty'} className="block! animate-swipe-up overflow-hidden lg:absolute lg:inset-0 lg:flex! lg:flex-col">
             <div className="text-base font-bold p-3.5 bg-bg-day-header text-text-main lg:shrink-0 lg:h-11 lg:flex lg:items-center lg:px-4 lg:py-0 flex items-center justify-between border-b border-border-color">
                 <span>{title}</span>
             </div>

@@ -22,7 +22,7 @@ export const DEFAULT_DEPTH = 1;
 
 /**
  * The default center of the map, based on an approximate geographical
- * center of South South Wales
+ * center of South Wales
  */
 export const DEFAULT_CENTER = {
     lat: 51.58,
@@ -35,6 +35,6 @@ export const DEFAULT_CENTER = {
 export const DEFAULT_ZOOM = 9;
 
 /**
- * 
+ * The base URL for the API endpoints.
  */
 export const API_BASE_URL = "https://playwales.onrender.com/api";
