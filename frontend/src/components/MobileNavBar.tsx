@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
 import { useAuth, SignInButton } from '@clerk/react';
 import { neobrutalism } from '@clerk/ui/themes';
-import { Calendar, MapPin, Trophy, ShieldAlert, User } from 'lucide-react';
+import { Calendar, MapPin, Trophy, ShieldAlert } from 'lucide-react';
 
 const MobileNavBar: React.FC = () => {
     const location = useLocation();
@@ -64,8 +64,8 @@ const MobileNavBar: React.FC = () => {
                         type="button"
                         className="flex flex-col items-center gap-1 py-1 px-3 text-text-muted bg-transparent border-none cursor-pointer transition-all duration-200 hover:text-text-main"
                     >
-                        <User className="w-5 h-5 transition-transform duration-200 active:scale-95" />
-                        <span className="text-[10px] font-bold">Sign In</span>
+                        <ShieldAlert className="w-5 h-5 transition-transform duration-200 active:scale-95" />
+                        <span className="text-[10px] font-bold">Admin</span>
                     </button>
                 </SignInButton>
             )}

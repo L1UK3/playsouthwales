@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({
     return (
         <header className="top-0 z-100 px-4 pt-4">
             <div className="flex gap-4 justify-between py-2.5 px-4 items-center bg-bg-card rounded-lg shadow-main relative border-2 border-border-color">
-                <div className="text-sm sm:text-base md:text-xl text-text-main font-bold truncate flex-1">
+                <div className="text-sm sm:text-base md:text-xl text-text-main font-bold flex-1">
                     Play! South Wales <span className="hidden sm:inline">|</span> <span key={title} className="inline-block animate-swipe-left text-primary">{title}</span>
                 </div>
 
@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({
                     ]} activeTab={path} />
                 </div>
 
-                <div className="flex gap-2.5 items-center justify-end flex-1">
+                <div className="flex gap-2.5 items-center justify-end flex-none sm:flex-1">
                     {isLoaded && isSignedIn && (
                         <>
                             <UserButton />

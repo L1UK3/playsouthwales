@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import pokeballUrl from '@assets/Pokeball/pokeball.glb?url';
 import { playPokeballPop } from '@calendar/utils/playPokeballPop';
 import { useSettings } from '@/context/SettingsContext';
+import { getParams } from '@calendar/utils/getParams';
 
 /**
  * Properties for the PokeballOverlay component.
@@ -17,12 +18,7 @@ export interface PokeballOverlayProps {
     todayKey: string;
 }
 
-const BALL_DIAMETER = 34;
-const RIGHT_MARGIN = 18;
-const TOP_MARGIN = 22;
 const JUMP_DURATION = 480;
-const ARC_HEIGHT = 46;
-const IDLE_AMPLITUDE = 4;
 const IDLE_SPEED = 0.0028;
 const ROTATION_SPEED = 1.4;
 
@@ -85,9 +81,11 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
             const cellRect = cell.getBoundingClientRect();
             const canvasRect = canvas.getBoundingClientRect();
 
+            const { ballDiameter, rightMargin, topMargin } = getParams();
+
             return {
-                x: cellRect.right - canvasRect.left - RIGHT_MARGIN - BALL_DIAMETER / 2,
-                y: cellRect.top - canvasRect.top + TOP_MARGIN
+                x: cellRect.right - canvasRect.left - rightMargin - ballDiameter / 2,
+                y: cellRect.top - canvasRect.top + topMargin
             };
         };
 
@@ -140,7 +138,7 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
             box.getCenter(center);
 
             const maxDim = Math.max(size.x, size.y, size.z) || 1;
-            const scale = BALL_DIAMETER / maxDim;
+            const scale = 1 / maxDim; // Normalize to size 1
 
             model.scale.setScalar(scale);
             model.position.sub(center.multiplyScalar(scale));
@@ -196,6 +194,8 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
                 return;
             }
 
+            const { ballDiameter, arcHeight, idleAmplitude } = getParams();
+
             let displayX = base.x;
             let displayY = base.y;
             let scaleMod = 1;
@@ -204,7 +204,7 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
                 const t = Math.min((now - jumpStart) / JUMP_DURATION, 1);
                 const eased = easeInOutQuad(t);
                 displayX = lerp(jumpFrom.x, base.x, eased);
-                displayY = lerp(jumpFrom.y, base.y, eased) + Math.sin(Math.PI * t) * ARC_HEIGHT;
+                displayY = lerp(jumpFrom.y, base.y, eased) + Math.sin(Math.PI * t) * arcHeight;
                 scaleMod = 1 + Math.sin(Math.PI * t) * 0.18;
 
                 if (t >= 1) {
@@ -219,16 +219,16 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
                     }
                 }
             } else {
-                displayY += Math.sin(now * IDLE_SPEED) * IDLE_AMPLITUDE;
+                displayY += Math.sin(now * IDLE_SPEED) * idleAmplitude;
             }
 
             // Keep the ball from arcing above the canvas's top edge -- the grid
             // clips overflow, so for top-row cells the arc would otherwise get
             // visibly cut off mid-hop.
-            displayY = Math.min(displayY, viewHeight - BALL_DIAMETER / 2);
+            displayY = Math.min(displayY, viewHeight - ballDiameter / 2);
 
             ball.position.set(displayX, displayY, 0);
-            ball.scale.setScalar(scaleMod);
+            ball.scale.setScalar(ballDiameter * scaleMod);
 
             renderer.render(scene, camera);
         };
