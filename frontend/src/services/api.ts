@@ -142,8 +142,12 @@ export async function updateEvent(
  * @param {number} id - The ID of the event to delete.
  * @returns {Promise<void>} A promise that resolves when the event is successfully deleted.
  */
-export async function deleteEvent(id: number,token:string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/events/${id}`, {
+export async function deleteEvent(id: number, token: string, excludeDate?: string): Promise<void> {
+  const queryParams = new URLSearchParams();
+  if (excludeDate) {
+    queryParams.append("excludeDate", excludeDate);
+  }
+  const response = await fetch(`${API_BASE_URL}/events/${id}?${queryParams.toString()}`, {
     method: "DELETE",
     headers:{
       'Authorization': `Bearer ${token}`

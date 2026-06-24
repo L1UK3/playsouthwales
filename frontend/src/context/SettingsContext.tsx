@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, use, useState, useEffect } from 'react';
 
 interface Settings {
     highContrast: boolean;
@@ -17,10 +17,9 @@ const COOKIE_NAME = 'playwales-settings';
 function getCookie(name: string): string | null {
     const nameEQ = name + "=";
     const ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    for (let c of ca) {
+        while (c.startsWith(' ')) c = c.substring(1, c.length);
+        if (c.startsWith(nameEQ)) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
@@ -96,14 +95,15 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
 
     return (
-        <SettingsContext.Provider value={{ settings, toggleSetting }}>
+        <SettingsContext value={{ settings, toggleSetting }}>
             {children}
-        </SettingsContext.Provider>
+        </SettingsContext>
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSettings = (): SettingsContextType => {
-    const context = useContext(SettingsContext);
+    const context = use(SettingsContext);
     if (!context) {
         throw new Error('useSettings must be used within a SettingsProvider');
     }

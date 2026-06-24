@@ -42,6 +42,9 @@ class EventBase(BaseModel):
     description: Optional[str] = None
     prizes: Optional[str] = None
     entryFee: Optional[str] = None
+    directions: Optional[str] = None
+    accessibility: Optional[str] = None
+    excludedDates: Optional[list[str]] = None
         
 class EventCreate(EventBase):
     isRecurring: Optional[bool] = None
@@ -57,7 +60,10 @@ class EventUpdate(BaseModel):
     description: Optional[str] = None
     prizes: Optional[str] = None
     entryFee: Optional[str] = None
+    directions: Optional[str] = None
+    accessibility: Optional[str] = None
     isRecurring: Optional[bool] = None
+    excludedDates: Optional[list[str]] = None
 
 class EventResponse(EventBase):
     id: int

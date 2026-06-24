@@ -42,6 +42,8 @@ export interface Event {
     directions?: string;
     accessibility?: string;
     isRecurring?: boolean;
+    recurringEventId?: number;
+    excludedDates?: string[];
 }
 
 

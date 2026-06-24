@@ -18,7 +18,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'https://playwales.onrender.com',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       }
     }

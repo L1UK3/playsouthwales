@@ -139,10 +139,10 @@ const AdminPage: React.FC = () => {
        });
    
        const deleteEventMutation = useMutation({
-         mutationFn: async (data: { id: number }) => {
+         mutationFn: async (data: { id: number; excludeDate?: string }) => {
            const token = await getToken();
            if(!token) throw new Error("No Login Token")
-           return deleteEvent(data.id,token);
+           return deleteEvent(data.id, token, data.excludeDate);
          },
            onSuccess: () => {
                queryClient.invalidateQueries({ queryKey: ['events'] });
@@ -188,8 +188,24 @@ const AdminPage: React.FC = () => {
 
     // confirms deletion of an event and deletes it
     const handleDeleteEventTrigger = useCallback((event: Event) => {
-        if (window.confirm(`Are you sure you want to delete "${event.name}"?`)) {
-            deleteEventMutation.mutate({ id: event.id });
+        if (event.isRecurring) {
+            const option = window.confirm(
+                `"${event.name}" is a recurring weekly event.\n\n` +
+                `Click "OK" to delete ONLY this single occurrence (${event.date}).\n` +
+                `Click "Cancel" to delete the ENTIRE weekly series.`
+            );
+            if (option) {
+                deleteEventMutation.mutate({ id: event.id, excludeDate: event.date });
+            } else {
+                const confirmAll = window.confirm(`Are you sure you want to delete the ENTIRE weekly series for "${event.name}"?`);
+                if (confirmAll) {
+                    deleteEventMutation.mutate({ id: event.id });
+                }
+            }
+        } else {
+            if (window.confirm(`Are you sure you want to delete "${event.name}"?`)) {
+                deleteEventMutation.mutate({ id: event.id });
+            }
         }
     }, [deleteEventMutation]);
 
@@ -218,9 +234,9 @@ const AdminPage: React.FC = () => {
     }
 
     return (
-        <div className="max-w-6xl mx-auto pb-6 flex flex-col gap-5 animate-swipe-up">
+        <div className="flex flex-col gap-6 animate-swipe-up">
             <h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
-            <div className="flex flex-col gap-1.5 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[14px]" style={{ animationDelay: '0ms' }}>
+            <div className="flex flex-col gap-1.5 [&_h2]:text-[22px] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[14px]">
                 <h2>League Manager</h2>
             </div>
 
@@ -239,8 +255,8 @@ const AdminPage: React.FC = () => {
             </div>
 
             {activeLeague && (
-                <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border border-border-color rounded-lg p-5 shadow-main flex flex-col gap-4">
-                    <div className="flex justify-between items-center border-b border-border-color pb-2.5">
+                <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border-2 border-border-color rounded-lg p-5 shadow-main flex flex-col gap-5">
+                    <div className="flex justify-between items-center border-b-2 border-border-color pb-3">
                         <h3 className="text-base font-bold">Scheduled Events ({activeLeague.name})</h3>
                         <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>
                             Schedule New Event

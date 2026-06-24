@@ -71,12 +71,19 @@ export function useEvents(currentDate: any) {
 
                         const dateString = year + "-" + mStr + "-" + dStr;
 
+                        // Skip if this specific date is excluded in the recurring template
+                        const excludedDates = temp.excludedDates ?? [];
+                        if (excludedDates.includes(dateString)) {
+                            continue;
+                        }
+
                         // create a virtual id so react doesn't crash with duplicate keys
                         const vId = temp.id * 10000000 + (year - 2000) * 10000 + month * 100 + d;
 
                         const newEvent = {
                             ...temp,
                             id: vId,
+                            recurringEventId: temp.id,
                             date: dateString,
                             isRecurring: true
                         };

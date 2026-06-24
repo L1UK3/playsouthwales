@@ -129,13 +129,21 @@ async def createEvent(
     """
     try:
         eventData = event.model_dump()
-        tableName = 'weekly_events' if event.isRecurring else 'events'
+        is_recurring = eventData.pop('isRecurring', None)
+        tableName = 'weekly_events' if is_recurring == True else 'events'
+
+        # Safely remove fields to prevent PGRST204 schema cache errors if columns are not yet created in the DB
+        if tableName == 'events' or eventData.get('excludedDates') is None:
+            eventData.pop('excludedDates', None)
+        if eventData.get('directions') is None:
+            eventData.pop('directions', None)
+        if eventData.get('accessibility') is None:
+            eventData.pop('accessibility', None)
 
         res = supabase.table(tableName).insert(eventData).execute()
         if not res.data:
-            logger.error(f"No data returned from Supabase insert for event: {eventData}")
             raise Exception("No data returned from Supabase insert.")
-        
+
         return {
             'success': True,
             'message': 'Event created successfully'
@@ -145,7 +153,7 @@ async def createEvent(
     except Exception as e:
         logger.error(f"Failed to create event: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=500,
             detail={"code": "internal_error", "message": str(e)}
         )
 
@@ -159,159 +167,133 @@ async def patchEvent(
 ):
     """
     Partially update an existing event. Requires Clerk authorization.
-    Supports virtual IDs for weekly recurring events.
+    Supports virtual IDs for recurring events.
     """
-    # 1. Identify virtual ID and set baseline variables
-    realId = eventId
-    is_weekly = False
-    if eventId >= 10000000:
-        realId = eventId // 10000000
-        is_weekly = True
-
-    # 2. Verify event exists and determine table name
-    tableName = None
     try:
-        if is_weekly:
-            res = supabase.table('weekly_events').select('id').eq('id', realId).execute()
-            if res.data:
-                tableName = 'weekly_events'
-            else:
+        if eventId >= 10000000:
+            templateId = eventId // 10000000
+            res = supabase.table('weekly_events').select('id').eq('id', templateId).execute()
+            if not res.data:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail={"code": "not_found", "message": "Event not found"}
+                    detail={"code": "not_found", "message": "Weekly event template not found"}
                 )
+            tableName = 'weekly_events'
+            targetId = templateId
         else:
-            # Check events table
-            res = supabase.table('events').select('id').eq('id', realId).execute()
+            # Check if the event exists in the events table
+            res = supabase.table('events').select('id').eq('id', eventId).execute()
             if res.data:
                 tableName = 'events'
+                targetId = eventId
             else:
-                # Check weekly_events table
-                res_weekly = supabase.table('weekly_events').select('id').eq('id', realId).execute()
-                if res_weekly.data:
+                # If not found, check the weekly_events table
+                res = supabase.table('weekly_events').select('id').eq('id', eventId).execute()
+                if res.data:
                     tableName = 'weekly_events'
+                    targetId = eventId
                 else:
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
                         detail={"code": "not_found", "message": "Event not found"}
                     )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Failed to query event {eventId}: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
-        )
 
-    # 3. Perform updates
-    try:
+        # Perform updates
         eventData = event.model_dump(exclude_unset=True)
+        eventData.pop('isRecurring', None) # Pop isRecurring to prevent database mismatch
+
+        # Safely remove fields to prevent PGRST204 schema cache errors if columns are not yet created in the DB
+        if tableName == 'events' or ('excludedDates' in eventData and eventData.get('excludedDates') is None):
+            eventData.pop('excludedDates', None)
+        if 'directions' in eventData and eventData.get('directions') is None:
+            eventData.pop('directions', None)
+        if 'accessibility' in eventData and eventData.get('accessibility') is None:
+            eventData.pop('accessibility', None)
 
         if eventData:
-            supabase.table(tableName).update(eventData).eq('id', realId).execute()
-            
-        # Write to audit logs
-        try:
-            admin_id = _auth.get("sub") if _auth else "unknown"
-            audit_entry = {
-                "adminId": admin_id,
-                "eventType": "UPDATE_EVENT",
-                "deltaPayload": {"eventId": realId, "table": tableName, "delta": eventData}
-            }
-            supabase.table('audit_logs').insert(audit_entry).execute()
-        except Exception as audit_err:
-            logger.error(f"Failed to write audit log: {audit_err}")
+            supabase.table(tableName).update(eventData).eq('id', targetId).execute()
 
         return {
             'success': True,
             'message': 'Event updated successfully'
         }
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Failed to update event {eventId}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
-
-
+    
 @app.delete("/api/events/{eventId}")
 async def deleteEvent(
     eventId: int,
+    excludeDate: Optional[str] = None,
     _auth: dict = Depends(require_auth)
 ):
     """
-    Delete an event. Requires Clerk authorization.
-    Supports virtual IDs for weekly recurring events.
+    Delete an event or a weekly event series/occurrence. Requires Clerk authorization.
     """
-    # 1. Identify virtual ID
-    realId = eventId
-    is_weekly = False
-    if eventId >= 10000000:
-        realId = eventId // 10000000
-        is_weekly = True
-
-    # 2. Verify event exists and determine table name
-    tableName = None
     try:
-        if is_weekly:
-            res = supabase.table('weekly_events').select('id').eq('id', realId).execute()
-            if res.data:
-                tableName = 'weekly_events'
-            else:
+        # Check if virtual ID for a recurring event
+        if eventId >= 10000000:
+            templateId = eventId // 10000000
+            res = supabase.table('weekly_events').select('*').eq('id', templateId).execute()
+            if not res.data:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail={"code": "not_found", "message": "Event not found"}
+                    detail={"code": "not_found", "message": "Event template not found"}
                 )
+            
+            if excludeDate:
+                # Add to excludedDates list in weekly_events
+                weekly_event = res.data[0]
+                excluded = weekly_event.get('excludedDates') or []
+                if excludeDate not in excluded:
+                    excluded.append(excludeDate)
+                supabase.table('weekly_events').update({'excludedDates': excluded}).eq('id', templateId).execute()
+                return {
+                    'success': True,
+                    'message': f"Occurrence on {excludeDate} excluded successfully"
+                }
+            else:
+                # Delete the entire series
+                supabase.table('weekly_events').delete().eq('id', templateId).execute()
+                return {
+                    'success': True,
+                    'message': 'Weekly event series deleted successfully'
+                }
         else:
-            # Check events table first
-            res = supabase.table('events').select('id').eq('id', realId).execute()
+            # Check if the event exists in the events table
+            res = supabase.table('events').select('id').eq('id', eventId).execute()
             if res.data:
                 tableName = 'events'
             else:
-                # Check weekly_events table
-                res_weekly = supabase.table('weekly_events').select('id').eq('id', realId).execute()
-                if res_weekly.data:
+                # If not found, check the weekly_events table
+                res = supabase.table('weekly_events').select('id').eq('id', eventId).execute()
+                if res.data:
                     tableName = 'weekly_events'
                 else:
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
                         detail={"code": "not_found", "message": "Event not found"}
                     )
+
+            # Perform deletion
+            supabase.table(tableName).delete().eq('id', eventId).execute()
+
+            return {
+                'success': True,
+                'message': 'Event deleted successfully'
+            }
     except HTTPException:
         raise
-    except Exception as e:
-        logger.error(f"Failed to query event {eventId}: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
-        )
-
-    # 3. Delete event
-    try:
-        supabase.table(tableName).delete().eq('id', realId).execute()
-        
-        # Write to audit logs
-        try:
-            admin_id = _auth.get("sub") if _auth else "unknown"
-            audit_entry = {
-                "adminId": admin_id,
-                "eventType": "DELETE_EVENT",
-                "deltaPayload": {"eventId": realId, "table": tableName}
-            }
-            supabase.table('audit_logs').insert(audit_entry).execute()
-        except Exception as audit_err:
-            logger.error(f"Failed to write audit log: {audit_err}")
-
-        return {
-            'success': True,
-            'message': 'Event deleted successfully'
-        }
     except Exception as e:
         logger.error(f"Failed to delete event {eventId}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": str(e)}
+            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
 
 
@@ -348,6 +330,7 @@ async def createLeague(
             raise Exception("Failed to insert league, no data returned.")
         
         newLeagueId = res.data[0]['id']
+
         return {
             'success': True,
             'leagueId': newLeagueId,
@@ -393,6 +376,7 @@ async def patchLeague(
         leagueData = league.model_dump(exclude_unset=True)
         if leagueData:
             supabase.table('leagues').update(leagueData).eq('id', leagueId).execute()
+                
         return {
             'success': True,
             'message': 'League updated successfully'
@@ -435,6 +419,7 @@ async def deleteLeague(
         supabase.table('events').delete().eq('leagueId', leagueId).execute()
         supabase.table('weekly_events').delete().eq('leagueId', leagueId).execute()
         supabase.table('leagues').delete().eq('id', leagueId).execute()
+
         return {
             'success': True,
             'message': 'League deleted successfully'
