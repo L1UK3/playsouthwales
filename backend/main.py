@@ -25,8 +25,8 @@ supabase: Client = create_client(
 )
 
 app = FastAPI(
-    title="play wales API",
-    description="API for managing events and leagues for Play Wales",
+    title="play south wales API",
+    description="API for managing events and leagues for Play South South Wales",
     version="1.0.0",
 )
 
@@ -38,6 +38,14 @@ app.add_middleware(
 )
 
 # --- API Routes ---
+
+@app.get("/api/health")
+async def healthCheck():
+    """
+    Lightweight endpoint for server health checks and warmups.
+    """
+    return {"status": "healthy"}
+
 
 @app.get("/api/events", response_model=list[EventResponse])
 async def getEvents(

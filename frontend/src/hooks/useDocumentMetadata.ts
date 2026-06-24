@@ -7,7 +7,7 @@ export interface DocumentMetadata {
 
 export function useDocumentMetadata({ title, description }: DocumentMetadata) {
     useEffect(() => {
-        document.title = `${title} | Play! Wales`;
+        document.title = `${title} | Play! South Wales`;
 
         let metaDescription = document.querySelector('meta[name="description"]');
         if (!metaDescription) {
@@ -16,7 +16,7 @@ export function useDocumentMetadata({ title, description }: DocumentMetadata) {
             document.head.appendChild(metaDescription);
         }
 
-        const defaultDesc = 'Play! Wales - Event schedules, league map, and championships rankings for Welsh players.';
+        const defaultDesc = 'Play! South Wales - Event schedules, league map, and championships rankings for Welsh players.';
         metaDescription.setAttribute('content', description ?? defaultDesc);
     }, [title, description]);
 }

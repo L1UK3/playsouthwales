@@ -23,7 +23,7 @@ export type ViewMode = 'calendar' | 'list';
 const SchedulePage: React.FC = () => {
     useDocumentMetadata({
         title: 'Event Schedule',
-        description: 'Check the upcoming Pokémon TCG and VGC event schedules, local tournaments, and leagues across Wales.'
+        description: 'Check the upcoming Pokémon TCG and VGC event schedules, local tournaments, and leagues across South Wales.'
     });
 
     const [currentDate, setCurrentDate] = useState(() => new Date());
@@ -134,7 +134,7 @@ const SchedulePage: React.FC = () => {
 
     return (
         <div className="flex flex-col p-0 animate-swipe-up">
-            <h1 className="sr-only">Pokémon Events Schedule Wales</h1>
+            <h1 className="sr-only">Pokémon Events Schedule South Wales</h1>
             <div className="flex flex-col gap-3 mb-4 z-10 bg-bg-main p-3.5 rounded-lg border-2 border-border-color shrink-0">
                 <NavBar
                     monthName={MONTH_NAMES[currentDate.getMonth()]}

@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
         <header className="top-0 z-100 px-4 pt-4">
             <div className="flex gap-4 flex-wrap justify-between py-2 px-4 items-center bg-bg-card rounded-lg shadow-main relative border-2 border-border-color max-md:flex-col max-md:items-stretch">
                 <div className="text-xl text-text-main flex-1 font-bold">
-                    Play! Wales | <span key={title} className="inline-block animate-swipe-left">{title}</span>
+                    Play! South Wales | <span key={title} className="inline-block animate-swipe-left">{title}</span>
                 </div>
 
                 <TabToggle tabs={[

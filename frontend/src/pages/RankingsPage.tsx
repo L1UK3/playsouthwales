@@ -39,17 +39,17 @@ const RankingsPage: React.FC = () => {
                 <div className='flex justify-between items-center pb-2 border-b border-border-color mb-3 flex-none'>
                     <h1 className='text-lg font-bold text-text-main flex items-center gap-2 m-0'>
                         <Trophy className='w-5 h-5 text-amber-500' />
-                        Welsh Top 20
+                        South Welsh Top 20
                     </h1>
                     <span className='text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20'>
                         National
                     </span>
                 </div>
                 <p className='text-sm text-text-muted mb-3 flex-none'>
-                    The Welsh Top 20 shows the players with the highest CP (Championship Points) across Wales.
-                    Those players with the most points are eligible to compete in the Welsh National Championship, which is held annually in the summer and boasts a prize pool of over £1,000.
+                    The South Welsh Top 20 shows the players with the highest CP (Championship Points) across South Wales.
+                    Those players with the most points are eligible to compete in the South Welsh National Championship, which is held annually in the summer and boasts a prize pool of over £1,000.
                     Players earn CP by participating in official Pokémon TCG and VGC events, with more points awarded for higher placements.
-                    In order to sign up to be included in the Welsh Top 20, contact us at <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or join the discord server and message an admin.
+                    In order to sign up to be included in the South Welsh Top 20, contact us at <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or join the discord server and message an admin.
                 </p>
                 <h2 className='text-lg font-bold text-text-main mb-2 flex-none'>Season 2026-2027</h2>
                 <div className='flex-1 min-h-0'>
@@ -69,13 +69,13 @@ const RankingsPage: React.FC = () => {
                                 className='text-xs font-semibold px-2.5 py-0.5 rounded-full text-white transition-all duration-300 shadow-xs'
                                 style={{ backgroundColor: selectedLeague.brandColor ?? 'var(--color-primary)' }}
                             >
-                                {selectedLeague.location ?? 'Wales'}
+                                {selectedLeague.location ?? 'South Wales'}
                             </span>
                         )}
                     </div>
 
                     <p className='text-sm text-text-muted mb-3 flex-none'>
-                        These are the local leaderboards for each league in Wales. Players can compete in their local league's weekly events in TCG for each major set release and for each regulation change in VGC to earn points and climb the standings.
+                        These are the local leaderboards for each league in South Wales. Players can compete in their local league's weekly events in TCG for each major set release and for each regulation change in VGC to earn points and climb the standings.
                     </p>
 
                     <LeagueSelector

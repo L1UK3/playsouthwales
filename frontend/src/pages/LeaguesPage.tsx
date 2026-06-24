@@ -11,7 +11,7 @@ import SuspenseLoader from "@/components/SuspenseLoader";
 const LeaguesPage: React.FC = () => {
     useDocumentMetadata({
         title: 'League Map & Stores',
-        description: 'Find Pokémon TCG and VGC leagues and stores across Wales with our interactive map and directories.'
+        description: 'Find Pokémon TCG and VGC leagues and stores across South Wales with our interactive map and directories.'
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
@@ -34,7 +34,7 @@ const LeaguesPage: React.FC = () => {
 
     return (
         <>
-            <h1 className="sr-only">Pokémon TCG and VGC Leagues in Wales</h1>
+            <h1 className="sr-only">Pokémon TCG and VGC Leagues in South Wales</h1>
             <div className="grid grid-cols-[minmax(340px,400px)_1fr] h-[calc(100vh-140px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[992px]:grid-cols-1 max-[992px]:grid-rows-[40vh_1fr] max-[576px]:grid-rows-[35vh_1fr] max-[576px]:rounded-md max-[576px]:border-2">
 
             <div className="flex flex-col p-4 h-full min-h-0 overflow-y-auto gap-3.5 border-r-2 border-border-color [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border-color/70 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb:hover]:bg-text-muted max-[992px]:border-r-0 max-[992px]:border-t-2 max-[992px]:border-border-color max-[992px]:p-4 max-[576px]:p-3">

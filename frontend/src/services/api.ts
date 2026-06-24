@@ -238,7 +238,7 @@ export async function deleteLeague(id: number,token:string): Promise<void> {
 }
 
 /**
- * Fetches the top 20 players in Wales from the API.
+ * Fetches the top 20 players in South Wales from the API.
  * @returns {Promise<any[]>} A promise that resolves to an array of top 20 player objects.
  */
 export async function loadTop20Players(): Promise<any[]> {
