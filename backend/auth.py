@@ -31,13 +31,17 @@ async def require_auth(request: Request):
     # URL you are accessing the route from in this case we have it set to the frontend
     # all other urls are blocked from accessing routes protected this way
     allowed_origins_env = os.environ.get("ALLOWED_ORIGINS")
-    authorized_parties = [
-        origin.strip() 
-        for origin in allowed_origins_env.split(",") 
-        if origin.strip()
-    ] if allowed_origins_env else [] and logger.warning(
-        "No allowed origins specified in environment variables. All origins will be blocked."
-    )
+    if allowed_origins_env is None:
+        logger.warning("ALLOWED_ORIGINS environment variable is not set. All origins will be blocked.")
+        authorized_parties = []
+    else:
+        authorized_parties = [
+            origin.strip()
+            for origin in allowed_origins_env.split(",")
+            if origin.strip()
+        ]
+        logger.info(f"Authorized parties: {authorized_parties}")
+
     options = AuthenticateRequestOptions(authorized_parties = authorized_parties)
     
     # Sends login token to clerk to verify that it is legitimate
