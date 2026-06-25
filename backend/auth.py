@@ -53,10 +53,10 @@ async def require_auth(request: Request):
         state = clerk.authenticate_request(httpx_req, options)
     
     if not state.is_signed_in:
-        logger.warning("Unauthorized access attempt.")
+        logger.warning(f"Unauthorized access attempt. Reason: {state.reason}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"code": "unauthorized", "message": "Unauthorized"}
+            detail={"code": "unauthorized", "message": f"Unauthorized: {state.reason}"}
         )
         
     return state.payload
