@@ -132,14 +132,6 @@ async def createEvent(
         is_recurring = eventData.pop('isRecurring', None)
         tableName = 'weekly_events' if is_recurring == True else 'events'
 
-        # Safely remove fields to prevent PGRST204 schema cache errors if columns are not yet created in the DB
-        if tableName == 'events' or eventData.get('excludedDates') is None:
-            eventData.pop('excludedDates', None)
-        if eventData.get('directions') is None:
-            eventData.pop('directions', None)
-        if eventData.get('accessibility') is None:
-            eventData.pop('accessibility', None)
-
         res = supabase.table(tableName).insert(eventData).execute()
         if not res.data:
             raise Exception("No data returned from Supabase insert.")
