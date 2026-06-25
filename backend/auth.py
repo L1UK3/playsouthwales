@@ -41,17 +41,12 @@ async def require_auth(request: Request):
         authorized_parties = []
         logger.warning("No allowed origins specified in environment variables. All origins will be blocked.")
         
-    clerk_jwt_key = os.environ.get("CLERK_JWT_KEY")
-    
-    options = AuthenticateRequestOptions(
-        authorized_parties=authorized_parties,
-        jwt_key=clerk_jwt_key
-    )
+    options = AuthenticateRequestOptions(authorized_parties=authorized_parties)
     
     # Log incoming authentication headers (securely)
     auth_header = request.headers.get("authorization")
     origin_header = request.headers.get("origin")
-    logger.info(f"Authenticating request from origin: {origin_header}. Auth header present: {bool(auth_header)}. Local JWT Key configured: {bool(clerk_jwt_key)}")
+    logger.info(f"Authenticating request from origin: {origin_header}. Auth header present: {bool(auth_header)}")
     
     # Sends login token to clerk to verify that it is legitimate
     try:
