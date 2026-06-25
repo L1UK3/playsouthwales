@@ -31,37 +31,28 @@ async def require_auth(request: Request):
     # URL you are accessing the route from in this case we have it set to the frontend
     # all other urls are blocked from accessing routes protected this way
     allowed_origins_env = os.environ.get("ALLOWED_ORIGINS")
-    if allowed_origins_env:
-        authorized_parties = [
-            origin.strip() 
-            for origin in allowed_origins_env.split(",") 
-            if origin.strip()
-        ]
-    else:
-        authorized_parties = []
-        logger.warning("No allowed origins specified in environment variables. All origins will be blocked.")
-        
-    options = AuthenticateRequestOptions(authorized_parties=authorized_parties)
-    
-    # Log incoming authentication headers (securely)
-    auth_header = request.headers.get("authorization")
-    origin_header = request.headers.get("origin")
-    logger.info(f"Authenticating request from origin: {origin_header}. Auth header present: {bool(auth_header)}")
+    authorized_parties = [
+        origin.strip() 
+        for origin in allowed_origins_env.split(",") 
+        if origin.strip()
+    ] if allowed_origins_env else [] and logger.warning(
+        "No allowed origins specified in environment variables. All origins will be blocked."
+    )
+    options = AuthenticateRequestOptions(authorized_parties = authorized_parties)
     
     # Sends login token to clerk to verify that it is legitimate
     try:
         state = clerk.authenticate_request(request, options)
     except Exception as e:
-        logger.error(f"Error authenticating with FastAPI request object: {e}")
+        logger.error(f"Error authenticating request: {e}")
         httpx_req = _fast_api_to_httpx_request(request)
         state = clerk.authenticate_request(httpx_req, options)
     
     if not state.is_signed_in:
-        reason = getattr(state, "reason", "unknown_reason")
-        logger.warning(f"Unauthorized access attempt. Reason: {reason}")
+        logger.warning("Unauthorized access attempt.")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"code": "unauthorized", "message": f"Unauthorized: {reason}"}
+            detail={"code": "unauthorized", "message": "Unauthorized"}
         )
         
     return state.payload
