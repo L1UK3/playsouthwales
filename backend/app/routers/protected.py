@@ -271,6 +271,9 @@ async def deleteLeague(
                 detail={"code": "not_found", "message": "League not found"}
             )
 
+        supabase.table('events').delete().eq('leagueId', leagueId).execute()
+        supabase.table('weekly_events').delete().eq('leagueId', leagueId).execute()
+
         # Perform deletion
         supabase.table('leagues').delete().eq('id', leagueId).execute()
 
