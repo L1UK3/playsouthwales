@@ -2,7 +2,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Optional
 
-from app.utils import loadTop20
 from ..models import EventCreate, EventUpdate,EventResponse,EventBase, EventUpdate,LeagueCreate, LeagueUpdate
 from main import supabase
 from auth import require_auth
@@ -254,12 +253,3 @@ async def patchLeague(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
-
-
-
-@router.get("/api/players/top20")
-async def getTop20Players():
-    """
-    Fetch the top 20 players.
-    """
-    return loadTop20()
