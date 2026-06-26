@@ -13,7 +13,7 @@ router = APIRouter()
 @router.post("/api/events", status_code=status.HTTP_201_CREATED)
 async def createEvent(
     event: EventCreate,
-    _auth: dict = Depends(require_auth)
+    auth: dict = Depends(require_auth)
 ):
     """
     Create a new event. Requires Clerk authorization.
@@ -46,7 +46,7 @@ async def createEvent(
 async def patchEvent(
     eventId: int,
     event: EventUpdate,
-    _auth: dict = Depends(require_auth)
+    auth: dict = Depends(require_auth)
 ):
     """
     Partially update an existing event. Requires Clerk authorization.
@@ -114,7 +114,7 @@ async def patchEvent(
 async def deleteEvent(
     eventId: int,
     excludeDate: Optional[str] = None,
-    _auth: dict = Depends(require_auth)
+    auth: dict = Depends(require_auth)
 ):
     """
     Delete an event or a weekly event series/occurrence. Requires Clerk authorization.
@@ -183,7 +183,7 @@ async def deleteEvent(
 @router.post("/api/leagues", status_code=status.HTTP_201_CREATED)
 async def createLeague(
     league: LeagueCreate,
-    _auth: dict = Depends(require_auth)
+    auth: dict = Depends(require_auth)
 ):
     """
     Create a new league. Requires Clerk authorization.
@@ -214,7 +214,7 @@ async def createLeague(
 async def patchLeague(
     leagueId: int,
     league: LeagueUpdate,
-    _auth: dict = Depends(require_auth)
+    auth: dict = Depends(require_auth)
 ):
     """
     Partially update an existing league. Requires Clerk authorization.
@@ -257,7 +257,7 @@ async def patchLeague(
 @router.delete("/api/leagues/{leagueId}")
 async def deleteLeague(
     leagueId: int,
-    _auth: dict = Depends(require_auth)
+    auth: dict = Depends(require_auth)
 ):
     """
     Delete a league. Requires Clerk authorization.
