@@ -22,7 +22,7 @@ async def createEvent(
         eventData = event.model_dump()
         is_recurring = eventData.pop('isRecurring', None)
         tableName = 'weekly_events' if is_recurring == True else 'events'
-
+        
         res = supabase.table(tableName).insert(eventData).execute()
         if not res.data:
             raise Exception("No data returned from Supabase insert.")
@@ -251,4 +251,38 @@ async def patchLeague(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
+        )
+
+
+@router.delete("/api/leagues/{leagueId}")
+async def deleteLeague(
+    leagueId: int,
+    _auth: dict = Depends(require_auth)
+):
+    """
+    Delete a league. Requires Clerk authorization.
+    """
+    try:
+        # Verify league exists
+        res = supabase.table('leagues').select('id').eq('id', leagueId).execute()
+        if not res.data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"code": "not_found", "message": "League not found"}
+            )
+
+        # Perform deletion
+        supabase.table('leagues').delete().eq('id', leagueId).execute()
+
+        return {
+            'success': True,
+            'message': 'League deleted successfully'
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to delete league {leagueId}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": str(e)}
         )
