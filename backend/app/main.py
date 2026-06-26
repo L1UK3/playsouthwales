@@ -1,27 +1,30 @@
-from fastapi import FastAPI
-from supabase import create_client, Client
 import os
+from fastapi import FastAPI
 import logging
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+from routers import public, protected
 
 logger = logging.getLogger(__name__)
 
 load_dotenv()
-
-supabaseUrl = os.environ.get("SUPABASE_URL")
-supabaseKey = os.environ.get("SUPABASE_SECRET_KEY")
-
-supabase: Client = create_client(
-    supabaseUrl, 
-    supabaseKey
-)
-
 
 app = FastAPI(
     title="play south wales API",
     description="API for managing events and leagues for Play South South Wales",
     version="1.0.0",
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "https://localhost:5173", "https://playsouthwales.uk", "https://www.playsouthwales.uk"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+app.include_router(public.router)
+app.include_router(protected.router)
 
 if __name__ == "__main__":
     import uvicorn

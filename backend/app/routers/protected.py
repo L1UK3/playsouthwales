@@ -1,11 +1,9 @@
-
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Optional
-
-from ..models import EventCreate, EventUpdate,EventResponse,EventBase, EventUpdate,LeagueCreate, LeagueUpdate
-from main import supabase
+from models import EventCreate, EventUpdate, LeagueCreate, LeagueUpdate
+from backend.app.supabase import supabase
 from auth import require_auth
-import logging
 
 logger = logging.getLogger(__name__)
 

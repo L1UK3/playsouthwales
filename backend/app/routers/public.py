@@ -1,14 +1,10 @@
-
 import json
 import os
-import os
-
+import logging
 from fastapi import APIRouter, HTTPException, status
 from typing import Optional
-from backend.app.models import EventResponse, LeagueResponse
-from backend.app.utils import loadTop20
-from main import supabase
-import logging
+from models import EventResponse, LeagueResponse
+from backend.app.supabase import supabase
 
 logger = logging.getLogger(__name__)
 
