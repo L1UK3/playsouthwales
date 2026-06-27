@@ -1,8 +1,10 @@
+import os
 from functools import lru_cache
 from typing import Annotated
-
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+
+ENV_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
 
 
 class Settings(BaseSettings):
@@ -19,6 +21,12 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             return [p.strip() for p in v.split(",") if p.strip()]
         return v
+
+    model_config = SettingsConfigDict(
+        env_file=ENV_FILE_PATH,
+        case_sensitive=False,
+        extra="ignore",
+    )
 
 
 @lru_cache
