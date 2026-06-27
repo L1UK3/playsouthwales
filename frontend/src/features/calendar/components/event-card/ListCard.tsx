@@ -37,7 +37,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
 
     return (
         <div
-            className={`rounded-xl border border-border-color overflow-hidden cursor-pointer transition-all duration-200 border-l-[3.5px] border-l-(--store-color,var(--color-primary)) hover:translate-x-1 hover:border-primary gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
+            className={`rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:translate-x-1 gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >

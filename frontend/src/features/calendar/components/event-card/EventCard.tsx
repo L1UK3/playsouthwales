@@ -18,7 +18,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
     const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
 
     return (
-        <div className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main border-l-4 border-l-(--store-color,var(--type-border)) gradient-card type-${event.eventType}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
+        <div className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main gradient-card type-${event.eventType}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
             <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-0.5">
                     <div className="font-bold text-text-main text-base">{event.name}</div>

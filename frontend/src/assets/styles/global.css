@@ -275,21 +275,63 @@
     --type-border: oklch(0.88 0.25 95);
 }
 
+:root {
+    --card-bg-mix: 6%;
+    --card-border-mix: 100%;
+    --card-shadow-mix: 18%;
+    --card-hover-shadow-mix: 30%;
+    --cal-card-bg-mix: 8%;
+    --cal-card-hover-mix: 18%;
+}
+
 @utility gradient-card {
-    background: linear-gradient(135deg, var(--type-bg) 0%, var(--color-bg-card) 100%);
-    border: 1px solid color-mix(in oklch, var(--type-border) 60%, transparent) !important;
-    box-shadow: var(--shadow-main), 0 0 20px color-mix(in oklch, var(--type-border) 25%, transparent) !important;
+    --card-color: var(--store-color, var(--color-primary));
+    background: linear-gradient(135deg, color-mix(in oklch, var(--card-color) var(--card-bg-mix), transparent) 0%, var(--color-bg-card) 100%) !important;
+    border-top: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    border-right: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    border-bottom: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    border-left: 4px solid var(--type-border, var(--color-primary)) !important;
+    box-shadow: var(--shadow-main), 0 0 25px color-mix(in oklch, var(--card-color) var(--card-shadow-mix), transparent) !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
-        border-color: var(--type-border) !important;
-        box-shadow: var(--shadow-main), 0 0 40px color-mix(in oklch, var(--type-border) 50%, transparent) !important;
+        border-top-color: var(--card-color) !important;
+        border-right-color: var(--card-color) !important;
+        border-bottom-color: var(--card-color) !important;
+        border-left-color: var(--type-border, var(--color-primary)) !important;
+        box-shadow: var(--shadow-main), 0 0 45px color-mix(in oklch, var(--card-color) var(--card-hover-shadow-mix), transparent) !important;
         transform: translateY(-2px);
+    }
+}
+
+@utility calendar-card {
+    --card-color: var(--store-color, var(--color-primary));
+    background-color: color-mix(in oklch, var(--card-color) var(--cal-card-bg-mix), transparent) !important;
+    border-top: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    border-right: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    border-bottom: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    border-left: 4px solid var(--type-border, var(--color-primary)) !important;
+    box-shadow: var(--shadow-main), 0 0 15px color-mix(in oklch, var(--card-color) var(--card-shadow-mix), transparent) !important;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: color-mix(in oklch, var(--card-color) var(--cal-card-hover-mix), transparent) !important;
+        border-top-color: var(--card-color) !important;
+        border-right-color: var(--card-color) !important;
+        border-bottom-color: var(--card-color) !important;
+        box-shadow: var(--shadow-main), 0 0 30px color-mix(in oklch, var(--card-color) var(--card-hover-shadow-mix), transparent) !important;
     }
 }
 
 /* --- Dark Mode Variables --- */
 html.dark {
+    --card-bg-mix: 25%;
+    --card-border-mix: 65%;
+    --card-shadow-mix: 25%;
+    --card-hover-shadow-mix: 45%;
+    --cal-card-bg-mix: 20%;
+    --cal-card-hover-mix: 35%;
+
     --color-bg-main: #121212;
     --color-bg-card: #27272a;
     --color-bg-card-hover: #3f3f46;

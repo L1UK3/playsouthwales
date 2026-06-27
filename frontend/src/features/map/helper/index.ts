@@ -3,19 +3,27 @@ import type { MarkerData } from "@map/types/markerData";
 
 
 export function mapLeaguesToMarkers(leagues: League[]): MarkerData[] {
-    return leagues.map(league => ({
-        id: league.leagueId,
-        position: {
-            lat: league.latitude ?? 0,
-            lng: league.longitude ?? 0,
-        },
-        name: league.name,
-        brandColor: league.brandColor ?? '#e31d23',
-        logo: league.logo,
-        location: league.location,
-        website: league.website,
-        pokemonLink: league.pokemonLink,
-    }));
+    return leagues
+        .filter(
+            (league): league is League & { latitude: number; longitude: number } =>
+                league.latitude !== null &&
+                league.latitude !== undefined &&
+                league.longitude !== null &&
+                league.longitude !== undefined
+        )
+        .map(league => ({
+            id: league.leagueId,
+            position: {
+                lat: league.latitude,
+                lng: league.longitude,
+            },
+            name: league.name,
+            brandColor: league.brandColor ?? '#e31d23',
+            logo: league.logo,
+            location: league.location,
+            website: league.website,
+            pokemonLink: league.pokemonLink,
+        }));
 }
 
 /**
