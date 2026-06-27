@@ -26,8 +26,6 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
     const [ticketLink, setTicketLink] = useState(initialData?.ticketLink ?? '');
     const [description, setDescription] = useState(initialData?.description ?? '');
     const [prizes, setPrizes] = useState(initialData?.prizes ?? '');
-    const [directions, setDirections] = useState(initialData?.directions ?? '');
-    const [accessibility, setAccessibility] = useState(initialData?.accessibility ?? '');
     const [isRecurring, setIsRecurring] = useState(initialData?.isRecurring ?? false);
 
     if (!isOpen) return null;
@@ -44,8 +42,6 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
             ticketLink: ticketLink ?? undefined,
             description: description ?? undefined,
             prizes: prizes ?? undefined,
-            directions: directions ?? undefined,
-            accessibility: accessibility ?? undefined,
             leagueId: initialData ? initialData.leagueId : leagueId,
             isRecurring
         });
@@ -209,29 +205,6 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                 />
                             </div>
 
-                            {/* Directions */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
-                                <label htmlFor="eventDirections" className="text-[13px] font-bold text-text-main flex justify-between items-center">Directions</label>
-                                <textarea
-                                    id="eventDirections"
-                                    placeholder="Describe how to get to the event venue, parking information, public transport details, etc."
-                                    value={directions}
-                                    onChange={(e) => setDirections(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
-                                />
-                            </div>
-
-                            {/* Accessibility */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
-                                <label htmlFor="eventAccessibility" className="text-[13px] font-bold text-text-main flex justify-between items-center">Accessibility Info</label>
-                                <textarea
-                                    id="eventAccessibility"
-                                    placeholder="Describe wheelchair access, steps, lighting, sound, or other accessibility accommodations."
-                                    value={accessibility}
-                                    onChange={(e) => setAccessibility(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
-                                />
-                            </div>
                         </div>
                     </div>
 

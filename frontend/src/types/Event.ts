@@ -39,8 +39,6 @@ export interface Event {
     description?: string;
     prizes?: string;
     entryFee?: string;
-    directions?: string;
-    accessibility?: string;
     isRecurring?: boolean;
     recurringEventId?: number;
     excludedDates?: string[];

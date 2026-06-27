@@ -12,6 +12,8 @@ class LeagueBase(BaseModel):
     location: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    directions: Optional[str] = None
+    accessibility: Optional[str] = None
 
 class LeagueCreate(LeagueBase):
     pass
@@ -27,6 +29,8 @@ class LeagueUpdate(BaseModel):
     location: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    directions: Optional[str] = None
+    accessibility: Optional[str] = None
 
 class LeagueResponse(LeagueBase):
     leagueId: int
@@ -42,8 +46,6 @@ class EventBase(BaseModel):
     description: Optional[str] = None
     prizes: Optional[str] = None
     entryFee: Optional[str] = None
-    directions: Optional[str] = None
-    accessibility: Optional[str] = None
     excludedDates: Optional[list[str]] = None
         
 class EventCreate(EventBase):
@@ -60,8 +62,6 @@ class EventUpdate(BaseModel):
     description: Optional[str] = None
     prizes: Optional[str] = None
     entryFee: Optional[str] = None
-    directions: Optional[str] = None
-    accessibility: Optional[str] = None
     isRecurring: Optional[bool] = None
     excludedDates: Optional[list[str]] = None
 

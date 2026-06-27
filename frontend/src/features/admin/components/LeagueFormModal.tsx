@@ -24,6 +24,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     const [website, setWebsite] = useState(initialData?.website ?? '');
     const [pokemonLink, setPokemonLink] = useState(initialData?.pokemonLink ?? '');
     const [socialLink, setSocialLink] = useState(initialData?.socialLink ?? '');
+    const [directions, setDirections] = useState(initialData?.directions ?? '');
+    const [accessibility, setAccessibility] = useState(initialData?.accessibility ?? '');
 
     const errors: Record<string, string> = {};
 
@@ -40,7 +42,9 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
             logo,
             website,
             pokemonLink,
-            socialLink
+            socialLink,
+            directions: directions || undefined,
+            accessibility: accessibility || undefined
         });
     };
 
@@ -185,6 +189,30 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                     value={socialLink}
                                     onChange={(e) => setSocialLink(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.socialLink ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
+                                />
+                            </div>
+
+                            {/* Directions */}
+                            <div className="flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1">
+                                <label htmlFor="leagueDirections" className="text-[13px] font-bold text-text-main flex justify-between items-center">Directions</label>
+                                <textarea
+                                    id="leagueDirections"
+                                    placeholder="Describe how to get to the store, parking information, public transport details, etc."
+                                    value={directions}
+                                    onChange={(e) => setDirections(e.target.value)}
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
+                                />
+                            </div>
+
+                            {/* Accessibility */}
+                            <div className="flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1">
+                                <label htmlFor="leagueAccessibility" className="text-[13px] font-bold text-text-main flex justify-between items-center">Accessibility Info</label>
+                                <textarea
+                                    id="leagueAccessibility"
+                                    placeholder="Describe wheelchair access, steps, lighting, sound, or other accessibility accommodations."
+                                    value={accessibility}
+                                    onChange={(e) => setAccessibility(e.target.value)}
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
                         </div>

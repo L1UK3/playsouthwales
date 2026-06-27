@@ -51,6 +51,8 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
             </div>
             {showInfo && (
                 <>
+                    {league.directions && <p className="text-[13px] text-text-muted">📝 {league.directions}</p>}
+                    {league.accessibility && <p className="text-[13px] text-text-muted">♿ {league.accessibility}</p>}
                     {league.location && <p className="text-[13px] text-text-muted">📍 {league.location}</p>}
                     <div className="flex gap-2 flex-wrap">
                         {league.website && (

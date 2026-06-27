@@ -87,10 +87,6 @@ async def patchEvent(
         # Safely remove fields to prevent PGRST204 schema cache errors if columns are not yet created in the DB
         if tableName == 'events' or ('excludedDates' in eventData and eventData.get('excludedDates') is None):
             eventData.pop('excludedDates', None)
-        if 'directions' in eventData and eventData.get('directions') is None:
-            eventData.pop('directions', None)
-        if 'accessibility' in eventData and eventData.get('accessibility') is None:
-            eventData.pop('accessibility', None)
 
         if eventData:
             supabase.table(tableName).update(eventData).eq('id', targetId).execute()
