@@ -11,7 +11,6 @@ class Settings(BaseSettings):
     clerk_secret_key: str
     clerk_jwt_key: str | None = None
     clerk_authorized_parties: Annotated[list[str], NoDecode] = []
-    clerk_webhook_signing_secret: str | None = None
     supabase_url: str
     supabase_secret_key: str
 
