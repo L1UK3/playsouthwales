@@ -2,6 +2,7 @@ import os
 import sys
 from functools import lru_cache
 from typing import Annotated
+
 from pydantic import field_validator, ValidationError
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
@@ -16,8 +17,9 @@ class Settings(BaseSettings):
     clerk_webhook_signing_secret: str | None = None
     supabase_url: str
     supabase_secret_key: str
+    allowed_origins: list[str]
 
-    @field_validator("clerk_authorized_parties", mode="before")
+    @field_validator("clerk_authorized_parties", "allowed_origins", mode="before")
     @classmethod
     def _split_csv(cls, v: str | list[str]) -> list[str]:
         if isinstance(v, str):

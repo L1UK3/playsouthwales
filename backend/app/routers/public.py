@@ -4,7 +4,7 @@ import logging
 from fastapi import APIRouter, HTTPException, status
 from typing import Optional
 from app.models import EventResponse, LeagueResponse
-from app.supabase_client import supabase
+from app.main import supabase
 
 logger = logging.getLogger(__name__)
 
