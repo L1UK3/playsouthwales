@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     clerk_webhook_signing_secret: str | None = None
     supabase_url: str
     supabase_secret_key: str
-    allowed_origins: list[str]
+    allowed_origins: Annotated[list[str], NoDecode] = []
 
     @field_validator("clerk_authorized_parties", "allowed_origins", mode="before")
     @classmethod
