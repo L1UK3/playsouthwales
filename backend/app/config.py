@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     clerk_jwt_key: str | None = None
     clerk_authorized_parties: Annotated[list[str], NoDecode] = []
     clerk_webhook_signing_secret: str | None = None
+    supabase_url: str
+    supabase_secret_key: str
 
     @field_validator("clerk_authorized_parties", mode="before")
     @classmethod
@@ -17,8 +19,6 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             return [p.strip() for p in v.split(",") if p.strip()]
         return v
-
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
 
 
 @lru_cache

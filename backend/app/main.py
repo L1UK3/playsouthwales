@@ -1,9 +1,8 @@
-import os
-from fastapi import FastAPI
 import logging
 from dotenv import load_dotenv
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import public, protected
+from app.routers import public, protected
 
 logger = logging.getLogger(__name__)
 

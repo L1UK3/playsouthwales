@@ -3,8 +3,8 @@ import os
 import logging
 from fastapi import APIRouter, HTTPException, status
 from typing import Optional
-from models import EventResponse, LeagueResponse
-from supabase_client import supabase
+from app.models import EventResponse, LeagueResponse
+from app.supabase_client import supabase
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +115,7 @@ async def getTop20Players():
     """
     Fetch the top 20 players.
     """
-    TOP20_PATH = os.path.join(os.path.dirname(__file__), 'data', 'top20.json')
+    TOP20_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'top20.json')
 
     try:
         with open(TOP20_PATH, 'r', encoding='utf-8') as f:

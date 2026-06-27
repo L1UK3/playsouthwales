@@ -3,7 +3,7 @@ from clerk_backend_api import AuthenticateRequestOptions, authenticate_request
 from clerk_backend_api.security.types import RequestState
 from fastapi import Depends, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from config import Settings, get_settings
+from app.config import Settings, get_settings
 
 http_bearer = HTTPBearer(auto_error=False)
 

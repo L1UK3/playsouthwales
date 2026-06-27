@@ -289,14 +289,14 @@ const AdminPage: React.FC = () => {
             )}
 
             <LeagueFormModal
-                key={isEditingLeague ? (editingLeague?.leagueId ?? 'new') : 'closed'}
+                key={isEditingLeague ? `league-${editingLeague?.leagueId ?? 'new'}` : 'closed-league'}
                 isOpen={isEditingLeague}
                 onClose={() => setIsEditingLeague(false)}
                 onSubmit={handleLeagueSubmit}
                 initialData={editingLeague}
             />
             <EventFormModal
-                key={isEditingEvent ? (editingEvent?.id ?? 'new') : 'closed'}
+                key={isEditingEvent ? `event-${editingEvent?.id ?? 'new'}` : 'closed-event'}
                 isOpen={isEditingEvent}
                 onClose={() => setIsEditingEvent(false)}
                 onSubmit={handleEventSubmit}
