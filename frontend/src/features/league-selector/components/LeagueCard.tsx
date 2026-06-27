@@ -51,9 +51,25 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
             </div>
             {showInfo && (
                 <>
-                    {league.directions && <p className="text-[13px] text-text-muted">📝 {league.directions}</p>}
-                    {league.accessibility && <p className="text-[13px] text-text-muted">♿ {league.accessibility}</p>}
-                    {league.location && <p className="text-[13px] text-text-muted">📍 {league.location}</p>}
+                    {league.location ? (
+                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                            <div className="font-semibold text-text-main flex items-center gap-1">Location:</div>
+                            <div className="text-[13px] text-text-muted">{league.location}</div>
+                        </div>
+                    ) : null}
+                    {league?.directions ? (
+                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                            <div className="font-semibold text-text-main flex items-center gap-1">Directions:</div>
+                            <div className="leading-relaxed">{league.directions}</div>
+                        </div>
+                    ) : null}
+                    {league?.accessibility ? (
+                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
+                            <div className="font-semibold text-text-main flex items-center gap-1">Accessibility:</div>
+                            <div className="leading-relaxed">{league.accessibility}</div>
+                        </div>
+                    ) : null}
+
                     <div className="flex gap-2 flex-wrap">
                         {league.website && (
                             <a

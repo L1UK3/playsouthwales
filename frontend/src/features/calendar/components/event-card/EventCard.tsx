@@ -23,7 +23,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
                 <div className="flex flex-col gap-0.5">
                     <div className="font-bold text-text-main text-base">{event.name}</div>
                     <div className="text-xs font-semibold text-type-text">
-                        {types[event.eventType] ? `${types[event.eventType]} ` : ''}{event.eventType} • {event.game}
+                        {`[${types[event.eventType]}] ${event.eventType} • ${event.game}`}
                     </div>
                 </div>
 
@@ -38,18 +38,6 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
                 {event.prizes ? (
                     <div className={"text-xs text-amber-400 bg-amber-400/10 p-2 rounded-lg border border-amber-400/20 flex gap-2 [&_strong]:text-text-main"}>
                         <strong>Prizes:</strong> {event.prizes}
-                    </div>
-                ) : null}
-                {league?.directions ? (
-                    <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
-                        <div className="font-semibold text-text-main flex items-center gap-1">📍 Directions</div>
-                        <div className="leading-relaxed">{league.directions}</div>
-                    </div>
-                ) : null}
-                {league?.accessibility ? (
-                    <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
-                        <div className="font-semibold text-text-main flex items-center gap-1">♿ Accessibility</div>
-                        <div className="leading-relaxed">{league.accessibility}</div>
                     </div>
                 ) : null}
                 {event.ticketLink ? (

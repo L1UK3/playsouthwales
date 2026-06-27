@@ -291,7 +291,7 @@
     border-right: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
     border-bottom: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
     border-left: 4px solid var(--type-border, var(--color-primary)) !important;
-    box-shadow: var(--shadow-main), 0 0 25px color-mix(in oklch, var(--card-color) var(--card-shadow-mix), transparent) !important;
+    box-shadow: var(--shadow-main) !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
@@ -299,7 +299,7 @@
         border-right-color: var(--card-color) !important;
         border-bottom-color: var(--card-color) !important;
         border-left-color: var(--type-border, var(--color-primary)) !important;
-        box-shadow: var(--shadow-main), 0 0 45px color-mix(in oklch, var(--card-color) var(--card-hover-shadow-mix), transparent) !important;
+        box-shadow: var(--shadow-main) !important;
         transform: translateY(-2px);
     }
 }
@@ -311,7 +311,7 @@
     border-right: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
     border-bottom: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
     border-left: 4px solid var(--type-border, var(--color-primary)) !important;
-    box-shadow: var(--shadow-main), 0 0 15px color-mix(in oklch, var(--card-color) var(--card-shadow-mix), transparent) !important;
+    box-shadow: var(--shadow-main) !important;
     transition: all 0.2s ease-in-out;
 
     &:hover {
@@ -319,7 +319,7 @@
         border-top-color: var(--card-color) !important;
         border-right-color: var(--card-color) !important;
         border-bottom-color: var(--card-color) !important;
-        box-shadow: var(--shadow-main), 0 0 30px color-mix(in oklch, var(--card-color) var(--card-hover-shadow-mix), transparent) !important;
+        box-shadow: var(--shadow-main) !important;
     }
 }
 
