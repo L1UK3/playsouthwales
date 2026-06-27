@@ -23,9 +23,12 @@ def require_auth(
         ),
     )
     if not state.is_signed_in:
+        reason_str = "unauthorized"
+        if state.reason:
+            reason_str = getattr(state.reason, "value", str(state.reason))
         raise HTTPException(
             status_code=401,
-            detail=state.reason or "unauthorized",
+            detail=reason_str,
             headers={"WWW-Authenticate": "Bearer"},
         )
     return state
