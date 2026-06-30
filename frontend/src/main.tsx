@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, useAuth } from "@clerk/react";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import { SettingsProvider } from "./context/SettingsContext";
+import { Analytics } from "@vercel/analytics/react";
 
 // Create a new router instance
 const router = createRouter({
@@ -49,5 +50,6 @@ createRoot(document.getElementById("root")!).render(
         </SettingsProvider>
       </QueryClientProvider>
     </ClerkProvider>
+    <Analytics />
   </StrictMode>,
 );
