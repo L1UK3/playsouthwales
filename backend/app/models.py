@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional
 
 class LeagueBase(BaseModel):
@@ -6,7 +6,7 @@ class LeagueBase(BaseModel):
     logo: Optional[str] = None
     website: Optional[str] = None
     socialLink: Optional[str] = None
-    eventLink: Optional[str] = Field(None, validation_alias='pokemonLink')
+    eventLink: Optional[str] = None
     brandColor: Optional[str] = None
     webLink: Optional[str] = None
     location: Optional[str] = None
@@ -23,7 +23,7 @@ class LeagueUpdate(BaseModel):
     logo: Optional[str] = None
     website: Optional[str] = None
     socialLink: Optional[str] = None
-    eventLink: Optional[str] = Field(None, validation_alias='pokemonLink')
+    eventLink: Optional[str] = None
     brandColor: Optional[str] = None
     webLink: Optional[str] = None
     location: Optional[str] = None
