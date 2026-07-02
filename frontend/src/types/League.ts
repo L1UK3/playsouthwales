@@ -14,7 +14,7 @@
  *   location: "Seattle, WA"
  *   latitude: 47.6623,
  *   longitude: -122.3819
- *   pokemonLink: "https://events.pokemon.com/en-us/leagues/101"
+ *   eventLink: "https://events.example.com/en-us/leagues/101"
  *   webLink: "https://example.com"
  * }
  * 
@@ -23,7 +23,7 @@
  * @property {string} [logo] - Optional URL or path to the league's logo image.
  * @property {string} [website] - Optional URL to the league's official website.
  * @property {string} [socialLink] - Optional URL to the league's primary social media profile.
- * @property {string} [pokemonLink] - Optional URL to the league's official Pokémon event page.
+ * @property {string} [eventLink] - Optional URL to the league's official TCGémon event page.
  * @property {string} [brandColor] - Optional hex code or CSS color representing the league's branding.
  * @property {string} [webLink] - Optional additional web resource link.
  * @property {string} [location] - Optional physical address or location name of the league.
@@ -39,7 +39,7 @@ export interface League {
     logo?: string;
     website?: string;
     socialLink?: string;
-    pokemonLink?: string;
+    eventLink?: string;
     brandColor?: string;
     webLink?: string;
     location?: string;

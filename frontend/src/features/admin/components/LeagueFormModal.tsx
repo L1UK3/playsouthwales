@@ -22,7 +22,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     const [brandColor, setBrandColor] = useState(initialData?.brandColor ?? '#ff0000');
     const [logo, setLogo] = useState(initialData?.logo ?? '');
     const [website, setWebsite] = useState(initialData?.website ?? '');
-    const [pokemonLink, setPokemonLink] = useState(initialData?.pokemonLink ?? '');
+    const [eventLink, setEventLink] = useState(initialData?.eventLink ?? '');
     const [socialLink, setSocialLink] = useState(initialData?.socialLink ?? '');
     const [directions, setDirections] = useState(initialData?.directions ?? '');
     const [accessibility, setAccessibility] = useState(initialData?.accessibility ?? '');
@@ -41,7 +41,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
             brandColor,
             logo,
             website,
-            pokemonLink,
+            eventLink,
             socialLink,
             directions: directions || undefined,
             accessibility: accessibility || undefined
@@ -166,16 +166,16 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                 />
                             </div>
 
-                            {/* Pokémon Link */}
+                            {/* TCG Link */}
                             <div className="flex flex-col gap-1.5 relative">
-                                <label htmlFor="leaguePokemonLink" className="text-[13px] font-bold text-text-main flex justify-between items-center">Pokémon Event Page URL</label>
+                                <label htmlFor="leagueEventLink" className="text-[13px] font-bold text-text-main flex justify-between items-center">TCG Event Page URL</label>
                                 <input
                                     type="url"
-                                    id="leaguePokemonLink"
-                                    placeholder="https://events.pokemon.com/..."
-                                    value={pokemonLink}
-                                    onChange={(e) => setPokemonLink(e.target.value)}
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.pokemonLink ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
+                                    id="leagueEventLink"
+                                    placeholder="https://events.example.com/..."
+                                    value={eventLink}
+                                    onChange={(e) => setEventLink(e.target.value)}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.eventLink ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
                                 />
                             </div>
 

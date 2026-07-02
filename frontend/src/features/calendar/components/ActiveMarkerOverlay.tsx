@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import pokeballUrl from '@assets/Pokeball/pokeball.glb?url';
-import { playPokeballPop } from '@calendar/utils/playPokeballPop';
+import activeMarkerUrl from '@assets/ActiveMarker/activeMarker.glb?url';
+import { playMarkerPop } from '@calendar/utils/playMarkerPop';
 import { useSettings } from '@/context/SettingsContext';
 import { getParams } from '@calendar/utils/getParams';
 
 /**
- * Properties for the PokeballOverlay component.
- * @property containerRef - Ref to the calendar grid element the Pokeball hovers over.
+ * Properties for the ActiveMarkerOverlay component.
+ * @property containerRef - Ref to the calendar grid element the ActiveMarker hovers over.
  * @property selectedDateKey - The dateKey of the currently selected day (YYYY-MM-DD), or null.
  * @property todayKey - The dateKey for today, used as the resting spot when nothing is selected.
  */
-export interface PokeballOverlayProps {
+export interface ActiveMarkerOverlayProps {
     containerRef: React.RefObject<HTMLDivElement | null>;
     selectedDateKey: string | null;
     todayKey: string;
@@ -31,12 +31,12 @@ interface Point {
 }
 
 /**
- * PokeballOverlay renders a small 3D Pokeball that hovers above the calendar grid,
+ * ActiveMarkerOverlay renders a small 3D ActiveMarker that hovers above the calendar grid,
  * spinning gently and hopping in an arc to sit above whichever day is selected.
- * @param {PokeballOverlayProps} props - The properties passed to the component.
+ * @param {ActiveMarkerOverlayProps} props - The properties passed to the component.
  * @returns {JSX.Element} A transparent canvas overlaid on the calendar grid.
  */
-const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selectedDateKey, todayKey }) => {
+const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef, selectedDateKey, todayKey }) => {
     const { settings } = useSettings();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const activeKeyRef = useRef<string>(selectedDateKey ?? todayKey);
@@ -127,7 +127,7 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
         let modelReady = false;
         let cancelled = false;
 
-        new GLTFLoader().load(pokeballUrl, (gltf) => {
+        new GLTFLoader().load(activeMarkerUrl, (gltf) => {
             if (cancelled) return;
 
             const model = gltf.scene;
@@ -184,7 +184,7 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
                         base = target;
                         jumping = true;
                         jumpStart = now;
-                        playPokeballPop();
+                        playMarkerPop();
                     }
                 }
             }
@@ -215,7 +215,7 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
                         queued = null;
                         jumping = true;
                         jumpStart = now;
-                        playPokeballPop();
+                        playMarkerPop();
                     }
                 }
             } else {
@@ -260,4 +260,4 @@ const PokeballOverlay: React.FC<PokeballOverlayProps> = ({ containerRef, selecte
     return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-5" />;
 };
 
-export default PokeballOverlay;
+export default ActiveMarkerOverlay;

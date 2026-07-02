@@ -22,7 +22,7 @@ export function mapLeaguesToMarkers(leagues: League[]): MarkerData[] {
             logo: league.logo,
             location: league.location,
             website: league.website,
-            pokemonLink: league.pokemonLink,
+            eventLink: league.eventLink,
         }));
 }
 

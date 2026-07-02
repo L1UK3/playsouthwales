@@ -13,7 +13,7 @@ export interface MarkerData {
     logo?: string;
     location?: string;
     website?: string;
-    pokemonLink?: string;
+    eventLink?: string;
 }
 
 

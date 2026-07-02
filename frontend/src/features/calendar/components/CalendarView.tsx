@@ -4,7 +4,7 @@ import type { League } from '@/types/League';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 import type { CellData } from '@calendar/types/CellData';
 import Cell from '@calendar/components/Cell';
-import PokeballOverlay from '@calendar/components/PokeballOverlay';
+import ActiveMarkerOverlay from '@calendar/components/ActiveMarkerOverlay';
 import type { EventTypeMap } from '@/types/EventTypeMap';
 
 /**
@@ -105,7 +105,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                     />
                 ))}
             </div>
-            <PokeballOverlay containerRef={wrapperRef} selectedDateKey={selectedDateKey} todayKey={todayKey} />
+            <ActiveMarkerOverlay containerRef={wrapperRef} selectedDateKey={selectedDateKey} todayKey={todayKey} />
         </div>
     );
 };

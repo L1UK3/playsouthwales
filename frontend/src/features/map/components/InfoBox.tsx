@@ -59,14 +59,14 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
                             Website
                         </a>
                     )}
-                    {selectedLeague.pokemonLink && (
+                    {selectedLeague.eventLink && (
                         <a
-                            href={selectedLeague.pokemonLink}
+                            href={selectedLeague.eventLink}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)] no-underline font-bold transition-colors duration-200 hover:underline"
                         >
-                            Pokémon Events
+                            Official Events
                         </a>
                     )}
                 </div>

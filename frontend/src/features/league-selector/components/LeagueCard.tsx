@@ -82,15 +82,15 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                                 League Website
                             </a>
                         )}
-                        {league.pokemonLink && (
+                        {league.eventLink && (
                             <a
-                                href={league.pokemonLink}
+                                href={league.eventLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-secondary"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                Pokémon Website
+                                Event Page
                             </a>
                         )}
                     </div>

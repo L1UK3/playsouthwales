@@ -9,9 +9,9 @@ const getAudioContext = (): AudioContext => {
 };
 
 /**
- * Plays a short synthesized "pop" sound, used as feedback when the Pokeball hops to a new day.
+ * Plays a short synthesized "pop" sound, used as feedback when the marker hops to a new day.
  */
-export const playPokeballPop = (): void => {
+export const playMarkerPop = (): void => {
     const ctx = getAudioContext();
     const now = ctx.currentTime;
 

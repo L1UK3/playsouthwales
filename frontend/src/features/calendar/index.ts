@@ -8,9 +8,9 @@ export * from './components/Filters';
 export * from './components/SelectedDaySection';
 export * from './components/Cell';
 export * from './components/NavBar';
-export * from './components/PokeballOverlay';
+export * from './components/ActiveMarkerOverlay';
 export * from './utils/EventFilters';
-export * from './utils/playPokeballPop';
+export * from './utils/playMarkerPop';
 export * from './utils/getLocalDateString';
 export * from './utils/dataProcessing';
 export * from './types/CellData';
@@ -26,5 +26,5 @@ export { default as Filters } from './components/Filters';
 export { default as SelectedDaySection } from './components/SelectedDaySection';
 export { default as Cell } from './components/Cell';
 export { default as NavBar } from './components/NavBar';
-export { default as PokeballOverlay } from './components/PokeballOverlay';
+export { default as ActiveMarkerOverlay } from './components/ActiveMarkerOverlay';
 
