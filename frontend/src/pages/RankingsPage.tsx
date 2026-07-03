@@ -81,15 +81,6 @@ const RankingsPage: React.FC = () => {
                 <div className='flex flex-col gap-3 flex-none'>
                     <div className='flex justify-between items-center border-b border-border-color pb-2'>
                         <h2 className='text-lg font-bold text-text-main m-0'>Local Standings</h2>
-
-                        {selectedLeague && (
-                            <span
-                                className='text-xs font-semibold px-2.5 py-0.5 rounded-full text-white transition-all duration-300 shadow-xs'
-                                style={{ backgroundColor: selectedLeague.brandColor ?? 'var(--color-primary)' }}
-                            >
-                                {selectedLeague.location ?? 'South Wales'}
-                            </span>
-                        )}
                     </div>
 
                     <p className='text-xs text-text-muted mb-3 flex-none leading-relaxed'>
