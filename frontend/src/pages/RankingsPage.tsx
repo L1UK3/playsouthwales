@@ -16,7 +16,6 @@ const RankingsPage: React.FC = () => {
     const { data: leagues = [], isLoading } = useLeagues();
 
     const activeLeagueId = selectedLeagueId ?? leagues[0]?.leagueId ?? null;
-    const selectedLeague = leagues.find(l => l.leagueId === activeLeagueId);
 
     const handleLeagueSelect = (id: number | null) => {
         setSelectedLeagueId(id);
