@@ -43,7 +43,7 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_API_KEY}>
       <QueryClientProvider client={queryClient}>
         <SettingsProvider>
           <AuthenticatedApp />
