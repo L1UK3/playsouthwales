@@ -47,7 +47,6 @@ lerna-debug.log*
 *.sqlite3
 
 # IDEs, Editors, and OS files
-.vscode/
 .idea/
 *.suo
 *.ntvs*

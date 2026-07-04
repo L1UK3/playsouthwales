@@ -12,3 +12,21 @@ dependencies = [
     "supabase>=2.31.0",
     "uvicorn[standard]>=0.49.0",
 ]
+
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "C4", "RUF"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.20",
+]
