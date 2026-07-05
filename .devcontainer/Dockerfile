@@ -45,12 +45,3 @@ ENV PATH="/home/vscode/.local/bin:$PATH"
 
 # Install Python 3.14 via uv
 RUN uv python install 3.14 --default
-
-# Install fnm and Node 22
-ARG NODE_VERSION=22
-ENV FNM_DIR="/home/vscode/.fnm"
-RUN curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$FNM_DIR" --skip-shell && \
-  export PATH="$FNM_DIR:$PATH" && \
-  eval "$(fnm env)" && \
-  fnm install ${NODE_VERSION} && \
-  fnm default ${NODE_VERSION}

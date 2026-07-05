@@ -6,6 +6,9 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "version": "latest",
       "enableNonRootDocker": "true"
@@ -28,15 +31,6 @@
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
-        "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "bash",
-            "icon": "terminal-bash"
-          },
-          "zsh": {
-            "path": "zsh"
-          }
-        },
         "files.trimTrailingWhitespace": true,
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
@@ -77,7 +71,8 @@
     "NODE_OPTIONS": "--max-old-space-size=4096",
     "UV_LINK_MODE": "copy",
     "PYTHONDONTWRITEBYTECODE": "1",
-    "PIP_DISABLE_PIP_VERSION_CHECK": "1"
+    "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+    "DOCKER_HOST": "unix:///var/run/docker-host.sock"
   },
   "forwardPorts": [
     5000,
@@ -111,5 +106,5 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",
   "postCreateCommand": "cd backend && uv sync && cd ../frontend && npm ci && cd .. && npm ci",
-  "postStartCommand": "bash .devcontainer/startup.sh"
+  "postStartCommand": "npx supabase start && docker compose down && docker compose up -d --build"
 }
