@@ -1,6 +1,6 @@
-# Play South Wales - TCG League Scheduler
+# Play South Wales - League Scheduler
 
-An interactive, full-stack league scheduling and management application for South Wales TCG (Trading Card Game) leagues. 
+An interactive, full-stack league scheduling and management application for South Wales leagues. 
 
 This platform allows organizers to schedule league events, manage player standings, and display interactive maps of venue locations.
 
