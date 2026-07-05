@@ -2,10 +2,12 @@
   "recommendations": [
     "ms-python.python",
     "ms-python.vscode-pylance",
+    "ms-python.debugpy",
     "charliermarsh.ruff",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
-    "supabase.supabase-postgres"
+    "supabase.vscode-supabase-extension",
+    "editorconfig.editorconfig",
+    "ms-vscode-remote.remote-containers"
   ]
 }
