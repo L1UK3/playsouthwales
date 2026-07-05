@@ -71,12 +71,10 @@
   },
   "remoteUser": "vscode",
   "mounts": [
-    "source=playwales-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
-    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly"
+    "source=playwales-bashhistory-${devcontainerId},target=/commandhistory,type=volume"
   ],
   "containerEnv": {
     "NODE_OPTIONS": "--max-old-space-size=4096",
-    "GIT_CONFIG_GLOBAL": "/home/vscode/.gitconfig",
     "UV_LINK_MODE": "copy",
     "PYTHONDONTWRITEBYTECODE": "1",
     "PIP_DISABLE_PIP_VERSION_CHECK": "1"
