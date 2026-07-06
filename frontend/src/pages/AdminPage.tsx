@@ -61,97 +61,97 @@ const AdminPage: React.FC = () => {
     const queryClient = useQueryClient();
 
     // League mutations
-     const createLeagueMutation = useMutation({
-       mutationFn: async (data: Omit<League, 'leagueId'>) => {
-         const token = await getToken();
-         console.log(token)
-         if(!token) throw new Error("No Token User Authenticated")
-         return createLeague(data, token);
-       }, 
-           onSuccess: () => {
-               queryClient.invalidateQueries({ queryKey: ['leagues'] });
-           },
-           onError: (error: Error) => {
-               console.error('League Creation Failed', error);
-           }
-       });
-   
-       const updateLeagueMutation = useMutation({
-         mutationFn:async ({ id, data }: { id: number; data: Partial<League> }) => {
-           const token = await getToken();
-           if(!token) throw new Error("No Login Token")
-           
-           return updateLeague(id, data, token);
-         },
-           onSuccess: () => {
-               queryClient.invalidateQueries({ queryKey: ['leagues'] });
-           },
-           onError: (error: Error) => {
-               console.error('League Update Failed', error);
-           }
-       });
-   
-       const deleteLeagueMutation = useMutation({
-         mutationFn:async (data: { id: number })=> {
-           const token = await getToken();
-           if(!token) throw new Error("No Login Token")
-           return deleteLeague(data.id, token);
-         }, // TODO: add token
-           onSuccess: () => {
-               queryClient.invalidateQueries({ queryKey: ['leagues'] });
-               queryClient.invalidateQueries({ queryKey: ['events'] });
-               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
-           },
-           onError: (error: Error) => {
-               console.error('League Deletion Failed', error);
-           }
-       });
-   
-       // Event mutations
-       const createEventMutation = useMutation({
-         mutationFn:async (data: Omit<Event, 'id'>) => {
-           const token = await getToken();
-           if(!token) throw new Error("No Login Token")
-           return createEvent(data, token);
-         }, 
-           onSuccess: () => {
-               queryClient.invalidateQueries({ queryKey: ['events'] });
-               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
-           },
-           onError: (error: Error) => {
-               console.error('Event Creation Failed', error);
-           }
-       });
-   
-       const updateEventMutation = useMutation({
-         mutationFn:async ({ id, data }: { id: number; data: Partial<Event> }) => {
-           const token = await getToken();
-           if(!token) throw new Error("No Login Token")
-           return updateEvent(id, data,token)
-         },
-           onSuccess: () => {
-               queryClient.invalidateQueries({ queryKey: ['events'] });
-               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
-           },
-           onError: (error: Error) => {
-               console.error('Event Update Failed', error);
-           }
-       });
-   
-       const deleteEventMutation = useMutation({
-         mutationFn: async (data: { id: number; excludeDate?: string }) => {
-           const token = await getToken();
-           if(!token) throw new Error("No Login Token")
-           return deleteEvent(data.id, token, data.excludeDate);
-         },
-           onSuccess: () => {
-               queryClient.invalidateQueries({ queryKey: ['events'] });
-               queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
-           },
-           onError: (error: Error) => {
-               console.error('Event Deletion Failed', error);
-           }
-       });
+    const createLeagueMutation = useMutation({
+        mutationFn: async (data: Omit<League, 'leagueId'>) => {
+            const token = await getToken();
+            console.log(token)
+            if (!token) throw new Error("No Token User Authenticated")
+            return createLeague(data, token);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leagues'] });
+        },
+        onError: (error: Error) => {
+            console.error('League Creation Failed', error);
+        }
+    });
+
+    const updateLeagueMutation = useMutation({
+        mutationFn: async ({ id, data }: { id: number; data: Partial<League> }) => {
+            const token = await getToken();
+            if (!token) throw new Error("No Login Token")
+
+            return updateLeague(id, data, token);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leagues'] });
+        },
+        onError: (error: Error) => {
+            console.error('League Update Failed', error);
+        }
+    });
+
+    const deleteLeagueMutation = useMutation({
+        mutationFn: async (data: { id: number }) => {
+            const token = await getToken();
+            if (!token) throw new Error("No Login Token")
+            return deleteLeague(data.id, token);
+        }, // TODO: add token
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leagues'] });
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+            queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
+        },
+        onError: (error: Error) => {
+            console.error('League Deletion Failed', error);
+        }
+    });
+
+    // Event mutations
+    const createEventMutation = useMutation({
+        mutationFn: async (data: Omit<Event, 'id'>) => {
+            const token = await getToken();
+            if (!token) throw new Error("No Login Token")
+            return createEvent(data, token);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+            queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
+        },
+        onError: (error: Error) => {
+            console.error('Event Creation Failed', error);
+        }
+    });
+
+    const updateEventMutation = useMutation({
+        mutationFn: async ({ id, data }: { id: number | string; data: Partial<Event> }) => {
+            const token = await getToken();
+            if (!token) throw new Error("No Login Token")
+            return updateEvent(id, data, token)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+            queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
+        },
+        onError: (error: Error) => {
+            console.error('Event Update Failed', error);
+        }
+    });
+
+    const deleteEventMutation = useMutation({
+        mutationFn: async (data: { id: number | string; excludeDate?: string }) => {
+            const token = await getToken();
+            if (!token) throw new Error("No Login Token")
+            return deleteEvent(data.id, token, data.excludeDate);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+            queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
+        },
+        onError: (error: Error) => {
+            console.error('Event Deletion Failed', error);
+        }
+    });
 
     // triggers for buttons
 

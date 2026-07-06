@@ -4,6 +4,7 @@ from typing import Optional
 from app.models import EventCreate, EventUpdate, LeagueCreate, LeagueUpdate
 from app.auth import require_auth
 from app.main import supabase
+from app.services.pokedata_sync import sync_pokedata
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ async def createEvent(
 @router.patch("/api/events/{eventId}")
 @router.put("/api/events/{eventId}")
 async def patchEvent(
-    eventId: int,
+    eventId: str,
     event: EventUpdate,
     auth: dict = Depends(require_auth)
 ):
@@ -52,8 +53,16 @@ async def patchEvent(
     Supports virtual IDs for recurring events.
     """
     try:
-        if eventId >= 10000000:
-            templateId = eventId // 10000000
+        is_virtual = False
+        try:
+            val = int(eventId)
+            if val >= 10000000:
+                is_virtual = True
+                templateId = val // 10000000
+        except ValueError:
+            pass
+
+        if is_virtual:
             res = supabase.table('weekly_events').select('id').eq('id', templateId).execute()
             if not res.data:
                 raise HTTPException(
@@ -69,12 +78,16 @@ async def patchEvent(
                 tableName = 'events'
                 targetId = eventId
             else:
-                # If not found, check the weekly_events table
-                res = supabase.table('weekly_events').select('id').eq('id', eventId).execute()
-                if res.data:
-                    tableName = 'weekly_events'
-                    targetId = eventId
-                else:
+                # If not found, check the weekly_events table (where ID is integer)
+                try:
+                    int_id = int(eventId)
+                    res = supabase.table('weekly_events').select('id').eq('id', int_id).execute()
+                    if res.data:
+                        tableName = 'weekly_events'
+                        targetId = int_id
+                    else:
+                        raise ValueError()
+                except ValueError:
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
                         detail={"code": "not_found", "message": "Event not found"}
@@ -107,7 +120,7 @@ async def patchEvent(
    
 @router.delete("/api/events/{eventId}")
 async def deleteEvent(
-    eventId: int,
+    eventId: str,
     excludeDate: Optional[str] = None,
     auth: dict = Depends(require_auth)
 ):
@@ -115,9 +128,17 @@ async def deleteEvent(
     Delete an event or a weekly event series/occurrence. Requires Clerk authorization.
     """
     try:
+        is_virtual = False
+        try:
+            val = int(eventId)
+            if val >= 10000000:
+                is_virtual = True
+                templateId = val // 10000000
+        except ValueError:
+            pass
+
         # Check if virtual ID for a recurring event
-        if eventId >= 10000000:
-            templateId = eventId // 10000000
+        if is_virtual:
             res = supabase.table('weekly_events').select('*').eq('id', templateId).execute()
             if not res.data:
                 raise HTTPException(
@@ -148,19 +169,25 @@ async def deleteEvent(
             res = supabase.table('events').select('id').eq('id', eventId).execute()
             if res.data:
                 tableName = 'events'
+                targetId = eventId
             else:
-                # If not found, check the weekly_events table
-                res = supabase.table('weekly_events').select('id').eq('id', eventId).execute()
-                if res.data:
-                    tableName = 'weekly_events'
-                else:
+                # If not found, check the weekly_events table (where ID is integer)
+                try:
+                    int_id = int(eventId)
+                    res = supabase.table('weekly_events').select('id').eq('id', int_id).execute()
+                    if res.data:
+                        tableName = 'weekly_events'
+                        targetId = int_id
+                    else:
+                        raise ValueError()
+                except ValueError:
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
                         detail={"code": "not_found", "message": "Event not found"}
                     )
 
             # Perform deletion
-            supabase.table(tableName).delete().eq('id', eventId).execute()
+            supabase.table(tableName).delete().eq('id', targetId).execute()
 
             return {
                 'success': True,
@@ -174,6 +201,35 @@ async def deleteEvent(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "internal_error", "message": "An unexpected database error occurred"}
         )
+
+@router.post("/api/events/sync-pokedata")
+async def trigger_pokedata_sync(
+    auth: dict = Depends(require_auth)
+):
+    """
+    Manually trigger the sync of events from pokedata.ovh. Requires Clerk authorization.
+    """
+    try:
+        result = await sync_pokedata()
+        if "error" in result:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"code": "internal_error", "message": result["error"]}
+            )
+        return {
+            "success": True,
+            "message": "Pokedata sync completed",
+            "metrics": result
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to manually run pokedata sync: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": str(e)}
+        )
+
 
 @router.post("/api/leagues", status_code=status.HTTP_201_CREATED)
 async def createLeague(

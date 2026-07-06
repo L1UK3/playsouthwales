@@ -1,7 +1,8 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 
 class LeagueBase(BaseModel):
+    id: Optional[int] = None
     name: str
     logo: Optional[str] = None
     website: Optional[str] = None
@@ -19,6 +20,7 @@ class LeagueCreate(LeagueBase):
     pass
 
 class LeagueUpdate(BaseModel):
+    id: Optional[int] = None
     name: Optional[str] = None
     logo: Optional[str] = None
     website: Optional[str] = None
@@ -34,6 +36,7 @@ class LeagueUpdate(BaseModel):
 
 class LeagueResponse(LeagueBase):
     leagueId: int
+    hasStandings: bool = False
 
 class EventBase(BaseModel):
     name: str
@@ -66,4 +69,4 @@ class EventUpdate(BaseModel):
     excludedDates: Optional[list[str]] = None
 
 class EventResponse(EventBase):
-    id: int
+    id: Union[int, str]

@@ -29,7 +29,7 @@ export interface ListViewProps {
  * @returns JSX.Element
  */
 const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types, onEdit, onDelete }) => {
-    const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
+    const [expandedEventId, setExpandedEventId] = useState<number | string | null>(null);
 
     const sortedDates = useMemo(() => {
         const dateKeys = Object.keys(events);
@@ -42,7 +42,7 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
         return dateKeys.sort();
     }, [events, currentDate]);
 
-    const handleToggleEvent = useCallback((eventId: number) => {
+    const handleToggleEvent = useCallback((eventId: number | string) => {
         setExpandedEventId(prev => (prev === eventId ? null : eventId));
     }, []);
 

@@ -1,3 +1,5 @@
+import asyncio
+from contextlib import asynccontextmanager
 import logging
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -6,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from supabase import Client, create_client
 from app.config import get_settings
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
 load_dotenv()
 
@@ -16,8 +18,36 @@ supabase: Client = create_client(settings.supabase_url, settings.supabase_secret
 
 from app.routers import public, protected
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Run the pokedata sync in the background
+    from app.services.pokedata_sync import sync_pokedata
+    
+    async def run_periodic_sync():
+        # Wait 1 second after startup
+        await asyncio.sleep(1)
+        while True:
+            try:
+                logger.info("Starting background pokedata sync...")
+                res = await sync_pokedata()
+                logger.info(f"Background pokedata sync completed: {res}")
+            except Exception as e:
+                logger.error(f"Error in background pokedata sync: {e}")
+            # Run every hour
+            await asyncio.sleep(3600)
+            
+    sync_task = asyncio.create_task(run_periodic_sync())
+    yield
+    sync_task.cancel()
+    try:
+        await sync_task
+    except asyncio.CancelledError:
+        logger.info("Background sync task cancelled.")
+
 app = FastAPI(
     title="play south wales API",
+    lifespan=lifespan,
     description="API for managing events and leagues for Play South South Wales",
     version="1.0.0",
 )

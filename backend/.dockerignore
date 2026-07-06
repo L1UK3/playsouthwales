@@ -1,4 +1,4 @@
-.git
+﻿.git
 .github
 .venv
 __pycache__
@@ -9,5 +9,3 @@ __pycache__
 .pytest_cache
 .vscode
 .python-version
-uv.lock
-pyproject.toml

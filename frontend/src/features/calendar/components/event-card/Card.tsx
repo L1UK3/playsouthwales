@@ -22,7 +22,7 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMa
 
     return (
         <div
-            className = {`
+            className={`
                 flex justify-between 
                 items-center gap-1.5 py-1 px-1.5 
                 rounded-md calendar-card

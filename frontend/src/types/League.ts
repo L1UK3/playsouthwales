@@ -45,4 +45,5 @@ export interface League {
     location?: string;
     latitude?: number;
     longitude?: number;
+    hasStandings?: boolean;
 }

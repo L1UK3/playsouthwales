@@ -27,7 +27,7 @@
  * @property {string} [entryFee] - Optional cost associated with participating in the event.
  */
 export interface Event {
-    id: number;
+    id: number | string;
     name: string;
     date: string;
     startTime?: string;

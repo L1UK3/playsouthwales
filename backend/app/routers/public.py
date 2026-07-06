@@ -107,7 +107,23 @@ async def getLeagues():
             detail={"code": "internal_error", "message": "Failed to fetch leagues"}
         )
 
-    return [{"leagueId": league.get("id"), **league} for league in leagues]
+    # Check which leagues have standings/leaderboards uploaded
+    try:
+        leaderboards_res = supabase.table('leaderboards').select('leagueId').execute()
+        leagues_with_standings = {row['leagueId'] for row in leaderboards_res.data} if leaderboards_res.data else set()
+    except Exception as e:
+        logger.warning(f"Failed to query leaderboards (falling back to mock default): {e}")
+        # In local development where the table might not exist yet, fallback to mock leagues with standings
+        leagues_with_standings = {1, 2, 3, 4}
+
+    return [
+        {
+            "leagueId": league.get("id"),
+            "hasStandings": league.get("id") in leagues_with_standings,
+            **league
+        }
+        for league in leagues
+    ]
 
 
 @router.get("/api/players/top20")

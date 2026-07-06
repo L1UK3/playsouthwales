@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+﻿# syntax=docker/dockerfile:1
 
 ARG PYTHON_VERSION=3.12-slim
 FROM python:${PYTHON_VERSION} AS development
@@ -9,21 +9,23 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+# Copy uv from the official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Create virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
+# Copy configuration files first for layer caching
+COPY pyproject.toml uv.lock ./
 
-# Copy dependency files first for layer caching
-COPY requirements.txt .
+# Install dependencies using uv sync
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-install-project
 
-# Install dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Add virtual environment to PATH
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy app code (initially, though we mount it in compose)
 COPY . .

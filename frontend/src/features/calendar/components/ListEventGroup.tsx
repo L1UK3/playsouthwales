@@ -20,8 +20,8 @@ export interface ListEventGroupProps {
     eventsForDay: Event[];
     leagueMap: Record<number, League>;
     types: EventTypeMap;
-    expandedEventId: number | null;
-    onToggleEvent: (eventId: number) => void;
+    expandedEventId: number | string | null;
+    onToggleEvent: (eventId: number | string) => void;
     onEdit?: (event: Event) => void;
     onDelete?: (event: Event) => void;
 }

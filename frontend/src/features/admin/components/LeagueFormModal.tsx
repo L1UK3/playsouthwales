@@ -5,7 +5,7 @@ import type { League } from '@/types/League';
 export interface LeagueFormModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: Omit<League, 'leagueId'>) => void;
+    onSubmit: (data: Omit<League, 'leagueId'> & { leagueId?: number; id?: number }) => void;
     initialData?: League | null;
 }
 
@@ -15,6 +15,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     onSubmit,
     initialData
 }) => {
+    const [leagueId, setLeagueId] = useState(initialData?.leagueId ? String(initialData.leagueId) : '');
     const [name, setName] = useState(initialData?.name ?? '');
     const [location, setLocation] = useState(initialData?.location ?? '');
     const [latitude, setLatitude] = useState(initialData?.latitude ? String(initialData.latitude) : '');
@@ -34,6 +35,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit({
+            leagueId: leagueId ? parseInt(leagueId) : undefined,
+            id: leagueId ? parseInt(leagueId) : undefined,
             name,
             location,
             latitude: latitude ? parseFloat(latitude) : undefined,
@@ -60,6 +63,22 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                 <form className="flex flex-col gap-5 overflow-hidden" onSubmit={handleSubmit}>
                     <div className="p-7 overflow-y-auto">
                         <div className="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
+                            {/* League ID Field */}
+                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                                <label htmlFor="leagueIdField" className="text-[13px] font-bold text-text-main flex justify-between items-center">
+                                    League ID (Official Pokémon League ID) <span className="text-primary text-[11px] font-semibold">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="leagueIdField"
+                                    placeholder="e.g. 6237868"
+                                    value={leagueId}
+                                    onChange={(e) => setLeagueId(e.target.value)}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
+                                    required
+                                />
+                            </div>
+
                             {/* Store Name */}
                             <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
                                 <label htmlFor="leagueName" className="text-[13px] font-bold text-text-main flex justify-between items-center">

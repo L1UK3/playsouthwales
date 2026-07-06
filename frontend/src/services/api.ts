@@ -116,7 +116,7 @@ export async function createEvent(event: Omit<Event, "id">,token:string): Promis
  * @returns {Promise<Event>} A promise that resolves to the updated Event object.
  */
 export async function updateEvent(
-  id: number,
+  id: number | string,
   event: Partial<Event>,
   token:string
 ): Promise<Event> {
@@ -142,7 +142,7 @@ export async function updateEvent(
  * @param {number} id - The ID of the event to delete.
  * @returns {Promise<void>} A promise that resolves when the event is successfully deleted.
  */
-export async function deleteEvent(id: number, token: string, excludeDate?: string): Promise<void> {
+export async function deleteEvent(id: number | string, token: string, excludeDate?: string): Promise<void> {
   const queryParams = new URLSearchParams();
   if (excludeDate) {
     queryParams.append("excludeDate", excludeDate);

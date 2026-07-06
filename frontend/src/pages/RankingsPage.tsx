@@ -15,7 +15,11 @@ const RankingsPage: React.FC = () => {
     const [rankingsTab, setRankingsTab] = React.useState<'national' | 'local'>('national');
     const { data: leagues = [], isLoading } = useLeagues();
 
-    const activeLeagueId = selectedLeagueId ?? leagues[0]?.leagueId ?? null;
+    const leaguesWithStandings = React.useMemo(() => {
+        return leagues.filter(league => league.hasStandings);
+    }, [leagues]);
+
+    const activeLeagueId = selectedLeagueId ?? leaguesWithStandings[0]?.leagueId ?? null;
 
     const handleLeagueSelect = (id: number | null) => {
         setSelectedLeagueId(id);
@@ -87,7 +91,7 @@ const RankingsPage: React.FC = () => {
                     </p>
 
                     <LeagueSelector
-                        leagues={leagues}
+                        leagues={leaguesWithStandings}
                         selectedLeagueId={activeLeagueId}
                         setSelectedLeagueId={handleLeagueSelect}
                         showInfo={false}
