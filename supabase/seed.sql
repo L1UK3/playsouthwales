@@ -1,42 +1,400 @@
--- Clean up existing data to ensure idempotent seeding
-TRUNCATE public.events, public.weekly_events, public.leagues CASCADE;
+-- Seed data for Play! South Wales
+-- Cardiff, Swansea, and Newport leagues, one-off events, and weekly events.
 
--- Insert Leagues
-INSERT INTO public.leagues (id, name, logo, website, "socialLink", "eventLink", "brandColor", "webLink", location, latitude, longitude, accessibility, directions) VALUES
-(1, 'Dragon''s Valley Gaming', 'https://example.com/logos/dragons-valley.png', 'https://dragonsvalley.example.com', 'https://facebook.com/dragonsvalley', 'https://events.example.com/dragonsvalley', '#d32f2f', 'https://dragonsvalley.example.com/store', 'Cardiff, Wales', 51.481583, -3.179090, 'Wheelchair accessible entrance and seating available.', 'Located near Cardiff Central Station, walk down St Mary Street.'),
-(2, 'Swansea Spellbook Cards', 'https://example.com/logos/swansea-spellbook.png', 'https://swanseaspellbook.example.com', 'https://facebook.com/swanseaspellbook', 'https://events.example.com/swanseaspellbook', '#1976d2', 'https://swanseaspellbook.example.com/shop', 'Swansea, Wales', 51.621440, -3.943646, 'Ground level entry with wide doors, accessible restrooms.', 'A short walk from Swansea bus station, right opposite the market.'),
-(3, 'Newport Nexus Games', 'https://example.com/logos/newport-nexus.png', 'https://newportnexus.example.com', 'https://facebook.com/newportnexus', 'https://events.example.com/newportnexus', '#388e3c', 'https://newportnexus.example.com/club', 'Newport, Wales', 51.587740, -2.998360, 'Stair-free access to main gaming and retail area.', 'Situated in Newport city center, near Friars Walk shopping center.');
+-- Clean up existing data to avoid primary key/unique constraint violations
+TRUNCATE TABLE public.events CASCADE;
+TRUNCATE TABLE public.weekly_events CASCADE;
+TRUNCATE TABLE public.leagues CASCADE;
 
--- Reset sequence for leagues
-SELECT setval('public.league_id_seq', (SELECT MAX(id) FROM public.leagues));
+-- Insert Leagues (Stores)
+INSERT INTO public.leagues (
+    id, 
+    name, 
+    logo, 
+    website, 
+    "socialLink", 
+    "eventLink", 
+    "brandColor", 
+    "webLink", 
+    location, 
+    latitude, 
+    longitude, 
+    accessibility, 
+    directions
+) VALUES 
+(
+    1, 
+    'Cardiff Dragon Guild', 
+    '/logos/cardiff-dragon-guild.png', 
+    'https://www.cardiffdragonguild.co.uk', 
+    'https://facebook.com/CardiffDragonGuild', 
+    'https://events.pokemon.com/en-us/leagues/1', 
+    '#f15a24', 
+    'https://www.cardiffdragonguild.co.uk', 
+    'Sloper Road, Cardiff, CF11 8AB', 
+    51.468205, 
+    -3.204561, 
+    'Fully wheelchair accessible with step-free access.', 
+    'Near Cardiff City Stadium. Free parking on site.'
+),
+(
+    2, 
+    'Mana Haven Cardiff', 
+    '/logos/mana-haven.png', 
+    'https://www.manahavencardiff.co.uk', 
+    'https://facebook.com/ManaHavenCardiff', 
+    'https://events.pokemon.com/en-us/leagues/2', 
+    '#ffcc00', 
+    'https://www.manahavencardiff.co.uk', 
+    '29 Morgan Arcade, Cardiff, CF10 1AF', 
+    51.4795, 
+    -3.1785, 
+    'Ground floor is fully accessible.', 
+    'In Morgan Arcade, short walk from Cardiff Central Station.'
+),
+(
+    3, 
+    'Kraken Hoard Swansea', 
+    '/logos/krakens-hoard.png', 
+    'https://www.krakenshoard.co.uk', 
+    'https://facebook.com/KrakensHoardSwansea', 
+    'https://events.pokemon.com/en-us/leagues/3', 
+    '#4a2c84', 
+    'https://www.krakenshoard.co.uk', 
+    '8-9 Dillwyn Street, Swansea, SA1 4AE', 
+    51.6186, 
+    -3.9482, 
+    'Wheelchair friendly ground floor layout.', 
+    'Swansea Centre, near Quadrant Shopping Centre.'
+),
+(
+    4, 
+    'Newport Card Crypt', 
+    '/logos/newport-card-crypt.png', 
+    'https://www.newportcardcrypt.co.uk', 
+    'https://facebook.com/NewportCardCrypt', 
+    'https://events.pokemon.com/en-us/leagues/4', 
+    '#8b5a2b', 
+    'https://www.newportcardcrypt.co.uk', 
+    'Newport Arcade, Newport, NP20 1GD', 
+    51.5878, 
+    -2.9961, 
+    'Step-free access from High Street entrance.', 
+    'Inside Newport Arcade, near Newport Train Station.'
+);
 
--- Insert Standard Events (satisfying all event types and months: June, July, August 2026)
-INSERT INTO public.events (id, name, date, "startTime", "leagueId", "ticketLink", "eventType", game, description, prizes, "entryFee", "excludedDates") VALUES
--- June 2026 (Previous Month)
-(1, 'Midweek Pokemon TCG Casual', '2026-06-03', '18:00', 1, 'https://tickets.example.com/evt1', 'CASUAL', 'TCG', 'Casual play and friendly matchmaking for all Pokemon TCG trainers.', 'Booster pack for participation', '£5.00', NULL),
-(2, 'VGC Standard Showdown', '2026-06-07', '13:00', 2, 'https://tickets.example.com/evt2', 'STANDARD', 'VGC', 'Standard regulation format tournament. Bring your team on Nintendo Switch.', 'Championship points and store credit', '£8.00', NULL),
-(3, 'Pokemon GO League Challenge', '2026-06-13', '11:00', 3, 'https://tickets.example.com/evt3', 'CHALLENGE', 'GO', 'Official Pokemon GO local tournament. Great League 1500 CP cap.', 'Official badges and store credit', '£6.00', NULL),
-(4, 'Summer League TCG Cup', '2026-06-20', '10:00', 1, 'https://tickets.example.com/evt4', 'CUP', 'TCG', 'Official TCG League Cup. High stakes and competitive matches.', 'Exclusive Cup Playmat and booster boxes', '£15.00', NULL),
-(5, 'New Expansion TCG Pre-Release', '2026-06-27', '12:00', 2, 'https://tickets.example.com/evt5', 'PRE-RELEASE', 'TCG', 'Get hands-on with the new expansion set early. Build a 40-card deck.', 'Pre-release promo card and 3 booster packs', '£25.00', NULL),
+-- Insert One-off Events (events table)
+INSERT INTO public.events (
+    id, 
+    name, 
+    date, 
+    "startTime", 
+    "leagueId", 
+    "ticketLink", 
+    "eventType", 
+    game, 
+    description, 
+    prizes, 
+    "entryFee", 
+    "excludedDates"
+) VALUES 
+(
+    1, 
+    'Pokémon TCG League Cup - Q3', 
+    '2026-07-11', 
+    '10:00', 
+    1, 
+    'https://www.cardiffdragonguild.co.uk/events', 
+    'CUP', 
+    'TCG', 
+    'Compete in the official Q3 League Cup tournament! Format will be Standard. Decklists are required. Swiss rounds followed by a top cut. Event capacity is 64 players.', 
+    'Championship Points (up to 50 for 1st place), exclusive Champion playmat for division winners, and booster packs based on attendance.', 
+    '£15.00', 
+    NULL
+),
+(
+    2, 
+    'Pokémon VGC Midseason Showdown', 
+    '2026-07-25', 
+    '10:30', 
+    1, 
+    'https://www.cardiffdragonguild.co.uk/events', 
+    'CHALLENGE', 
+    'VGC', 
+    'Bring your Nintendo Switch and battle it out in the official VGC Midseason Showdown. Played under current Regulation set rules. Team lists required. Swiss rounds.', 
+    'Championship Points toward Worlds qualification and custom store prizes.', 
+    '£10.00', 
+    NULL
+),
+(
+    3, 
+    'Pokémon GO Championship Qualifier', 
+    '2026-08-08', 
+    '11:00', 
+    1, 
+    'https://www.cardiffdragonguild.co.uk/events', 
+    'SPECIAL', 
+    'GO', 
+    'Official Pokémon GO Great League format tournament. Double elimination bracket. Scan in and fight for local glory and a spot at the Regional championships.', 
+    'Pokémon GO merchandise, in-game items, and Championship Points.', 
+    '£5.00', 
+    NULL
+),
+(
+    4, 
+    'Pokémon TCG Autumn Regional Warmup', 
+    '2026-09-05', 
+    '09:30', 
+    1, 
+    'https://www.cardiffdragonguild.co.uk/events', 
+    'REGIONAL', 
+    'TCG', 
+    'Prepare for the upcoming European Regionals with a full 9-round Swiss competitive tournament. Decklists required. Strict rules enforcement.', 
+    'Playmats, card binders, and double booster pack support for top finishers.', 
+    '£20.00', 
+    NULL
+),
+(
+    5, 
+    'Pokémon TCG League Challenge', 
+    '2026-07-18', 
+    '11:00', 
+    2, 
+    'https://www.manahavencardiff.co.uk/events', 
+    'CHALLENGE', 
+    'TCG', 
+    'Perfect for players wanting to get their first taste of competitive Pokémon play. Standard format. Swiss format depending on player count.', 
+    'Championship Points for top finishers, promo cards for all participants.', 
+    '£6.00', 
+    NULL
+),
+(
+    6, 
+    'Pokémon TCG Pre-release: New Season', 
+    '2026-08-15', 
+    '12:00', 
+    2, 
+    'https://www.manahavencardiff.co.uk/events', 
+    'PRE-RELEASE', 
+    'TCG', 
+    'Be among the first to play with the newest upcoming Pokémon TCG set. Players receive a Build & Battle Box containing a 40-card ready-to-play deck and 4 booster packs to customize their deck.', 
+    '3 additional booster packs for completing all rounds.', 
+    '£25.00', 
+    NULL
+),
+(
+    7, 
+    'Pokémon TCG Autumn Cup', 
+    '2026-09-12', 
+    '11:00', 
+    2, 
+    'https://www.manahavencardiff.co.uk/events', 
+    'CUP', 
+    'TCG', 
+    'Our annual Autumn Cup is here! Gather your cards and join a day of competitive Standard format play. Top cut will receive playmats.', 
+    'Exclusive Autumn Playmat, Championship Points, and custom trophy for 1st place.', 
+    '£12.50', 
+    NULL
+),
+(
+    8, 
+    'Pokémon TCG League Cup - Swansea', 
+    '2026-07-12', 
+    '10:30', 
+    3, 
+    'https://www.krakenshoard.co.uk/events', 
+    'CUP', 
+    'TCG', 
+    'Swansea''s official Q3 League Cup. Standard format. Decklists required. Join the local community and test your skill against South Wales'' best.', 
+    'Championship Points, Champion Playmat for winners, and card accessories.', 
+    '£15.00', 
+    NULL
+),
+(
+    9, 
+    'Pokémon TCG League Challenge - Swansea', 
+    '2026-07-26', 
+    '13:00', 
+    3, 
+    'https://www.krakenshoard.co.uk/events', 
+    'CHALLENGE', 
+    'TCG', 
+    'July''s official League Challenge in Swansea. Standard format. Casual-friendly competitive structure.', 
+    'Championship Points, promo packs, and deck accessories.', 
+    '£6.00', 
+    NULL
+),
+(
+    10, 
+    'Pokémon TCG Pre-release - Swansea', 
+    '2026-08-22', 
+    '11:30', 
+    3, 
+    'https://www.krakenshoard.co.uk/events', 
+    'PRE-RELEASE', 
+    'TCG', 
+    'Pre-release event for the new Pokémon expansion set. Fun, casual deck building and play for all ages.', 
+    'Promo cards and 3 prize packs for all players.', 
+    '£25.00', 
+    NULL
+),
+(
+    11, 
+    'Pokémon TCG League Challenge - Newport', 
+    '2026-07-19', 
+    '12:00', 
+    4, 
+    'https://www.newportcardcrypt.co.uk/events', 
+    'CHALLENGE', 
+    'TCG', 
+    'Our official monthly League Challenge in Newport. Bring your best Standard deck and battle for CP.', 
+    'Championship Points, exclusive promos, and store tokens.', 
+    '£6.00', 
+    NULL
+),
+(
+    12, 
+    'Pokémon TCG Newport Summer Cup', 
+    '2026-08-01', 
+    '10:00', 
+    4, 
+    'https://www.newportcardcrypt.co.uk/events', 
+    'CUP', 
+    'TCG', 
+    'Newport''s signature Summer League Cup. Standard format, Swiss rounds, Top cut playoff.', 
+    'League Cup Trophy, Champion Playmat, Championship Points, and booster pack prize pool.', 
+    '£15.00', 
+    NULL
+);
 
--- July 2026 (Current Month)
-(6, 'Welsh Special Championship TCG', '2026-07-04', '09:00', 1, 'https://tickets.example.com/evt6', 'SPECIAL', 'TCG', 'Premier level event bringing players from all over the country.', 'High Championship Points yield and cash prizes', '£20.00', NULL),
-(7, 'Cardiff VGC Regional Championship', '2026-07-11', '08:30', 1, 'https://tickets.example.com/evt7', 'REGIONAL', 'VGC', 'Official regional championship for Video Game Championship (VGC) players.', 'Travel awards and physical trophies', '£35.00', NULL),
-(8, 'Europe TCG International Open', '2026-07-18', '08:00', 2, 'https://tickets.example.com/evt8', 'INTERNATIONAL', 'TCG', 'Large-scale international open tournament hosted locally.', 'Championship point multipliers and cash prize pool', '£45.00', NULL),
-(9, 'VGC World Warm-up Invitational', '2026-07-25', '10:00', 3, 'https://tickets.example.com/evt9', 'WORLDS', 'VGC', 'Invitation-only practice tournament for worlds-qualified competitors.', 'Custom trophies and exclusive merchandise', '£10.00', NULL),
+-- Insert Weekly Events (weekly_events table)
+INSERT INTO public.weekly_events (
+    id, 
+    name, 
+    date, 
+    "startTime", 
+    "leagueId", 
+    "ticketLink", 
+    "eventType", 
+    game, 
+    description, 
+    prizes, 
+    "entryFee", 
+    "excludedDates"
+) VALUES 
+(
+    101, 
+    'Thursday Pokémon TCG League', 
+    '2026-05-07', 
+    '18:00', 
+    1, 
+    'https://www.cardiffdragonguild.co.uk/events', 
+    'CASUAL', 
+    'TCG', 
+    'Our main weekly night for Pokémon TCG players. Perfect for juniors, seniors, and masters alike. Bring a standard deck or just come to learn how to play!', 
+    'Pokémon League promo cards and card packs.', 
+    '£5.00', 
+    ARRAY['2026-07-16']::text[] -- Excluded Thursday July 16, 2026 (convention conflict)
+),
+(
+    102, 
+    'Sunday VGC Showdown Practice', 
+    '2026-05-03', 
+    '13:00', 
+    1, 
+    'https://www.cardiffdragonguild.co.uk/events', 
+    'CASUAL', 
+    'VGC', 
+    'Bring your Nintendo Switch and practice your battles with other VGC trainers. Friendly feedback, team building, and practice tournament rounds.', 
+    'Casual bragging rights and community building.', 
+    'Free', 
+    '{}'::text[]
+),
+(
+    103, 
+    'Monday Pokémon TCG Club', 
+    '2026-05-04', 
+    '17:00', 
+    2, 
+    'https://www.manahavencardiff.co.uk/events', 
+    'CASUAL', 
+    'TCG', 
+    'Kick off the week with fellow trainers! A relaxed evening of trading, deck-testing, and casual matches.', 
+    'Promo card packs for playing.', 
+    '£3.50', 
+    '{}'::text[]
+),
+(
+    104, 
+    'Wednesday GO Raid Hour Meetup', 
+    '2026-05-06', 
+    '17:45', 
+    2, 
+    'https://www.manahavencardiff.co.uk/events', 
+    'CASUAL', 
+    'GO', 
+    'Meet up at the store, trade Pokémon, and head out together for the weekly 6 PM Legendary Raid Hour across Cardiff Centre!', 
+    'Raid rewards and local community stickers.', 
+    'Free', 
+    '{}'::text[]
+),
+(
+    105, 
+    'Wednesday Night Pokémon Standard', 
+    '2026-05-06', 
+    '18:30', 
+    3, 
+    'https://www.krakenshoard.co.uk/events', 
+    'STANDARD', 
+    'TCG', 
+    'Mid-week competitive tournament for testing standard format decks. Standard rules, deck lists not required.', 
+    '1.5 booster packs per player added to the prize pool for top cut.', 
+    '£6.00', 
+    '{}'::text[]
+),
+(
+    106, 
+    'Saturday GO & TCG Casuals', 
+    '2026-05-02', 
+    '11:00', 
+    3, 
+    'https://www.krakenshoard.co.uk/events', 
+    'CASUAL', 
+    'TCG', 
+    'Join us for a morning of Pokémon. Trade cards, play casual TCG games, or swap GO trainer codes!', 
+    'Pokémon stickers and promo cards.', 
+    '£2.50', 
+    '{}'::text[]
+),
+(
+    107, 
+    'Friday Night Pokémon TCG', 
+    '2026-05-01', 
+    '18:00', 
+    4, 
+    'https://www.newportcardcrypt.co.uk/events', 
+    'CASUAL', 
+    'TCG', 
+    'End the work week with casual Pokémon play at the Newport Card Crypt. Trade, chat, and test your new deck ideas.', 
+    'Random promo pack giveaways.', 
+    '£4.00', 
+    '{}'::text[]
+),
+(
+    108, 
+    'Tuesday VGC Weekly Tournament', 
+    '2026-05-05', 
+    '18:30', 
+    4, 
+    'https://www.newportcardcrypt.co.uk/events', 
+    'STANDARD', 
+    'VGC', 
+    'Our weekly VGC event in Newport. Played on Nintendo Switch. Standard current VGC season rules apply.', 
+    'Store credit for top 3 players.', 
+    '£5.00', 
+    '{}'::text[]
+);
 
--- August 2026 (Next Month)
-(10, 'VGC Casual Gaming Night', '2026-08-05', '17:30', 2, NULL, 'CASUAL', 'VGC', 'Relaxed night of friendly VGC battles and team building tips.', 'None', 'Free', NULL),
-(11, 'August Pokemon GO Cup', '2026-08-09', '14:00', 3, 'https://tickets.example.com/evt11', 'STANDARD', 'GO', 'Monthly standard tournament for local Pokemon GO players.', 'Store credit and custom badges', '£5.00', NULL),
-(12, 'TCG League Challenge August', '2026-08-15', '11:00', 1, 'https://tickets.example.com/evt12', 'CHALLENGE', 'TCG', 'Earn Championship Points in this local League Challenge.', 'Promo cards and Championship points', '£7.00', NULL),
-(13, 'VGC Late Summer Cup', '2026-08-22', '10:30', 2, 'https://tickets.example.com/evt13', 'CUP', 'VGC', 'Late summer official League Cup for VGC division.', 'Championship points and store vouchers', '£12.00', NULL),
-(14, 'Autumn Set Pre-Release TCG', '2026-08-29', '12:00', 3, 'https://tickets.example.com/evt14', 'PRE-RELEASE', 'TCG', 'Early access to the upcoming Autumn TCG set expansion.', 'Build & Battle kits and promotional cards', '£25.00', NULL);
-
--- Insert Weekly Recurring Events (templates that generate virtual events)
-INSERT INTO public.weekly_events (id, name, date, "startTime", "leagueId", "ticketLink", "eventType", game, description, prizes, "entryFee", "excludedDates") VALUES
-(1, 'Weekly TCG Casual Matchup', '2026-06-01', '17:00', 1, 'https://tickets.example.com/w1', 'CASUAL', 'TCG', 'Our weekly Monday casual hangout. Perfect for trading and trying new decks.', 'Promo pack for participation', '£3.00', ARRAY['2026-06-15', '2026-07-20']),
-(2, 'Weekly VGC Practice Tournament', '2026-06-04', '18:30', 2, 'https://tickets.example.com/w2', 'STANDARD', 'VGC', 'Weekly Thursday tournament to test VGC teams in Swiss rounds.', 'Store credit for top cut', '£5.00', '{}'),
-(3, 'Weekly GO PvP Practice', '2026-06-05', '16:30', 3, NULL, 'CASUAL', 'GO', 'Friday afternoon Pokemon GO PVP matchmaking and raiding.', 'None', 'Free', '{}');
-
--- Reset sequence for events and weekly events (shared sequence)
-SELECT setval('public.event_id_seq', GREATEST((SELECT MAX(id) FROM public.events), (SELECT MAX(id) FROM public.weekly_events)));
+-- Reset Sequences to start after the manually specified IDs
+SELECT setval('public.league_id_seq', COALESCE((SELECT MAX(id) FROM public.leagues), 1));
+SELECT setval('public.event_id_seq', COALESCE((SELECT MAX(id) FROM (SELECT id FROM public.events UNION ALL SELECT id FROM public.weekly_events) AS combined), 1));
