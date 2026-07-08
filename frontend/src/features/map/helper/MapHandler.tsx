@@ -23,11 +23,10 @@ export const MapHandler: React.FC<MapHandlerProps> = ({
         if (!map) return;
 
         if (
-            selectedLeague &&
-            selectedLeague.latitude !== null &&
-            selectedLeague.latitude !== undefined &&
-            selectedLeague.longitude !== null &&
-            selectedLeague.longitude !== undefined
+            selectedLeague?.latitude !== null &&
+            selectedLeague?.latitude !== undefined &&
+            selectedLeague?.longitude !== null &&
+            selectedLeague?.longitude !== undefined
         ) {
             map.panTo({ lat: selectedLeague.latitude, lng: selectedLeague.longitude });
             map.setZoom(13);

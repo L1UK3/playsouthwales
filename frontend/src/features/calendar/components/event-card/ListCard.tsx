@@ -15,6 +15,8 @@ export interface ListCardProps {
     onToggle?: () => void;
     onEdit?: (event: Event) => void;
     onDelete?: (event: Event) => void;
+    onExclude?: (event: Event) => void;
+    onUnexclude?: (event: Event) => void;
 }
 
 /**
@@ -29,7 +31,9 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
     isExpanded,
     onToggle,
     onEdit,
-    onDelete
+    onDelete,
+    onExclude,
+    onUnexclude
 }) => {
     const league = event.leagueId ? leagueMap[event.leagueId] : null;
     const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
@@ -37,7 +41,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
 
     return (
         <div
-            className={`rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:translate-x-1 gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""}`}
+            className={`rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:translate-x-1 gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""} ${event.isExcluded ? "opacity-50 grayscale-[40%] border border-dashed border-red-500/20" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >
@@ -45,7 +49,12 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                 <div className="flex items-center gap-4 grow">
                     <div className="text-sm font-bold text-primary min-w-11">{event.startTime?.slice(0, 5) ?? ''}</div>
                     <div className="flex flex-col gap-0.5">
-                        <div className="text-[15px] font-bold text-text-main">{event.name}</div>
+                        <div className="text-[15px] font-bold text-text-main">
+                            {event.name}
+                            {event.isExcluded && (
+                                <span className="text-xs font-normal text-red-400 ml-1.5">(Excluded)</span>
+                            )}
+                        </div>
                         <div className="text-[12px] text-text-muted">{leagueName} • {event.game}</div>
                     </div>
                 </div>
@@ -99,6 +108,42 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                                 Edit
                             </button>
                         ) : null}
+                        {event.isExcluded && onUnexclude ? (
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                style={{
+                                    marginLeft: '8px',
+                                    borderColor: '#10b981',
+                                    color: '#10b981',
+                                    background: 'rgba(16, 185, 129, 0.05)'
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onUnexclude(event);
+                                }}
+                            >
+                                Unexclude
+                            </button>
+                        ) : null}
+                        {!event.isExcluded && event.isRecurring && onExclude ? (
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                style={{
+                                    marginLeft: '8px',
+                                    borderColor: '#ef4444',
+                                    color: '#ef4444',
+                                    background: 'rgba(239, 68, 68, 0.05)'
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onExclude(event);
+                                }}
+                            >
+                                Exclude
+                            </button>
+                        ) : null}
                         {onDelete ? (
                             <button
                                 type="button"
@@ -114,7 +159,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                                     onDelete(event);
                                 }}
                             >
-                                Delete
+                                {event.isRecurring ? 'Delete Series' : 'Delete'}
                             </button>
                         ) : null}
                     </div>

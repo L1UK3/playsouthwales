@@ -19,6 +19,8 @@ export interface ListViewProps {
     types: EventTypeMap;
     onEdit?: (event: Event) => void;
     onDelete?: (event: Event) => void;
+    onExclude?: (event: Event) => void;
+    onUnexclude?: (event: Event) => void;
 }
 
 
@@ -28,7 +30,7 @@ export interface ListViewProps {
  * @param props - The properties passed to the component including the current date, events mapping, league mapping, and event types.
  * @returns JSX.Element
  */
-const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types, onEdit, onDelete }) => {
+const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types, onEdit, onDelete, onExclude, onUnexclude }) => {
     const [expandedEventId, setExpandedEventId] = useState<number | string | null>(null);
 
     const sortedDates = useMemo(() => {
@@ -63,6 +65,8 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
                     onToggleEvent={handleToggleEvent}
                     onEdit={onEdit}
                     onDelete={onDelete}
+                    onExclude={onExclude}
+                    onUnexclude={onUnexclude}
                 />
             ))}
         </div>

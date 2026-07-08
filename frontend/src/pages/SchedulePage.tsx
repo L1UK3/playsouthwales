@@ -12,6 +12,7 @@ import {
 } from "@calendar";
 import { useCallback, useMemo, useState } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import Footer from "@/layouts/Footer";
 
 export type ViewMode = 'calendar' | 'list';
 
@@ -144,67 +145,70 @@ const SchedulePage: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col p-0 animate-swipe-up">
-            <h1 className="sr-only">Events Schedule South Wales</h1>
-            <div className="flex flex-col gap-3 mb-4 z-10 bg-bg-main p-3.5 rounded-lg border-2 border-border-color shrink-0">
-                <NavBar
-                    monthName={MONTH_NAMES[currentDate.getMonth()]}
-                    year={currentDate.getFullYear()}
-                    viewMode={viewMode}
-                    onGoToToday={handleGoToToday}
-                    onPrevMonth={handlePrevMonth}
-                    onNextMonth={handleNextMonth}
-                    onToggleViewMode={handleToggleViewMode}
-                />
+        <>
+            <div className="flex flex-col p-0 animate-swipe-up">
+                <h1 className="sr-only">Events Schedule South Wales</h1>
+                <div className="flex flex-col gap-3 mb-4 z-10 bg-bg-main p-3.5 rounded-lg border-2 border-border-color shrink-0">
+                    <NavBar
+                        monthName={MONTH_NAMES[currentDate.getMonth()]}
+                        year={currentDate.getFullYear()}
+                        viewMode={viewMode}
+                        onGoToToday={handleGoToToday}
+                        onPrevMonth={handlePrevMonth}
+                        onNextMonth={handleNextMonth}
+                        onToggleViewMode={handleToggleViewMode}
+                    />
 
-                <Filters
-                    leagues={leagues}
-                    types={types}
-                    filters={filters}
-                    onFilterChange={handleFilterChange}
-                    onClear={handleClearFilters}
-                />
-            </div>
+                    <Filters
+                        leagues={leagues}
+                        types={types}
+                        filters={filters}
+                        onFilterChange={handleFilterChange}
+                        onClear={handleClearFilters}
+                    />
+                </div>
 
-            <div className="flex-1 block opacity-100">
-                {(isLoading) ? (
-                    <SuspenseLoader message="Loading schedule..." />
-                ) : (viewMode === 'calendar') ? (
-                    <div key={calendarKey} className={`${animationClass}`}>
-                        <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
-                            <div className="flex-1 min-w-0 lg:flex lg:flex-col">
-                                <CalendarView
-                                    currentDate={currentDate}
-                                    events={filteredEventsGrouped}
-                                    leagueMap={leagueMap}
-                                    types={types}
-                                    selectedDateKey={selectedDateKey}
-                                    onSelectDay={handleSelectDay}
-                                />
-                            </div>
-                            <div className="lg:relative lg:flex-[0_0_400px] lg:max-w-100 w-full lg:w-auto">
-                                <SelectedDaySection
-                                    selectedDateKey={selectedDateKey}
-                                    selectedDayEvents={eventsToDisplay}
-                                    currentDate={currentDate}
-                                    leagueMap={leagueMap}
-                                    types={types}
-                                />
+                <div className="flex-1 block opacity-100">
+                    {(isLoading) ? (
+                        <SuspenseLoader message="Loading schedule..." />
+                    ) : (viewMode === 'calendar') ? (
+                        <div key={calendarKey} className={`${animationClass}`}>
+                            <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
+                                <div className="flex-1 min-w-0 lg:flex lg:flex-col">
+                                    <CalendarView
+                                        currentDate={currentDate}
+                                        events={filteredEventsGrouped}
+                                        leagueMap={leagueMap}
+                                        types={types}
+                                        selectedDateKey={selectedDateKey}
+                                        onSelectDay={handleSelectDay}
+                                    />
+                                </div>
+                                <div className="lg:relative lg:flex-[0_0_400px] lg:max-w-100 w-full lg:w-auto">
+                                    <SelectedDaySection
+                                        selectedDateKey={selectedDateKey}
+                                        selectedDayEvents={eventsToDisplay}
+                                        currentDate={currentDate}
+                                        leagueMap={leagueMap}
+                                        types={types}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ) : (
-                    <div key={`list-${calendarKey}`} className={animationClass}>
-                        <ListView
-                            currentDate={currentDate}
-                            events={filteredEventsGrouped}
-                            leagueMap={leagueMap}
-                            types={types}
-                        />
-                    </div>
-                )}
+                    ) : (
+                        <div key={`list-${calendarKey}`} className={animationClass}>
+                            <ListView
+                                currentDate={currentDate}
+                                events={filteredEventsGrouped}
+                                leagueMap={leagueMap}
+                                types={types}
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 

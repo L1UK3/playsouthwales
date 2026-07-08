@@ -25,7 +25,7 @@ const AdminPage: React.FC = () => {
     const [editingLeague, setEditingLeague] = useState<League | null>(null);
     const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
-    const { data: events = [], isLoading: isEventsLoading } = useEvents(currentDate);
+    const { data: events = [], isLoading: isEventsLoading } = useEvents(currentDate, true);
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
     const { data: eventTypes = {}, isLoading: isEventTypesLoading } = useEventTypeMap();
 
@@ -188,26 +188,28 @@ const AdminPage: React.FC = () => {
 
     // confirms deletion of an event and deletes it
     const handleDeleteEventTrigger = useCallback((event: Event) => {
-        if (event.isRecurring) {
-            const option = window.confirm(
-                `"${event.name}" is a recurring weekly event.\n\n` +
-                `Click "OK" to delete ONLY this single occurrence (${event.date}).\n` +
-                `Click "Cancel" to delete the ENTIRE weekly series.`
-            );
-            if (option) {
-                deleteEventMutation.mutate({ id: event.id, excludeDate: event.date });
-            } else {
-                const confirmAll = window.confirm(`Are you sure you want to delete the ENTIRE weekly series for "${event.name}"?`);
-                if (confirmAll) {
-                    deleteEventMutation.mutate({ id: event.id });
-                }
-            }
-        } else {
-            if (window.confirm(`Are you sure you want to delete "${event.name}"?`)) {
-                deleteEventMutation.mutate({ id: event.id });
-            }
+        const msg = event.isRecurring
+            ? `Are you sure you want to delete the ENTIRE weekly series for "${event.name}"?`
+            : `Are you sure you want to delete "${event.name}"?`;
+        if (window.confirm(msg)) {
+            deleteEventMutation.mutate({ id: event.id });
         }
     }, [deleteEventMutation]);
+
+    // excludes a single occurrence of a recurring event
+    const handleExcludeEventTrigger = useCallback((event: Event) => {
+        if (window.confirm(`Are you sure you want to exclude the occurrence on ${event.date} for "${event.name}"?`)) {
+            deleteEventMutation.mutate({ id: event.id, excludeDate: event.date });
+        }
+    }, [deleteEventMutation]);
+
+    // restores an excluded occurrence of a recurring event
+    const handleUnexcludeEventTrigger = useCallback((event: Event) => {
+        if (window.confirm(`Are you sure you want to restore the occurrence on ${event.date} for "${event.name}"?`)) {
+            const newExcludedDates = (event.excludedDates ?? []).filter((d: string) => d !== event.date);
+            updateEventMutation.mutate({ id: event.id, data: { excludedDates: newExcludedDates } });
+        }
+    }, [updateEventMutation]);
 
     // handles league submission, creating or updating
     const handleLeagueSubmit = useCallback((data: Omit<League, 'leagueId'>) => {
@@ -283,6 +285,8 @@ const AdminPage: React.FC = () => {
                             types={eventTypes}
                             onEdit={handleEditEventTrigger}
                             onDelete={handleDeleteEventTrigger}
+                            onExclude={handleExcludeEventTrigger}
+                            onUnexclude={handleUnexcludeEventTrigger}
                         />
                     )}
                 </div>

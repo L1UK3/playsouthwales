@@ -42,6 +42,7 @@ export interface Event {
     isRecurring?: boolean;
     recurringEventId?: number;
     excludedDates?: string[];
+    isExcluded?: boolean;
 }
 
 

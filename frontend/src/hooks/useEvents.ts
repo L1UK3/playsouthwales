@@ -3,7 +3,7 @@ import { loadEvents, loadWeeklyEvents } from '@services/api';
 import { useMemo } from 'react';
 
 // hook to get all events for calendar
-export function useEvents(currentDate: any) {
+export function useEvents(currentDate: any, includeExcluded = false) {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
 
@@ -73,7 +73,8 @@ export function useEvents(currentDate: any) {
 
                         // Skip if this specific date is excluded in the recurring template
                         const excludedDates = temp.excludedDates ?? [];
-                        if (excludedDates.includes(dateString)) {
+                        const isExcluded = excludedDates.includes(dateString);
+                        if (isExcluded && !includeExcluded) {
                             continue;
                         }
 
@@ -85,7 +86,8 @@ export function useEvents(currentDate: any) {
                             id: vId,
                             recurringEventId: temp.id,
                             date: dateString,
-                            isRecurring: true
+                            isRecurring: true,
+                            isExcluded: isExcluded
                         };
 
                         finalArray.push(newEvent);
@@ -96,7 +98,7 @@ export function useEvents(currentDate: any) {
 
         console.log("loaded events count:", finalArray.length);
         return finalArray;
-    }, [eventsQuery.data, weeklyEventsQuery.data, year, month]);
+    }, [eventsQuery.data, weeklyEventsQuery.data, year, month, includeExcluded]);
 
     return {
         data: data,

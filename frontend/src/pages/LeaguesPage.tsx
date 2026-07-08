@@ -3,6 +3,7 @@ import { useLeagues, useDocumentMetadata } from "@/hooks";
 import { useCallback, useState } from "react";
 import { LeagueMap } from "@map";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import Footer from "@/layouts/Footer";
 
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
@@ -63,6 +64,7 @@ const LeaguesPage: React.FC = () => {
                     />
                 </div>
             </div>
+            <Footer />
         </>
     );
 };

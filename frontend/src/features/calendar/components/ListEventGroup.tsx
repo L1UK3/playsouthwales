@@ -24,6 +24,8 @@ export interface ListEventGroupProps {
     onToggleEvent: (eventId: number | string) => void;
     onEdit?: (event: Event) => void;
     onDelete?: (event: Event) => void;
+    onExclude?: (event: Event) => void;
+    onUnexclude?: (event: Event) => void;
 }
 
 /**
@@ -41,6 +43,8 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
     onToggleEvent,
     onEdit,
     onDelete,
+    onExclude,
+    onUnexclude,
 }) => {
     const dateText = new Date(dateKey + 'T00:00:00').toLocaleDateString(undefined, {
         weekday: 'long',
@@ -65,6 +69,8 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
                         onToggle={() => onToggleEvent(event.id)}
                         onEdit={onEdit}
                         onDelete={onDelete}
+                        onExclude={onExclude}
+                        onUnexclude={onUnexclude}
                     />
                 ))}
             </div>
