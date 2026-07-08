@@ -39,6 +39,10 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
         4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
     }[columns ?? 3] ?? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3';
 
+    const sortedLeagues = React.useMemo(() => {
+        return [...leagues].sort((a, b) => a.name.localeCompare(b.name));
+    }, [leagues]);
+
     const isScroll = layout === 'scroll';
 
     return (
@@ -50,7 +54,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                         : `grid ${gridColsClass} gap-4`
                 }
             >
-                {leagues.map(league => (
+                {sortedLeagues.map(league => (
                     <LeagueCard
                         key={league.leagueId}
                         league={league}
