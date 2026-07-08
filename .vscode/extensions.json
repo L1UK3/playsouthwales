@@ -1,13 +1,10 @@
 {
-  "recommendations": [
-    "ms-python.python",
-    "ms-python.vscode-pylance",
-    "ms-python.debugpy",
-    "charliermarsh.ruff",
-    "dbaeumer.vscode-eslint",
-    "bradlc.vscode-tailwindcss",
-    "supabase.vscode-supabase-extension",
-    "editorconfig.editorconfig",
-    "ms-vscode-remote.remote-containers"
-  ]
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "editorconfig.editorconfig"
+    ]
 }
