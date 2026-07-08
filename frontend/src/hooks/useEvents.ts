@@ -22,8 +22,8 @@ export function useEvents(currentDate: any, includeExcluded = false) {
     });
 
     // loading and error flags
-    const isLoading = eventsQuery.isLoading ?? weeklyEventsQuery.isLoading;
-    const isError = eventsQuery.isError ?? weeklyEventsQuery.isError;
+    const isLoading = eventsQuery.isLoading || weeklyEventsQuery.isLoading;
+    const isError = eventsQuery.isError || weeklyEventsQuery.isError;
     const error = eventsQuery.error ?? weeklyEventsQuery.error;
 
     // combine them here!
