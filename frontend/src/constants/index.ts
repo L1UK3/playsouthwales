@@ -2,6 +2,8 @@
  * Global constants used for application configuration and display.
  */
 
+import type { EventTypeMap } from "@/types/EventTypeMap";
+
 /**
  * An array of month names for display and formatting purposes.
  */
@@ -35,3 +37,15 @@ export const DEFAULT_CENTER = {
 export const DEFAULT_ZOOM = 9;
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+export const EVENT_TYPE_MAP: EventTypeMap = {
+    "CASUAL": "C",
+    "STANDARD": "S",
+    "CHALLENGE": "🏅",
+    "CUP": "🏆",
+    "PRE-RELEASE": "PR",
+    "SPECIAL": "📍",
+    "REGIONAL": "📍",
+    "INTERNATIONAL": "INT",
+    "WORLDS": "🌍"
+};

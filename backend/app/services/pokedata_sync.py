@@ -15,6 +15,16 @@ from app.main import supabase
 
 logger = logging.getLogger("uvicorn.error")
 
+# Load event type map
+import json
+event_type_map_path = os.path.join(current_dir, 'event_type_map.json')
+try:
+    with open(event_type_map_path, 'r', encoding='utf-8') as f:
+        EVENT_TYPE_MAP = json.load(f)
+except Exception as e:
+    logger.error(f"Failed to load event type map: {e}")
+    EVENT_TYPE_MAP = {}
+
 # Pydantic schema for raw Pokedata event (helps with validation and parsing)
 class PokedataEvent(BaseModel):
     guid: str
@@ -56,13 +66,18 @@ async def fetch_pokedata_events(url: str) -> List[Dict[str, Any]]:
 def clean_text(text: str) -> str:
     if not text:
         return ""
-    # Fix the common encoding issue in pokedata (e.g. PokǸmon -> Pokémon)
-    text = text.replace("PokǸmon", "Pokémon")
+    # Fix the common encoding issues in pokedata
+    # 1. First fix "Pokémon" variants so they don't get turned into "Pok£mon"
+    text = text.replace("Pok\ufffdmon", "Pokémon")
     text = text.replace("Pok\u01e3mon", "Pokémon")
     text = text.replace("Pok\u01f8mon", "Pokémon")
-    # Replace the replacement character  (commonly uffd) with £
+    text = text.replace("Pok�mon", "Pokémon")
+    text = text.replace("Pokǣmon", "Pokémon")
+    text = text.replace("PokǸmon", "Pokémon")
+    
+    # 2. Then replace the replacement character (commonly \ufffd) in currency with £
     text = text.replace("\ufffd", "£")
-    text = text.replace("", "£")
+    text = text.replace("�", "£")
     return text
 
 async def sync_pokedata() -> Dict[str, Any]:
@@ -171,7 +186,7 @@ async def sync_pokedata() -> Dict[str, Any]:
             "startTime": pokedata_event.time,
             "leagueId": league_id,
             "ticketLink": ticket_link,
-            "eventType": pokedata_event.type,
+            "eventType": EVENT_TYPE_MAP.get(pokedata_event.type.strip(), pokedata_event.type),
             "game": game,
             "description": description,
             "entryFee": entry_fee,
