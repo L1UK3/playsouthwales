@@ -207,7 +207,6 @@ const SchedulePage: React.FC = () => {
                     )}
                 </div>
             </div>
-            <Footer />
         </>
     );
 };

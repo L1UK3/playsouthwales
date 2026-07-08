@@ -4,6 +4,7 @@ import EventCard from '@calendar/components/event-card/EventCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
+import Footer from '@/layouts/Footer';
 
 /**
  * Properties for the SelectedDaySection component.
@@ -60,9 +61,14 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
                 ) : selectedDayEvents.length === 0 ? (
                     <div className="text-text-muted text-sm p-2.5 rounded-xl bg-bg-main text-center">No events scheduled.</div>
                 ) : (
-                    selectedDayEvents.map(event => (
-                        <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />
-                    ))
+                    <div className="flex flex-col gap-2.5">
+
+                        {selectedDayEvents.map(event => (
+                            <EventCard key={event.id} event={event} leagueMap={leagueMap} types={types} />
+                        ))}
+                        <Footer />
+
+                    </div>
                 )}
             </div>
         </div>
