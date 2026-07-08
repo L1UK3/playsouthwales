@@ -12,7 +12,6 @@ import {
 } from "@calendar";
 import { useCallback, useMemo, useState } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
-import Footer from "@/layouts/Footer";
 
 export type ViewMode = 'calendar' | 'list';
 
