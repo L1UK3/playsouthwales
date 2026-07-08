@@ -61,15 +61,15 @@ const RankingsPage: React.FC = () => {
                 <div className='flex justify-between items-center pb-2 border-b border-border-color mb-3 flex-none'>
                     <h1 className='text-lg font-bold text-text-main flex items-center gap-2 m-0'>
                         <Trophy className='w-5 h-5 text-amber-500' />
-                        South Welsh Top 20
+                        South Wales Top 20
                     </h1>
                     <span className='text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20'>
                         National
                     </span>
                 </div>
                 <p className='text-xs text-text-muted mb-3 flex-none leading-relaxed'>
-                    The South Welsh Top 20 shows the players with the highest CP (Championship Points) across South Wales.
-                    Top players are eligible to compete in the South Welsh National Championship, held annually.
+                    The South Wales Top 20 shows the players with the highest CP (Championship Points) across South Wales.
+                    Top players are eligible to compete in the South Wales National Championship, held annually.
                     Players earn CP by participating in official TCG and VGC events.
                     To register, contact <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or message an admin on Discord.
                 </p>
