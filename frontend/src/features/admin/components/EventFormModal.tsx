@@ -133,8 +133,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
                                     <option value="TCG">TCG (Trading Card Game)</option>
-                                    <option value="VGC">VGC (Video Game Champ)</option>
-                                    <option value="GO">GO (Pokémon GO)</option>
+                                    <option value="VGC">VGC (Video Game Championships)</option>
+                                    <option value="GO">GO</option>
                                 </select>
                             </div>
 

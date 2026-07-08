@@ -10,7 +10,7 @@
  *   date: "2023-10-15",
  *   leagueId: 101,
  *   type: "Tournament",
- *   game: "Pokémon TCG"
+ *   game: "TCG"
  * }
  * 
  * @property {number} id - Unique identifier for the event.

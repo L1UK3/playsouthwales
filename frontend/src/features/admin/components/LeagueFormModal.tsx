@@ -66,28 +66,27 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             {/* League ID Field */}
                             <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
                                 <label htmlFor="leagueIdField" className="text-[13px] font-bold text-text-main flex justify-between items-center">
-                                    League ID (Official Pokémon League ID) <span className="text-primary text-[11px] font-semibold">*</span>
+                                    League ID (Official League ID - can be skipped if not known/not applicable)
                                 </label>
                                 <input
                                     type="number"
                                     id="leagueIdField"
-                                    placeholder="e.g. 6237868"
+                                    placeholder=""
                                     value={leagueId}
                                     onChange={(e) => setLeagueId(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
-                                    required
                                 />
                             </div>
 
-                            {/* Store Name */}
+                            {/* League Name */}
                             <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
                                 <label htmlFor="leagueName" className="text-[13px] font-bold text-text-main flex justify-between items-center">
-                                    Store Name <span className="text-primary text-[11px] font-semibold">*</span>
+                                    League Name <span className="text-primary text-[11px] font-semibold">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     id="leagueName"
-                                    placeholder="e.g. Firestorm Games Cardiff"
+                                    placeholder=""
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] ${errors.name ? "border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!" : ""}`}
@@ -97,17 +96,19 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 
                             {/* Location */}
                             <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
-                                <label htmlFor="leagueLocation" className="text-[13px] font-bold text-text-main flex justify-between items-center">Location / Address</label>
+                                <label htmlFor="leagueLocation" className="text-[13px] font-bold text-text-main flex justify-between items-center">Address</label>
                                 <input
                                     type="text"
                                     id="leagueLocation"
-                                    placeholder="e.g. Cardiff, UK"
+                                    placeholder=""
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 />
                             </div>
 
+
+                            { /* TODO: Implement automatic location detection, when an address is entered in the above field */}
                             {/* Latitude */}
                             <div className="flex flex-col gap-1.5 relative">
                                 <label htmlFor="leagueLatitude" className="text-[13px] font-bold text-text-main flex justify-between items-center">Latitude</label>

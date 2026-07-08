@@ -23,7 +23,7 @@ export type ViewMode = 'calendar' | 'list';
 const SchedulePage: React.FC = () => {
     useDocumentMetadata({
         title: 'Event Schedule',
-        description: 'Check the upcoming Pokémon TCG and VGC event schedules, local tournaments, and leagues across South Wales.'
+        description: 'Check the upcoming TCG and VGC event schedules, local tournaments, and leagues across South Wales.'
     });
 
     const [currentDate, setCurrentDate] = useState(() => new Date());
@@ -141,11 +141,11 @@ const SchedulePage: React.FC = () => {
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
 
-    
+
 
     return (
         <div className="flex flex-col p-0 animate-swipe-up">
-            <h1 className="sr-only">Pokémon Events Schedule South Wales</h1>
+            <h1 className="sr-only">Events Schedule South Wales</h1>
             <div className="flex flex-col gap-3 mb-4 z-10 bg-bg-main p-3.5 rounded-lg border-2 border-border-color shrink-0">
                 <NavBar
                     monthName={MONTH_NAMES[currentDate.getMonth()]}
@@ -169,7 +169,7 @@ const SchedulePage: React.FC = () => {
             <div className="flex-1 block opacity-100">
                 {(isLoading) ? (
                     <SuspenseLoader message="Loading schedule..." />
-                ) : (viewMode === 'calendar') ? (                  
+                ) : (viewMode === 'calendar') ? (
                     <div key={calendarKey} className={`${animationClass}`}>
                         <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
                             <div className="flex-1 min-w-0 lg:flex lg:flex-col">
