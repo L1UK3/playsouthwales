@@ -30,7 +30,7 @@ const SchedulePage: React.FC = () => {
     const [selectedDateKey, setSelectedDateKey] = useState<string | null>(() => getLocalDateString(new Date()));
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
     const [filters, setFilters] = useState({ league: '', eventType: '', game: '' });
-    const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>(null);
+    const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>('up');
 
     const handlePrevMonth = useCallback(() => {
         setDirection('right');

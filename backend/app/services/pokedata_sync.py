@@ -191,7 +191,7 @@ async def sync_pokedata() -> dict[str, Any]:
                 pokedata_event.type.strip(), pokedata_event.type
             ),
             "game": game,
-            "description": "Official League Event fetched from Pokedata.ovh.",
+            "description": None,
             "entryFee": entry_fee,
             "excludedDates": None,
         }
