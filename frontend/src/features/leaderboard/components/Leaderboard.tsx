@@ -28,7 +28,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }
                     <thead className='sticky top-0 bg-bg-card border-b border-border-color z-10'>
                         <tr className='text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md'>
                             <th className='py-2 px-3 w-16 text-center'>Rank</th>
-                            <th className='py-2 px-3'>Player</th>
+                            {!isGlobal && <th className='py-2 px-3'>Player</th>}
                             {isGlobal ? (
                                 <th className='py-2 px-3 text-right pr-4'>Championship Points</th>
                             ) : (
@@ -50,7 +50,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }
                             ))
                         ) : players.length === 0 ? (
                             <tr>
-                                <td colSpan={isGlobal ? 3 : 7} className='text-center py-12 text-sm text-text-muted'>
+                                <td colSpan={isGlobal ? 2 : 7} className='text-center py-12 text-sm text-text-muted'>
                                     No players found.
                                 </td>
                             </tr>
@@ -62,7 +62,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }
                                     <React.Fragment key={player.position}>
                                         {renderCutoff && (
                                             <tr className="bg-bg-main/30">
-                                                <td colSpan={3} className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none">
+                                                <td colSpan={2} className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none">
                                                     Top 20 Cutoff
                                                 </td>
                                             </tr>
@@ -74,11 +74,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }
                                             <td className='py-1.5 px-3 flex justify-center items-center'>
                                                 <RankBadge position={player.position} />
                                             </td>
-                                            <td className='py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
-                                                <div className='flex items-center gap-2'>
-                                                    <span>{player.name}</span>
-                                                </div>
-                                            </td>
+                                            {!isGlobal && (
+                                                <td className='py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
+                                                    <div className='flex items-center gap-2'>
+                                                        <span>{player.name}</span>
+                                                    </div>
+                                                </td>
+                                            )}
                                             {isGlobal ? (
                                                 <td className='py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary'>
                                                     <span className='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10'>

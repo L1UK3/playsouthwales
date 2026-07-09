@@ -52,7 +52,6 @@ async def run_top20_sync() -> dict[str, Any]:
         players_payload = {}
         for idx, entry in enumerate(standings[:20], 1):
             players_payload[str(idx)] = {
-                "name": entry["name"],
                 "cp": entry["cp"]
             }
         

@@ -3,19 +3,15 @@
     "seasons": {
         "2026-2027": {
             "1": {
-                "name": "Luke Enness",
                 "cp": 520
             },
             "2": {
-                "name": "Thomas Williams",
                 "cp": 380
             },
             "3": {
-                "name": "Dylan Jenkins",
                 "cp": 210
             },
             "4": {
-                "name": "Oliver Jones",
                 "cp": 150
             }
         }
