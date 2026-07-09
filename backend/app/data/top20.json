@@ -1,6 +1,11 @@
 {
-    "1": {
-            "name": "Luke Enness",
-            "cp": 1000000
+    "defaultSeason": "2026-2027",
+    "seasons": {
+        "2026-2027": {
+            "1": {
+                "name": "Luke Enness",
+                "cp": 1000000
+            }
+        }
     }
 }

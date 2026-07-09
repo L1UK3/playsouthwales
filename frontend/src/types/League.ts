@@ -46,4 +46,6 @@ export interface League {
     latitude?: number;
     longitude?: number;
     hasStandings?: boolean;
+    isChampionshipSeries?: boolean;
+    format?: string;
 }

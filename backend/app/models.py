@@ -15,6 +15,7 @@ class LeagueBase(BaseModel):
     longitude: Optional[float] = None
     directions: Optional[str] = None
     accessibility: Optional[str] = None
+    isChampionshipSeries: Optional[bool] = False
 
 class LeagueCreate(LeagueBase):
     pass
@@ -33,6 +34,7 @@ class LeagueUpdate(BaseModel):
     longitude: Optional[float] = None
     directions: Optional[str] = None
     accessibility: Optional[str] = None
+    isChampionshipSeries: Optional[bool] = None
 
 class LeagueResponse(LeagueBase):
     leagueId: int
@@ -70,3 +72,6 @@ class EventUpdate(BaseModel):
 
 class EventResponse(EventBase):
     id: Union[int, str]
+
+class LeaderboardUpdate(BaseModel):
+    data: list[dict]

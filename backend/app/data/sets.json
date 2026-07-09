@@ -1,0 +1,79 @@
+[
+  {
+    "code": "SV9",
+    "name": "Journey Together",
+    "releaseDate": "2025-03-28",
+    "legalDate": "2025-04-11",
+    "format": "Standard"
+  },
+  {
+    "code": "SV8pt5",
+    "name": "Prismatic Evolutions",
+    "releaseDate": "2025-01-17",
+    "legalDate": "2025-01-31",
+    "format": "Standard"
+  },
+  {
+    "code": "SV8",
+    "name": "Surging Sparks",
+    "releaseDate": "2024-11-08",
+    "legalDate": "2024-11-22",
+    "format": "Standard"
+  },
+  {
+    "code": "SV7",
+    "name": "Stellar Crown",
+    "releaseDate": "2024-09-13",
+    "legalDate": "2024-09-27",
+    "format": "Standard"
+  },
+  {
+    "code": "SV6pt5",
+    "name": "Shrouded Fable",
+    "releaseDate": "2024-08-02",
+    "legalDate": "2024-08-16",
+    "format": "Standard"
+  },
+  {
+    "code": "SV6",
+    "name": "Twilight Masquerade",
+    "releaseDate": "2024-05-24",
+    "legalDate": "2024-06-07",
+    "format": "Standard"
+  },
+  {
+    "code": "SV5",
+    "name": "Temporal Forces",
+    "releaseDate": "2024-03-22",
+    "legalDate": "2024-04-05",
+    "format": "Standard"
+  },
+  {
+    "code": "SV4pt5",
+    "name": "Paldean Fates",
+    "releaseDate": "2024-01-26",
+    "legalDate": "2024-02-09",
+    "format": "Standard"
+  },
+  {
+    "code": "SV4",
+    "name": "Paradox Rift",
+    "releaseDate": "2023-11-03",
+    "legalDate": "2023-11-17",
+    "format": "Standard"
+  },
+  {
+    "code": "SV3pt5",
+    "name": "151",
+    "releaseDate": "2023-09-22",
+    "legalDate": "2023-10-06",
+    "format": "Standard"
+  },
+  {
+    "code": "SV3",
+    "name": "Obsidian Flames",
+    "releaseDate": "2023-08-11",
+    "legalDate": "2023-08-25",
+    "format": "Standard"
+  }
+]

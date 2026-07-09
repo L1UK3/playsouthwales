@@ -5,19 +5,57 @@ import { useLeagues, useDocumentMetadata } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 
+function getTop20SeasonLabel(date = new Date()) {
+    const startYear = date.getMonth() >= 6 ? date.getFullYear() : date.getFullYear() - 1;
+    return `${startYear}-${startYear + 1}`;
+}
+
+function getSeasonOptions() {
+    const currentSeason = getTop20SeasonLabel();
+    const [startYear] = currentSeason.split('-').map(Number);
+
+    return [
+        `${startYear - 1}-${startYear}`,
+        currentSeason,
+    ];
+}
+
+const FORMAT_OPTIONS = ['All Formats', 'Standard', 'Expanded'];
+
 const RankingsPage: React.FC = () => {
     useDocumentMetadata({
-        title: 'Championship Rankings',
-        description: 'See the Welsh Top 20 national championship points standings and local league rankings for the TCG and VGC players.'
+        title: 'South Wales Pokemon Championship Rankings',
+        description: 'Track the South Wales Pokemon Top 20 championship points leaderboard and local league rankings for TCG and VGC players.'
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
+    const [selectedSeason, setSelectedSeason] = React.useState(getTop20SeasonLabel());
+    const [selectedFormat, setSelectedFormat] = React.useState('All Formats');
     const [rankingsTab, setRankingsTab] = React.useState<'national' | 'local'>('national');
     const { data: leagues = [], isLoading } = useLeagues();
+    const seasonOptions = React.useMemo(() => getSeasonOptions(), []);
+
+    const handleTabChange = (tab: 'national' | 'local') => {
+        if (document.startViewTransition) {
+            document.startViewTransition(() => setRankingsTab(tab));
+        } else {
+            setRankingsTab(tab);
+        }
+    };
 
     const leaguesWithStandings = React.useMemo(() => {
-        return leagues.filter(league => league.hasStandings);
-    }, [leagues]);
+        return leagues.filter((league) => {
+            if (!league.hasStandings) {
+                return false;
+            }
+
+            if (selectedFormat === 'All Formats' || !league.format) {
+                return true;
+            }
+
+            return league.format.toLowerCase() === selectedFormat.toLowerCase();
+        });
+    }, [leagues, selectedFormat]);
 
     const activeLeagueId = selectedLeagueId ?? leaguesWithStandings[0]?.leagueId ?? null;
 
@@ -43,14 +81,14 @@ const RankingsPage: React.FC = () => {
                 <button
                     type="button"
                     className={`flex-1 py-2 text-center text-sm font-bold rounded-md transition-colors border-none cursor-pointer ${rankingsTab === 'national' ? 'bg-primary text-white!' : 'bg-transparent text-text-muted hover:bg-bg-card-hover'}`}
-                    onClick={() => setRankingsTab('national')}
+                    onClick={() => handleTabChange('national')}
                 >
                     National Standings
                 </button>
                 <button
                     type="button"
                     className={`flex-1 py-2 text-center text-sm font-bold rounded-md transition-colors border-none cursor-pointer ${rankingsTab === 'local' ? 'bg-primary text-white!' : 'bg-transparent text-text-muted hover:bg-bg-card-hover'}`}
-                    onClick={() => setRankingsTab('local')}
+                    onClick={() => handleTabChange('local')}
                 >
                     Local Standings
                 </button>
@@ -73,9 +111,25 @@ const RankingsPage: React.FC = () => {
                     Players earn CP by participating in official TCG and VGC events.
                     To register, contact <a href="mailto:playwales@proton.me" className='text-secondary hover:underline'>playwales@proton.me</a> or message an admin on Discord.
                 </p>
-                <h2 className='text-sm font-bold text-text-main mb-2 flex-none'>Season 2026-2027</h2>
+                <div className='flex items-center gap-3 flex-wrap mb-2 flex-none'>
+                    <label className='text-sm font-bold text-text-main' htmlFor='top20-season-select'>
+                        Season
+                    </label>
+                    <select
+                        id='top20-season-select'
+                        value={selectedSeason}
+                        onChange={(event) => setSelectedSeason(event.target.value)}
+                        className='border-2 border-border-color rounded-md bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:outline-none focus:border-secondary'
+                    >
+                        {seasonOptions.map((season) => (
+                            <option key={season} value={season}>
+                                {season}
+                            </option>
+                        ))}
+                    </select>
+                </div>
                 <div className='flex-1 min-h-0'>
-                    <Leaderboard leagueId='global' />
+                    <Leaderboard leagueId='global' season={selectedSeason} />
                 </div>
             </div>
 
@@ -87,8 +141,26 @@ const RankingsPage: React.FC = () => {
                     </div>
 
                     <p className='text-xs text-text-muted mb-3 flex-none leading-relaxed'>
-                        These are the local standings for each league in South Wales. Participate in weekly events to earn points and climb the ladder.
+                        These are the local standings for each league in South Wales. Standings reset with each new standard format rotation. Participate in weekly events to earn points and climb the ladder.
                     </p>
+
+                    <div className='flex items-center gap-3 flex-wrap'>
+                        <label className='text-sm font-bold text-text-main' htmlFor='local-format-select'>
+                            Format
+                        </label>
+                        <select
+                            id='local-format-select'
+                            value={selectedFormat}
+                            onChange={(event) => setSelectedFormat(event.target.value)}
+                            className='border-2 border-border-color rounded-md bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:outline-none focus:border-secondary'
+                        >
+                            {FORMAT_OPTIONS.map((format) => (
+                                <option key={format} value={format}>
+                                    {format}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
                     <LeagueSelector
                         leagues={leaguesWithStandings}

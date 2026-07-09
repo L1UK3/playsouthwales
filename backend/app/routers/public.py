@@ -1,10 +1,9 @@
-import json
-import os
 import logging
 from fastapi import APIRouter, HTTPException, status
 from typing import Optional
 from app.models import EventResponse, LeagueResponse
 from app.main import supabase
+from app.services.top20_data import load_top20_payload
 
 logger = logging.getLogger(__name__)
 
@@ -127,16 +126,12 @@ async def getLeagues():
 
 
 @router.get("/api/players/top20")
-async def getTop20Players():
+async def getTop20Players(season: Optional[str] = None):
     """
-    Fetch the top 20 players.
+    Fetch the top 20 players for a season.
     """
-    TOP20_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'top20.json')
-
     try:
-        with open(TOP20_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        return data
+        return load_top20_payload(season)
     except Exception as e:
         logger.error(f"Failed to fetch top 20 players: {e}")
         raise HTTPException(
@@ -167,3 +162,22 @@ async def getLeaderboard(leagueId: int):
             detail={"code": "internal_error", "message": "Failed to fetch leaderboard"}
         )
     
+
+@router.get("/api/sets")
+async def getSets():
+    """
+    Fetch Pokemon TCG set legality dates.
+    Returns sets sorted by release date (newest first).
+    """
+    SETS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'sets.json')
+
+    try:
+        with open(SETS_PATH, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        logger.error(f"Failed to fetch sets data: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": "Failed to fetch sets data"}
+        )

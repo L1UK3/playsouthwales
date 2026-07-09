@@ -2,6 +2,12 @@ import type { League } from "@/types/League";
 import type { Event } from "@/types/Event";
 import { API_BASE_URL } from "@/constants";
 
+export interface Top20Response {
+  season: string;
+  availableSeasons: string[];
+  players: Record<string, { name: string; cp?: number; userId?: number }>;
+}
+
 /**
  * Fetches events from the API, optionally filtered by month, year, and leagueId.
  *
@@ -91,7 +97,7 @@ export async function loadLeagues(): Promise<League[]> {
  * @param {Omit<Event, 'id'>} event - The event data to create.
  * @returns {Promise<Event>} A promise that resolves to the created Event object.
  */
-export async function createEvent(event: Omit<Event, "id">,token:string): Promise<Event> {
+export async function createEvent(event: Omit<Event, "id">, token: string): Promise<Event> {
   const response = await fetch(`${API_BASE_URL}/events`, {
     method: "POST",
     headers: {
@@ -118,7 +124,7 @@ export async function createEvent(event: Omit<Event, "id">,token:string): Promis
 export async function updateEvent(
   id: number | string,
   event: Partial<Event>,
-  token:string
+  token: string
 ): Promise<Event> {
   const response = await fetch(`${API_BASE_URL}/events/${id}`, {
     method: "PUT",
@@ -149,7 +155,7 @@ export async function deleteEvent(id: number | string, token: string, excludeDat
   }
   const response = await fetch(`${API_BASE_URL}/events/${id}?${queryParams.toString()}`, {
     method: "DELETE",
-    headers:{
+    headers: {
       'Authorization': `Bearer ${token}`
     }
   });
@@ -168,7 +174,7 @@ export async function deleteEvent(id: number | string, token: string, excludeDat
  */
 export async function createLeague(
   league: Omit<League, "leagueId">,
-  token:string
+  token: string
 ): Promise<League> {
   const response = await fetch(`${API_BASE_URL}/leagues`, {
     method: "POST",
@@ -198,7 +204,7 @@ export async function createLeague(
 export async function updateLeague(
   id: number,
   league: Partial<League>,
-  token:string 
+  token: string
 ): Promise<League> {
   const response = await fetch(`${API_BASE_URL}/leagues/${id}`, {
     method: "PUT",
@@ -224,12 +230,12 @@ export async function updateLeague(
  * @param {number} id - The ID of the league to delete.
  * @returns {Promise<void>} A promise that resolves when the league is successfully deleted.
  */
-export async function deleteLeague(id: number,token:string): Promise<void> {
+export async function deleteLeague(id: number, token: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/leagues/${id}`, {
     method: "DELETE",
-    headers:{
-    'Authorization': `Bearer ${token}`
-  }
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   });
   if (!response.ok) {
     const errData = await response.json().catch(() => ({}));
@@ -245,9 +251,14 @@ export async function deleteLeague(id: number,token:string): Promise<void> {
  * Fetches the top 20 players in South Wales from the API.
  * @returns {Promise<any[]>} A promise that resolves to an array of top 20 player objects.
  */
-export async function loadTop20Players(): Promise<any[]> {
+export async function loadTop20Players(season?: string): Promise<Top20Response> {
   try {
-    const response = await fetch(`${API_BASE_URL}/players/top20`);
+    const queryParams = new URLSearchParams();
+    if (season) {
+      queryParams.append("season", season);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/players/top20${queryParams.toString() ? `?${queryParams.toString()}` : ""}`);
     if (!response.ok) {
       throw new Error("Failed to fetch top 20 players: " + response.statusText);
     }
@@ -264,7 +275,7 @@ export async function loadTop20Players(): Promise<any[]> {
  * @param {number} leagueId - The ID of the league for which to fetch the leaderboard.
  * @returns {Promise<any[]>} A promise that resolves to an array of leaderboard entries.
  */
-export async function loadLocalLeaderboard(leagueId: number): Promise<any[]> {
+export async function loadLocalLeaderboard(leagueId: number): Promise<any> {
   try {
     const response = await fetch(`${API_BASE_URL}/leaderboard/${leagueId}`);
     if (!response.ok) {
@@ -277,4 +288,35 @@ export async function loadLocalLeaderboard(leagueId: number): Promise<any[]> {
     console.error("Error fetching local leaderboard:", error);
     throw error;
   }
+}
+
+/**
+ * Updates or creates the leaderboard for a specific league.
+ * @param {number} leagueId - The ID of the league to update standings for.
+ * @param {any[]} data - The standings entries to upload.
+ * @param {string} token - The auth token.
+ * @returns {Promise<any>} A promise resolving to the API response.
+ */
+export async function updateLeaderboard(
+  leagueId: number,
+  data: any[],
+  token: string
+): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/leaderboard/${leagueId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ data })
+  });
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(
+      errData.error?.message ??
+      errData.error ??
+      "Failed to update leaderboard: " + response.statusText
+    );
+  }
+  return await response.json();
 }

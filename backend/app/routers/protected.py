@@ -1,7 +1,7 @@
 import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Optional
-from app.models import EventCreate, EventUpdate, LeagueCreate, LeagueUpdate
+from app.models import EventCreate, EventUpdate, LeagueCreate, LeagueUpdate, LeaderboardUpdate
 from app.auth import require_auth
 from app.main import supabase
 from app.services.pokedata_sync import sync_pokedata
@@ -339,4 +339,44 @@ async def deleteLeague(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "internal_error", "message": str(e)}
+        )
+
+
+@router.put("/api/leaderboard/{leagueId}")
+async def updateLeaderboard(
+    leagueId: int,
+    leaderboard: LeaderboardUpdate,
+    auth: dict = Depends(require_auth)
+):
+    """
+    Upsert the leaderboard for a specific league. Requires Clerk authorization.
+    If a leaderboard row exists for this league, update it; otherwise insert a new one.
+    """
+    try:
+        # Check if a leaderboard already exists for this league
+        existing = supabase.table('leaderboards').select('id').eq('leagueId', leagueId).execute()
+
+        if existing.data:
+            # Update existing row
+            supabase.table('leaderboards').update({
+                'data': leaderboard.data
+            }).eq('leagueId', leagueId).execute()
+        else:
+            # Insert new row
+            supabase.table('leaderboards').insert({
+                'leagueId': leagueId,
+                'data': leaderboard.data
+            }).execute()
+
+        return {
+            'success': True,
+            'message': 'Leaderboard updated successfully'
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update leaderboard for league {leagueId}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": "Failed to update leaderboard"}
         )

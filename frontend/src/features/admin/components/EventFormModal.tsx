@@ -27,24 +27,31 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
     const [description, setDescription] = useState(initialData?.description ?? '');
     const [prizes, setPrizes] = useState(initialData?.prizes ?? '');
     const [isRecurring, setIsRecurring] = useState(initialData?.isRecurring ?? false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({
-            name,
-            date,
-            startTime: startTime ?? undefined,
-            eventType,
-            game,
-            entryFee: entryFee ?? undefined,
-            ticketLink: ticketLink ?? undefined,
-            description: description ?? undefined,
-            prizes: prizes ?? undefined,
-            leagueId: initialData ? initialData.leagueId : leagueId,
-            isRecurring
-        });
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+        try {
+            await onSubmit({
+                name,
+                date,
+                startTime: startTime ?? undefined,
+                eventType,
+                game,
+                entryFee: entryFee ?? undefined,
+                ticketLink: ticketLink ?? undefined,
+                description: description ?? undefined,
+                prizes: prizes ?? undefined,
+                leagueId: initialData ? initialData.leagueId : leagueId,
+                isRecurring
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return createPortal(
@@ -58,9 +65,9 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                 </div>
                 <form className="flex flex-col gap-5 overflow-hidden" onSubmit={handleSubmit}>
                     <div className="p-7 overflow-y-auto">
-                        <div className="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {/* Event Title */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="eventName" className="text-[13px] font-bold text-text-main flex justify-between items-center">
                                     Event Title <span className="text-primary text-[11px] font-semibold">*</span>
                                 </label>
@@ -165,7 +172,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                             </div>
 
                             {/* Recurring Event Options */}
-                            <div className="col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2">
+                            <div className="sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2">
                                 <label className="flex items-center gap-3 cursor-pointer min-h-[44px] select-none">
                                     <input
                                         type="checkbox"
@@ -182,7 +189,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 
 
                             {/* Description */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="eventDescription" className="text-[13px] font-bold text-text-main flex justify-between items-center">Description</label>
                                 <textarea
                                     id="eventDescription"
@@ -194,7 +201,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                             </div>
 
                             {/* Prizes */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="eventPrizes" className="text-[13px] font-bold text-text-main flex justify-between items-center">Prizes Info</label>
                                 <textarea
                                     id="eventPrizes"
@@ -211,16 +218,17 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                     <div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0">
                         <button
                             type="button"
-                            className="btn btn-secondary"
+                            className="btn btn-secondary min-h-[44px] flex items-center justify-center"
                             onClick={onClose}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-primary min-h-[44px] flex items-center justify-center"
+                            disabled={isSubmitting}
                         >
-                            {initialData ? 'Save Changes' : 'Schedule Event'}
+                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : 'Schedule Event')}
                         </button>
                     </div>
                 </form>

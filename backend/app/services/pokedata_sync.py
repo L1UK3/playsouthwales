@@ -80,16 +80,12 @@ def clean_text(text: str) -> str:
 
     # Fix the common encoding issues in pokedata
     # 1. First fix "Pokémon" variants so they don't get turned into "Pok£mon"
-    text = text.replace("Pok\ufffdmon", "Pokémon")
-    text = text.replace("Pok\u01e3mon", "Pokémon")
-    text = text.replace("Pok\u01f8mon", "Pokémon")
-    text = text.replace("Pok�mon", "Pokémon")
-    text = text.replace("Pokǣmon", "Pokémon")
-    text = text.replace("PokǸmon", "Pokémon")
+    text = text.replace("Pok\ufffdmon", "Pok\xe9mon")
+    text = text.replace("Pok\u01e3mon", "Pok\xe9mon")
+    text = text.replace("Pok\u01f8mon", "Pok\xe9mon")
 
-    # 2. Then replace the replacement character (commonly \ufffd) in currency with £
-    text = text.replace("\ufffd", "£")
-    text = text.replace("�", "£")
+    # 2. Then replace the replacement character (commonly \ufffd) in currency with \xa3
+    text = text.replace("\ufffd", "\xa3")
     return text
 
 

@@ -18,17 +18,33 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
     const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
 
     return (
-        <div className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main gradient-card type-${event.eventType}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
+        <div className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main gradient-card type-${event.eventType} ${league?.isChampionshipSeries ? 'border-2 border-amber-500/50 bg-gradient-to-br from-amber-500/10 to-transparent' : ''}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
             <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-0.5">
-                    <div className="font-bold text-text-main text-base">{event.name}</div>
+                    <div className="font-bold text-text-main text-base flex items-center gap-1.5">
+                        {league?.isChampionshipSeries && <span className="text-amber-500 text-sm">🏆</span>}
+                        <span>{event.name}</span>
+                    </div>
                     <div className="text-xs font-semibold text-type-text">
                         {`[${types[event.eventType]}] ${event.eventType} • ${event.game}`}
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-0.5">
-                    <div className="text-xs font-medium text-text-darker">{leagueName}</div>
+                    <div className="flex items-center gap-1.5">
+                        {league?.logo && (
+                            <img
+                                src={league.logo}
+                                alt={`${leagueName} Logo`}
+                                width="20"
+                                height="20"
+                                loading="lazy"
+                                decoding="async"
+                                className="w-5 h-5 rounded object-contain bg-white border border-border-color shrink-0 p-px"
+                            />
+                        )}
+                        <div className="text-xs font-medium text-text-darker">{leagueName}</div>
+                    </div>
                     <div className="text-[12px] text-text-muted">
                         {event.startTime ?? ''} {event.entryFee ? `• ${event.entryFee}` : ''}
                     </div>

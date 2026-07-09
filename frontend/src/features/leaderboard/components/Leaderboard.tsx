@@ -6,10 +6,11 @@ import { SkeletonRow } from './SkeletonRow';
 
 export interface LeaderboardProps {
     leagueId?: number | string;
+    season?: string;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
-    const { data: players = [], isLoading } = useLeaderboard(leagueId);
+const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }) => {
+    const { data: players = [], isLoading } = useLeaderboard(leagueId, season);
     const isGlobal = leagueId === 'global';
 
     if (isLoading) {
@@ -55,48 +56,58 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global' }) => {
                             </tr>
                         ) : (
                             players.map((player) => {
+                                const renderCutoff = isGlobal && player.position === 21;
 
                                 return (
-                                    <tr
-                                        key={player.position}
-                                        className={`hover:bg-bg-card-hover/60 transition-colors duration-150 group cursor-pointer`}
-                                    >
-                                        <td className='py-1.5 px-3 flex justify-center items-center'>
-                                            <RankBadge position={player.position} />
-                                        </td>
-                                        <td className='py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
-                                            <div className='flex items-center gap-2'>
-                                                <span>{player.name}</span>
-                                            </div>
-                                        </td>
-                                        {isGlobal ? (
-                                            <td className='py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary'>
-                                                <span className='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10'>
-                                                    {player.cp}
-                                                </span>
+                                    <React.Fragment key={player.position}>
+                                        {renderCutoff && (
+                                            <tr className="bg-bg-main/30">
+                                                <td colSpan={3} className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none">
+                                                    Top 20 Cutoff
+                                                </td>
+                                            </tr>
+                                        )}
+                                        <tr
+                                            key={player.position}
+                                            className={`hover:bg-bg-card-hover/60 transition-colors duration-150 group cursor-pointer ${isGlobal && player.position > 20 ? "opacity-75" : ""}`}
+                                        >
+                                            <td className='py-1.5 px-3 flex justify-center items-center'>
+                                                <RankBadge position={player.position} />
                                             </td>
-                                        ) : (
-                                            <>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
-                                                    {player.wins ?? 0}
-                                                </td>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
-                                                    {player.losses ?? 0}
-                                                </td>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
-                                                    {player.draws ?? 0}
-                                                </td>
-                                                <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell'>
-                                                    {player.attendance ?? 0}
-                                                </td>
+                                            <td className='py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150'>
+                                                <div className='flex items-center gap-2'>
+                                                    <span>{player.name}</span>
+                                                </div>
+                                            </td>
+                                            {isGlobal ? (
                                                 <td className='py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary'>
                                                     <span className='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10'>
-                                                        {player.points}
+                                                        {player.cp}
                                                     </span>
                                                 </td>
-                                            </>
-                                        )}
-                                    </tr>
+                                            ) : (
+                                                <>
+                                                    <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
+                                                        {player.wins ?? 0}
+                                                    </td>
+                                                    <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
+                                                        {player.losses ?? 0}
+                                                    </td>
+                                                    <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell'>
+                                                        {player.draws ?? 0}
+                                                    </td>
+                                                    <td className='py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell'>
+                                                        {player.attendance ?? 0}
+                                                    </td>
+                                                    <td className='py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary'>
+                                                        <span className='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10'>
+                                                            {player.points}
+                                                        </span>
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    </React.Fragment>
                                 );
                             })
                         )}

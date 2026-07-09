@@ -1,15 +1,16 @@
-import { EventFormModal, LeagueFormModal } from "@/features/admin";
+import { EventFormModal, LeagueFormModal, LeaderboardFormModal } from "@/features/admin";
 import { useLeagues, useEventTypeMap, useEvents, useDocumentMetadata } from "@/hooks";
 import LeagueSelector from "@/features/league-selector";
 import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import { createLeagueMap, filterAndGroupEvents, ListView, NavBar } from "@calendar";
 import { MONTH_NAMES } from "@/constants";
-import { createEvent, createLeague, deleteEvent, deleteLeague, updateEvent, updateLeague } from "@/services/api";
+import { createEvent, createLeague, deleteEvent, deleteLeague, loadLocalLeaderboard, updateEvent, updateLeague, updateLeaderboard } from "@/services/api";
 import type { League } from "@/types/League";
 import type { Event } from "@/types/Event";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
+import type { LeaderboardEntry } from "@/features/admin/components/LeaderboardFormModal";
 
 const AdminPage: React.FC = () => {
     useDocumentMetadata({
@@ -22,8 +23,10 @@ const AdminPage: React.FC = () => {
     const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
     const [isEditingLeague, setIsEditingLeague] = useState<boolean>(false);
     const [isEditingEvent, setIsEditingEvent] = useState<boolean>(false);
+    const [isEditingLeaderboard, setIsEditingLeaderboard] = useState<boolean>(false);
     const [editingLeague, setEditingLeague] = useState<League | null>(null);
     const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+    const [leaderboardDraft, setLeaderboardDraft] = useState<{ data?: LeaderboardEntry[] } | null>(null);
 
     const { data: events = [], isLoading: isEventsLoading } = useEvents(currentDate, true);
     const { data: leagues = [], isLoading: isLeaguesLoading } = useLeagues();
@@ -138,6 +141,20 @@ const AdminPage: React.FC = () => {
         }
     });
 
+    const updateLeaderboardMutation = useMutation({
+        mutationFn: async ({ leagueId, data }: { leagueId: number; data: LeaderboardEntry[] }) => {
+            const token = await getToken();
+            if (!token) throw new Error('No Login Token');
+            return updateLeaderboard(leagueId, data, token);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
+        },
+        onError: (error: Error) => {
+            console.error('Leaderboard Update Failed', error);
+        }
+    });
+
     const deleteEventMutation = useMutation({
         mutationFn: async (data: { id: number | string; excludeDate?: string }) => {
             const token = await getToken();
@@ -179,6 +196,20 @@ const AdminPage: React.FC = () => {
         setEditingEvent(null);
         setIsEditingEvent(true);
     }, []);
+
+    const handleManageStandingsTrigger = useCallback(async () => {
+        if (!activeLeague) return;
+
+        try {
+            const existing = await loadLocalLeaderboard(activeLeague.leagueId);
+            setLeaderboardDraft(existing ?? { data: [] });
+        } catch (error) {
+            console.error('Failed to load leaderboard data', error);
+            setLeaderboardDraft({ data: [] });
+        }
+
+        setIsEditingLeaderboard(true);
+    }, [activeLeague]);
 
     // opens event editing modal
     const handleEditEventTrigger = useCallback((event: Event) => {
@@ -231,6 +262,15 @@ const AdminPage: React.FC = () => {
         setIsEditingEvent(false);
     }, [editingEvent, createEventMutation, updateEventMutation]);
 
+    const handleLeaderboardSubmit = useCallback(async (data: LeaderboardEntry[]) => {
+        if (!activeLeague) {
+            throw new Error('No league selected');
+        }
+
+        await updateLeaderboardMutation.mutateAsync({ leagueId: activeLeague.leagueId, data });
+        setIsEditingLeaderboard(false);
+    }, [activeLeague, updateLeaderboardMutation]);
+
     if (isLeaguesLoading || isEventTypesLoading || isEventsLoading) {
         return <SuspenseLoader message="Loading admin manager..." />;
     }
@@ -260,9 +300,14 @@ const AdminPage: React.FC = () => {
                 <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border-2 border-border-color rounded-lg p-5 shadow-main flex flex-col gap-5">
                     <div className="flex justify-between items-center border-b-2 border-border-color pb-3">
                         <h3 className="text-base font-bold">Scheduled Events ({activeLeague.name})</h3>
-                        <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>
-                            Schedule New Event
-                        </button>
+                        <div className="flex gap-2 flex-wrap justify-end">
+                            <button type="button" className="btn btn-secondary" onClick={handleManageStandingsTrigger}>
+                                Manage Standings
+                            </button>
+                            <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>
+                                Schedule New Event
+                            </button>
+                        </div>
                     </div>
 
                     <NavBar
@@ -306,6 +351,14 @@ const AdminPage: React.FC = () => {
                 onSubmit={handleEventSubmit}
                 initialData={editingEvent}
                 leagueId={selectedLeagueId ?? 0}
+            />
+            <LeaderboardFormModal
+                key={isEditingLeaderboard ? `leaderboard-${activeLeague?.leagueId ?? 'new'}` : 'closed-leaderboard'}
+                isOpen={isEditingLeaderboard}
+                onClose={() => setIsEditingLeaderboard(false)}
+                onSubmit={handleLeaderboardSubmit}
+                leagueId={activeLeague?.leagueId ?? 0}
+                initialData={leaderboardDraft}
             />
         </div>
     );

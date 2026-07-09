@@ -11,12 +11,16 @@ import SuspenseLoader from "@/components/SuspenseLoader";
  */
 const LeaguesPage: React.FC = () => {
     useDocumentMetadata({
-        title: 'League Map & Stores',
-        description: 'Find TCG and VGC leagues and stores across South Wales with our interactive map and directories.'
+        title: 'South Wales Pokemon League Map & Stores',
+        description: 'Find local TCG, VGC, and Pokemon GO leagues and stores across South Wales with our interactive venue map and store directory.'
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-    const { data: leagues = [], isLoading } = useLeagues();
+    const { data: allLeagues = [], isLoading } = useLeagues();
+
+    // Filter out championship series leagues (Regionals, Internationals, Worlds)
+    // These appear on the schedule but not on the leagues map (Issue #29)
+    const leagues = allLeagues.filter(league => !league.isChampionshipSeries);
 
     const handleLeagueSelect = useCallback((id: number | null) => {
         setSelectedLeagueId(id);

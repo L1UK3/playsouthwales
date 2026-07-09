@@ -49,13 +49,27 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                 <div className="flex items-center gap-4 grow">
                     <div className="text-sm font-bold text-primary min-w-11">{event.startTime?.slice(0, 5) ?? ''}</div>
                     <div className="flex flex-col gap-0.5">
-                        <div className="text-[15px] font-bold text-text-main">
-                            {event.name}
+                        <div className="text-[15px] font-bold text-text-main flex items-center gap-1.5">
+                            {league?.isChampionshipSeries && <span className="text-amber-500 text-sm">🏆</span>}
+                            <span>{event.name}</span>
                             {event.isExcluded && (
                                 <span className="text-xs font-normal text-red-400 ml-1.5">(Excluded)</span>
                             )}
                         </div>
-                        <div className="text-[12px] text-text-muted">{leagueName} • {event.game}</div>
+                        <div className="text-[12px] text-text-muted flex items-center gap-1.5">
+                            {league?.logo && (
+                                <img
+                                    src={league.logo}
+                                    alt={`${leagueName} Logo`}
+                                    width="16"
+                                    height="16"
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="w-4 h-4 rounded object-contain bg-white border border-border-color shrink-0 p-px"
+                                />
+                            )}
+                            <span>{leagueName} • {event.game}</span>
+                        </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">

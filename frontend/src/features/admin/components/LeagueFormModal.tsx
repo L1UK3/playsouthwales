@@ -27,28 +27,37 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     const [socialLink, setSocialLink] = useState(initialData?.socialLink ?? '');
     const [directions, setDirections] = useState(initialData?.directions ?? '');
     const [accessibility, setAccessibility] = useState(initialData?.accessibility ?? '');
+    const [isChampionshipSeries, setIsChampionshipSeries] = useState(initialData?.isChampionshipSeries ?? false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const errors: Record<string, string> = {};
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({
-            leagueId: leagueId ? parseInt(leagueId) : undefined,
-            id: leagueId ? parseInt(leagueId) : undefined,
-            name,
-            location,
-            latitude: latitude ? parseFloat(latitude) : undefined,
-            longitude: longitude ? parseFloat(longitude) : undefined,
-            brandColor,
-            logo,
-            website,
-            eventLink,
-            socialLink,
-            directions: directions || undefined,
-            accessibility: accessibility || undefined
-        });
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+        try {
+            await onSubmit({
+                leagueId: leagueId ? parseInt(leagueId) : undefined,
+                id: leagueId ? parseInt(leagueId) : undefined,
+                name,
+                location,
+                latitude: latitude ? parseFloat(latitude) : undefined,
+                longitude: longitude ? parseFloat(longitude) : undefined,
+                brandColor,
+                logo,
+                website,
+                eventLink,
+                socialLink,
+                directions: directions || undefined,
+                accessibility: accessibility || undefined,
+                isChampionshipSeries
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return createPortal(
@@ -62,9 +71,23 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                 </div>
                 <form className="flex flex-col gap-5 overflow-hidden" onSubmit={handleSubmit}>
                     <div className="p-7 overflow-y-auto">
-                        <div className="grid grid-cols-2 gap-4 max-[480px]:grid-cols-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {/* Championship Series Event Checkbox */}
+                            <div className="flex items-center gap-2.5 sm:col-span-2 py-2">
+                                <input
+                                    type="checkbox"
+                                    id="isChampionshipSeries"
+                                    checked={isChampionshipSeries}
+                                    onChange={(e) => setIsChampionshipSeries(e.target.checked)}
+                                    className="w-4 h-4 rounded border-border-color bg-bg-card accent-primary cursor-pointer"
+                                />
+                                <label htmlFor="isChampionshipSeries" className="text-[13px] font-bold text-text-main cursor-pointer select-none">
+                                    Championship Series Event (Regionals, Internationals, Worlds - hidden from Map)
+                                </label>
+                            </div>
+
                             {/* League ID Field */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="leagueIdField" className="text-[13px] font-bold text-text-main flex justify-between items-center">
                                     League ID (Official League ID - can be skipped if not known/not applicable)
                                 </label>
@@ -79,7 +102,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             </div>
 
                             {/* League Name */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="leagueName" className="text-[13px] font-bold text-text-main flex justify-between items-center">
                                     League Name <span className="text-primary text-[11px] font-semibold">*</span>
                                 </label>
@@ -95,7 +118,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             </div>
 
                             {/* Location */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="leagueLocation" className="text-[13px] font-bold text-text-main flex justify-between items-center">Address</label>
                                 <input
                                     type="text"
@@ -200,7 +223,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             </div>
 
                             {/* Social Link */}
-                            <div className={"flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1"}>
+                            <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="leagueSocialLink" className="text-[13px] font-bold text-text-main flex justify-between items-center">Social Media URL (e.g. Facebook)</label>
                                 <input
                                     type="url"
@@ -213,7 +236,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             </div>
 
                             {/* Directions */}
-                            <div className="flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1">
+                            <div className="flex flex-col gap-1.5 relative sm:col-span-2">
                                 <label htmlFor="leagueDirections" className="text-[13px] font-bold text-text-main flex justify-between items-center">Directions</label>
                                 <textarea
                                     id="leagueDirections"
@@ -225,7 +248,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             </div>
 
                             {/* Accessibility */}
-                            <div className="flex flex-col gap-1.5 relative col-span-2 max-[480px]:col-span-1">
+                            <div className="flex flex-col gap-1.5 relative sm:col-span-2">
                                 <label htmlFor="leagueAccessibility" className="text-[13px] font-bold text-text-main flex justify-between items-center">Accessibility Info</label>
                                 <textarea
                                     id="leagueAccessibility"
@@ -240,16 +263,17 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                     <div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0">
                         <button
                             type="button"
-                            className="btn btn-secondary"
+                            className="btn btn-secondary min-h-[44px] flex items-center justify-center"
                             onClick={onClose}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-primary min-h-[44px] flex items-center justify-center"
+                            disabled={isSubmitting}
                         >
-                            {initialData ? 'Save Changes' : 'Create League'}
+                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : 'Create League')}
                         </button>
                     </div>
                 </form>

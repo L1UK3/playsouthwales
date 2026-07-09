@@ -82,7 +82,12 @@ const SchedulePage: React.FC = () => {
 
     const handleToggleViewMode = useCallback(() => {
         setDirection('down');
-        setViewMode(prev => prev === 'calendar' ? 'list' : 'calendar');
+        const changeMode = () => setViewMode(prev => prev === 'calendar' ? 'list' : 'calendar');
+        if (document.startViewTransition) {
+            document.startViewTransition(changeMode);
+        } else {
+            changeMode();
+        }
     }, []);
 
     const handleFilterChange = useCallback((name: string, value: string) => {
