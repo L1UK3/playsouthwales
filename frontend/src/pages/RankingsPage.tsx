@@ -20,7 +20,6 @@ function getSeasonOptions() {
     ];
 }
 
-const FORMAT_OPTIONS = ['All Formats', 'Standard', 'Expanded'];
 
 const RankingsPage: React.FC = () => {
     useDocumentMetadata({
@@ -29,8 +28,7 @@ const RankingsPage: React.FC = () => {
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<number | null>(null);
-    const [selectedSeason, setSelectedSeason] = React.useState(getTop20SeasonLabel());
-    const [selectedFormat, setSelectedFormat] = React.useState('All Formats');
+    const [selectedSeason, setSelectedSeason] = React.useState(() => getTop20SeasonLabel());
     const [rankingsTab, setRankingsTab] = React.useState<'national' | 'local'>('national');
     const { data: leagues = [], isLoading } = useLeagues();
     const seasonOptions = React.useMemo(() => getSeasonOptions(), []);
@@ -49,13 +47,14 @@ const RankingsPage: React.FC = () => {
                 return false;
             }
 
-            if (selectedFormat === 'All Formats' || !league.format) {
-                return true;
+            if (typeof league.hasStandings !== 'object') {
+                return false;
             }
 
-            return league.format.toLowerCase() === selectedFormat.toLowerCase();
+            const leagueStandings = (league.hasStandings as Record<string, unknown[]>)[selectedSeason];
+            return leagueStandings && leagueStandings.length > 0;
         });
-    }, [leagues, selectedFormat]);
+    }, [leagues, selectedSeason]);
 
     const activeLeagueId = selectedLeagueId ?? leaguesWithStandings[0]?.leagueId ?? null;
 
