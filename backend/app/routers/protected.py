@@ -1,10 +1,18 @@
 import logging
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Optional
-from app.models import EventCreate, EventUpdate, LeagueCreate, LeagueUpdate, LeaderboardUpdate
+
 from app.auth import require_auth
 from app.main import supabase
+from app.models import (
+    EventCreate,
+    EventUpdate,
+    LeaderboardUpdate,
+    LeagueCreate,
+    LeagueUpdate,
+)
 from app.services.pokedata_sync import sync_pokedata
+from app.services.sets_scraper import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
@@ -121,7 +129,7 @@ async def patchEvent(
 @router.delete("/api/events/{eventId}")
 async def deleteEvent(
     eventId: str,
-    excludeDate: Optional[str] = None,
+    excludeDate: str | None = None,
     auth: dict = Depends(require_auth)
 ):
     """
@@ -225,6 +233,35 @@ async def trigger_pokedata_sync(
         raise
     except Exception as e:
         logger.error(f"Failed to manually run pokedata sync: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "internal_error", "message": str(e)}
+        )
+
+
+@router.post("/api/events/sync-sets")
+async def trigger_sets_sync(
+    auth: dict = Depends(require_auth)
+):
+    """
+    Manually trigger the sync of Pokémon TCG sets from Bulbapedia. Requires Clerk authorization.
+    """
+    try:
+        result = await run_sets_sync()
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={"code": "internal_error", "message": result.get("error", "Failed to sync sets")}
+            )
+        return {
+            "success": True,
+            "message": "TCG sets sync completed",
+            "metrics": result
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to manually run sets sync: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"code": "internal_error", "message": str(e)}

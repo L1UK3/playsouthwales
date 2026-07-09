@@ -1,79 +1,72 @@
 [
-  {
-    "code": "SV9",
-    "name": "Journey Together",
-    "releaseDate": "2025-03-28",
-    "legalDate": "2025-04-11",
-    "format": "Standard"
-  },
-  {
-    "code": "SV8pt5",
-    "name": "Prismatic Evolutions",
-    "releaseDate": "2025-01-17",
-    "legalDate": "2025-01-31",
-    "format": "Standard"
-  },
-  {
-    "code": "SV8",
-    "name": "Surging Sparks",
-    "releaseDate": "2024-11-08",
-    "legalDate": "2024-11-22",
-    "format": "Standard"
-  },
-  {
-    "code": "SV7",
-    "name": "Stellar Crown",
-    "releaseDate": "2024-09-13",
-    "legalDate": "2024-09-27",
-    "format": "Standard"
-  },
-  {
-    "code": "SV6pt5",
-    "name": "Shrouded Fable",
-    "releaseDate": "2024-08-02",
-    "legalDate": "2024-08-16",
-    "format": "Standard"
-  },
-  {
-    "code": "SV6",
-    "name": "Twilight Masquerade",
-    "releaseDate": "2024-05-24",
-    "legalDate": "2024-06-07",
-    "format": "Standard"
-  },
-  {
-    "code": "SV5",
-    "name": "Temporal Forces",
-    "releaseDate": "2024-03-22",
-    "legalDate": "2024-04-05",
-    "format": "Standard"
-  },
-  {
-    "code": "SV4pt5",
-    "name": "Paldean Fates",
-    "releaseDate": "2024-01-26",
-    "legalDate": "2024-02-09",
-    "format": "Standard"
-  },
-  {
-    "code": "SV4",
-    "name": "Paradox Rift",
-    "releaseDate": "2023-11-03",
-    "legalDate": "2023-11-17",
-    "format": "Standard"
-  },
-  {
-    "code": "SV3pt5",
-    "name": "151",
-    "releaseDate": "2023-09-22",
-    "legalDate": "2023-10-06",
-    "format": "Standard"
-  },
-  {
-    "code": "SV3",
-    "name": "Obsidian Flames",
-    "releaseDate": "2023-08-11",
-    "legalDate": "2023-08-25",
-    "format": "Standard"
-  }
+    {
+        "code": "ME6",
+        "name": "Delta Reign",
+        "releaseDate": "2026-11-06",
+        "legalDate": "2026-11-20",
+        "format": "Standard"
+    },
+    {
+        "code": "30th",
+        "name": "30th Celebration",
+        "releaseDate": "2026-09-16",
+        "legalDate": "2026-09-30",
+        "format": "Standard"
+    },
+    {
+        "code": "ME5",
+        "name": "Pitch Black",
+        "releaseDate": "2026-07-17",
+        "legalDate": "2026-07-31",
+        "format": "Standard"
+    },
+    {
+        "code": "ME4",
+        "name": "Chaos Rising",
+        "releaseDate": "2026-05-22",
+        "legalDate": "2026-06-05",
+        "format": "Standard"
+    },
+    {
+        "code": "ME3",
+        "name": "Perfect Order",
+        "releaseDate": "2026-03-27",
+        "legalDate": "2026-04-10",
+        "format": "Standard"
+    },
+    {
+        "code": "ME2.5",
+        "name": "Ascended Heroes",
+        "releaseDate": "2026-01-30",
+        "legalDate": "2026-02-13",
+        "format": "Standard"
+    },
+    {
+        "code": "ME2",
+        "name": "Phantasmal Flames",
+        "releaseDate": "2025-11-14",
+        "legalDate": "2025-11-28",
+        "format": "Standard"
+    },
+    {
+        "code": "ME1",
+        "name": "Mega Evolution",
+        "releaseDate": "2025-09-26",
+        "legalDate": "2025-10-10",
+        "format": "Standard"
+    },
+    {
+        "code": "SV10",
+        "name": "Destined Rivals",
+        "releaseDate": "2025-05-30",
+        "legalDate": "2025-06-13",
+        "format": "Standard"
+    },
+    {
+        "code": "SV9",
+        "name": "Journey Together",
+        "releaseDate": "2025-03-28",
+        "legalDate": "2025-04-11",
+        "format": "Standard"
+    }
 ]

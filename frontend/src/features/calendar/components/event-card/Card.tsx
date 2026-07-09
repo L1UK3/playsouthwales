@@ -16,9 +16,13 @@ export interface CardProps {
  * @returns {JSX.Element} The rendered card component.
  */
 const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMap, types, isOtherMonth }) => {
-    const league = event.leagueId ? leagueMap[event.leagueId] : null;
-    const leagueName = league?.name ?? event.leagueName ?? 'Event';
-    const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
+    const league = event.leagueId && event.leagueId !== -1 ? leagueMap[event.leagueId] : null;
+    const leagueName = event.eventType === 'LEGALITY' || event.eventType === 'RELEASE' ? event.name : (league?.name ?? event.leagueName ?? 'Event');
+    const storeColor = event.eventType === 'LEGALITY'
+        ? '#8b5cf6'
+        : event.eventType === 'RELEASE'
+            ? '#f97316'
+            : (league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`);
 
     return (
         <div

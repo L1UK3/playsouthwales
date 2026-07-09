@@ -35,9 +35,9 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
     onExclude,
     onUnexclude
 }) => {
-    const league = event.leagueId ? leagueMap[event.leagueId] : null;
-    const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
-    const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
+    const league = event.leagueId && event.leagueId !== -1 ? leagueMap[event.leagueId] : null;
+    const leagueName = event.eventType === 'LEGALITY' ? 'Standard TCG Legality' : (league?.name ?? event.leagueName ?? 'Unknown League');
+    const storeColor = event.eventType === 'LEGALITY' ? 'var(--secondary)' : (league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`);
 
     return (
         <div
@@ -73,7 +73,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <span className="text-base opacity-80">{types[event.eventType] ?? ''}</span>
+                    <span className="text-base opacity-80">{types[event.eventType] ?? '⚖️'}</span>
                     <span className="expand-icon text-xs text-text-muted transition-transform duration-300">▼</span>
                 </div>
             </div>

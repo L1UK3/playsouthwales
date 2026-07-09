@@ -3,7 +3,7 @@ import sys
 from functools import lru_cache
 from typing import Annotated
 
-from pydantic import field_validator, ValidationError
+from pydantic import ValidationError, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 current_dir = os.path.dirname(os.path.abspath(__file__))

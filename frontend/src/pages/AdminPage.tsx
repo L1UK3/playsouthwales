@@ -5,7 +5,7 @@ import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import { createLeagueMap, filterAndGroupEvents, ListView, NavBar } from "@calendar";
 import { MONTH_NAMES } from "@/constants";
-import { createEvent, createLeague, deleteEvent, deleteLeague, loadLocalLeaderboard, updateEvent, updateLeague, updateLeaderboard } from "@/services/api";
+import { createEvent, createLeague, deleteEvent, deleteLeague, loadLocalLeaderboard, updateEvent, updateLeague, updateLeaderboard, syncPokedata, syncSets } from "@/services/api";
 import type { League } from "@/types/League";
 import type { Event } from "@/types/Event";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -57,17 +57,52 @@ const AdminPage: React.FC = () => {
         const today = new Date();
         const todayMonth = today.getMonth();
         const todayYear = today.getFullYear();
-
         setCurrentDate(new Date(todayYear, todayMonth, 1));
     }, []);
 
     const queryClient = useQueryClient();
 
+    const [isSyncingPokedata, setIsSyncingPokedata] = useState<boolean>(false);
+    const [isSyncingSets, setIsSyncingSets] = useState<boolean>(false);
+
+    const handleSyncPokedata = useCallback(async () => {
+        setIsSyncingPokedata(true);
+        try {
+            const token = await getToken();
+            if (!token) throw new Error("No login token");
+            const res = await syncPokedata(token);
+            alert(`PokeData sync completed successfully! Sync stats: ${JSON.stringify(res.metrics)}`);
+            queryClient.invalidateQueries({ queryKey: ['events'] });
+            queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
+        } catch (error: any) {
+            console.error("PokeData sync failed", error);
+            alert(`PokeData sync failed: ${error.message ?? error}`);
+        } finally {
+            setIsSyncingPokedata(false);
+        }
+    }, [getToken, queryClient]);
+
+    const handleSyncSets = useCallback(async () => {
+        setIsSyncingSets(true);
+        try {
+            const token = await getToken();
+            if (!token) throw new Error("No login token");
+            const res = await syncSets(token);
+            alert(`TCG sets sync completed successfully! Sync stats: ${JSON.stringify(res.metrics)}`);
+            queryClient.invalidateQueries({ queryKey: ['sets'] });
+        } catch (error: any) {
+            console.error("TCG sets sync failed", error);
+            alert(`TCG sets sync failed: ${error.message ?? error}`);
+        } finally {
+            setIsSyncingSets(false);
+        }
+    }, [getToken, queryClient]);
+
+
     // League mutations
     const createLeagueMutation = useMutation({
         mutationFn: async (data: Omit<League, 'leagueId'>) => {
             const token = await getToken();
-            console.log(token)
             if (!token) throw new Error("No Token User Authenticated")
             return createLeague(data, token);
         },
@@ -83,7 +118,6 @@ const AdminPage: React.FC = () => {
         mutationFn: async ({ id, data }: { id: number; data: Partial<League> }) => {
             const token = await getToken();
             if (!token) throw new Error("No Login Token")
-
             return updateLeague(id, data, token);
         },
         onSuccess: () => {
@@ -99,7 +133,7 @@ const AdminPage: React.FC = () => {
             const token = await getToken();
             if (!token) throw new Error("No Login Token")
             return deleteLeague(data.id, token);
-        }, // TODO: add token
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['leagues'] });
             queryClient.invalidateQueries({ queryKey: ['events'] });
@@ -149,6 +183,7 @@ const AdminPage: React.FC = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
+            queryClient.invalidateQueries({ queryKey: ['leagues'] }); // Invalidate leagues to refresh hasStandings
         },
         onError: (error: Error) => {
             console.error('Leaderboard Update Failed', error);
@@ -197,20 +232,6 @@ const AdminPage: React.FC = () => {
         setIsEditingEvent(true);
     }, []);
 
-    const handleManageStandingsTrigger = useCallback(async () => {
-        if (!activeLeague) return;
-
-        try {
-            const existing = await loadLocalLeaderboard(activeLeague.leagueId);
-            setLeaderboardDraft(existing ?? { data: [] });
-        } catch (error) {
-            console.error('Failed to load leaderboard data', error);
-            setLeaderboardDraft({ data: [] });
-        }
-
-        setIsEditingLeaderboard(true);
-    }, [activeLeague]);
-
     // opens event editing modal
     const handleEditEventTrigger = useCallback((event: Event) => {
         setEditingEvent(event);
@@ -242,6 +263,19 @@ const AdminPage: React.FC = () => {
         }
     }, [updateEventMutation]);
 
+    // opens leaderboard management modal
+    const handleManageStandingsTrigger = useCallback(async () => {
+        if (!activeLeague) return;
+        try {
+            const existing = await loadLocalLeaderboard(activeLeague.leagueId);
+            setLeaderboardDraft(existing ?? { data: [] });
+        } catch (error) {
+            console.error('Failed to load leaderboard data', error);
+            setLeaderboardDraft({ data: [] });
+        }
+        setIsEditingLeaderboard(true);
+    }, [activeLeague]);
+
     // handles league submission, creating or updating
     const handleLeagueSubmit = useCallback((data: Omit<League, 'leagueId'>) => {
         if (editingLeague) {
@@ -262,11 +296,11 @@ const AdminPage: React.FC = () => {
         setIsEditingEvent(false);
     }, [editingEvent, createEventMutation, updateEventMutation]);
 
+    // handles leaderboard submission
     const handleLeaderboardSubmit = useCallback(async (data: LeaderboardEntry[]) => {
         if (!activeLeague) {
             throw new Error('No league selected');
         }
-
         await updateLeaderboardMutation.mutateAsync({ leagueId: activeLeague.leagueId, data });
         setIsEditingLeaderboard(false);
     }, [activeLeague, updateLeaderboardMutation]);
@@ -296,12 +330,41 @@ const AdminPage: React.FC = () => {
                 />
             </div>
 
+            <div className="bg-bg-card border-2 border-border-color rounded-lg p-5 shadow-main flex flex-col gap-5">
+                <div className="flex justify-between items-center border-b-2 border-border-color pb-3">
+                    <h3 className="text-base font-bold">System Synchronizations</h3>
+                </div>
+                <div className="flex gap-4 flex-wrap">
+                    <button
+                        type="button"
+                        className="btn btn-secondary min-h-[38px] cursor-pointer"
+                        onClick={handleSyncPokedata}
+                        disabled={isSyncingPokedata}
+                    >
+                        {isSyncingPokedata ? "Syncing PokeData..." : "Sync Official Events (PokeData)"}
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-secondary min-h-[38px] cursor-pointer"
+                        onClick={handleSyncSets}
+                        disabled={isSyncingSets}
+                    >
+                        {isSyncingSets ? "Syncing Sets..." : "Sync Set Legality (Bulbapedia)"}
+                    </button>
+                </div>
+            </div>
+
+
             {activeLeague && (
                 <div key={activeLeague.leagueId} className="animate-swipe-down bg-bg-card border-2 border-border-color rounded-lg p-5 shadow-main flex flex-col gap-5">
                     <div className="flex justify-between items-center border-b-2 border-border-color pb-3">
                         <h3 className="text-base font-bold">Scheduled Events ({activeLeague.name})</h3>
                         <div className="flex gap-2 flex-wrap justify-end">
-                            <button type="button" className="btn btn-secondary" onClick={handleManageStandingsTrigger}>
+                            <button
+                                type="button"
+                                className="btn btn-secondary min-h-[38px] cursor-pointer"
+                                onClick={handleManageStandingsTrigger}
+                            >
                                 Manage Standings
                             </button>
                             <button type="button" className="btn btn-primary" onClick={handleAddEventTrigger}>

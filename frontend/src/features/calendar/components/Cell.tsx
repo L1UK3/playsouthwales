@@ -51,6 +51,16 @@ const Cell: React.FC<CellProps> = React.memo(({
     const isSelected = dateKey === selectedDateKey;
     const isToday = dateKey === todayKey;
 
+    const sortedEvents = React.useMemo(() => {
+        return [...eventsForDay].sort((a, b) => {
+            const aIsSetEvent = a.eventType === 'LEGALITY' || a.eventType === 'RELEASE';
+            const bIsSetEvent = b.eventType === 'LEGALITY' || b.eventType === 'RELEASE';
+            if (aIsSetEvent && !bIsSetEvent) return -1;
+            if (!aIsSetEvent && bIsSetEvent) return 1;
+            return 0;
+        });
+    }, [eventsForDay]);
+
     return (
         <div
             className={`min-h-12 sm:min-h-37 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
@@ -62,7 +72,7 @@ const Cell: React.FC<CellProps> = React.memo(({
                 <>
                     {/* Desktop/Tablet view: show full card list */}
                     <div className="hidden sm:grid gap-1">
-                        {eventsForDay.slice(0, 3).map((event) => (
+                        {sortedEvents.slice(0, 3).map((event) => (
                             <Card
                                 key={event.id}
                                 event={event}
@@ -71,16 +81,16 @@ const Cell: React.FC<CellProps> = React.memo(({
                                 isOtherMonth={isOtherMonth}
                             />
                         ))}
-                        {eventsForDay.length > 3 ? (
+                        {sortedEvents.length > 3 ? (
                             <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
-                                {eventsForDay.length - 3} more
+                                {sortedEvents.length - 3} more
                             </div>
                         ) : null}
                     </div>
 
                     {/* Mobile view: show small dots representing events */}
                     <div className="flex sm:hidden justify-center gap-1 mt-1 flex-wrap">
-                        {eventsForDay.slice(0, 3).map((event) => {
+                        {sortedEvents.slice(0, 3).map((event) => {
                             const league = event.leagueId ? leagueMap[event.leagueId] : null;
                             const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
                             return (
@@ -92,7 +102,7 @@ const Cell: React.FC<CellProps> = React.memo(({
                                 />
                             );
                         })}
-                        {eventsForDay.length > 3 ? (
+                        {sortedEvents.length > 3 ? (
                             <span className="text-[9px] leading-none text-text-muted font-bold select-none">+</span>
                         ) : null}
                     </div>

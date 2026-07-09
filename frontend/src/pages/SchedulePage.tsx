@@ -10,7 +10,9 @@ import {
     NavBar,
     SelectedDaySection
 } from "@calendar";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
+import { loadSetLegality } from "@/services/api";
+import type { Event } from "@/types/Event";
 import SuspenseLoader from "@/components/SuspenseLoader";
 
 export type ViewMode = 'calendar' | 'list';
@@ -30,6 +32,41 @@ const SchedulePage: React.FC = () => {
     const [selectedDateKey, setSelectedDateKey] = useState<string | null>(() => getLocalDateString(new Date()));
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
     const [filters, setFilters] = useState({ league: '', eventType: '', game: '' });
+    const [sets, setSets] = useState<any[]>([]);
+
+    useEffect(() => {
+        loadSetLegality()
+            .then(setSets)
+            .catch((err: any) => console.error("Failed to load sets for schedule:", err));
+    }, []);
+
+    const virtualLegalityEvents = useMemo(() => {
+        return sets.map(s => ({
+            id: `legality-${s.code}`,
+            name: s.name,
+            date: s.legalDate,
+            startTime: "00:00",
+            leagueId: -1,
+            eventType: "LEGALITY",
+            game: "TCG",
+            description: `Official standard legality date for ${s.name} (${s.code}).`,
+            entryFee: "N/A"
+        }));
+    }, [sets]);
+
+    const virtualReleaseEvents = useMemo(() => {
+        return sets.map(s => ({
+            id: `release-${s.code}`,
+            name: s.name,
+            date: s.releaseDate,
+            startTime: "00:00",
+            leagueId: -1,
+            eventType: "RELEASE",
+            game: "TCG",
+            description: `Official English release date for ${s.name} (${s.code}).`,
+            entryFee: "N/A"
+        }));
+    }, [sets]);
     const [direction, setDirection] = useState<'left' | 'right' | 'up' | 'down' | null>('up');
 
     const handlePrevMonth = useCallback(() => {
@@ -111,8 +148,8 @@ const SchedulePage: React.FC = () => {
     const isLoading = isLeaguesLoading || isTypesLoading || isCurrentEventsLoading;
 
     const allEvents = useMemo(() => {
-        return [...prevEvents, ...currentEvents, ...nextEvents];
-    }, [prevEvents, currentEvents, nextEvents]);
+        return [...prevEvents, ...currentEvents, ...nextEvents, ...virtualLegalityEvents, ...virtualReleaseEvents];
+    }, [prevEvents, currentEvents, nextEvents, virtualLegalityEvents, virtualReleaseEvents]);
 
     const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
 
@@ -120,13 +157,28 @@ const SchedulePage: React.FC = () => {
         () => filterAndGroupEvents(allEvents, filters), [allEvents, filters]
     );
 
-    const selectedDayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] ?? []) : [];
+    const filteredEventsGroupedList = useMemo(() => {
+        const result: Record<string, Event[]> = {};
+        for (const [date, list] of Object.entries(filteredEventsGrouped)) {
+            const filtered = list.filter(e => e.eventType !== 'LEGALITY' && e.eventType !== 'RELEASE');
+            if (filtered.length > 0) {
+                result[date] = filtered;
+            }
+        }
+        return result;
+    }, [filteredEventsGrouped]);
+
+    const selectedDayEventsFiltered = useMemo(() => {
+        const dayEvents = selectedDateKey ? (filteredEventsGrouped[selectedDateKey] ?? []) : [];
+        return dayEvents.filter(e => e.eventType !== 'LEGALITY' && e.eventType !== 'RELEASE');
+    }, [selectedDateKey, filteredEventsGrouped]);
 
     const activeMonthEvents = useMemo(() => {
         const year = currentDate.getFullYear();
         const monthStr = String(currentDate.getMonth() + 1).padStart(2, '0');
         const monthKeyPrefix = `${year}-${monthStr}`;
         return allEvents.filter(event => {
+            if (event.eventType === 'LEGALITY' || event.eventType === 'RELEASE') return false;
             if (!event.date.startsWith(monthKeyPrefix)) return false;
             if (filters.league && String(event.leagueId) !== filters.league) return false;
             if (filters.eventType && event.eventType !== filters.eventType) return false;
@@ -135,7 +187,7 @@ const SchedulePage: React.FC = () => {
         }).sort((a, b) => a.date.localeCompare(b.date) ?? (a.startTime ?? '').localeCompare(b.startTime ?? ''));
     }, [allEvents, currentDate, filters]);
 
-    const eventsToDisplay = selectedDateKey ? selectedDayEvents : activeMonthEvents;
+    const eventsToDisplay = selectedDateKey ? selectedDayEventsFiltered : activeMonthEvents;
 
     const animationClass =
         direction === 'left' ? 'animate-swipe-left' :
@@ -203,7 +255,7 @@ const SchedulePage: React.FC = () => {
                         <div key={`list-${calendarKey}`} className={animationClass}>
                             <ListView
                                 currentDate={currentDate}
-                                events={filteredEventsGrouped}
+                                events={filteredEventsGroupedList}
                                 leagueMap={leagueMap}
                                 types={types}
                             />

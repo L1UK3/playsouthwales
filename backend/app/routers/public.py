@@ -1,8 +1,11 @@
+import json
 import logging
+import os
+
 from fastapi import APIRouter, HTTPException, status
-from typing import Optional
-from app.models import EventResponse, LeagueResponse
+
 from app.main import supabase
+from app.models import EventResponse, LeagueResponse, WeeklyEventResponse
 from app.services.top20_data import load_top20_payload
 
 logger = logging.getLogger(__name__)
@@ -21,9 +24,9 @@ async def healthCheck():
 
 @router.get("/api/events", response_model=list[EventResponse])
 async def getEvents(
-    month: Optional[str] = None,
-    year: Optional[str] = None,
-    leagueId: Optional[int] = None
+    month: str | None = None,
+    year: str | None = None,
+    leagueId: int | None = None
 ):
     """
     Fetch standard events, optionally filtered by leagueId, month, and year.
@@ -50,7 +53,7 @@ async def getEvents(
     return events
 
 
-@router.get("/api/weekly-events", response_model=list[EventResponse])
+@router.get("/api/weekly-events", response_model=list[WeeklyEventResponse])
 async def getWeeklyEvents():
     """
     Fetch all weekly events.
@@ -68,7 +71,7 @@ async def getWeeklyEvents():
     return events
 
 
-@router.get("/api/weekly-events/{leagueId}", response_model=EventResponse)
+@router.get("/api/weekly-events/{leagueId}", response_model=WeeklyEventResponse)
 async def getWeeklyEvent(leagueId: int):
     """
     Fetch a specific weekly event by its league ID.
@@ -126,7 +129,7 @@ async def getLeagues():
 
 
 @router.get("/api/players/top20")
-async def getTop20Players(season: Optional[str] = None):
+async def getTop20Players(season: str | None = None):
     """
     Fetch the top 20 players for a season.
     """
@@ -172,7 +175,7 @@ async def getSets():
     SETS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'sets.json')
 
     try:
-        with open(SETS_PATH, 'r', encoding='utf-8') as f:
+        with open(SETS_PATH, encoding='utf-8') as f:
             data = json.load(f)
         return data
     except Exception as e:

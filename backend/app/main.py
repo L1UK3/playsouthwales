@@ -1,11 +1,13 @@
 import asyncio
-from contextlib import asynccontextmanager
 import logging
+from contextlib import asynccontextmanager
+
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from supabase import Client, create_client
+
 from app.config import get_settings
 
 logger = logging.getLogger("uvicorn.error")
@@ -16,7 +18,7 @@ settings = get_settings()
 
 supabase: Client = create_client(settings.supabase_url, settings.supabase_secret_key)
 
-from app.routers import public, protected
+from app.routers import protected, public
 
 
 @asynccontextmanager
@@ -34,6 +36,23 @@ async def lifespan(app: FastAPI):
                 logger.info(f"Background pokedata sync completed: {res}")
             except Exception as e:
                 logger.error(f"Error in background pokedata sync: {e}")
+            
+            try:
+                logger.info("Starting background top20 sync...")
+                from app.services.top20_scraper import run_top20_sync
+                res_top20 = await run_top20_sync()
+                logger.info(f"Background top20 sync completed: {res_top20}")
+            except Exception as e:
+                logger.error(f"Error in background top20 sync: {e}")
+
+            try:
+                logger.info("Starting background sets sync...")
+                from app.services.sets_scraper import run_sets_sync
+                res_sets = await run_sets_sync()
+                logger.info(f"Background sets sync completed: {res_sets}")
+            except Exception as e:
+                logger.error(f"Error in background sets sync: {e}")
+                
             # Run every hour
             await asyncio.sleep(3600)
             

@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 from typing import Any
 
-
 DATA_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
     "data",
@@ -18,7 +17,7 @@ def _current_top20_season() -> str:
 
 
 def _load_raw_top20_data() -> dict[str, Any]:
-    with open(DATA_PATH, "r", encoding="utf-8") as file_handle:
+    with open(DATA_PATH, encoding="utf-8") as file_handle:
         return json.load(file_handle)
 
 

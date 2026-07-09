@@ -1,40 +1,40 @@
 from pydantic import BaseModel
-from typing import Optional, Union
+
 
 class LeagueBase(BaseModel):
-    id: Optional[int] = None
+    id: int | None = None
     name: str
-    logo: Optional[str] = None
-    website: Optional[str] = None
-    socialLink: Optional[str] = None
-    eventLink: Optional[str] = None
-    brandColor: Optional[str] = None
-    webLink: Optional[str] = None
-    location: Optional[str] = None
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
-    directions: Optional[str] = None
-    accessibility: Optional[str] = None
-    isChampionshipSeries: Optional[bool] = False
+    logo: str | None = None
+    website: str | None = None
+    socialLink: str | None = None
+    eventLink: str | None = None
+    brandColor: str | None = None
+    webLink: str | None = None
+    location: str | None = None
+    latitude: float | None = None
+    longitude: float | None = None
+    directions: str | None = None
+    accessibility: str | None = None
+    isChampionshipSeries: bool | None = False
 
 class LeagueCreate(LeagueBase):
     pass
 
 class LeagueUpdate(BaseModel):
-    id: Optional[int] = None
-    name: Optional[str] = None
-    logo: Optional[str] = None
-    website: Optional[str] = None
-    socialLink: Optional[str] = None
-    eventLink: Optional[str] = None
-    brandColor: Optional[str] = None
-    webLink: Optional[str] = None
-    location: Optional[str] = None
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
-    directions: Optional[str] = None
-    accessibility: Optional[str] = None
-    isChampionshipSeries: Optional[bool] = None
+    id: int | None = None
+    name: str | None = None
+    logo: str | None = None
+    website: str | None = None
+    socialLink: str | None = None
+    eventLink: str | None = None
+    brandColor: str | None = None
+    webLink: str | None = None
+    location: str | None = None
+    latitude: float | None = None
+    longitude: float | None = None
+    directions: str | None = None
+    accessibility: str | None = None
+    isChampionshipSeries: bool | None = None
 
 class LeagueResponse(LeagueBase):
     leagueId: int
@@ -43,35 +43,52 @@ class LeagueResponse(LeagueBase):
 class EventBase(BaseModel):
     name: str
     date: str
-    startTime: Optional[str] = None
+    startTime: str | None = None
     leagueId: int
-    ticketLink: Optional[str] = None
+    ticketLink: str | None = None
     eventType: str
     game: str
-    description: Optional[str] = None
-    prizes: Optional[str] = None
-    entryFee: Optional[str] = None
-    excludedDates: Optional[list[str]] = None
+    description: str | None = None
+    prizes: str | None = None
+    entryFee: str | None = None
+    excludedDates: list[str] | None = None
         
 class EventCreate(EventBase):
-    isRecurring: Optional[bool] = None
+    isRecurring: bool | None = None
 
 class EventUpdate(BaseModel):
-    name: Optional[str] = None
-    date: Optional[str] = None
-    startTime: Optional[str] = None
-    leagueId: Optional[int] = None
-    ticketLink: Optional[str] = None
-    eventType: Optional[str] = None
-    game: Optional[str] = None
-    description: Optional[str] = None
-    prizes: Optional[str] = None
-    entryFee: Optional[str] = None
-    isRecurring: Optional[bool] = None
-    excludedDates: Optional[list[str]] = None
+    name: str | None = None
+    date: str | None = None
+    startTime: str | None = None
+    leagueId: int | None = None
+    ticketLink: str | None = None
+    eventType: str | None = None
+    game: str | None = None
+    description: str | None = None
+    prizes: str | None = None
+    entryFee: str | None = None
+    isRecurring: bool | None = None
+    excludedDates: list[str] | None = None
 
 class EventResponse(EventBase):
-    id: Union[int, str]
+    id: int | str
+
+
+class WeeklyEventBase(BaseModel):
+    name: str
+    date: str
+    startTime: str | None = None
+    leagueId: int
+    ticketLink: str | None = None
+    eventType: str
+    game: str
+    description: str | None = None
+    prizes: str | None = None
+    entryFee: str | None = None
+    excludedDates: list[str] | None = None
+
+class WeeklyEventResponse(WeeklyEventBase):
+    id: int | str
 
 class LeaderboardUpdate(BaseModel):
     data: list[dict]

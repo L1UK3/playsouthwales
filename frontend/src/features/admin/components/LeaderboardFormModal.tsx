@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Plus, Trash2, Clipboard, HelpCircle } from 'lucide-react';
 
@@ -10,6 +10,10 @@ export interface LeaderboardEntry {
     draws: number;
     attendance: number;
     points: number;
+}
+
+interface LocalLeaderboardEntry extends LeaderboardEntry {
+    tempId: string;
 }
 
 export interface LeaderboardFormModalProps {
@@ -26,31 +30,44 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
     onSubmit,
     initialData
 }) => {
-    const [rows, setRows] = useState<LeaderboardEntry[]>([]);
+    const [rows, setRows] = useState<LocalLeaderboardEntry[]>(() => {
+        if (initialData && Array.isArray(initialData.data)) {
+            return initialData.data.map((r, idx) => ({
+                ...r,
+                tempId: `row-${idx}-${r.name}`
+            }));
+        }
+        return [];
+    });
     const [pasteValue, setPasteValue] = useState('');
     const [showPasteArea, setShowPasteArea] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [prevInitialData, setPrevInitialData] = useState(initialData);
+
+    if (initialData !== prevInitialData) {
+        setPrevInitialData(initialData);
+        setRows(initialData && Array.isArray(initialData.data)
+            ? initialData.data.map((r, idx) => ({
+                ...r,
+                tempId: `row-${idx}-${r.name}`
+            }))
+            : []
+        );
+        setPasteValue('');
+        setShowPasteArea(false);
+        setErrorMsg('');
+    }
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-    useEffect(() => {
-        if (isOpen) {
-            if (initialData && Array.isArray(initialData.data)) {
-                setRows(initialData.data);
-            } else {
-                setRows([]);
-            }
-            setPasteValue('');
-            setShowPasteArea(false);
-            setErrorMsg('');
-        }
-    }, [isOpen, initialData]);
+
 
     if (!isOpen) return null;
 
     const handleAddRow = () => {
         const nextPos = rows.length + 1;
-        const newRow: LeaderboardEntry = {
+        const newRow: LocalLeaderboardEntry = {
+            tempId: `row-${Date.now()}-${Math.random()}`,
             position: nextPos,
             name: '',
             wins: 0,
@@ -63,7 +80,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
     };
 
     const handleRemoveRow = (index: number) => {
-        const updated = rows.filter((_, idx) => idx !== index).map((row, idx) => ({
+        const updated = rows.filter((_row, idx) => idx !== index).map((row, idx) => ({
             ...row,
             position: idx + 1
         }));
@@ -123,7 +140,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
         lines.forEach((line) => {
             // Split by tabs or commas
             const parts = line.split(/\t|,/).map(p => p.trim());
-            if (parts.length === 0 || !parts[0]) return;
+            if (parts.length === 0 || parts[0] === null || parts[0] === undefined) return;
 
             // Simple heuristics to parse fields:
             // Expect: Name, Wins, Losses, Draws, Attendance, Points (Comma/Tab separated)
@@ -167,6 +184,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                 return b.wins - a.wins;
             }).map((entry, idx) => ({
                 ...entry,
+                tempId: (entry as any).tempId ?? `row-${Date.now()}-${idx}-${Math.random()}`,
                 position: idx + 1
             }));
             setRows(merged);
@@ -199,10 +217,13 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                 if (b.points !== a.points) return b.points - a.points;
                 if (b.wins !== a.wins) return b.wins - a.wins;
                 return b.attendance - a.attendance;
-            }).map((r, idx) => ({
-                ...r,
-                position: idx + 1
-            }));
+            }).map((r, idx) => {
+                const rest = { ...r }; delete (rest as any).tempId;
+                return {
+                    ...rest,
+                    position: idx + 1
+                };
+            });
 
             await onSubmit(finalSorted);
             onClose();
@@ -319,7 +340,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                     ) : (
                                         rows.map((row, index) => (
                                             <tr
-                                                key={index}
+                                                key={row.tempId}
                                                 className={`hover:bg-bg-main/20 ${draggedIndex === index ? 'opacity-60' : ''}`}
                                                 draggable
                                                 onDragStart={() => handleDragStart(index)}

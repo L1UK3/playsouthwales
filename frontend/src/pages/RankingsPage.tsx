@@ -144,24 +144,6 @@ const RankingsPage: React.FC = () => {
                         These are the local standings for each league in South Wales. Standings reset with each new standard format rotation. Participate in weekly events to earn points and climb the ladder.
                     </p>
 
-                    <div className='flex items-center gap-3 flex-wrap'>
-                        <label className='text-sm font-bold text-text-main' htmlFor='local-format-select'>
-                            Format
-                        </label>
-                        <select
-                            id='local-format-select'
-                            value={selectedFormat}
-                            onChange={(event) => setSelectedFormat(event.target.value)}
-                            className='border-2 border-border-color rounded-md bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:outline-none focus:border-secondary'
-                        >
-                            {FORMAT_OPTIONS.map((format) => (
-                                <option key={format} value={format}>
-                                    {format}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
                     <LeagueSelector
                         leagues={leaguesWithStandings}
                         selectedLeagueId={activeLeagueId}

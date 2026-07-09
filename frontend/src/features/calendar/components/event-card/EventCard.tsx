@@ -13,9 +13,9 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
     leagueMap,
     types
 }) => {
-    const league = event.leagueId ? leagueMap[event.leagueId] : null;
-    const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
-    const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
+    const league = event.leagueId && event.leagueId !== -1 ? leagueMap[event.leagueId] : null;
+    const leagueName = event.eventType === 'LEGALITY' ? 'Standard TCG Legality' : (league?.name ?? event.leagueName ?? 'Unknown League');
+    const storeColor = event.eventType === 'LEGALITY' ? 'var(--secondary)' : (league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`);
 
     return (
         <div className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main gradient-card type-${event.eventType} ${league?.isChampionshipSeries ? 'border-2 border-amber-500/50 bg-gradient-to-br from-amber-500/10 to-transparent' : ''}`} style={{ '--store-color': storeColor } as React.CSSProperties}>
@@ -26,7 +26,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(({
                         <span>{event.name}</span>
                     </div>
                     <div className="text-xs font-semibold text-type-text">
-                        {`[${types[event.eventType]}] ${event.eventType} • ${event.game}`}
+                        {`[${types[event.eventType] ?? '⚖️'}] ${event.eventType} • ${event.game}`}
                     </div>
                 </div>
 

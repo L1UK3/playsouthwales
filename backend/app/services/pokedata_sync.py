@@ -228,6 +228,7 @@ async def sync_pokedata() -> dict[str, Any]:
 
 if __name__ == "__main__":
     import asyncio
+
     from dotenv import load_dotenv
 
     load_dotenv(os.path.join(project_root, ".env"))

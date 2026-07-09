@@ -320,3 +320,63 @@ export async function updateLeaderboard(
   }
   return await response.json();
 }
+
+/**
+ * Fetches Pokemon TCG set legality dates.
+ * @returns {Promise<any[]>} A promise resolving to TCG set legality records.
+ */
+export async function loadSetLegality(): Promise<any[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sets`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch set legality: " + response.statusText);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching set legality:", error);
+    throw error;
+  }
+}
+
+
+/**
+ * Triggers sync of official events from pokedata.ovh.
+ */
+export async function syncPokedata(token: string): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/events/sync-pokedata`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(
+      errData.error?.message ??
+      errData.error ??
+      "Failed to sync pokedata: " + response.statusText
+    );
+  }
+  return await response.json();
+}
+
+/**
+ * Triggers sync of upcoming sets legality from Bulbapedia.
+ */
+export async function syncSets(token: string): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/events/sync-sets`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(
+      errData.error?.message ??
+      errData.error ??
+      "Failed to sync sets: " + response.statusText
+    );
+  }
+  return await response.json();
+}

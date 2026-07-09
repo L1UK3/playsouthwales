@@ -434,3 +434,13 @@ html.disable-animations *::after {
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
 }
+
+.type-LEGALITY {
+    --type-bg: oklch(0.75 0.25 180 / 0.15);
+    --type-border: oklch(0.75 0.25 180);
+}
+
+.type-RELEASE {
+    --type-bg: oklch(0.72 0.28 120 / 0.15);
+    --type-border: oklch(0.72 0.28 120);
+}
