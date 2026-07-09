@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 import type { League } from '@/types/League';
 
@@ -37,17 +37,23 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 }) => {
     const isSelected = selectedLeagueID === league.leagueId;
     const brandColor = league.brandColor ?? 'var(--color-primary)';
+    const isChampionship = league.isChampionshipSeries ?? false;
 
     return (
         <div
             id={`league-card-${league.leagueId}`}
-            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color border-l-4 border-l-(--brand-color) bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? "border-(--brand-color)! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!" : ""} ${className}`}
+            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color border-l-4 border-l-(--brand-color) bg-bg-card cursor-pointer transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? "border-(--brand-color)! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!" : ""} ${isChampionship ? "border-amber-500/30!" : ""} ${className}`}
             style={{ '--brand-color': brandColor } as React.CSSProperties}
             onClick={() => onLeagueSelect(league.leagueId)}
         >
             <div className="flex items-center gap-2.5 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-text-darker">
                 {league.logo && <img src={league.logo} alt={league.name} className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0" />}
                 <h3>{league.name}</h3>
+                {isChampionship && (
+                    <span className="ml-auto text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded px-1.5 py-0.5 shrink-0">
+                        CS
+                    </span>
+                )}
             </div>
             {showInfo && (
                 <>
@@ -110,7 +116,8 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                             Edit
                         </button>
                     )}
-                    {onDelete && (
+                    {/* Championship series leagues cannot be deleted — they are permanent */}
+                    {onDelete && !isChampionship && (
                         <button
                             type="button"
                             className="btn btn-secondary"

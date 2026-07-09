@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Event } from '@/types/Event';
 
@@ -8,6 +8,8 @@ export interface EventFormModalProps {
     onSubmit: (data: Omit<Event, 'id'>) => void;
     initialData?: Event | null;
     leagueId: number;
+    /** When true, shows Championship Series event types (Worlds, Regionals, Special Events) */
+    isChampionshipLeague?: boolean;
 }
 
 export const EventFormModal: React.FC<EventFormModalProps> = ({
@@ -15,12 +17,13 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
     onClose,
     onSubmit,
     initialData,
-    leagueId
+    leagueId,
+    isChampionshipLeague = false
 }) => {
     const [name, setName] = useState(initialData?.name ?? '');
     const [date, setDate] = useState(initialData?.date ? initialData.date.slice(0, 10) : '');
     const [startTime, setStartTime] = useState(initialData?.startTime ?? '');
-    const [eventType, setEventType] = useState(initialData?.eventType ?? 'STANDARD');
+    const [eventType, setEventType] = useState(initialData?.eventType ?? (isChampionshipLeague ? 'REGIONAL' : 'STANDARD'));
     const [game, setGame] = useState(initialData?.game ?? 'TCG');
     const [entryFee, setEntryFee] = useState(initialData?.entryFee ?? '');
     const [ticketLink, setTicketLink] = useState(initialData?.ticketLink ?? '');
@@ -58,7 +61,18 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
         <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
             <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-150 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
                 <div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
-                    <h3>{initialData ? 'Edit Event' : 'Schedule New Event'}</h3>
+                    <div className="flex flex-col gap-0.5">
+                        <h3>
+                            {initialData
+                                ? (isChampionshipLeague ? 'Edit Championship Event' : 'Edit Event')
+                                : (isChampionshipLeague ? 'Add Championship Event' : 'Schedule New Event')}
+                        </h3>
+                        {isChampionshipLeague && (
+                            <span className="text-[12px] font-semibold text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded px-2 py-0.5 w-fit">
+                                Championship Series — Worlds, Regionals &amp; Special Events
+                            </span>
+                        )}
+                    </div>
                     <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
                         X
                     </button>
@@ -74,7 +88,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                 <input
                                     type="text"
                                     id="eventName"
-                                    placeholder="e.g. Standard League Challenge"
+                                    placeholder={isChampionshipLeague ? 'e.g. Welsh Regional Championship 2025' : 'e.g. Standard League Challenge'}
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
@@ -120,11 +134,22 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     onChange={(e) => setEventType(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
-                                    <option value="STANDARD">Standard</option>
-                                    <option value="CHALLENGE">League Challenge</option>
-                                    <option value="CUP">League Cup</option>
-                                    <option value="PRE-RELEASE">Pre-release</option>
-                                    <option value="CASUAL">Casual</option>
+                                    {isChampionshipLeague ? (
+                                        <>
+                                            <option value="REGIONAL">Regional Championship</option>
+                                            <option value="WORLDS">World Championship</option>
+                                            <option value="SPECIAL">Special Event</option>
+                                            <option value="INTERNATIONAL">International Championship</option>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option value="STANDARD">Standard</option>
+                                            <option value="CHALLENGE">League Challenge</option>
+                                            <option value="CUP">League Cup</option>
+                                            <option value="PRE-RELEASE">Pre-release</option>
+                                            <option value="CASUAL">Casual</option>
+                                        </>
+                                    )}
                                 </select>
                             </div>
 
@@ -171,21 +196,23 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                 />
                             </div>
 
-                            {/* Recurring Event Options */}
-                            <div className="sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2">
-                                <label className="flex items-center gap-3 cursor-pointer min-h-[44px] select-none">
-                                    <input
-                                        type="checkbox"
-                                        id="eventIsRecurring"
-                                        checked={isRecurring}
-                                        onChange={(e) => setIsRecurring(e.target.checked)}
-                                        className="w-5 h-5 rounded border border-border-color text-secondary focus:ring-secondary cursor-pointer transition-all duration-200"
-                                    />
-                                    <span className="text-sm font-bold text-text-main">
-                                        Repeat Weekly
-                                    </span>
-                                </label>
-                            </div>
+                            {/* Recurring Event Options — hidden for championship series */}
+                            {!isChampionshipLeague && (
+                                <div className="sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2">
+                                    <label className="flex items-center gap-3 cursor-pointer min-h-[44px] select-none">
+                                        <input
+                                            type="checkbox"
+                                            id="eventIsRecurring"
+                                            checked={isRecurring}
+                                            onChange={(e) => setIsRecurring(e.target.checked)}
+                                            className="w-5 h-5 rounded border border-border-color text-secondary focus:ring-secondary cursor-pointer transition-all duration-200"
+                                        />
+                                        <span className="text-sm font-bold text-text-main">
+                                            Repeat Weekly
+                                        </span>
+                                    </label>
+                                </div>
+                            )}
 
 
                             {/* Description */}
@@ -193,7 +220,9 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                 <label htmlFor="eventDescription" className="text-[13px] font-bold text-text-main flex justify-between items-center">Description</label>
                                 <textarea
                                     id="eventDescription"
-                                    placeholder="Describe tournament rounds, standard regulations, match rules, etc."
+                                    placeholder={isChampionshipLeague
+                                        ? 'Describe the championship format, eligibility, rounds, etc.'
+                                        : 'Describe tournament rounds, standard regulations, match rules, etc.'}
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
@@ -205,7 +234,9 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                 <label htmlFor="eventPrizes" className="text-[13px] font-bold text-text-main flex justify-between items-center">Prizes Info</label>
                                 <textarea
                                     id="eventPrizes"
-                                    placeholder="e.g. Championship points, booster packs for participating"
+                                    placeholder={isChampionshipLeague
+                                        ? 'e.g. Championship points, travel awards, trophies'
+                                        : 'e.g. Championship points, booster packs for participating'}
                                     value={prizes}
                                     onChange={(e) => setPrizes(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
@@ -228,7 +259,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                             className="btn btn-primary min-h-[44px] flex items-center justify-center"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : 'Schedule Event')}
+                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : (isChampionshipLeague ? 'Add Event' : 'Schedule Event'))}
                         </button>
                     </div>
                 </form>

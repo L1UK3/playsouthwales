@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { League } from '@/types/League';
 
@@ -27,8 +27,12 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
     const [socialLink, setSocialLink] = useState(initialData?.socialLink ?? '');
     const [directions, setDirections] = useState(initialData?.directions ?? '');
     const [accessibility, setAccessibility] = useState(initialData?.accessibility ?? '');
-    const [isChampionshipSeries, setIsChampionshipSeries] = useState(initialData?.isChampionshipSeries ?? false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Preserve the isChampionshipSeries flag from initialData — this is not editable via the form
+    const isChampionshipSeries = initialData?.isChampionshipSeries ?? false;
+
+    const isChampionshipLeague = isChampionshipSeries;
 
     const errors: Record<string, string> = {};
 
@@ -64,7 +68,18 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
         <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
             <div className="bg-bg-card border border-border-color rounded-lg w-full max-w-162.5 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
                 <div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
-                    <h3>{initialData ? 'Edit League / Store' : 'Add New League / Store'}</h3>
+                    <div className="flex flex-col gap-0.5">
+                        <h3>
+                            {isChampionshipLeague
+                                ? (initialData ? 'Edit Championship Series' : 'Add Championship Series')
+                                : (initialData ? 'Edit League / Store' : 'Add New League / Store')}
+                        </h3>
+                        {isChampionshipLeague && (
+                            <span className="text-[12px] font-semibold text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded px-2 py-0.5 w-fit">
+                                Championship Series — Worlds, Regionals &amp; Special Events
+                            </span>
+                        )}
+                    </div>
                     <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
                         X
                     </button>
@@ -72,24 +87,11 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                 <form className="flex flex-col gap-5 overflow-hidden" onSubmit={handleSubmit}>
                     <div className="p-7 overflow-y-auto">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {/* Championship Series Event Checkbox */}
-                            <div className="flex items-center gap-2.5 sm:col-span-2 py-2">
-                                <input
-                                    type="checkbox"
-                                    id="isChampionshipSeries"
-                                    checked={isChampionshipSeries}
-                                    onChange={(e) => setIsChampionshipSeries(e.target.checked)}
-                                    className="w-4 h-4 rounded border-border-color bg-bg-card accent-primary cursor-pointer"
-                                />
-                                <label htmlFor="isChampionshipSeries" className="text-[13px] font-bold text-text-main cursor-pointer select-none">
-                                    Championship Series Event (Regionals, Internationals, Worlds - hidden from Map)
-                                </label>
-                            </div>
 
                             {/* League ID Field */}
                             <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="leagueIdField" className="text-[13px] font-bold text-text-main flex justify-between items-center">
-                                    League ID (Official League ID - can be skipped if not known/not applicable)
+                                    {isChampionshipLeague ? 'Series ID (Official ID - can be skipped)' : 'League ID (Official League ID - can be skipped if not known/not applicable)'}
                                 </label>
                                 <input
                                     type="number"
@@ -104,7 +106,7 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                             {/* League Name */}
                             <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
                                 <label htmlFor="leagueName" className="text-[13px] font-bold text-text-main flex justify-between items-center">
-                                    League Name <span className="text-primary text-[11px] font-semibold">*</span>
+                                    {isChampionshipLeague ? 'Series Name' : 'League Name'} <span className="text-primary text-[11px] font-semibold">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -119,11 +121,13 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 
                             {/* Location */}
                             <div className={"flex flex-col gap-1.5 relative sm:col-span-2"}>
-                                <label htmlFor="leagueLocation" className="text-[13px] font-bold text-text-main flex justify-between items-center">Address</label>
+                                <label htmlFor="leagueLocation" className="text-[13px] font-bold text-text-main flex justify-between items-center">
+                                    {isChampionshipLeague ? 'Venue / Region' : 'Address'}
+                                </label>
                                 <input
                                     type="text"
                                     id="leagueLocation"
-                                    placeholder=""
+                                    placeholder={isChampionshipLeague ? 'e.g. Cardiff, Wales' : ''}
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
@@ -235,45 +239,49 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
                                 />
                             </div>
 
-                            {/* Directions */}
-                            <div className="flex flex-col gap-1.5 relative sm:col-span-2">
-                                <label htmlFor="leagueDirections" className="text-[13px] font-bold text-text-main flex justify-between items-center">Directions</label>
-                                <textarea
-                                    id="leagueDirections"
-                                    placeholder="Describe how to get to the store, parking information, public transport details, etc."
-                                    value={directions}
-                                    onChange={(e) => setDirections(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
-                                />
-                            </div>
+                            {/* Directions — hidden for championship series */}
+                            {!isChampionshipLeague && (
+                                <div className="flex flex-col gap-1.5 relative sm:col-span-2">
+                                    <label htmlFor="leagueDirections" className="text-[13px] font-bold text-text-main flex justify-between items-center">Directions</label>
+                                    <textarea
+                                        id="leagueDirections"
+                                        placeholder="Describe how to get to the store, parking information, public transport details, etc."
+                                        value={directions}
+                                        onChange={(e) => setDirections(e.target.value)}
+                                        className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
+                                    />
+                                </div>
+                            )}
 
-                            {/* Accessibility */}
-                            <div className="flex flex-col gap-1.5 relative sm:col-span-2">
-                                <label htmlFor="leagueAccessibility" className="text-[13px] font-bold text-text-main flex justify-between items-center">Accessibility Info</label>
-                                <textarea
-                                    id="leagueAccessibility"
-                                    placeholder="Describe wheelchair access, steps, lighting, sound, or other accessibility accommodations."
-                                    value={accessibility}
-                                    onChange={(e) => setAccessibility(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
-                                />
-                            </div>
+                            {/* Accessibility — hidden for championship series */}
+                            {!isChampionshipLeague && (
+                                <div className="flex flex-col gap-1.5 relative sm:col-span-2">
+                                    <label htmlFor="leagueAccessibility" className="text-[13px] font-bold text-text-main flex justify-between items-center">Accessibility Info</label>
+                                    <textarea
+                                        id="leagueAccessibility"
+                                        placeholder="Describe wheelchair access, steps, lighting, sound, or other accessibility accommodations."
+                                        value={accessibility}
+                                        onChange={(e) => setAccessibility(e.target.value)}
+                                        className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0">
                         <button
                             type="button"
-                            className="btn btn-secondary min-h-[44px] flex items-center justify-center"
+                            className="btn btn-secondary min-h-11 flex items-center justify-center"
                             onClick={onClose}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="btn btn-primary min-h-[44px] flex items-center justify-center"
+                            className="btn btn-primary min-h-11 flex items-center justify-center"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : 'Create League')}
+                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : (isChampionshipLeague ? 'Create Series' : 'Create League'))}
                         </button>
                     </div>
                 </form>
