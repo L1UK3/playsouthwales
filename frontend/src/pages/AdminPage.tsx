@@ -5,7 +5,7 @@ import { useCallback, useState, useMemo } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import { createLeagueMap, filterAndGroupEvents, ListView, NavBar } from "@calendar";
 import { MONTH_NAMES } from "@/constants";
-import { createEvent, createLeague, deleteEvent, deleteLeague, loadLocalLeaderboard, updateEvent, updateLeague, updateLeaderboard, syncPokedata, syncSets } from "@/services/api";
+import { createEvent, createLeague, deleteEvent, deleteLeague, loadLocalLeaderboard, updateEvent, updateLeague, updateLeaderboard } from "@/services/api";
 import type { League } from "@/types/League";
 import type { Event } from "@/types/Event";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -33,11 +33,6 @@ const AdminPage: React.FC = () => {
     const { data: eventTypes = {}, isLoading: isEventTypesLoading } = useEventTypeMap();
 
     const activeLeague = leagues.find(l => l.leagueId === selectedLeagueId);
-
-    // Separate championship series leagues from regular leagues
-    const championshipLeagues = useMemo(() => leagues.filter(l => l.isChampionshipSeries), [leagues]);
-    const regularLeagues = useMemo(() => leagues.filter(l => !l.isChampionshipSeries), [leagues]);
-
     const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
 
     const groupedEvents = useMemo(() => {
@@ -65,42 +60,6 @@ const AdminPage: React.FC = () => {
     }, []);
 
     const queryClient = useQueryClient();
-
-    const [isSyncingPokedata, setIsSyncingPokedata] = useState<boolean>(false);
-    const [isSyncingSets, setIsSyncingSets] = useState<boolean>(false);
-
-    const handleSyncPokedata = useCallback(async () => {
-        setIsSyncingPokedata(true);
-        try {
-            const token = await getToken();
-            if (!token) throw new Error("No login token");
-            const res = await syncPokedata(token);
-            alert(`PokeData sync completed successfully! Sync stats: ${JSON.stringify(res.metrics)}`);
-            queryClient.invalidateQueries({ queryKey: ['events'] });
-            queryClient.invalidateQueries({ queryKey: ['weekly-events'] });
-        } catch (error: any) {
-            console.error("PokeData sync failed", error);
-            alert(`PokeData sync failed: ${error.message ?? error}`);
-        } finally {
-            setIsSyncingPokedata(false);
-        }
-    }, [getToken, queryClient]);
-
-    const handleSyncSets = useCallback(async () => {
-        setIsSyncingSets(true);
-        try {
-            const token = await getToken();
-            if (!token) throw new Error("No login token");
-            const res = await syncSets(token);
-            alert(`TCG sets sync completed successfully! Sync stats: ${JSON.stringify(res.metrics)}`);
-            queryClient.invalidateQueries({ queryKey: ['sets'] });
-        } catch (error: any) {
-            console.error("TCG sets sync failed", error);
-            alert(`TCG sets sync failed: ${error.message ?? error}`);
-        } finally {
-            setIsSyncingSets(false);
-        }
-    }, [getToken, queryClient]);
 
 
     // League mutations
@@ -217,12 +176,6 @@ const AdminPage: React.FC = () => {
         setIsEditingLeague(true);
     }, []);
 
-    // opens championship series creation modal — pre-sets isChampionshipSeries = true
-    const handleAddChampionshipLeagueTrigger = useCallback(() => {
-        setEditingLeague({ leagueId: 0, name: '', isChampionshipSeries: true } as League);
-        setIsEditingLeague(true);
-    }, []);
-
     // opens league editing modal
     const handleEditLeagueTrigger = useCallback((league: League) => {
         setEditingLeague(league);
@@ -323,62 +276,14 @@ const AdminPage: React.FC = () => {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 py-4 animate-swipe-up sm:px-6 sm:py-6 lg:px-8 lg:py-6">
             <h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
             <div className="rounded-lg border-2 border-border-color bg-bg-card p-4 shadow-main sm:p-5">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between border-b-2 border-border-color pb-3 mb-4">
                     <div className="flex flex-col gap-1.5 [&_h2]:text-[clamp(1.35rem,2vw,1.85rem)] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[14px]">
                         <h2>League Manager</h2>
-                        <p>Pick a league to manage its events, update standings, or create a new series.</p>
-                    </div>
-                    <div className="grid w-full gap-2 sm:grid-cols-2 lg:w-auto lg:min-w-[24rem]">
-                        <div className="rounded-md border border-border-color/70 bg-bg-main px-3 py-2 text-[12px] text-text-muted">
-                            Select a league first to unlock event actions.
-                        </div>
-                        <div className="rounded-md border border-border-color/70 bg-bg-main px-3 py-2 text-[12px] text-text-muted">
-                            Sync tools update site data from the official sources.
-                        </div>
+                        <p>Pick a league or championship series to manage its events, update standings, or create a new series.</p>
                     </div>
                 </div>
-            </div>
-
-            {/* Championship Series — always pinned, always visible */}
-            <div className="bg-bg-card border-2 border-amber-500/30 rounded-lg p-4 shadow-main flex flex-col gap-4 sm:p-5">
-                <div className="flex flex-col gap-3 border-b-2 border-border-color pb-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex flex-col gap-0.5">
-                        <h3 className="text-base font-bold flex items-center gap-2">
-                            <span className="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
-                            Championship Series
-                        </h3>
-                        <p className="text-[12px] text-text-muted">Worlds, Regionals &amp; Special Events</p>
-                    </div>
-                    <button
-                        type="button"
-                        className="btn btn-secondary min-h-11 text-amber-600 border-amber-500/40 hover:border-amber-500 hover:bg-amber-500/5 text-sm w-full sm:w-auto"
-                        onClick={handleAddChampionshipLeagueTrigger}
-                    >
-                        Create Championship Series
-                    </button>
-                </div>
-                {championshipLeagues.length > 0 ? (
-                    <LeagueSelector
-                        leagues={championshipLeagues}
-                        selectedLeagueId={selectedLeagueId}
-                        setSelectedLeagueId={setSelectedLeagueId}
-                        showAdminControls={false}
-                        onEdit={handleEditLeagueTrigger}
-                        onDelete={undefined}
-                        columns={4}
-                        showInfo={false}
-                    />
-                ) : (
-                    <div className="rounded-md border border-dashed border-border-color/70 bg-bg-main px-4 py-8 text-center text-text-muted text-sm">
-                        <p className="font-medium">No championship series added yet.</p>
-                        <p className="mt-1 text-[12px] text-text-muted/70">Create one for Worlds, Regionals, or any other flagship event.</p>
-                    </div>
-                )}
-            </div>
-
-            <div className="rounded-lg border-2 border-border-color bg-bg-card p-4 shadow-main sm:p-5">
                 <LeagueSelector
-                    leagues={regularLeagues}
+                    leagues={leagues}
                     selectedLeagueId={selectedLeagueId}
                     setSelectedLeagueId={setSelectedLeagueId}
                     showAdminControls={true}
@@ -388,33 +293,6 @@ const AdminPage: React.FC = () => {
                     columns={4}
                     showInfo={false}
                 />
-            </div>
-
-            <div className="bg-bg-card border-2 border-border-color rounded-lg p-4 shadow-main flex flex-col gap-5 sm:p-5">
-                <div className="flex flex-col gap-2 border-b-2 border-border-color pb-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h3 className="text-base font-bold">System Synchronizations</h3>
-                        <p className="text-[12px] text-text-muted">Use these when official data changes upstream.</p>
-                    </div>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                    <button
-                        type="button"
-                        className="btn btn-secondary min-h-11 cursor-pointer w-full"
-                        onClick={handleSyncPokedata}
-                        disabled={isSyncingPokedata}
-                    >
-                        {isSyncingPokedata ? "Syncing official events..." : "Sync Official Events"}
-                    </button>
-                    <button
-                        type="button"
-                        className="btn btn-secondary min-h-11 cursor-pointer w-full"
-                        onClick={handleSyncSets}
-                        disabled={isSyncingSets}
-                    >
-                        {isSyncingSets ? "Syncing set legality..." : "Sync Set Legality"}
-                    </button>
-                </div>
             </div>
 
 
