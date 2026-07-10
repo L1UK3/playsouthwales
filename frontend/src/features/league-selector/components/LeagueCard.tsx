@@ -49,11 +49,6 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
             <div className="flex items-center gap-2.5 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-text-darker">
                 {league.logo && <img src={league.logo} alt={league.name} className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0" />}
                 <h3>{league.name}</h3>
-                {isChampionship && (
-                    <span className="ml-auto text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded px-1.5 py-0.5 shrink-0">
-                        CS
-                    </span>
-                )}
             </div>
             {showInfo && (
                 <>
