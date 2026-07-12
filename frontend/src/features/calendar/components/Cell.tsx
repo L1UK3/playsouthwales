@@ -63,7 +63,7 @@ const Cell: React.FC<CellProps> = React.memo(({
 
     return (
         <div
-            className={`min-h-12 sm:min-h-37 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-all duration-200 hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
+            className={`min-h-12 sm:min-h-37 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
             onClick={() => !isOtherMonth && onSelectDay(dateKey)}
             data-date-key={dateKey}
         >

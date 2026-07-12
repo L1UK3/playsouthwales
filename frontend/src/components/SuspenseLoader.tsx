@@ -7,7 +7,7 @@ export interface SuspenseLoaderProps {
 
 const SuspenseLoader: React.FC<SuspenseLoaderProps> = ({
     fullPage = false,
-    message = 'Loading...'
+    message = 'Loading…'
 }) => {
     return (
         <div className={`flex flex-col items-center justify-center min-h-62.5 w-full animate-[fadeIn_0.4s_ease-out] ${fullPage ? 'fixed inset-0 min-h-screen bg-[#121214] z-9999' : ''}`}>

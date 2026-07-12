@@ -1,28 +1,29 @@
+/* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
 @import "tailwindcss";
 
 
 @theme {
     /* Colors */
-    --color-primary: #E3350D;
-    --color-primary-hover: #C62D0B;
-    --color-secondary: #3168B1;
-    --color-secondary-hover: #26538E;
-    --color-accent: #FFCC00;
+    --color-primary: oklch(0.55 0.22 25);
+    --color-primary-hover: oklch(0.48 0.20 25);
+    --color-secondary: oklch(0.48 0.15 250);
+    --color-secondary-hover: oklch(0.40 0.13 250);
+    --color-accent: oklch(0.82 0.18 85);
 
     /* Backgrounds */
-    --color-bg-main: #F6F8FA;
-    --color-bg-card: #FFFFFF;
-    --color-bg-card-hover: #F1F5F9;
+    --color-bg-main: oklch(0.98 0.005 240);
+    --color-bg-card: oklch(1.0 0.0 240);
+    --color-bg-card-hover: oklch(0.96 0.005 240);
     --color-bg-cell-empty: rgba(0, 0, 0, 0.02);
     --color-bg-day-header: rgba(246, 248, 250, 0.85);
 
     /* Text */
-    --color-text-main: #1F2937;
-    --color-text-muted: #6B7280;
-    --color-text-darker: #111827;
+    --color-text-main: oklch(0.20 0.01 240);
+    --color-text-muted: oklch(0.50 0.01 240);
+    --color-text-darker: oklch(0.12 0.01 240);
 
     /* Borders */
-    --color-border-color: #E5E7EB;
+    --color-border-color: oklch(0.90 0.01 240);
 
     /* Shadows */
     --shadow-main: 0 4px 14px 0 rgba(0, 0, 0, 0.08);
@@ -46,7 +47,9 @@
     --color-type-text: var(--color-text-main);
     --color-type-border: var(--color-secondary-hover);
 
-    /* Animations */
+    /* Motion & Animations */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-short: 150ms;
     --animate-swipe-up: swipeUp 0.5s ease forwards;
     --animate-swipe-left: swipeLeft 0.5s ease forwards;
     --animate-swipe-right: swipeRight 0.5s ease forwards;
@@ -106,11 +109,6 @@
 @layer base {
     body {
         background-color: var(--color-bg-main);
-        background-image:
-            radial-gradient(at 0% 0%, rgba(227, 53, 13, 0.05) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, rgba(49, 104, 177, 0.05) 0px, transparent 50%),
-            radial-gradient(at 50% 100%, rgba(255, 204, 0, 0.05) 0px, transparent 50%);
-        background-attachment: fixed;
         color: var(--color-text-main);
         min-height: 100vh;
         font-family: var(--font-sans);
@@ -148,7 +146,7 @@
         font-size: 13px;
         font-weight: 700;
         cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
         border: 1px solid transparent;
         display: inline-flex;
         align-items: center;
@@ -170,7 +168,7 @@
     .btn-primary:hover {
         background-color: var(--color-primary-hover) !important;
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(227, 53, 13, 0.15);
+        box-shadow: 0 4px 8px color-mix(in oklch, var(--color-primary) 15%, transparent);
     }
 
     .btn-secondary {
@@ -292,7 +290,7 @@
     border-bottom: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
     border-left: 4px solid var(--type-border, var(--color-primary)) !important;
     box-shadow: var(--shadow-main) !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: border-color 0.2s var(--ease-out), background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 
     &:hover {
         border-top-color: var(--card-color) !important;
@@ -312,7 +310,7 @@
     border-bottom: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
     border-left: 4px solid var(--type-border, var(--color-primary)) !important;
     box-shadow: var(--shadow-main) !important;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 
     &:hover {
         background-color: color-mix(in oklch, var(--card-color) var(--cal-card-hover-mix), transparent) !important;
@@ -332,21 +330,21 @@ html.dark {
     --cal-card-bg-mix: 20%;
     --cal-card-hover-mix: 35%;
 
-    --color-bg-main: #121212;
-    --color-bg-card: #27272a;
-    --color-bg-card-hover: #3f3f46;
+    --color-bg-main: oklch(0.18 0.01 240);
+    --color-bg-card: oklch(0.24 0.01 240);
+    --color-bg-card-hover: oklch(0.28 0.01 240);
     --color-bg-cell-empty: rgba(255, 255, 255, 0.02);
     --color-bg-day-header: rgba(39, 39, 42, 0.9);
 
-    --color-text-main: #f4f4f5;
-    --color-text-muted: #d4d4d8;
-    --color-text-darker: #ffffff;
+    --color-text-main: oklch(0.88 0.005 240);
+    --color-text-muted: oklch(0.65 0.005 240);
+    --color-text-darker: oklch(0.95 0.005 240);
 
-    --color-border-color: #3f3f46;
-    --color-primary: #ff4d4d;
-    --color-primary-hover: #e62e2e;
-    --color-secondary: #5C9CE6;
-    --color-secondary-hover: #4A90E2;
+    --color-border-color: oklch(0.30 0.01 240);
+    --color-primary: oklch(0.62 0.20 25);
+    --color-primary-hover: oklch(0.55 0.20 25);
+    --color-secondary: oklch(0.55 0.15 250);
+    --color-secondary-hover: oklch(0.48 0.13 250);
 
     --color-event-bg: rgba(255, 77, 77, 0.2);
     --color-event-more-bg: rgba(255, 255, 255, 0.1);
@@ -354,10 +352,7 @@ html.dark {
 
 html.dark body {
     background-color: var(--color-bg-main);
-    background-image:
-        radial-gradient(at 0% 0%, rgba(255, 77, 77, 0.04) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.03) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(255, 204, 0, 0.03) 0px, transparent 50%);
+    background-image: none !important;
 }
 
 /* --- High Contrast Variables --- */

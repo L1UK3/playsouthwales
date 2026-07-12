@@ -1,3 +1,4 @@
+/* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
 ﻿import { EventFormModal, LeagueFormModal, LeaderboardFormModal } from "@/features/admin";
 import { useLeagues, useEventTypeMap, useEvents, useDocumentMetadata } from "@/hooks";
 import LeagueSelector from "@/features/league-selector";
@@ -269,7 +270,7 @@ const AdminPage: React.FC = () => {
     }, [activeLeague, updateLeaderboardMutation]);
 
     if (isLeaguesLoading || isEventTypesLoading || isEventsLoading) {
-        return <SuspenseLoader message="Loading admin manager..." />;
+        return <SuspenseLoader message="Loading admin manager…" />;
     }
 
     return (

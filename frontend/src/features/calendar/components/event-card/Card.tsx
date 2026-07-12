@@ -19,9 +19,9 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(({ event, leagueMa
     const league = event.leagueId && event.leagueId !== -1 ? leagueMap[event.leagueId] : null;
     const leagueName = event.eventType === 'LEGALITY' || event.eventType === 'RELEASE' ? event.name : (league?.name ?? event.leagueName ?? 'Event');
     const storeColor = event.eventType === 'LEGALITY'
-        ? '#8b5cf6'
+        ? 'oklch(0.75 0.25 180)'
         : event.eventType === 'RELEASE'
-            ? '#f97316'
+            ? 'oklch(0.72 0.28 120)'
             : (league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`);
 
     return (

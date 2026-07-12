@@ -91,7 +91,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     placeholder={isChampionshipLeague ? 'e.g. Welsh Regional Championship 2025' : 'e.g. Standard League Challenge'}
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                     required
                                 />
                             </div>
@@ -106,7 +106,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     id="eventDate"
                                     value={date}
                                     onChange={(e) => setDate(e.target.value)}
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                     required
                                 />
                             </div>
@@ -119,7 +119,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     id="eventStartTime"
                                     value={startTime}
                                     onChange={(e) => setStartTime(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 />
                             </div>
 
@@ -132,7 +132,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     id="eventType"
                                     value={eventType}
                                     onChange={(e) => setEventType(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
                                     {isChampionshipLeague ? (
                                         <>
@@ -162,7 +162,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     id="eventGame"
                                     value={game}
                                     onChange={(e) => setGame(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
                                     <option value="TCG">TCG (Trading Card Game)</option>
                                     <option value="VGC">VGC (Video Game Championships)</option>
@@ -179,7 +179,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     placeholder="e.g. £10 or Free"
                                     value={entryFee}
                                     onChange={(e) => setEntryFee(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 />
                             </div>
 
@@ -192,7 +192,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     placeholder="https://example.com/tickets"
                                     value={ticketLink}
                                     onChange={(e) => setTicketLink(e.target.value)}
-                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
+                                    className={`py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]`}
                                 />
                             </div>
 
@@ -205,7 +205,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                             id="eventIsRecurring"
                                             checked={isRecurring}
                                             onChange={(e) => setIsRecurring(e.target.checked)}
-                                            className="w-5 h-5 rounded border border-border-color text-secondary focus:ring-secondary cursor-pointer transition-all duration-200"
+                                            className="w-5 h-5 rounded border border-border-color text-secondary focus:ring-secondary cursor-pointer transition-[background-color,border-color] duration-150 ease-out"
                                         />
                                         <span className="text-sm font-bold text-text-main">
                                             Repeat Weekly
@@ -225,7 +225,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                         : 'Describe tournament rounds, standard regulations, match rules, etc.'}
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
 
@@ -239,7 +239,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                         : 'e.g. Championship points, booster packs for participating'}
                                     value={prizes}
                                     onChange={(e) => setPrizes(e.target.value)}
-                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-all duration-200 focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
+                                    className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20"
                                 />
                             </div>
 
@@ -259,7 +259,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                             className="btn btn-primary min-h-[44px] flex items-center justify-center"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Saving...' : (initialData ? 'Save Changes' : (isChampionshipLeague ? 'Add Event' : 'Schedule Event'))}
+                            {isSubmitting ? 'Saving…' : (initialData ? 'Save Changes' : (isChampionshipLeague ? 'Add Event' : 'Schedule Event'))}
                         </button>
                     </div>
                 </form>

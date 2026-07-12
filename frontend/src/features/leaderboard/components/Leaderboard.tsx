@@ -15,7 +15,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }
 
     if (isLoading) {
         return (
-            <SuspenseLoader message="Loading leaderboard..." />
+            <SuspenseLoader message="Loading leaderboard…" />
         )
     }
 

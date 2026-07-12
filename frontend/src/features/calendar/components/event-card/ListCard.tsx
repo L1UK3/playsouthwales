@@ -41,7 +41,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
 
     return (
         <div
-            className={`rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:translate-x-1 gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""} ${event.isExcluded ? "opacity-50 grayscale-[40%] border border-dashed border-red-500/20" : ""}`}
+            className={`rounded-xl overflow-hidden cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:translate-x-1 gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""} ${event.isExcluded ? "opacity-50 grayscale-[40%] border border-dashed border-red-500/20" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
             onClick={onToggle}
         >
@@ -77,7 +77,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                     <span className="expand-icon text-xs text-text-muted transition-transform duration-300">▼</span>
                 </div>
             </div>
-            <div className="expandable-content max-h-0 overflow-hidden transition-all duration-300 bg-black/10">
+            <div className="expandable-content max-h-0 overflow-hidden transition-[max-height] duration-300 ease-out bg-black/10">
                 <div className="p-4 flex flex-col gap-3">
                     <div className="flex gap-4 text-xs [&_strong]:text-text-muted [&_strong]:font-semibold [&_strong]:mr-1">
                         <span className=""><strong>Format:</strong> {event.eventType}</span>
@@ -112,8 +112,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                         {onEdit ? (
                             <button
                                 type="button"
-                                className="btn btn-secondary"
-                                style={{ marginLeft: '8px' }}
+                                className="btn btn-secondary ml-2"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onEdit(event);
@@ -125,13 +124,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                         {event.isExcluded && onUnexclude ? (
                             <button
                                 type="button"
-                                className="btn btn-secondary"
-                                style={{
-                                    marginLeft: '8px',
-                                    borderColor: '#10b981',
-                                    color: '#10b981',
-                                    background: 'rgba(16, 185, 129, 0.05)'
-                                }}
+                                className="btn btn-secondary ml-2 border-emerald-500! text-emerald-500! bg-emerald-500/5!"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onUnexclude(event);
@@ -143,13 +136,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                         {!event.isExcluded && event.isRecurring && onExclude ? (
                             <button
                                 type="button"
-                                className="btn btn-secondary"
-                                style={{
-                                    marginLeft: '8px',
-                                    borderColor: '#ef4444',
-                                    color: '#ef4444',
-                                    background: 'rgba(239, 68, 68, 0.05)'
-                                }}
+                                className="btn btn-secondary ml-2 border-red-500! text-red-500! bg-red-500/5!"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onExclude(event);
@@ -161,13 +148,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
                         {onDelete ? (
                             <button
                                 type="button"
-                                className="btn btn-secondary"
-                                style={{
-                                    marginLeft: '8px',
-                                    borderColor: '#ef4444',
-                                    color: '#ef4444',
-                                    background: 'rgba(239, 68, 68, 0.05)'
-                                }}
+                                className="btn btn-secondary ml-2 border-red-500! text-red-500! bg-red-500/5!"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onDelete(event);

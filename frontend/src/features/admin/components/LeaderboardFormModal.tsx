@@ -434,7 +434,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                             className="btn btn-primary min-h-11 flex items-center justify-center cursor-pointer"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Saving...' : 'Save Standings'}
+                            {isSubmitting ? 'Saving…' : 'Save Standings'}
                         </button>
                     </div>
                 </form>

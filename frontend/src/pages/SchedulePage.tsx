@@ -1,3 +1,4 @@
+/* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
 import { MONTH_NAMES } from "@/constants";
 import { useEvents, useEventTypeMap, useLeagues, useDocumentMetadata } from "@/hooks";
 import {
@@ -226,7 +227,7 @@ const SchedulePage: React.FC = () => {
 
                 <div className="flex-1 block opacity-100">
                     {(isLoading) ? (
-                        <SuspenseLoader message="Loading schedule..." />
+                        <SuspenseLoader message="Loading schedule…" />
                     ) : (viewMode === 'calendar') ? (
                         <div key={calendarKey} className={`${animationClass}`}>
                             <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
