@@ -4,6 +4,7 @@ import SuspenseLoader from '@/components/SuspenseLoader';
 import { useLeagues, useDocumentMetadata } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
+import ComingSoon from '@/components/ComingSoon';
 
 function getTop20SeasonLabel(date = new Date()) {
     const startYear = date.getMonth() >= 6 ? date.getFullYear() : date.getFullYear() - 1;
@@ -75,6 +76,7 @@ const RankingsPage: React.FC = () => {
     return (
         <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:h-[calc(100vh-140px)] h-[calc(100vh-200px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main transition-all duration-300 animate-swipe-up max-[576px]:rounded-md max-[576px]:border-2">
 
+            <ComingSoon message="The South Wales Top 20 and local league standings are currently under development. Check back soon for updates!" />
             {/* Mobile Tab Toggle for Rankings */}
             <div className="flex border-b border-border-color bg-bg-card p-1 lg:hidden shrink-0">
                 <button
