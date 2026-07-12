@@ -62,7 +62,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leagueId = 'global', season }
                                     <React.Fragment key={player.position}>
                                         {renderCutoff && (
                                             <tr className="bg-bg-main/30">
-                                                <td colSpan={2} className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none">
+                                                <td colSpan={3} className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none">
                                                     Top 20 Cutoff
                                                 </td>
                                             </tr>

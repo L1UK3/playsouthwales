@@ -3,6 +3,14 @@ import { loadTop20Players, loadLocalLeaderboard } from '@services/api';
 import mockData from '../data/mock_data.json';
 import type { LeaderboardPosition } from '../types/LeaderboardPosition';
 
+const mockNames = [
+    "Dylan Hughes", "Connor Rees", "Megan Davies", "Ffion Jones", "Gavin Morgan",
+    "Harri Owen", "Oliver Smith", "Amelia Taylor", "Liam Jenkins", "Chloe Davies",
+    "Jack Davies", "Elin Roberts", "Lowri Roberts", "Rhys Vaughan", "Noah Roberts",
+    "Grace Jones", "Evie Hughes", "Lucas Williams", "Freya Jones", "Sian Williams",
+    "Sasha Gray"
+];
+
 export function useLeaderboard(leagueId: string | number, season?: string) {
     return useQuery<LeaderboardPosition[]>({
         queryKey: ['leaderboard', leagueId, season],
@@ -11,54 +19,56 @@ export function useLeaderboard(leagueId: string | number, season?: string) {
                 try {
                     const globalData = await loadTop20Players(season);
                     if (globalData && globalData.players && Object.keys(globalData.players).length > 0) {
-                        return Object.entries(globalData.players).map(([pos, player]: [string, any]) => ({
-                            position: parseInt(pos, 10),
-                            name: player.name,
-                            cp: player.cp !== undefined ? player.cp : (player.CP !== undefined ? player.CP : 0),
-                            userId: player.userId,
-                        }));
+                        return Object.entries(globalData.players).map(([pos, player]: [string, any]) => {
+                            const index = parseInt(pos, 10) - 1;
+                            const fallbackName = mockNames[index] || ("Player " + pos);
+                            return {
+                                position: parseInt(pos, 10),
+                                name: player.name || fallbackName,
+                                cp: player.cp !== undefined ? player.cp : (player.CP !== undefined ? player.CP : 0),
+                                userId: player.userId,
+                            };
+                        });
                     } else {
                         throw new Error("No players returned");
                     }
                 } catch (err) {
                     console.warn("Failed to fetch global leaderboard, falling back to mock data:", err);
-                    return [
-                        { position: 1, name: "Dylan Hughes", cp: 120 },
-                        { position: 2, name: "Connor Rees", cp: 110 },
-                        { position: 3, name: "Megan Davies", cp: 95 },
-                        { position: 4, name: "Ffion Jones", cp: 90 },
-                        { position: 5, name: "Gavin Morgan", cp: 85 },
-                        { position: 6, name: "Harri Owen", cp: 80 },
-                        { position: 7, name: "Oliver Smith", cp: 75 },
-                        { position: 8, name: "Amelia Taylor", cp: 70 },
-                        { position: 9, name: "Liam Jenkins", cp: 65 },
-                        { position: 10, name: "Chloe Davies", cp: 60 },
-                        { position: 11, name: "Jack Davies", cp: 55 },
-                        { position: 12, name: "Elin Roberts", cp: 50 },
-                        { position: 13, name: "Lowri Roberts", cp: 45 },
-                        { position: 14, name: "Rhys Vaughan", cp: 40 },
-                        { position: 15, name: "Noah Roberts", cp: 35 },
-                        { position: 16, name: "Grace Jones", cp: 30 },
-                        { position: 17, name: "Evie Hughes", cp: 25 },
-                        { position: 18, name: "Lucas Williams", cp: 20 },
-                        { position: 19, name: "Freya Jones", cp: 15 },
-                        { position: 20, name: "Sian Williams", cp: 10 },
-                        { position: 21, name: "Sasha Gray", cp: 5 }
-                    ];
+                    return mockNames.map((name, index) => ({
+                        position: index + 1,
+                        name: name,
+                        cp: 120 - index * 5,
+                        userId: "mock-" + index
+                    }));
                 }
             }
 
             try {
                 const response = await loadLocalLeaderboard(Number(leagueId));
                 if (response?.data && response.data.length > 0) {
-                    return response.data;
+                    return response.data.map((player: any) => {
+                        const index = (player.position ? parseInt(player.position, 10) : 1) - 1;
+                        const fallbackName = mockNames[index] || ("Player " + (player.position || 1));
+                        return {
+                            ...player,
+                            name: player.name || fallbackName
+                        };
+                    });
                 }
             } catch (err) {
-                console.warn(`Failed to fetch leaderboard for league ${leagueId} from API, falling back to mock data:`, err);
+                console.warn("Failed to fetch leaderboard for league " + leagueId + " from API, falling back to mock data:", err);
             }
 
             const data = mockData as Record<string, LeaderboardPosition[]>;
-            return data["1"] || [];
+            const rawMock = data["1"] || [];
+            return rawMock.map((player: any) => {
+                const index = (player.position ? parseInt(player.position, 10) : 1) - 1;
+                const fallbackName = mockNames[index] || ("Player " + (player.position || 1));
+                return {
+                    ...player,
+                    name: player.name || fallbackName
+                };
+            });
         },
     });
 }
