@@ -45,17 +45,13 @@ const RankingsPage: React.FC = () => {
 
     const leaguesWithStandings = React.useMemo(() => {
         return leagues.map(league => {
-            const mockKeys = ["1", "2", "3", "4", "5", "6"];
-            if (mockKeys.includes(String(league.leagueId))) {
-                return {
-                    ...league,
-                    hasStandings: {
-                        ...((typeof league.hasStandings === 'object' ? league.hasStandings : {}) as any),
-                        [selectedSeason]: [1, 2, 3]
-                    }
-                } as any;
-            }
-            return league;
+            return {
+                ...league,
+                hasStandings: {
+                    ...((typeof league.hasStandings === 'object' ? league.hasStandings : {}) as any),
+                    [selectedSeason]: [1, 2, 3]
+                }
+            } as any;
         }).filter((league) => {
             if (!league.hasStandings) {
                 return false;

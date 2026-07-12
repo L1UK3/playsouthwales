@@ -58,8 +58,7 @@ export function useLeaderboard(leagueId: string | number, season?: string) {
             }
 
             const data = mockData as Record<string, LeaderboardPosition[]>;
-            const leagueKey = leagueId.toString();
-            return data[leagueKey] || [];
+            return data["1"] || [];
         },
     });
 }
