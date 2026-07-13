@@ -77,6 +77,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                         }
                         onClick={onAdd}
                     >
+                        {/* TODO: #40 Championship series should always be displayed after regular leagues and before 'add new league' */}
                         <div className="flex flex-col items-center gap-2 font-bold text-[15px]">
                             <span className="text-2xl font-normal">+</span>
                             <span>Add New League</span>

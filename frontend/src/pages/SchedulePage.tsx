@@ -21,6 +21,8 @@ import { useCallback, useMemo, useState } from 'react';
 import type { Event } from '@/types/Event';
 import SuspenseLoader from '@/components/SuspenseLoader';
 
+// TODO: #46 Properly implement this page using React Native.
+
 export type ViewMode = 'calendar' | 'list';
 
 /**
@@ -261,12 +263,12 @@ const SchedulePage: React.FC = () => {
         direction === 'left'
             ? 'animate-swipe-left'
             : direction === 'right'
-              ? 'animate-swipe-right'
-              : direction === 'down'
-                ? 'animate-swipe-down'
-                : direction === 'up'
-                  ? 'animate-swipe-up'
-                  : '';
+                ? 'animate-swipe-right'
+                : direction === 'down'
+                    ? 'animate-swipe-down'
+                    : direction === 'up'
+                        ? 'animate-swipe-up'
+                        : '';
 
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 

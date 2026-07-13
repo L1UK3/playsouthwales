@@ -3,8 +3,17 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.debugpy",
+        "charliermarsh.ruff",
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
-        "editorconfig.editorconfig"
+        "supabase.vscode-supabase-extension",
+        "editorconfig.editorconfig",
+        "ms-vscode-remote.remote-containers",
+        "EditorConfig.EditorConfig",
+        "PKief.material-icon-theme",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "ms-python.vscode-python-envs",
+        "Supabase.vscode-supabase-extension"
     ]
 }

@@ -1,62 +1,55 @@
 {
   "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
-  "name": "Playwales",
+  "name": "Play! South Wales",
   "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "22"
-    },
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-      "version": "latest",
-      "enableNonRootDocker": "true"
+    "dockerfile": "Dockerfile",
+    "args": {
+      "TZ": "${localEnv:TZ:UTC}",
+      "GIT_DELTA_VERSION": "0.18.2",
+      "ZSH_IN_DOCKER_VERSION": "1.2.1"
     }
   },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "runArgs": [
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
   "init": true,
   "updateRemoteUserUID": true,
   "customizations": {
     "vscode": {
       "extensions": [
+        "anthropic.claude-code",
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ms-python.debugpy",
         "charliermarsh.ruff",
         "dbaeumer.vscode-eslint",
-        "bradlc.vscode-tailwindcss",
-        "supabase.vscode-supabase-extension",
-        "editorconfig.editorconfig",
-        "ms-vscode-remote.remote-containers"
+        "esbenp.prettier-vscode"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          }
+        },
         "files.trimTrailingWhitespace": true,
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
-        "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+        "python.defaultInterpreterPath": ".venv/bin/python",
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always",
-            "source.fixAll.ruff": "always"
+            "source.organizeImports": "explicit"
           }
         },
-        "[javascript]": {
-          "editor.defaultFormatter": "vscode.typescript-language-features"
-        },
-        "[typescript]": {
-          "editor.defaultFormatter": "vscode.typescript-language-features"
-        },
-        "[typescriptreact]": {
-          "editor.defaultFormatter": "vscode.typescript-language-features"
-        },
-        "eslint.validate": [
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact"
-        ],
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit"
         }
@@ -65,46 +58,33 @@
   },
   "remoteUser": "vscode",
   "mounts": [
-    "source=playwales-bashhistory-${devcontainerId},target=/commandhistory,type=volume"
+    "source=playsouthwales-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+    "source=playsouthwales-config-${devcontainerId},target=/home/vscode/.claude,type=volume",
+    "source=playsouthwales-gh-${devcontainerId},target=/home/vscode/.config/gh,type=volume",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.devcontainer,target=/workspace/.devcontainer,type=bind,readonly"
   ],
   "containerEnv": {
     "NODE_OPTIONS": "--max-old-space-size=4096",
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
+    "GIT_CONFIG_GLOBAL": "/home/vscode/.gitconfig.local",
     "UV_LINK_MODE": "copy",
+    "NPM_CONFIG_IGNORE_SCRIPTS": "true",
+    "NPM_CONFIG_AUDIT": "true",
+    "NPM_CONFIG_FUND": "false",
+    "NPM_CONFIG_SAVE_EXACT": "true",
+    "NPM_CONFIG_UPDATE_NOTIFIER": "false",
+    "NPM_CONFIG_MINIMUM_RELEASE_AGE": "1440",
     "PYTHONDONTWRITEBYTECODE": "1",
-    "PIP_DISABLE_PIP_VERSION_CHECK": "1",
-    "DOCKER_HOST": "unix:///var/run/docker-host.sock"
+    "PIP_DISABLE_PIP_VERSION_CHECK": "1"
   },
-  "forwardPorts": [
-    5000,
-    5173,
-    54321,
-    54322,
-    54323
-  ],
-  "portsAttributes": {
-    "5000": {
-      "label": "Backend (FastAPI)",
-      "onAutoForward": "notify"
-    },
-    "5173": {
-      "label": "Frontend (Vite)",
-      "onAutoForward": "openBrowser"
-    },
-    "54321": {
-      "label": "Supabase Kong API Gateway",
-      "onAutoForward": "ignore"
-    },
-    "54322": {
-      "label": "Supabase Postgres Database",
-      "onAutoForward": "ignore"
-    },
-    "54323": {
-      "label": "Supabase Studio Dashboard",
-      "onAutoForward": "notify"
-    }
+  "remoteEnv": {
+    "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN:}",
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY:}"
   },
+  "initializeCommand": "test -f \"$HOME/.gitconfig\" || touch \"$HOME/.gitconfig\"",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "cd backend && uv sync && cd ../frontend && npm ci && cd .. && npm ci",
-  "postStartCommand": "npx supabase start && docker compose down && docker compose up -d --build"
+  "postCreateCommand": "uv run --no-project /opt/post_install.py && cd backend && uv sync && cd ../frontend && npm ci"
 }

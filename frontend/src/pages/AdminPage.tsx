@@ -36,6 +36,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@clerk/react';
 import type { LeaderboardEntry } from '@/features/admin/components/LeaderboardFormModal';
 
+// TODO: #44 Properly implement this page using React Native.
+
 const AdminPage: React.FC = () => {
     useDocumentMetadata({
         title: 'Admin Dashboard',
@@ -380,6 +382,9 @@ const AdminPage: React.FC = () => {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 py-4 animate-swipe-up sm:px-6 sm:py-6 lg:px-8 lg:py-6">
             <h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
             <div className="rounded-lg border-2 border-border-color bg-bg-card p-4 shadow-main sm:p-5">
+
+                {/* Header Section with Title and Description */}
+                {/* TODO: #41 There should be a difference between the 'admin' dashboard and the 'TOM' dashboard. The TOM dashboard should be focused on a league and its events, while the admin dashboard is more about managing leagues and events in general. */}
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between border-b-2 border-border-color pb-3 mb-4">
                     <div className="flex flex-col gap-1.5 [&_h2]:text-[clamp(1.35rem,2vw,1.85rem)] [&_h2]:font-extrabold [&_h2]:text-text-darker [&_h2]:tracking-tight [&_p]:text-text-muted [&_p]:text-[14px]">
                         <h2>League Manager</h2>
@@ -389,6 +394,8 @@ const AdminPage: React.FC = () => {
                         </p>
                     </div>
                 </div>
+
+                {/* League Selector Component */}
                 <LeagueSelector
                     leagues={leagues}
                     selectedLeagueId={selectedLeagueId}
@@ -402,6 +409,7 @@ const AdminPage: React.FC = () => {
                 />
             </div>
 
+            {/* Active League Section */}
             {activeLeague && (
                 <div
                     key={activeLeague.leagueId}
@@ -447,6 +455,7 @@ const AdminPage: React.FC = () => {
                         onNextMonth={handleNextMonth}
                     />
 
+                    {/* Event List Section */}
                     {events.length === 0 ? (
                         <div className="text-center py-12 px-5 text-text-muted [&_h4]:text-lg [&_h4]:font-bold [&_h4]:mb-2 [&_p]:text-[15px]">
                             <h4>No Events Scheduled</h4>
@@ -485,6 +494,7 @@ const AdminPage: React.FC = () => {
                 </div>
             )}
 
+            {/* Modals for League, Event, and Leaderboard Management */}
             <LeagueFormModal
                 key={
                     isEditingLeague
