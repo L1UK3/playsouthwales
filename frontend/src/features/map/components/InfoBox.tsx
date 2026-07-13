@@ -38,6 +38,10 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
                         <img
                             src={selectedLeague.logo}
                             alt={`${selectedLeague.name} Logo`}
+                            width="28"
+                            height="28"
+                            loading="lazy"
+                            decoding="async"
                             className="w-7 h-7 rounded-md object-contain bg-white border border-[#e2e8f0] p-px"
                         />
                     )}

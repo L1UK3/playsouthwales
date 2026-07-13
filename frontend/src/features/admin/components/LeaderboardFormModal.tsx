@@ -355,6 +355,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         type="text"
                                                         placeholder="Player name"
                                                         value={row.name}
+                                                        aria-label={`Player ${row.position} Name`}
                                                         onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                                         required
@@ -365,6 +366,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         type="number"
                                                         min="0"
                                                         value={row.wins}
+                                                        aria-label={`${row.name || 'Player ' + row.position} Wins`}
                                                         onChange={(e) => handleFieldChange(index, 'wins', parseInt(e.target.value) || 0)}
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
@@ -374,6 +376,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         type="number"
                                                         min="0"
                                                         value={row.losses}
+                                                        aria-label={`${row.name || 'Player ' + row.position} Losses`}
                                                         onChange={(e) => handleFieldChange(index, 'losses', parseInt(e.target.value) || 0)}
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
@@ -383,6 +386,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         type="number"
                                                         min="0"
                                                         value={row.draws}
+                                                        aria-label={`${row.name || 'Player ' + row.position} Draws`}
                                                         onChange={(e) => handleFieldChange(index, 'draws', parseInt(e.target.value) || 0)}
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
@@ -392,6 +396,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         type="number"
                                                         min="0"
                                                         value={row.attendance}
+                                                        aria-label={`${row.name || 'Player ' + row.position} Attendance`}
                                                         onChange={(e) => handleFieldChange(index, 'attendance', parseInt(e.target.value) || 0)}
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
@@ -400,6 +405,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                     <input
                                                         type="number"
                                                         value={row.points}
+                                                        aria-label={`${row.name || 'Player ' + row.position} Points`}
                                                         onChange={(e) => handleFieldChange(index, 'points', parseInt(e.target.value) || 0)}
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-right pr-3 font-semibold focus:outline-none focus:border-secondary"
                                                     />

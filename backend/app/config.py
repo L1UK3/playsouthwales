@@ -39,7 +39,9 @@ class Settings(BaseSettings):
     def _clean_jwt_key(cls, v: str | None) -> str | None:
         if isinstance(v, str):
             v = v.strip()
-            if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+            if (v.startswith('"') and v.endswith('"')) or (
+                v.startswith("'") and v.endswith("'")
+            ):
                 v = v[1:-1].strip()
             v = v.replace("\\n", "\n")
         return v
@@ -56,7 +58,7 @@ def get_settings() -> Settings:
     try:
         return Settings()
     except ValidationError as e:
-        env_keys = sorted(list(os.environ.keys()))
+        env_keys = sorted(os.environ.keys())
         print(
             f"ERROR: Settings validation failed. Available environment keys: {env_keys}",
             file=sys.stderr,

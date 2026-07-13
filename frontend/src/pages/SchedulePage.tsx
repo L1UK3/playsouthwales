@@ -1,6 +1,6 @@
 /* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
 import { MONTH_NAMES } from "@/constants";
-import { useEvents, useEventTypeMap, useLeagues, useDocumentMetadata } from "@/hooks";
+import { useEvents, useEventTypeMap, useLeagues, useDocumentMetadata, useSetLegality } from "@/hooks";
 import {
     CalendarView,
     createLeagueMap,
@@ -11,8 +11,7 @@ import {
     NavBar,
     SelectedDaySection
 } from "@calendar";
-import { useCallback, useMemo, useState, useEffect } from "react";
-import { loadSetLegality } from "@/services/api";
+import { useCallback, useMemo, useState } from "react";
 import type { Event } from "@/types/Event";
 import SuspenseLoader from "@/components/SuspenseLoader";
 
@@ -33,13 +32,7 @@ const SchedulePage: React.FC = () => {
     const [selectedDateKey, setSelectedDateKey] = useState<string | null>(() => getLocalDateString(new Date()));
     const [viewMode, setViewMode] = useState<ViewMode>('calendar');
     const [filters, setFilters] = useState({ league: '', eventType: '', game: '' });
-    const [sets, setSets] = useState<any[]>([]);
-
-    useEffect(() => {
-        loadSetLegality()
-            .then(setSets)
-            .catch((err: any) => console.error("Failed to load sets for schedule:", err));
-    }, []);
+    const { data: sets = [] } = useSetLegality();
 
     const virtualLegalityEvents = useMemo(() => {
         return sets.map(s => ({

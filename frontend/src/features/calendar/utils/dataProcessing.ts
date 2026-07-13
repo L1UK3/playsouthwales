@@ -8,7 +8,10 @@ import type { EventFilters } from '@calendar/utils/EventFilters';
  * @returns {Record<number, League>} A record where keys are league IDs and values are League objects.
  */
 export const createLeagueMap = (leagues: League[]): Record<number, League> =>
-	leagues.reduce((acc, l) => ({ ...acc, [l.leagueId]: l }), {} as Record<number, League>);
+	leagues.reduce((acc, l) => {
+		acc[l.leagueId] = l;
+		return acc;
+	}, {} as Record<number, League>);
 
 /**
  * Filters and groups events based on the provided criteria and organizes them by date.

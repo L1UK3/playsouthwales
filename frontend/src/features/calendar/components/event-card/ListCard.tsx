@@ -12,7 +12,7 @@ import type { Event } from '@/types/Event';
 
 export interface ListCardProps {
     isExpanded?: boolean;
-    onToggle?: () => void;
+    onToggle?: (id: number | string) => void;
     onEdit?: (event: Event) => void;
     onDelete?: (event: Event) => void;
     onExclude?: (event: Event) => void;
@@ -43,7 +43,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(({
         <div
             className={`rounded-xl overflow-hidden cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:translate-x-1 gradient-card type-${event.eventType} ${isExpanded ? "[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color" : ""} ${event.isExcluded ? "opacity-50 grayscale-[40%] border border-dashed border-red-500/20" : ""}`}
             style={{ '--store-color': storeColor } as React.CSSProperties}
-            onClick={onToggle}
+            onClick={() => onToggle?.(event.id)}
         >
             <div className="py-2.5 px-4 flex justify-between items-center gap-4">
                 <div className="flex items-center gap-4 grow">

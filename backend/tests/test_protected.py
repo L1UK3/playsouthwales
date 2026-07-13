@@ -7,8 +7,8 @@ that the auth gate works without needing a real Clerk token.
 
 Also tests that PATCH aliases behave identically to PUT.
 """
-import pytest
 
+import pytest
 
 # — Helper —
 
@@ -32,9 +32,9 @@ PROTECTED_ROUTES = [
 class TestProtectedRoutesRejectUnauthenticated:
     """All protected routes must return 401 when no auth token is present."""
 
-    @pytest.mark.parametrize("method,path", PROTECTED_ROUTES, ids=[
-        f"{m} {p}" for m, p in PROTECTED_ROUTES
-    ])
+    @pytest.mark.parametrize(
+        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+    )
     def test_returns_401_without_auth(self, client, method, path):
         """Sending a request with no Authorization header must be rejected."""
         resp = client.request(method, path)
@@ -42,18 +42,18 @@ class TestProtectedRoutesRejectUnauthenticated:
             f"{method} {path} returned {resp.status_code}, expected 401"
         )
 
-    @pytest.mark.parametrize("method,path", PROTECTED_ROUTES, ids=[
-        f"{m} {p}" for m, p in PROTECTED_ROUTES
-    ])
+    @pytest.mark.parametrize(
+        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+    )
     def test_401_response_has_detail(self, client, method, path):
         """The 401 response body should include a ``detail`` field."""
         resp = client.request(method, path)
         body = resp.json()
         assert "detail" in body
 
-    @pytest.mark.parametrize("method,path", PROTECTED_ROUTES, ids=[
-        f"{m} {p}" for m, p in PROTECTED_ROUTES
-    ])
+    @pytest.mark.parametrize(
+        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+    )
     def test_401_includes_www_authenticate_header(self, client, method, path):
         """RFC 7235: 401 responses SHOULD include WWW-Authenticate."""
         resp = client.request(method, path)
@@ -66,9 +66,9 @@ class TestProtectedRoutesRejectUnauthenticated:
 class TestProtectedRoutesRejectBadToken:
     """A clearly-invalid bearer token should still be rejected (401)."""
 
-    @pytest.mark.parametrize("method,path", PROTECTED_ROUTES, ids=[
-        f"{m} {p}" for m, p in PROTECTED_ROUTES
-    ])
+    @pytest.mark.parametrize(
+        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+    )
     def test_returns_401_with_bad_token(self, client, method, path):
         headers = {"Authorization": "Bearer totally-not-a-real-jwt"}
         resp = client.request(method, path, headers=headers)
@@ -84,13 +84,16 @@ class TestProtectedEventRoutes:
     """Spot-checks on individual event routes."""
 
     def test_post_events_no_auth(self, client):
-        resp = client.post("/api/events", json={
-            "name": "Test Event",
-            "date": "2026-08-01",
-            "leagueId": 1,
-            "eventType": "CUP",
-            "game": "TCG",
-        })
+        resp = client.post(
+            "/api/events",
+            json={
+                "name": "Test Event",
+                "date": "2026-08-01",
+                "leagueId": 1,
+                "eventType": "CUP",
+                "game": "TCG",
+            },
+        )
         assert resp.status_code == 401
 
     def test_put_events_no_auth(self, client):

@@ -1,5 +1,3 @@
-import pytest
-
 SAMPLE_EVENT = {
     "id": "abc-123",
     "name": "Cardiff Challenge",
@@ -96,7 +94,7 @@ class TestEventsEndpoint:
         resp = client.get("/api/events", params={"month": "7", "year": "2026"})
         assert resp.status_code == 200
 
-    def test_filters_by_leagueId(self, client, supabase_table):
+    def test_filters_by_league_id(self, client, supabase_table):
         supabase_table("events", [SAMPLE_EVENT])
         resp = client.get("/api/events", params={"leagueId": 1})
         assert resp.status_code == 200
@@ -174,7 +172,9 @@ class TestLeaguesEndpoint:
         assert "leagueId" in league
         assert "hasStandings" in league
 
-    def test_has_standings_is_true_when_leaderboard_exists(self, client, supabase_table):
+    def test_has_standings_is_true_when_leaderboard_exists(
+        self, client, supabase_table
+    ):
         supabase_table("leagues", [SAMPLE_LEAGUE])
         supabase_table("leaderboards", [{"leagueId": 1}])
         league = client.get("/api/leagues").json()[0]

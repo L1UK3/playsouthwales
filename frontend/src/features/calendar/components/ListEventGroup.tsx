@@ -66,7 +66,7 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
                         leagueMap={leagueMap}
                         types={types}
                         isExpanded={expandedEventId === event.id}
-                        onToggle={() => onToggleEvent(event.id)}
+                        onToggle={onToggleEvent}
                         onEdit={onEdit}
                         onDelete={onDelete}
                         onExclude={onExclude}

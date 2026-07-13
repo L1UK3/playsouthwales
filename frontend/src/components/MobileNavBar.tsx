@@ -4,6 +4,13 @@ import { useAuth, SignInButton } from '@clerk/react';
 import { neobrutalism } from '@clerk/ui/themes';
 import { Calendar, MapPin, Trophy, ShieldAlert } from 'lucide-react';
 
+const CLERK_SIGN_IN_APPEARANCE = {
+    elements: {
+        footerAction: { display: 'none' as const }
+    },
+    theme: neobrutalism
+};
+
 const MobileNavBar: React.FC = () => {
     const location = useLocation();
     const path = location.pathname;
@@ -54,12 +61,7 @@ const MobileNavBar: React.FC = () => {
             )}
 
             {isLoaded && !isSignedIn && (
-                <SignInButton mode="modal" appearance={{
-                    elements: {
-                        footerAction: { display: 'none' }
-                    },
-                    theme: neobrutalism
-                }}>
+                <SignInButton mode="modal" appearance={CLERK_SIGN_IN_APPEARANCE}>
                     <button
                         type="button"
                         className="flex flex-col items-center gap-1 py-1 px-3 text-text-muted bg-transparent border-none cursor-pointer transition-colors duration-150 hover:text-text-main"

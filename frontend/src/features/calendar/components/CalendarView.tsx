@@ -25,6 +25,8 @@ export interface CalendarViewProps {
     onSelectDay: (dateKey: string) => void;
 }
 
+const EMPTY_ARRAY: Event[] = [];
+
 /**
  * CalendarView component manages the logic for generating the calendar grid data.
  * It calculates the days for the current month, including padding for previous and next months,
@@ -40,44 +42,48 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     selectedDateKey,
     onSelectDay
 }) => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const daysInPrevMonth = new Date(year, month, 0).getDate();
-    const startDay = firstDay === 0 ? 6 : firstDay - 1;
-
     const today = useMemo(() => new Date(), []);
     const todayKey = getLocalDateString(today);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    const generateCellData = (day: number, m: number, y: number, isOtherMonth: boolean): CellData => {
-        const cellDate = new Date(y, m - 1, day);
-        return {
-            day,
-            month: m,
-            year: y,
-            isOtherMonth,
-            dateKey: getLocalDateString(cellDate)
+    const cells = useMemo(() => {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+        const startDay = firstDay === 0 ? 6 : firstDay - 1;
+
+        const generateCellData = (day: number, m: number, y: number, isOtherMonth: boolean): CellData => {
+            const cellDate = new Date(y, m - 1, day);
+            return {
+                day,
+                month: m,
+                year: y,
+                isOtherMonth,
+                dateKey: getLocalDateString(cellDate)
+            };
         };
-    };
 
-    const cells: CellData[] = [];
+        const list: CellData[] = [];
 
-    for (let i = startDay - 1; i >= 0; i--) {
-        cells.push(generateCellData(daysInPrevMonth - i, month, year, true));
-    }
+        for (let i = startDay - 1; i >= 0; i--) {
+            list.push(generateCellData(daysInPrevMonth - i, month, year, true));
+        }
 
-    for (let day = 1; day <= daysInMonth; day++) {
-        cells.push(generateCellData(day, month + 1, year, false));
-    }
+        for (let day = 1; day <= daysInMonth; day++) {
+            list.push(generateCellData(day, month + 1, year, false));
+        }
 
-    const totalCells = cells.length;
-    const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells;
-    for (let day = 1; day <= remainingCells; day++) {
-        cells.push(generateCellData(day, month + 2, year, true));
-    }
+        const totalCells = list.length;
+        const remainingCells = (Math.ceil(totalCells / 7) * 7) - totalCells;
+        for (let day = 1; day <= remainingCells; day++) {
+            list.push(generateCellData(day, month + 2, year, true));
+        }
+
+        return list;
+    }, [currentDate]);
 
     return (
         <div className="relative bg-bg-card rounded-lg shadow-main overflow-hidden lg:flex lg:flex-col" ref={wrapperRef}>
@@ -96,7 +102,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                         day={cell.day}
                         dateKey={cell.dateKey}
                         isOtherMonth={cell.isOtherMonth}
-                        eventsForDay={events[cell.dateKey] ?? []}
+                        eventsForDay={events[cell.dateKey] ?? EMPTY_ARRAY}
                         leagueMap={leagueMap}
                         types={types}
                         selectedDateKey={selectedDateKey}

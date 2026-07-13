@@ -17,8 +17,10 @@ class LeagueBase(BaseModel):
     accessibility: str | None = None
     isChampionshipSeries: bool | None = False
 
+
 class LeagueCreate(LeagueBase):
     pass
+
 
 class LeagueUpdate(BaseModel):
     id: int | None = None
@@ -36,9 +38,11 @@ class LeagueUpdate(BaseModel):
     accessibility: str | None = None
     isChampionshipSeries: bool | None = None
 
+
 class LeagueResponse(LeagueBase):
     leagueId: int
     hasStandings: bool = False
+
 
 class EventBase(BaseModel):
     name: str
@@ -52,9 +56,11 @@ class EventBase(BaseModel):
     prizes: str | None = None
     entryFee: str | None = None
     excludedDates: list[str] | None = None
-        
+
+
 class EventCreate(EventBase):
     isRecurring: bool | None = None
+
 
 class EventUpdate(BaseModel):
     name: str | None = None
@@ -69,6 +75,7 @@ class EventUpdate(BaseModel):
     entryFee: str | None = None
     isRecurring: bool | None = None
     excludedDates: list[str] | None = None
+
 
 class EventResponse(EventBase):
     id: int | str
@@ -87,8 +94,10 @@ class WeeklyEventBase(BaseModel):
     entryFee: str | None = None
     excludedDates: list[str] | None = None
 
+
 class WeeklyEventResponse(WeeklyEventBase):
     id: int | str
+
 
 class LeaderboardUpdate(BaseModel):
     data: list[dict]

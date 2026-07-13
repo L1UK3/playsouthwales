@@ -11,7 +11,7 @@ project_root = os.path.dirname(os.path.dirname(current_dir))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from app.main import supabase  # noqa: E402
+from app.dependencies import supabase  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -78,13 +78,9 @@ def clean_text(text: str) -> str:
     if not text:
         return ""
 
-    # Fix the common encoding issues in pokedata
-    # 1. First fix "Pokémon" variants so they don't get turned into "Pok£mon"
     text = text.replace("Pok\ufffdmon", "Pok\xe9mon")
     text = text.replace("Pok\u01e3mon", "Pok\xe9mon")
     text = text.replace("Pok\u01f8mon", "Pok\xe9mon")
-
-    # 2. Then replace the replacement character (commonly \ufffd) in currency with \xa3
     text = text.replace("\ufffd", "\xa3")
     return text
 
@@ -96,10 +92,10 @@ async def sync_pokedata() -> dict[str, Any]:
         "https://pokedata.ovh/events/api/_go/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
     ]
 
-    EVENT_TYPE_MAP = {
+    event_type_map = {
         "League Challenge": "CHALLENGE",
         "League Cup": "CUP",
-        "Pre Release": "PRE-RELEASE"
+        "Pre Release": "PRE-RELEASE",
     }
 
     all_raw_events = []
@@ -122,9 +118,7 @@ async def sync_pokedata() -> dict[str, Any]:
     # Fetch existing event IDs to avoid overwriting them
     try:
         events_res = supabase.table("events").select("id").execute()
-        existing_event_ids: set[str] = {
-            str(row["id"]) for row in events_res.data
-        }
+        existing_event_ids: set[str] = {str(row["id"]) for row in events_res.data}
     except Exception as e:
         logger.error("Failed to fetch existing events: %s", e)
         return {"error": f"Failed to fetch existing events: {e}"}
@@ -169,9 +163,7 @@ async def sync_pokedata() -> dict[str, Any]:
         ticket_link = pokedata_event.third_party_registration_website or None
 
         name = clean_text(pokedata_event.name)
-        entry_fee = (
-            clean_text(pokedata_event.cost) if pokedata_event.cost else None
-        )
+        entry_fee = clean_text(pokedata_event.cost) if pokedata_event.cost else None
 
         game_map = {"tcg": "TCG", "vgc": "VGC", "go": "GO"}
         game = game_map.get(pokedata_event.product.lower(), "TCG")
@@ -183,7 +175,7 @@ async def sync_pokedata() -> dict[str, Any]:
             "startTime": pokedata_event.time,
             "leagueId": league_id,
             "ticketLink": ticket_link,
-            "eventType": EVENT_TYPE_MAP.get(
+            "eventType": event_type_map.get(
                 pokedata_event.type.strip(), pokedata_event.type
             ),
             "game": game,

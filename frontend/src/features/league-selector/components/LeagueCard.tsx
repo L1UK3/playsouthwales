@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 
 import type { League } from '@/types/League';
 
@@ -47,7 +47,17 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
             onClick={() => onLeagueSelect(league.leagueId)}
         >
             <div className="flex items-center gap-2.5 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-text-darker">
-                {league.logo && <img src={league.logo} alt={league.name} className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0" />}
+                {league.logo && (
+                    <img 
+                        src={league.logo} 
+                        alt={league.name} 
+                        width="32"
+                        height="32"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0" 
+                    />
+                )}
                 <h3>{league.name}</h3>
             </div>
             {showInfo && (
