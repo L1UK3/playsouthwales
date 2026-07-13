@@ -26,12 +26,13 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 
         return (
             <div
-                className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main calendar-card type-${event.eventType} ${league?.isChampionshipSeries ? 'border-2 border-amber-500/50 bg-linear-to-br from-amber-500/10 to-transparent' : ''}`}
+                className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main calendar-card text-white! type-${event.eventType} ${league?.isChampionshipSeries ? 'border-2 border-amber-500/50 bg-linear-to-br from-amber-500/10 to-transparent' : ''}`}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
             >
                 <div className="flex flex-col gap-2">
+                    {/* Event Name and Type */}
                     <div className="flex flex-col gap-0.5">
-                        <div className="font-bold text-text-main text-base flex items-center gap-1.5">
+                        <div className="font-bold text-white text-base flex items-center gap-1.5">
                             {league?.isChampionshipSeries && (
                                 <span className="text-amber-500 text-sm">
                                     🏆
@@ -39,7 +40,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
                             )}
                             <span>{event.name}</span>
                         </div>
-                        <div className="text-xs font-semibold text-type-text">
+                        <div className="text-xs font-semibold text-white/80">
                             {`[${types[event.eventType] ?? '⚖️'}] ${event.eventType} • ${event.game}`}
                         </div>
                     </div>
@@ -54,14 +55,14 @@ const EventCard: React.FC<EventCardProps> = React.memo(
                                     height="20"
                                     loading="lazy"
                                     decoding="async"
-                                    className="w-5 h-5 rounded object-contain bg-white border border-border-color shrink-0 p-px"
+                                    className="size-5 rounded object-contain bg-white border border-border-color shrink-0 p-px"
                                 />
                             )}
-                            <div className="text-xs font-medium text-text-darker">
+                            <div className="text-xs font-medium text-white/90">
                                 {leagueName}
                             </div>
                         </div>
-                        <div className="text-[12px] text-text-muted">
+                        <div className="text-[12px] text-white/75">
                             {event.startTime ?? ''}{' '}
                             {event.entryFee ? `• ${event.entryFee}` : ''}
                         </div>
@@ -70,7 +71,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
                     {event.description ? (
                         <div
                             className={
-                                'text-xs leading-relaxed text-text-muted bg-white/5 p-2 rounded-lg'
+                                'text-xs leading-relaxed text-white/75 bg-white/5 p-2 rounded-lg'
                             }
                         >
                             {event.description}
@@ -79,7 +80,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
                     {event.prizes ? (
                         <div
                             className={
-                                'text-xs text-amber-400 bg-amber-400/10 p-2 rounded-lg border border-amber-400/20 flex gap-2 [&_strong]:text-text-main'
+                                'text-xs text-amber-300 bg-white/10 p-2 rounded-lg border border-white/20 flex gap-2 [&_strong]:text-white'
                             }
                         >
                             <strong>Prizes:</strong> {event.prizes}

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import ListCard from '@calendar/components/event-card/ListCard';
+import ListCard from '@components/event-card/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';

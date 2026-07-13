@@ -61,20 +61,21 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                     ease-out
                     hover:translate-x-1
                     calendar-card
+                    text-white!
                     type-${event.eventType}
-                    ${isExpanded ? '[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-primary [&_.expandable-content]:max-h-125 [&_.expandable-content]:border-t [&_.expandable-content]:border-border-color' : ''}
-                    ${event.isExcluded ? 'opacity-50 grayscale-40 border border-dashed border-red-500/20' : ''}
+                    ${isExpanded ? '[&_.expand-icon]:rotate-180 [&_.expand-icon]:text-white [&_.expandable-content]:max-h-[500px] [&_.expandable-content]:border-t [&_.expandable-content]:border-white/20' : ''}
+                    ${event.isExcluded ? 'opacity-50 grayscale-[40%] border border-dashed border-red-500/20' : ''}
                 `}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
                 onClick={() => onToggle?.(event.id)}
             >
                 <div className="py-2.5 px-4 flex justify-between items-center gap-4">
                     <div className="flex items-center gap-4 grow">
-                        <div className="text-sm font-bold text-primary min-w-11">
+                        <div className="text-sm font-bold text-white min-w-11">
                             {event.startTime?.slice(0, 5) ?? ''}
                         </div>
                         <div className="flex flex-col gap-0.5">
-                            <div className="text-[15px] font-bold text-text-main flex items-center gap-1.5">
+                            <div className="text-[15px] font-bold text-white flex items-center gap-1.5">
                                 {league?.isChampionshipSeries && (
                                     <span className="text-amber-500 text-sm">
                                         🏆
@@ -82,12 +83,12 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                                 )}
                                 <span>{event.name}</span>
                                 {event.isExcluded && (
-                                    <span className="text-xs font-normal text-red-400 ml-1.5">
+                                    <span className="text-xs font-normal text-red-200 ml-1.5">
                                         (Excluded)
                                     </span>
                                 )}
                             </div>
-                            <div className="text-[12px] text-text-muted flex items-center gap-1.5">
+                            <div className="text-[12px] text-white/80 flex items-center gap-1.5">
                                 {league?.logo && (
                                     <img
                                         src={league.logo}
@@ -96,7 +97,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                                         height="16"
                                         loading="lazy"
                                         decoding="async"
-                                        className="w-4 h-4 rounded object-contain bg-white border border-border-color shrink-0 p-px"
+                                        className="size-4 rounded object-contain bg-white border border-border-color shrink-0 p-px"
                                     />
                                 )}
                                 <span>
@@ -109,14 +110,14 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                         <span className="text-base opacity-80">
                             {types[event.eventType] ?? '⚖️'}
                         </span>
-                        <span className="expand-icon text-xs text-text-muted transition-transform duration-300">
+                        <span className="expand-icon text-xs text-white/75 transition-transform duration-300">
                             ▼
                         </span>
                     </div>
                 </div>
                 <div className="expandable-content max-h-0 overflow-hidden transition-[max-height] duration-300 ease-out bg-black/10">
                     <div className="p-4 flex flex-col gap-3">
-                        <div className="flex gap-4 text-xs [&_strong]:text-text-muted [&_strong]:font-semibold [&_strong]:mr-1">
+                        <div className="flex gap-4 text-xs [&_strong]:text-white/70 [&_strong]:font-semibold [&_strong]:mr-1 text-white/85">
                             <span className="">
                                 <strong>Format:</strong> {event.eventType}
                             </span>
@@ -129,7 +130,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                         {event.description ? (
                             <div
                                 className={
-                                    'text-xs leading-relaxed text-text-darker bg-white/5 p-2 rounded-lg'
+                                    'text-xs leading-relaxed text-white/90 bg-white/5 p-2 rounded-lg'
                                 }
                             >
                                 {event.description}
@@ -138,7 +139,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                         {event.prizes ? (
                             <div
                                 className={
-                                    'text-xs text-amber-400 bg-amber-400/10 p-2 rounded-lg border border-amber-400/20 flex gap-2'
+                                    'text-xs text-amber-200 bg-white/10 p-2 rounded-lg border border-white/20 flex gap-2'
                                 }
                             >
                                 <strong>Prizes:</strong> {event.prizes}
@@ -147,10 +148,10 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                         {league?.directions ? (
                             <div
                                 className={
-                                    'text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30'
+                                    'text-xs text-white/75 bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-white/20'
                                 }
                             >
-                                <div className="font-semibold text-text-main flex items-center gap-1">
+                                <div className="font-semibold text-white flex items-center gap-1">
                                     📍 Directions
                                 </div>
                                 <div className="leading-relaxed">
@@ -161,10 +162,10 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                         {league?.accessibility ? (
                             <div
                                 className={
-                                    'text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30'
+                                    'text-xs text-white/75 bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-white/20'
                                 }
                             >
-                                <div className="font-semibold text-text-main flex items-center gap-1">
+                                <div className="font-semibold text-white flex items-center gap-1">
                                     ♿ Accessibility
                                 </div>
                                 <div className="leading-relaxed">

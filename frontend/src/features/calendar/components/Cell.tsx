@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Card from '@calendar/components/event-card/Card';
+import Card from '@components/event-card/Card';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
@@ -66,7 +66,7 @@ const Cell: React.FC<CellProps> = React.memo(
 
         return (
             <div
-                className={`min-h-12 sm:min-h-37 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
+                className={`min-h-12 sm:min-h-36 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >
@@ -105,14 +105,14 @@ const Cell: React.FC<CellProps> = React.memo(
                                 return (
                                     <span
                                         key={event.id}
-                                        className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOtherMonth ? 'opacity-40 bg-gray-400' : ''}`}
+                                        className={`size-1.5 rounded-full shrink-0 ${isOtherMonth ? 'opacity-40 bg-gray-400' : ''}`}
                                         style={
                                             isOtherMonth
                                                 ? {}
                                                 : {
-                                                      backgroundColor:
-                                                          storeColor,
-                                                  }
+                                                    backgroundColor:
+                                                        storeColor,
+                                                }
                                         }
                                         title={league?.name ?? event.leagueName}
                                     />
