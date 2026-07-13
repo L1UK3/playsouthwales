@@ -33,7 +33,9 @@ def load_top20_payload(season: str | None = None) -> dict[str, Any]:
         available_seasons = list(seasons.keys())
         if not available_seasons:
             selected_season = (
-                season or raw_data.get("defaultSeason") or _current_top20_season()
+                season
+                or raw_data.get("defaultSeason")
+                or _current_top20_season()
             )
             return {
                 "season": selected_season,
@@ -45,7 +47,9 @@ def load_top20_payload(season: str | None = None) -> dict[str, Any]:
             season or raw_data.get("defaultSeason") or available_seasons[0]
         )
         if selected_season not in seasons:
-            selected_season = raw_data.get("defaultSeason") or available_seasons[0]
+            selected_season = (
+                raw_data.get("defaultSeason") or available_seasons[0]
+            )
         players = seasons.get(selected_season, {})
         return {
             "season": selected_season,

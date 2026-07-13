@@ -45,7 +45,10 @@ async def create_event(
         logger.error(f"Failed to create event: {e}")
         raise HTTPException(
             status_code=500,
-            detail={"code": "internal_error", "message": "Failed to create event"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to create event",
+            },
         )
 
 
@@ -72,7 +75,12 @@ async def patch_event(
             pass
 
         if is_virtual:
-            res = db.table("weekly_events").select("id").eq("id", template_id).execute()
+            res = (
+                db.table("weekly_events")
+                .select("id")
+                .eq("id", template_id)
+                .execute()
+            )
             if not res.data:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
@@ -107,7 +115,10 @@ async def patch_event(
                 except ValueError:
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
-                        detail={"code": "not_found", "message": "Event not found"},
+                        detail={
+                            "code": "not_found",
+                            "message": "Event not found",
+                        },
                     )
 
         # Perform updates
@@ -118,12 +129,15 @@ async def patch_event(
 
         # Safely remove fields to prevent PGRST204 schema cache errors if columns are not yet created in the DB
         if table_name == "events" or (
-            "excludedDates" in event_data and event_data.get("excludedDates") is None
+            "excludedDates" in event_data
+            and event_data.get("excludedDates") is None
         ):
             event_data.pop("excludedDates", None)
 
         if event_data:
-            db.table(table_name).update(event_data).eq("id", target_id).execute()
+            db.table(table_name).update(event_data).eq(
+                "id", target_id
+            ).execute()
 
         return {"success": True, "message": "Event updated successfully"}
     except HTTPException:
@@ -161,11 +175,19 @@ async def delete_event(
 
         # Check if virtual ID for a recurring event
         if is_virtual:
-            res = db.table("weekly_events").select("*").eq("id", template_id).execute()
+            res = (
+                db.table("weekly_events")
+                .select("*")
+                .eq("id", template_id)
+                .execute()
+            )
             if not res.data:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail={"code": "not_found", "message": "Event template not found"},
+                    detail={
+                        "code": "not_found",
+                        "message": "Event template not found",
+                    },
                 )
 
             if exclude_date:
@@ -174,16 +196,18 @@ async def delete_event(
                 excluded = weekly_event.get("excludedDates") or []
                 if exclude_date not in excluded:
                     excluded.append(exclude_date)
-                db.table("weekly_events").update({"excludedDates": excluded}).eq(
-                    "id", template_id
-                ).execute()
+                db.table("weekly_events").update(
+                    {"excludedDates": excluded}
+                ).eq("id", template_id).execute()
                 return {
                     "success": True,
                     "message": f"Occurrence on {exclude_date} excluded successfully",
                 }
             else:
                 # Delete the entire series
-                db.table("weekly_events").delete().eq("id", template_id).execute()
+                db.table("weekly_events").delete().eq(
+                    "id", template_id
+                ).execute()
                 return {
                     "success": True,
                     "message": "Weekly event series deleted successfully",
@@ -212,7 +236,10 @@ async def delete_event(
                 except ValueError:
                     raise HTTPException(
                         status_code=status.HTTP_404_NOT_FOUND,
-                        detail={"code": "not_found", "message": "Event not found"},
+                        detail={
+                            "code": "not_found",
+                            "message": "Event not found",
+                        },
                     )
 
             # Perform deletion
@@ -321,7 +348,10 @@ async def create_league(
         logger.error(f"Failed to create league: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to create league"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to create league",
+            },
         )
 
 
@@ -360,7 +390,9 @@ async def patch_league(
     try:
         league_data = league.model_dump(exclude_unset=True)
         if league_data:
-            db.table("leagues").update(league_data).eq("id", league_id).execute()
+            db.table("leagues").update(league_data).eq(
+                "id", league_id
+            ).execute()
 
         return {"success": True, "message": "League updated successfully"}
     except Exception as e:
@@ -405,7 +437,10 @@ async def delete_league(
         logger.error(f"Failed to delete league {league_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to delete league"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to delete league",
+            },
         )
 
 
@@ -423,7 +458,10 @@ async def update_leaderboard(
     try:
         # Check if a leaderboard already exists for this league
         existing = (
-            db.table("leaderboards").select("id").eq("leagueId", league_id).execute()
+            db.table("leaderboards")
+            .select("id")
+            .eq("leagueId", league_id)
+            .execute()
         )
 
         if existing.data:
@@ -441,7 +479,9 @@ async def update_leaderboard(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to update leaderboard for league {league_id}: {e}")
+        logger.error(
+            f"Failed to update leaderboard for league {league_id}: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={

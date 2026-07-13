@@ -1,39 +1,39 @@
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./backend:/app
-      - /app/.venv
-    environment:
-      - SUPABASE_URL=http://kong:8000
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
-    env_file:
-      - ./backend/.env
-    restart: always
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        ports:
+            - '5000:5000'
+        volumes:
+            - ./backend:/app
+            - /app/.venv
+        environment:
+            - SUPABASE_URL=http://kong:8000
+            - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+        env_file:
+            - ./backend/.env
+        restart: always
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - BACKEND_URL=http://backend:5000
-      - VITE_API_URL=/api
-    env_file:
-      - ./frontend/.env
-    restart: always
-    depends_on:
-      - backend
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - '5173:5173'
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+        environment:
+            - BACKEND_URL=http://backend:5000
+            - VITE_API_URL=/api
+        env_file:
+            - ./frontend/.env
+        restart: always
+        depends_on:
+            - backend
 
 networks:
-  default:
-    name: supabase_network_playwales
-    external: true
+    default:
+        name: supabase_network_playwales
+        external: true

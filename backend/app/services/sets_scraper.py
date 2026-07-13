@@ -144,17 +144,25 @@ def parse_wikitext(content: str) -> list[dict]:
                 release_date_cell = row[6].strip()
 
                 # Check if set_no fits Pokémon TCG expansions style (e.g. SV1, SV9, ME1, ME5, 30th, etc.)
-                if not re.match(r"^(SV\d+(\.\d+)?|ME\d+(\.\d+)?|\d+th|\d+)$", set_no):
+                if not re.match(
+                    r"^(SV\d+(\.\d+)?|ME\d+(\.\d+)?|\d+th|\d+)$", set_no
+                ):
                     continue
 
                 name = clean_name(name_cell)
 
                 # Parse release date
-                release_date_str = re.sub(r"<[^>]+>", "", release_date_cell).strip()
-                release_date_str = re.sub(r"<!--.*?-->", "", release_date_str).strip()
+                release_date_str = re.sub(
+                    r"<[^>]+>", "", release_date_cell
+                ).strip()
+                release_date_str = re.sub(
+                    r"<!--.*?-->", "", release_date_str
+                ).strip()
 
                 try:
-                    release_date = datetime.strptime(release_date_str, "%B %d, %Y")
+                    release_date = datetime.strptime(
+                        release_date_str, "%B %d, %Y"
+                    )
                     release_date_iso = release_date.strftime("%Y-%m-%d")
                     legal_date = release_date + timedelta(days=14)
                     legal_date_iso = legal_date.strftime("%Y-%m-%d")
@@ -215,11 +223,15 @@ async def run_sets_sync() -> dict:
         for _page_id, page_data in pages.items():
             revisions = page_data.get("revisions", [])
             if revisions:
-                wikitext = revisions[0].get("slots", {}).get("main", {}).get("*", "")
+                wikitext = (
+                    revisions[0].get("slots", {}).get("main", {}).get("*", "")
+                )
                 break
 
         if not wikitext:
-            logger.error("Failed to retrieve wikitext from Bulbapedia response.")
+            logger.error(
+                "Failed to retrieve wikitext from Bulbapedia response."
+            )
             return {"success": False, "error": "Empty page content"}
 
         all_sets = parse_wikitext(wikitext)

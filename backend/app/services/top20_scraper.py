@@ -22,7 +22,10 @@ async def run_top20_sync() -> dict[str, Any]:
         res = supabase.table("welsh_players").select("name").execute()
         if not res.data:
             logger.warning("No players found in welsh_players table.")
-            return {"success": False, "message": "No players found in welsh_players"}
+            return {
+                "success": False,
+                "message": "No players found in welsh_players",
+            }
 
         player_names = [row["name"] for row in res.data]
 
@@ -52,7 +55,10 @@ async def run_top20_sync() -> dict[str, Any]:
         season_key = _current_top20_season()
         players_payload = {}
         for idx, entry in enumerate(standings[:20], 1):
-            players_payload[str(idx)] = {"name": entry["name"], "cp": entry["cp"]}
+            players_payload[str(idx)] = {
+                "name": entry["name"],
+                "cp": entry["cp"],
+            }
 
         # Read existing file to preserve other seasons
         if os.path.exists(DATA_PATH):

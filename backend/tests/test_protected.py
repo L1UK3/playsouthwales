@@ -33,7 +33,9 @@ class TestProtectedRoutesRejectUnauthenticated:
     """All protected routes must return 401 when no auth token is present."""
 
     @pytest.mark.parametrize(
-        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+        "method,path",
+        PROTECTED_ROUTES,
+        ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES],
     )
     def test_returns_401_without_auth(self, client, method, path):
         """Sending a request with no Authorization header must be rejected."""
@@ -43,7 +45,9 @@ class TestProtectedRoutesRejectUnauthenticated:
         )
 
     @pytest.mark.parametrize(
-        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+        "method,path",
+        PROTECTED_ROUTES,
+        ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES],
     )
     def test_401_response_has_detail(self, client, method, path):
         """The 401 response body should include a ``detail`` field."""
@@ -52,7 +56,9 @@ class TestProtectedRoutesRejectUnauthenticated:
         assert "detail" in body
 
     @pytest.mark.parametrize(
-        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+        "method,path",
+        PROTECTED_ROUTES,
+        ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES],
     )
     def test_401_includes_www_authenticate_header(self, client, method, path):
         """RFC 7235: 401 responses SHOULD include WWW-Authenticate."""
@@ -67,7 +73,9 @@ class TestProtectedRoutesRejectBadToken:
     """A clearly-invalid bearer token should still be rejected (401)."""
 
     @pytest.mark.parametrize(
-        "method,path", PROTECTED_ROUTES, ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES]
+        "method,path",
+        PROTECTED_ROUTES,
+        ids=[f"{m} {p}" for m, p in PROTECTED_ROUTES],
     )
     def test_returns_401_with_bad_token(self, client, method, path):
         headers = {"Authorization": "Bearer totally-not-a-real-jwt"}

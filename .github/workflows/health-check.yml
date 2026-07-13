@@ -1,14 +1,14 @@
 ﻿name: Ping Health Endpoint
 
 on:
-  schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:
+    schedule:
+        - cron: '*/10 * * * *'
+    workflow_dispatch:
 
 jobs:
-  ping:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call API Health Endpoint
-        run: |
-          curl --fail --silent --show-error --location 'https://playwales.onrender.com/api/health'
+    ping:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Call API Health Endpoint
+              run: |
+                  curl --fail --silent --show-error --location 'https://playwales.onrender.com/api/health'

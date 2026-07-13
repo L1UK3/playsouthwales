@@ -48,7 +48,10 @@ async def get_events(
         logger.error(f"Failed to fetch events from Supabase: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch events"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch events",
+            },
         )
 
     return events
@@ -75,23 +78,35 @@ async def get_weekly_events(db: Client = Depends(get_supabase)):
     return events
 
 
-@router.get("/api/weekly-events/{league_id}", response_model=WeeklyEventResponse)
+@router.get(
+    "/api/weekly-events/{league_id}", response_model=WeeklyEventResponse
+)
 async def get_weekly_event(league_id: int, db: Client = Depends(get_supabase)):
     """
     Fetch a specific weekly event by its league ID.
     """
     try:
-        res = db.table("weekly_events").select("*").eq("leagueId", league_id).execute()
+        res = (
+            db.table("weekly_events")
+            .select("*")
+            .eq("leagueId", league_id)
+            .execute()
+        )
         if not res.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "Weekly event not found"},
+                detail={
+                    "code": "not_found",
+                    "message": "Weekly event not found",
+                },
             )
         return res.data[0]
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to fetch weekly event {league_id} from Supabase: {e}")
+        logger.error(
+            f"Failed to fetch weekly event {league_id} from Supabase: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -113,7 +128,10 @@ async def get_leagues(db: Client = Depends(get_supabase)):
         logger.error(f"Failed to fetch leagues from Supabase: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch leagues"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch leagues",
+            },
         )
 
     # Check which leagues have standings/leaderboards uploaded
@@ -165,20 +183,33 @@ async def get_leaderboard(league_id: int, db: Client = Depends(get_supabase)):
     Fetch the leaderboard for a specific league.
     """
     try:
-        res = db.table("leaderboards").select("*").eq("leagueId", league_id).execute()
+        res = (
+            db.table("leaderboards")
+            .select("*")
+            .eq("leagueId", league_id)
+            .execute()
+        )
         if not res.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "Leaderboard not found"},
+                detail={
+                    "code": "not_found",
+                    "message": "Leaderboard not found",
+                },
             )
         return res.data[0]
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to fetch leaderboard {league_id} from Supabase: {e}")
+        logger.error(
+            f"Failed to fetch leaderboard {league_id} from Supabase: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch leaderboard"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch leaderboard",
+            },
         )
 
 
@@ -200,5 +231,8 @@ async def get_sets():
         logger.error(f"Failed to fetch sets data: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch sets data"},
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch sets data",
+            },
         )

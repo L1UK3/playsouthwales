@@ -13,7 +13,9 @@ http_bearer = HTTPBearer(auto_error=False)
 def require_auth(
     request: Request,
     settings: Annotated[Settings, Depends(get_settings)],
-    _creds: Annotated[HTTPAuthorizationCredentials | None, Depends(http_bearer)] = None,
+    _creds: Annotated[
+        HTTPAuthorizationCredentials | None, Depends(http_bearer)
+    ] = None,
 ) -> RequestState:
     state = authenticate_request(
         request,

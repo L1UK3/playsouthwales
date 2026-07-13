@@ -180,7 +180,9 @@ class TestLeaguesEndpoint:
         league = client.get("/api/leagues").json()[0]
         assert league["hasStandings"] is True
 
-    def test_has_standings_is_false_when_no_leaderboard(self, client, supabase_table):
+    def test_has_standings_is_false_when_no_leaderboard(
+        self, client, supabase_table
+    ):
         supabase_table("leagues", [SAMPLE_LEAGUE])
         supabase_table("leaderboards", [])
         league = client.get("/api/leagues").json()[0]

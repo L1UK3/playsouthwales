@@ -382,7 +382,6 @@ const AdminPage: React.FC = () => {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 py-4 animate-swipe-up sm:px-6 sm:py-6 lg:px-8 lg:py-6">
             <h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
             <div className="rounded-lg border-2 border-border-color bg-bg-card p-4 shadow-main sm:p-5">
-
                 {/* Header Section with Title and Description */}
                 {/* TODO: #41 There should be a difference between the 'admin' dashboard and the 'TOM' dashboard. The TOM dashboard should be focused on a league and its events, while the admin dashboard is more about managing leagues and events in general. */}
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between border-b-2 border-border-color pb-3 mb-4">

@@ -27,7 +27,9 @@ class Settings(BaseSettings):
         "https://playsouthwales.uk",
     ]
 
-    @field_validator("clerk_authorized_parties", "allowed_origins", mode="before")
+    @field_validator(
+        "clerk_authorized_parties", "allowed_origins", mode="before"
+    )
     @classmethod
     def _split_csv(cls, v: str | list[str]) -> list[str]:
         if isinstance(v, str):

@@ -1,8 +1,8 @@
 {
-  "devDependencies": {
-    "supabase": "^2.109.0"
-  },
-  "workspaces": [
-    "frontend"
-  ]
+    "devDependencies": {
+        "supabase": "^2.109.0"
+    },
+    "workspaces": [
+        "frontend"
+    ]
 }

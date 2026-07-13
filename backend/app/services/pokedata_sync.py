@@ -118,7 +118,9 @@ async def sync_pokedata() -> dict[str, Any]:
     # Fetch existing event IDs to avoid overwriting them
     try:
         events_res = supabase.table("events").select("id").execute()
-        existing_event_ids: set[str] = {str(row["id"]) for row in events_res.data}
+        existing_event_ids: set[str] = {
+            str(row["id"]) for row in events_res.data
+        }
     except Exception as e:
         logger.error("Failed to fetch existing events: %s", e)
         return {"error": f"Failed to fetch existing events: {e}"}
@@ -163,7 +165,9 @@ async def sync_pokedata() -> dict[str, Any]:
         ticket_link = pokedata_event.third_party_registration_website or None
 
         name = clean_text(pokedata_event.name)
-        entry_fee = clean_text(pokedata_event.cost) if pokedata_event.cost else None
+        entry_fee = (
+            clean_text(pokedata_event.cost) if pokedata_event.cost else None
+        )
 
         game_map = {"tcg": "TCG", "vgc": "VGC", "go": "GO"}
         game = game_map.get(pokedata_event.product.lower(), "TCG")

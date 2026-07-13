@@ -8,127 +8,127 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as AdminRouteImport } from './routes/admin';
+import { Route as IndexRouteImport } from './routes/index';
 
-const ScheduleLazyRouteImport = createFileRoute('/schedule')()
-const RankingsLazyRouteImport = createFileRoute('/rankings')()
-const LeaguesLazyRouteImport = createFileRoute('/leagues')()
+const ScheduleLazyRouteImport = createFileRoute('/schedule')();
+const RankingsLazyRouteImport = createFileRoute('/rankings')();
+const LeaguesLazyRouteImport = createFileRoute('/leagues')();
 
 const ScheduleLazyRoute = ScheduleLazyRouteImport.update({
-  id: '/schedule',
-  path: '/schedule',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/schedule.lazy').then((d) => d.Route))
+    id: '/schedule',
+    path: '/schedule',
+    getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/schedule.lazy').then((d) => d.Route));
 const RankingsLazyRoute = RankingsLazyRouteImport.update({
-  id: '/rankings',
-  path: '/rankings',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/rankings.lazy').then((d) => d.Route))
+    id: '/rankings',
+    path: '/rankings',
+    getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/rankings.lazy').then((d) => d.Route));
 const LeaguesLazyRoute = LeaguesLazyRouteImport.update({
-  id: '/leagues',
-  path: '/leagues',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/leagues.lazy').then((d) => d.Route))
+    id: '/leagues',
+    path: '/leagues',
+    getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/leagues.lazy').then((d) => d.Route));
 const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
+    id: '/admin',
+    path: '/admin',
+    getParentRoute: () => rootRouteImport,
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+    id: '/',
+    path: '/',
+    getParentRoute: () => rootRouteImport,
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
-  '/leagues': typeof LeaguesLazyRoute
-  '/rankings': typeof RankingsLazyRoute
-  '/schedule': typeof ScheduleLazyRoute
+    '/': typeof IndexRoute;
+    '/admin': typeof AdminRoute;
+    '/leagues': typeof LeaguesLazyRoute;
+    '/rankings': typeof RankingsLazyRoute;
+    '/schedule': typeof ScheduleLazyRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
-  '/leagues': typeof LeaguesLazyRoute
-  '/rankings': typeof RankingsLazyRoute
-  '/schedule': typeof ScheduleLazyRoute
+    '/': typeof IndexRoute;
+    '/admin': typeof AdminRoute;
+    '/leagues': typeof LeaguesLazyRoute;
+    '/rankings': typeof RankingsLazyRoute;
+    '/schedule': typeof ScheduleLazyRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
-  '/leagues': typeof LeaguesLazyRoute
-  '/rankings': typeof RankingsLazyRoute
-  '/schedule': typeof ScheduleLazyRoute
+    __root__: typeof rootRouteImport;
+    '/': typeof IndexRoute;
+    '/admin': typeof AdminRoute;
+    '/leagues': typeof LeaguesLazyRoute;
+    '/rankings': typeof RankingsLazyRoute;
+    '/schedule': typeof ScheduleLazyRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/leagues' | '/rankings' | '/schedule'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/leagues' | '/rankings' | '/schedule'
-  id: '__root__' | '/' | '/admin' | '/leagues' | '/rankings' | '/schedule'
-  fileRoutesById: FileRoutesById
+    fileRoutesByFullPath: FileRoutesByFullPath;
+    fullPaths: '/' | '/admin' | '/leagues' | '/rankings' | '/schedule';
+    fileRoutesByTo: FileRoutesByTo;
+    to: '/' | '/admin' | '/leagues' | '/rankings' | '/schedule';
+    id: '__root__' | '/' | '/admin' | '/leagues' | '/rankings' | '/schedule';
+    fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
-  LeaguesLazyRoute: typeof LeaguesLazyRoute
-  RankingsLazyRoute: typeof RankingsLazyRoute
-  ScheduleLazyRoute: typeof ScheduleLazyRoute
+    IndexRoute: typeof IndexRoute;
+    AdminRoute: typeof AdminRoute;
+    LeaguesLazyRoute: typeof LeaguesLazyRoute;
+    RankingsLazyRoute: typeof RankingsLazyRoute;
+    ScheduleLazyRoute: typeof ScheduleLazyRoute;
 }
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/schedule': {
-      id: '/schedule'
-      path: '/schedule'
-      fullPath: '/schedule'
-      preLoaderRoute: typeof ScheduleLazyRouteImport
-      parentRoute: typeof rootRouteImport
+    interface FileRoutesByPath {
+        '/schedule': {
+            id: '/schedule';
+            path: '/schedule';
+            fullPath: '/schedule';
+            preLoaderRoute: typeof ScheduleLazyRouteImport;
+            parentRoute: typeof rootRouteImport;
+        };
+        '/rankings': {
+            id: '/rankings';
+            path: '/rankings';
+            fullPath: '/rankings';
+            preLoaderRoute: typeof RankingsLazyRouteImport;
+            parentRoute: typeof rootRouteImport;
+        };
+        '/leagues': {
+            id: '/leagues';
+            path: '/leagues';
+            fullPath: '/leagues';
+            preLoaderRoute: typeof LeaguesLazyRouteImport;
+            parentRoute: typeof rootRouteImport;
+        };
+        '/admin': {
+            id: '/admin';
+            path: '/admin';
+            fullPath: '/admin';
+            preLoaderRoute: typeof AdminRouteImport;
+            parentRoute: typeof rootRouteImport;
+        };
+        '/': {
+            id: '/';
+            path: '/';
+            fullPath: '/';
+            preLoaderRoute: typeof IndexRouteImport;
+            parentRoute: typeof rootRouteImport;
+        };
     }
-    '/rankings': {
-      id: '/rankings'
-      path: '/rankings'
-      fullPath: '/rankings'
-      preLoaderRoute: typeof RankingsLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leagues': {
-      id: '/leagues'
-      path: '/leagues'
-      fullPath: '/leagues'
-      preLoaderRoute: typeof LeaguesLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
-  LeaguesLazyRoute: LeaguesLazyRoute,
-  RankingsLazyRoute: RankingsLazyRoute,
-  ScheduleLazyRoute: ScheduleLazyRoute,
-}
+    IndexRoute: IndexRoute,
+    AdminRoute: AdminRoute,
+    LeaguesLazyRoute: LeaguesLazyRoute,
+    RankingsLazyRoute: RankingsLazyRoute,
+    ScheduleLazyRoute: ScheduleLazyRoute,
+};
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+    ._addFileChildren(rootRouteChildren)
+    ._addFileTypes<FileRouteTypes>();
