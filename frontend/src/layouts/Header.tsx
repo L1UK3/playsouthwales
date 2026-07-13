@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, Link } from '@tanstack/react-router';
 import { SignInButton, UserButton, useAuth } from '@clerk/react';
 import TabToggle from '@/components/TabToggle';
-import { neobrutalism } from '@clerk/ui/themes'
+import { neobrutalism } from '@clerk/themes'
 
 import SettingsBox from '@/components/SettingsBox';
 
