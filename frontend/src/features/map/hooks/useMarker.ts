@@ -11,16 +11,26 @@ interface UseMarkerProps {
 /**
  * Custom React hook coordinating map marker states, selection tracking, and event delegation.
  */
-export function useMarker({ leagues, selectedLeagueId, onLeagueSelect }: UseMarkerProps) {
+export function useMarker({
+    leagues,
+    selectedLeagueId,
+    onLeagueSelect,
+}: UseMarkerProps) {
     const markers = useMemo(() => mapLeaguesToMarkers(leagues), [leagues]);
-    const selectedLeague = useMemo(() => getSelectedLeague(leagues, selectedLeagueId), [leagues, selectedLeagueId]);
+    const selectedLeague = useMemo(
+        () => getSelectedLeague(leagues, selectedLeagueId),
+        [leagues, selectedLeagueId]
+    );
 
-    const handleMarkerClick = useCallback((id: number, domEvent?: { stopPropagation: () => void }) => {
-        if (domEvent) {
-            domEvent.stopPropagation();
-        }
-        onLeagueSelect(id);
-    }, [onLeagueSelect]);
+    const handleMarkerClick = useCallback(
+        (id: number, domEvent?: { stopPropagation: () => void }) => {
+            if (domEvent) {
+                domEvent.stopPropagation();
+            }
+            onLeagueSelect(id);
+        },
+        [onLeagueSelect]
+    );
 
     const handleMapClick = useCallback(() => {
         onLeagueSelect(null);

@@ -28,13 +28,13 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
-    initialData
+    initialData,
 }) => {
     const [rows, setRows] = useState<LocalLeaderboardEntry[]>(() => {
         if (initialData && Array.isArray(initialData.data)) {
             return initialData.data.map((r, idx) => ({
                 ...r,
-                tempId: `row-${idx}-${r.name}`
+                tempId: `row-${idx}-${r.name}`,
             }));
         }
         return [];
@@ -47,20 +47,19 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
 
     if (initialData !== prevInitialData) {
         setPrevInitialData(initialData);
-        setRows(initialData && Array.isArray(initialData.data)
-            ? initialData.data.map((r, idx) => ({
-                ...r,
-                tempId: `row-${idx}-${r.name}`
-            }))
-            : []
+        setRows(
+            initialData && Array.isArray(initialData.data)
+                ? initialData.data.map((r, idx) => ({
+                      ...r,
+                      tempId: `row-${idx}-${r.name}`,
+                  }))
+                : []
         );
         setPasteValue('');
         setShowPasteArea(false);
         setErrorMsg('');
     }
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-
-
 
     if (!isOpen) return null;
 
@@ -74,24 +73,30 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
             losses: 0,
             draws: 0,
             attendance: 0,
-            points: 0
+            points: 0,
         };
         setRows([...rows, newRow]);
     };
 
     const handleRemoveRow = (index: number) => {
-        const updated = rows.filter((_row, idx) => idx !== index).map((row, idx) => ({
-            ...row,
-            position: idx + 1
-        }));
+        const updated = rows
+            .filter((_row, idx) => idx !== index)
+            .map((row, idx) => ({
+                ...row,
+                position: idx + 1,
+            }));
         setRows(updated);
     };
 
-    const handleFieldChange = (index: number, field: keyof LeaderboardEntry, value: string | number) => {
+    const handleFieldChange = (
+        index: number,
+        field: keyof LeaderboardEntry,
+        value: string | number
+    ) => {
         const updated = [...rows];
         updated[index] = {
             ...updated[index],
-            [field]: value
+            [field]: value,
         };
         setRows(updated);
     };
@@ -110,37 +115,47 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
         const updated = [...rows];
         const [movedRow] = updated.splice(draggedIndex, 1);
         updated.splice(dropIndex, 0, movedRow);
-        setRows(updated.map((row, idx) => ({
-            ...row,
-            position: idx + 1
-        })));
+        setRows(
+            updated.map((row, idx) => ({
+                ...row,
+                position: idx + 1,
+            }))
+        );
         setDraggedIndex(null);
     };
 
     // Sort entries automatically by points descending, then wins, then attendance, then name
     const handleSortLeaderboard = () => {
-        const sorted = [...rows].sort((a, b) => {
-            if (b.points !== a.points) return b.points - a.points;
-            if (b.wins !== a.wins) return b.wins - a.wins;
-            if (b.attendance !== a.attendance) return b.attendance - a.attendance;
-            return a.name.localeCompare(b.name);
-        }).map((row, idx) => ({
-            ...row,
-            position: idx + 1
-        }));
+        const sorted = [...rows]
+            .sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                if (b.wins !== a.wins) return b.wins - a.wins;
+                if (b.attendance !== a.attendance)
+                    return b.attendance - a.attendance;
+                return a.name.localeCompare(b.name);
+            })
+            .map((row, idx) => ({
+                ...row,
+                position: idx + 1,
+            }));
         setRows(sorted);
     };
 
     const handleParsePaste = () => {
         if (!pasteValue.trim()) return;
 
-        const lines = pasteValue.split(/\r?\n/).filter(line => line.trim());
+        const lines = pasteValue.split(/\r?\n/).filter((line) => line.trim());
         const newEntries: LeaderboardEntry[] = [];
 
         lines.forEach((line) => {
             // Split by tabs or commas
-            const parts = line.split(/\t|,/).map(p => p.trim());
-            if (parts.length === 0 || parts[0] === null || parts[0] === undefined) return;
+            const parts = line.split(/\t|,/).map((p) => p.trim());
+            if (
+                parts.length === 0 ||
+                parts[0] === null ||
+                parts[0] === undefined
+            )
+                return;
 
             // Simple heuristics to parse fields:
             // Expect: Name, Wins, Losses, Draws, Attendance, Points (Comma/Tab separated)
@@ -173,20 +188,24 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                 losses,
                 draws,
                 attendance,
-                points
+                points,
             });
         });
 
         if (newEntries.length > 0) {
             // Merge or replace
-            const merged = [...rows, ...newEntries].sort((a, b) => {
-                if (b.points !== a.points) return b.points - a.points;
-                return b.wins - a.wins;
-            }).map((entry, idx) => ({
-                ...entry,
-                tempId: (entry as any).tempId ?? `row-${Date.now()}-${idx}-${Math.random()}`,
-                position: idx + 1
-            }));
+            const merged = [...rows, ...newEntries]
+                .sort((a, b) => {
+                    if (b.points !== a.points) return b.points - a.points;
+                    return b.wins - a.wins;
+                })
+                .map((entry, idx) => ({
+                    ...entry,
+                    tempId:
+                        (entry as any).tempId ??
+                        `row-${Date.now()}-${idx}-${Math.random()}`,
+                    position: idx + 1,
+                }));
             setRows(merged);
             setPasteValue('');
             setShowPasteArea(false);
@@ -198,7 +217,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
         if (isSubmitting) return;
 
         // Validation
-        const invalidRow = rows.find(r => !r.name.trim());
+        const invalidRow = rows.find((r) => !r.name.trim());
         if (invalidRow) {
             setErrorMsg('All players must have a name.');
             return;
@@ -207,46 +226,66 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
         setIsSubmitting(true);
         setErrorMsg('');
         try {
-            if (!window.confirm('Save the updated standings for this league?')) {
+            if (
+                !window.confirm('Save the updated standings for this league?')
+            ) {
                 setIsSubmitting(false);
                 return;
             }
 
             // Ensure positions are perfectly sequential based on points sorting
-            const finalSorted = [...rows].sort((a, b) => {
-                if (b.points !== a.points) return b.points - a.points;
-                if (b.wins !== a.wins) return b.wins - a.wins;
-                return b.attendance - a.attendance;
-            }).map((r, idx) => {
-                const rest = { ...r }; delete (rest as any).tempId;
-                return {
-                    ...rest,
-                    position: idx + 1
-                };
-            });
+            const finalSorted = [...rows]
+                .sort((a, b) => {
+                    if (b.points !== a.points) return b.points - a.points;
+                    if (b.wins !== a.wins) return b.wins - a.wins;
+                    return b.attendance - a.attendance;
+                })
+                .map((r, idx) => {
+                    const rest = { ...r };
+                    delete (rest as any).tempId;
+                    return {
+                        ...rest,
+                        position: idx + 1,
+                    };
+                });
 
             await onSubmit(finalSorted);
             onClose();
         } catch (err: any) {
-            setErrorMsg(err.message ?? 'An error occurred updating leaderboards.');
+            setErrorMsg(
+                err.message ?? 'An error occurred updating leaderboards.'
+            );
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return createPortal(
-        <div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]" onClick={onClose}>
-            <div className="bg-bg-card border-2 border-border-color rounded-lg w-full max-w-4xl max-h-[90vh] shadow-main flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
+        <div
+            className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]"
+            onClick={onClose}
+        >
+            <div
+                className="bg-bg-card border-2 border-border-color rounded-lg w-full max-w-4xl max-h-[90vh] shadow-main flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className="py-5 px-7 border-b-2 border-border-color flex justify-between items-center bg-bg-card shrink-0">
                     <h3 className="text-xl font-extrabold text-text-darker tracking-tight m-0">
                         Manage Standings
                     </h3>
-                    <button type="button" className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker" onClick={onClose}>
+                    <button
+                        type="button"
+                        className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker"
+                        onClick={onClose}
+                    >
                         ✕
                     </button>
                 </div>
 
-                <form className="flex flex-col grow overflow-hidden" onSubmit={handleSubmit}>
+                <form
+                    className="flex flex-col grow overflow-hidden"
+                    onSubmit={handleSubmit}
+                >
                     <div className="p-7 overflow-y-auto grow flex flex-col gap-4">
                         {errorMsg && (
                             <div className="p-3.5 bg-red-500/10 border border-red-500/20 text-red-500 rounded-md text-sm font-semibold">
@@ -265,10 +304,15 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setShowPasteArea(!showPasteArea)}
+                                    onClick={() =>
+                                        setShowPasteArea(!showPasteArea)
+                                    }
                                     className="btn btn-secondary text-xs py-1.5 px-3 min-h-[38px] flex items-center gap-1.5 font-bold cursor-pointer"
                                 >
-                                    <Clipboard className="w-4 h-4" /> {showPasteArea ? 'Hide Paste Area' : 'Import CSV/Paste'}
+                                    <Clipboard className="w-4 h-4" />{' '}
+                                    {showPasteArea
+                                        ? 'Hide Paste Area'
+                                        : 'Import CSV/Paste'}
                                 </button>
                                 <button
                                     type="button"
@@ -285,14 +329,22 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
 
                         {showPasteArea && (
                             <div className="flex flex-col gap-2 p-4 bg-bg-main/50 rounded-lg border border-border-color border-dashed shrink-0">
-                                <label htmlFor="pasteTextarea" className="text-xs font-bold text-text-main flex items-center gap-1">
+                                <label
+                                    htmlFor="pasteTextarea"
+                                    className="text-xs font-bold text-text-main flex items-center gap-1"
+                                >
                                     Paste Standings Data
                                     <span className="group relative cursor-pointer text-text-muted hover:text-text-main">
                                         <HelpCircle className="w-3.5 h-3.5 inline" />
                                         <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-64 bg-text-darker text-white p-2 rounded text-[11px] font-normal leading-normal shadow-lg z-50">
-                                            Supported formats:<br />
-                                            1. Name, Wins, Losses, Draws, Attendance, Points (Comma/Tab separated)<br />
-                                            2. Name, Points (separated by Comma/Tab)
+                                            Supported formats:
+                                            <br />
+                                            1. Name, Wins, Losses, Draws,
+                                            Attendance, Points (Comma/Tab
+                                            separated)
+                                            <br />
+                                            2. Name, Points (separated by
+                                            Comma/Tab)
                                         </span>
                                     </span>
                                 </label>
@@ -301,7 +353,9 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                     rows={4}
                                     placeholder="e.g. Luke Enness, 10, 0, 0, 5, 30"
                                     value={pasteValue}
-                                    onChange={(e) => setPasteValue(e.target.value)}
+                                    onChange={(e) =>
+                                        setPasteValue(e.target.value)
+                                    }
                                     className="py-2.5 px-3 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] font-mono resize-y"
                                 />
                                 <div className="flex justify-end gap-2 mt-1">
@@ -320,21 +374,42 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                             <table className="w-full border-collapse text-left">
                                 <thead className="sticky top-0 bg-bg-card border-b border-border-color z-10">
                                     <tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50">
-                                        <th className="py-2.5 px-3 w-14 text-center">Pos</th>
-                                        <th className="py-2.5 px-3 min-w-40">Player Name</th>
-                                        <th className="py-2.5 px-3 w-20 text-center">Wins</th>
-                                        <th className="py-2.5 px-3 w-20 text-center">Losses</th>
-                                        <th className="py-2.5 px-3 w-20 text-center">Draws</th>
-                                        <th className="py-2.5 px-3 w-24 text-center">Attendance</th>
-                                        <th className="py-2.5 px-3 w-24 text-right pr-6">Points</th>
-                                        <th className="py-2.5 px-3 w-16 text-center">Delete</th>
+                                        <th className="py-2.5 px-3 w-14 text-center">
+                                            Pos
+                                        </th>
+                                        <th className="py-2.5 px-3 min-w-40">
+                                            Player Name
+                                        </th>
+                                        <th className="py-2.5 px-3 w-20 text-center">
+                                            Wins
+                                        </th>
+                                        <th className="py-2.5 px-3 w-20 text-center">
+                                            Losses
+                                        </th>
+                                        <th className="py-2.5 px-3 w-20 text-center">
+                                            Draws
+                                        </th>
+                                        <th className="py-2.5 px-3 w-24 text-center">
+                                            Attendance
+                                        </th>
+                                        <th className="py-2.5 px-3 w-24 text-right pr-6">
+                                            Points
+                                        </th>
+                                        <th className="py-2.5 px-3 w-16 text-center">
+                                            Delete
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border-color/50">
                                     {rows.length === 0 ? (
                                         <tr>
-                                            <td colSpan={8} className="text-center py-12 text-sm text-text-muted">
-                                                No standings entries yet. Click "Add Player Row" or paste CSV data to begin.
+                                            <td
+                                                colSpan={8}
+                                                className="text-center py-12 text-sm text-text-muted"
+                                            >
+                                                No standings entries yet. Click
+                                                "Add Player Row" or paste CSV
+                                                data to begin.
                                             </td>
                                         </tr>
                                     ) : (
@@ -343,7 +418,9 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                 key={row.tempId}
                                                 className={`hover:bg-bg-main/20 ${draggedIndex === index ? 'opacity-60' : ''}`}
                                                 draggable
-                                                onDragStart={() => handleDragStart(index)}
+                                                onDragStart={() =>
+                                                    handleDragStart(index)
+                                                }
                                                 onDragOver={handleDragOver}
                                                 onDrop={() => handleDrop(index)}
                                             >
@@ -356,7 +433,13 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         placeholder="Player name"
                                                         value={row.name}
                                                         aria-label={`Player ${row.position} Name`}
-                                                        onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'name',
+                                                                e.target.value
+                                                            )
+                                                        }
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                                         required
                                                     />
@@ -367,7 +450,16 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         min="0"
                                                         value={row.wins}
                                                         aria-label={`${row.name || 'Player ' + row.position} Wins`}
-                                                        onChange={(e) => handleFieldChange(index, 'wins', parseInt(e.target.value) || 0)}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'wins',
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                ) || 0
+                                                            )
+                                                        }
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
@@ -377,7 +469,16 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         min="0"
                                                         value={row.losses}
                                                         aria-label={`${row.name || 'Player ' + row.position} Losses`}
-                                                        onChange={(e) => handleFieldChange(index, 'losses', parseInt(e.target.value) || 0)}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'losses',
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                ) || 0
+                                                            )
+                                                        }
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
@@ -387,7 +488,16 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         min="0"
                                                         value={row.draws}
                                                         aria-label={`${row.name || 'Player ' + row.position} Draws`}
-                                                        onChange={(e) => handleFieldChange(index, 'draws', parseInt(e.target.value) || 0)}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'draws',
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                ) || 0
+                                                            )
+                                                        }
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
@@ -397,7 +507,16 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         min="0"
                                                         value={row.attendance}
                                                         aria-label={`${row.name || 'Player ' + row.position} Attendance`}
-                                                        onChange={(e) => handleFieldChange(index, 'attendance', parseInt(e.target.value) || 0)}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'attendance',
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                ) || 0
+                                                            )
+                                                        }
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-center focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
@@ -406,14 +525,27 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
                                                         type="number"
                                                         value={row.points}
                                                         aria-label={`${row.name || 'Player ' + row.position} Points`}
-                                                        onChange={(e) => handleFieldChange(index, 'points', parseInt(e.target.value) || 0)}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'points',
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value
+                                                                ) || 0
+                                                            )
+                                                        }
                                                         className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full text-right pr-3 font-semibold focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
                                                 <td className="py-2 px-3 text-center">
                                                     <button
                                                         type="button"
-                                                        onClick={() => handleRemoveRow(index)}
+                                                        onClick={() =>
+                                                            handleRemoveRow(
+                                                                index
+                                                            )
+                                                        }
                                                         className="p-1.5 text-red-500 hover:bg-red-500/10 rounded-md transition-colors min-w-11 min-h-11 inline-flex items-center justify-center border-none bg-transparent cursor-pointer"
                                                     >
                                                         <Trash2 className="w-4 h-4" />

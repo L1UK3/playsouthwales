@@ -1,4 +1,3 @@
-
 /**
  * Data required to plot and interact with a league marker on the Google Map.
  */
@@ -15,5 +14,3 @@ export interface MarkerData {
     website?: string;
     eventLink?: string;
 }
-
-

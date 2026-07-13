@@ -33,7 +33,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     onEdit,
     onDelete,
     showInfo = true,
-    className = ''
+    className = '',
 }) => {
     const isSelected = selectedLeagueID === league.leagueId;
     const brandColor = league.brandColor ?? 'var(--color-primary)';
@@ -42,20 +42,20 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     return (
         <div
             id={`league-card-${league.leagueId}`}
-            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color border-l-4 border-l-(--brand-color) bg-bg-card cursor-pointer transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? "border-(--brand-color)! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!" : ""} ${isChampionship ? "border-amber-500/30!" : ""} ${className}`}
+            className={`flex flex-col gap-2 p-4 rounded-lg border-2 border-border-color border-l-4 border-l-(--brand-color) bg-bg-card cursor-pointer transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px hover:border-[color-mix(in_oklch,var(--brand-color)_40%,var(--color-border-color))] ${isSelected ? 'border-(--brand-color)! bg-[color-mix(in_oklch,var(--brand-color)_8%,transparent)]! shadow-[0_4px_12px_color-mix(in_oklch,var(--brand-color)_15%,transparent)]!' : ''} ${isChampionship ? 'border-amber-500/30!' : ''} ${className}`}
             style={{ '--brand-color': brandColor } as React.CSSProperties}
             onClick={() => onLeagueSelect(league.leagueId)}
         >
             <div className="flex items-center gap-2.5 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-text-darker">
                 {league.logo && (
-                    <img 
-                        src={league.logo} 
-                        alt={league.name} 
+                    <img
+                        src={league.logo}
+                        alt={league.name}
                         width="32"
                         height="32"
                         loading="lazy"
                         decoding="async"
-                        className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0" 
+                        className="w-8 h-8 rounded-md object-contain bg-white border border-border-color p-px shrink-0"
                     />
                 )}
                 <h3>{league.name}</h3>
@@ -63,21 +63,45 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
             {showInfo && (
                 <>
                     {league.location ? (
-                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
-                            <div className="font-semibold text-text-main flex items-center gap-1">Location:</div>
-                            <div className="text-[13px] text-text-muted">{league.location}</div>
+                        <div
+                            className={
+                                'text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30'
+                            }
+                        >
+                            <div className="font-semibold text-text-main flex items-center gap-1">
+                                Location:
+                            </div>
+                            <div className="text-[13px] text-text-muted">
+                                {league.location}
+                            </div>
                         </div>
                     ) : null}
                     {league?.directions ? (
-                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
-                            <div className="font-semibold text-text-main flex items-center gap-1">Directions:</div>
-                            <div className="leading-relaxed">{league.directions}</div>
+                        <div
+                            className={
+                                'text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30'
+                            }
+                        >
+                            <div className="font-semibold text-text-main flex items-center gap-1">
+                                Directions:
+                            </div>
+                            <div className="leading-relaxed">
+                                {league.directions}
+                            </div>
                         </div>
                     ) : null}
                     {league?.accessibility ? (
-                        <div className={"text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30"}>
-                            <div className="font-semibold text-text-main flex items-center gap-1">Accessibility:</div>
-                            <div className="leading-relaxed">{league.accessibility}</div>
+                        <div
+                            className={
+                                'text-xs text-text-muted bg-white/5 p-2 rounded-lg flex flex-col gap-0.5 border border-border-color/30'
+                            }
+                        >
+                            <div className="font-semibold text-text-main flex items-center gap-1">
+                                Accessibility:
+                            </div>
+                            <div className="leading-relaxed">
+                                {league.accessibility}
+                            </div>
                         </div>
                     ) : null}
 

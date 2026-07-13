@@ -46,20 +46,33 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
     onExclude,
     onUnexclude,
 }) => {
-    const dateText = new Date(dateKey + 'T00:00:00').toLocaleDateString(undefined, {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    const dateText = new Date(dateKey + 'T00:00:00').toLocaleDateString(
+        undefined,
+        {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }
+    );
 
-    const isToday = useMemo(() => dateKey === getLocalDateString(new Date()), [dateKey]);
+    const isToday = useMemo(
+        () => dateKey === getLocalDateString(new Date()),
+        [dateKey]
+    );
 
     return (
-        <div className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0" id={`date-${dateKey}`}>
-            <div className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? "border-l-4! border-l-today-border!" : ""}`}>{dateText}</div>
+        <div
+            className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0"
+            id={`date-${dateKey}`}
+        >
+            <div
+                className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? 'border-l-4! border-l-today-border!' : ''}`}
+            >
+                {dateText}
+            </div>
             <div className="flex flex-col gap-3">
-                {eventsForDay.map(event => (
+                {eventsForDay.map((event) => (
                     <ListCard
                         key={event.id}
                         event={event}

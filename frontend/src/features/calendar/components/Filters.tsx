@@ -29,11 +29,22 @@ export interface FiltersProps {
  * @param props - The properties passed to the component including leagues, types, current filters, and change handlers.
  * @returns JSX.Element
  */
-const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChange, onClear }) => {
+const Filters: React.FC<FiltersProps> = ({
+    leagues,
+    types,
+    filters,
+    onFilterChange,
+    onClear,
+}) => {
     return (
-        <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2.5 w-full" id="view-filters">
+        <div
+            className="grid grid-cols-2 sm:flex sm:flex-row gap-2.5 w-full"
+            id="view-filters"
+        >
             <div className="w-full sm:flex-1 sm:min-w-[150px] flex flex-col">
-                <label htmlFor="league-filter" className="sr-only">Filter by League</label>
+                <label htmlFor="league-filter" className="sr-only">
+                    Filter by League
+                </label>
                 <select
                     id="league-filter"
                     className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] w-full cursor-pointer"
@@ -41,31 +52,41 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                     onChange={(e) => onFilterChange('league', e.target.value)}
                 >
                     <option value="">All Leagues</option>
-                    {leagues.map(l => (
-                        <option key={l.leagueId} value={l.leagueId}>{l.name}</option>
+                    {leagues.map((l) => (
+                        <option key={l.leagueId} value={l.leagueId}>
+                            {l.name}
+                        </option>
                     ))}
                 </select>
             </div>
 
             <div className="w-full sm:flex-1 sm:min-w-[150px] flex flex-col">
-                <label htmlFor="type-filter" className="sr-only">Filter by Event Type</label>
+                <label htmlFor="type-filter" className="sr-only">
+                    Filter by Event Type
+                </label>
                 <select
                     id="type-filter"
                     className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] w-full cursor-pointer"
                     value={filters.eventType}
-                    onChange={(e) => onFilterChange('eventType', e.target.value)}
+                    onChange={(e) =>
+                        onFilterChange('eventType', e.target.value)
+                    }
                 >
                     <option value="">All Event Types</option>
-                    {Object.keys(types).map(eventType => (
+                    {Object.keys(types).map((eventType) => (
                         <option key={eventType} value={eventType}>
-                            {types[eventType] ? `[${types[eventType]}] ${eventType}` : eventType}
+                            {types[eventType]
+                                ? `[${types[eventType]}] ${eventType}`
+                                : eventType}
                         </option>
                     ))}
                 </select>
             </div>
 
             <div className="w-full sm:flex-1 sm:min-w-[110px] flex flex-col">
-                <label htmlFor="game-filter" className="sr-only">Filter by Game</label>
+                <label htmlFor="game-filter" className="sr-only">
+                    Filter by Game
+                </label>
                 <select
                     id="game-filter"
                     className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] w-full cursor-pointer"
@@ -79,9 +100,9 @@ const Filters: React.FC<FiltersProps> = ({ leagues, types, filters, onFilterChan
                 </select>
             </div>
 
-            <button 
-                type="button" 
-                className="btn btn-primary py-1.5 w-full sm:w-auto sm:shrink-0 sm:min-w-[80px]" 
+            <button
+                type="button"
+                className="btn btn-primary py-1.5 w-full sm:w-auto sm:shrink-0 sm:min-w-[80px]"
                 onClick={onClear}
             >
                 Clear

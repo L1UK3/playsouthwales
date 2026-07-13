@@ -5,6 +5,6 @@ export function useEventTypeMap() {
     return {
         data: EVENT_TYPE_MAP,
         isLoading: false,
-        error: null as Error | null
+        error: null as Error | null,
     };
 }

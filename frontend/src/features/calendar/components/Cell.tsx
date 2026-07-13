@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import Card from "@calendar/components/event-card/Card";
+import Card from '@calendar/components/event-card/Card';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
-import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { EventTypeMap } from '@/types/EventTypeMap';
 
 /**
  * @interface CellProps
@@ -37,79 +37,98 @@ export interface CellProps {
  * @param {CellProps} props - The properties passed to the component including day, events, and selection state.
  * @returns {JSX.Element} The rendered calendar cell.
  */
-const Cell: React.FC<CellProps> = React.memo(({
-    day,
-    dateKey,
-    isOtherMonth,
-    eventsForDay,
-    leagueMap,
-    types,
-    selectedDateKey,
-    todayKey,
-    onSelectDay
-}) => {
-    const isSelected = dateKey === selectedDateKey;
-    const isToday = dateKey === todayKey;
+const Cell: React.FC<CellProps> = React.memo(
+    ({
+        day,
+        dateKey,
+        isOtherMonth,
+        eventsForDay,
+        leagueMap,
+        types,
+        selectedDateKey,
+        todayKey,
+        onSelectDay,
+    }) => {
+        const isSelected = dateKey === selectedDateKey;
+        const isToday = dateKey === todayKey;
 
-    const sortedEvents = React.useMemo(() => {
-        return [...eventsForDay].sort((a, b) => {
-            const aIsSetEvent = a.eventType === 'LEGALITY' || a.eventType === 'RELEASE';
-            const bIsSetEvent = b.eventType === 'LEGALITY' || b.eventType === 'RELEASE';
-            if (aIsSetEvent && !bIsSetEvent) return -1;
-            if (!aIsSetEvent && bIsSetEvent) return 1;
-            return 0;
-        });
-    }, [eventsForDay]);
+        const sortedEvents = React.useMemo(() => {
+            return [...eventsForDay].sort((a, b) => {
+                const aIsSetEvent =
+                    a.eventType === 'LEGALITY' || a.eventType === 'RELEASE';
+                const bIsSetEvent =
+                    b.eventType === 'LEGALITY' || b.eventType === 'RELEASE';
+                if (aIsSetEvent && !bIsSetEvent) return -1;
+                if (!aIsSetEvent && bIsSetEvent) return 1;
+                return 0;
+            });
+        }, [eventsForDay]);
 
-    return (
-        <div
-            className={`min-h-12 sm:min-h-37 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""} ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""} ${isToday ? "border-2! border-today-border!" : ""}`}
-            onClick={() => !isOtherMonth && onSelectDay(dateKey)}
-            data-date-key={dateKey}
-        >
-            <div className="text-xs font-bold text-text-main mb-1 sm:mb-1.5">{day}</div>
-            {eventsForDay.length > 0 ? (
-                <>
-                    {/* Desktop/Tablet view: show full card list */}
-                    <div className="hidden sm:grid gap-1">
-                        {sortedEvents.slice(0, 3).map((event) => (
-                            <Card
-                                key={event.id}
-                                event={event}
-                                leagueMap={leagueMap}
-                                types={types}
-                                isOtherMonth={isOtherMonth}
-                            />
-                        ))}
-                        {sortedEvents.length > 3 ? (
-                            <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
-                                {sortedEvents.length - 3} more
-                            </div>
-                        ) : null}
-                    </div>
-
-                    {/* Mobile view: show small dots representing events */}
-                    <div className="flex sm:hidden justify-center gap-1 mt-1 flex-wrap">
-                        {sortedEvents.slice(0, 3).map((event) => {
-                            const league = event.leagueId ? leagueMap[event.leagueId] : null;
-                            const storeColor = league?.brandColor ?? `hsl(${(event.leagueId ?? 0) * 137 % 360}, 70%, 50%)`;
-                            return (
-                                <span
+        return (
+            <div
+                className={`min-h-12 sm:min-h-37 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
+                onClick={() => !isOtherMonth && onSelectDay(dateKey)}
+                data-date-key={dateKey}
+            >
+                <div className="text-xs font-bold text-text-main mb-1 sm:mb-1.5">
+                    {day}
+                </div>
+                {eventsForDay.length > 0 ? (
+                    <>
+                        {/* Desktop/Tablet view: show full card list */}
+                        <div className="hidden sm:grid gap-1">
+                            {sortedEvents.slice(0, 3).map((event) => (
+                                <Card
                                     key={event.id}
-                                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOtherMonth ? "opacity-40 bg-gray-400" : ""}`}
-                                    style={isOtherMonth ? {} : { backgroundColor: storeColor }}
-                                    title={league?.name ?? event.leagueName}
+                                    event={event}
+                                    leagueMap={leagueMap}
+                                    types={types}
+                                    isOtherMonth={isOtherMonth}
                                 />
-                            );
-                        })}
-                        {sortedEvents.length > 3 ? (
-                            <span className="text-[9px] leading-none text-text-muted font-bold select-none">+</span>
-                        ) : null}
-                    </div>
-                </>
-            ) : null}
-        </div>
-    );
-});
+                            ))}
+                            {sortedEvents.length > 3 ? (
+                                <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
+                                    {sortedEvents.length - 3} more
+                                </div>
+                            ) : null}
+                        </div>
+
+                        {/* Mobile view: show small dots representing events */}
+                        <div className="flex sm:hidden justify-center gap-1 mt-1 flex-wrap">
+                            {sortedEvents.slice(0, 3).map((event) => {
+                                const league = event.leagueId
+                                    ? leagueMap[event.leagueId]
+                                    : null;
+                                const storeColor =
+                                    league?.brandColor ??
+                                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`;
+                                return (
+                                    <span
+                                        key={event.id}
+                                        className={`w-1.5 h-1.5 rounded-full shrink-0 ${isOtherMonth ? 'opacity-40 bg-gray-400' : ''}`}
+                                        style={
+                                            isOtherMonth
+                                                ? {}
+                                                : {
+                                                      backgroundColor:
+                                                          storeColor,
+                                                  }
+                                        }
+                                        title={league?.name ?? event.leagueName}
+                                    />
+                                );
+                            })}
+                            {sortedEvents.length > 3 ? (
+                                <span className="text-[9px] leading-none text-text-muted font-bold select-none">
+                                    +
+                                </span>
+                            ) : null}
+                        </div>
+                    </>
+                ) : null}
+            </div>
+        );
+    }
+);
 
 export default Cell;

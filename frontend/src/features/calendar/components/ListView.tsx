@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
 import ListEventGroup from '@calendar/components/ListEventGroup';
-import type { Event } from '@/types/Event'
+import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
 
@@ -23,15 +23,25 @@ export interface ListViewProps {
     onUnexclude?: (event: Event) => void;
 }
 
-
 /**
  * ListView component displays a chronological list of events for the currently viewed month.
  * It groups events by date and provides expandable details for each event.
  * @param props - The properties passed to the component including the current date, events mapping, league mapping, and event types.
  * @returns JSX.Element
  */
-const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, types, onEdit, onDelete, onExclude, onUnexclude }) => {
-    const [expandedEventId, setExpandedEventId] = useState<number | string | null>(null);
+const ListView: React.FC<ListViewProps> = ({
+    currentDate,
+    events,
+    leagueMap,
+    types,
+    onEdit,
+    onDelete,
+    onExclude,
+    onUnexclude,
+}) => {
+    const [expandedEventId, setExpandedEventId] = useState<
+        number | string | null
+    >(null);
 
     const sortedDates = useMemo(() => {
         const dateKeys = Object.keys(events);
@@ -39,22 +49,28 @@ const ListView: React.FC<ListViewProps> = ({ currentDate, events, leagueMap, typ
             const year = currentDate.getFullYear();
             const month = String(currentDate.getMonth() + 1).padStart(2, '0');
             const prefix = `${year}-${month}-`;
-            return dateKeys.filter(dateKey => dateKey.startsWith(prefix)).sort();
+            return dateKeys
+                .filter((dateKey) => dateKey.startsWith(prefix))
+                .sort();
         }
         return dateKeys.sort();
     }, [events, currentDate]);
 
     const handleToggleEvent = useCallback((eventId: number | string) => {
-        setExpandedEventId(prev => (prev === eventId ? null : eventId));
+        setExpandedEventId((prev) => (prev === eventId ? null : eventId));
     }, []);
 
     if (sortedDates.length === 0) {
-        return <div className="py-10 px-5 text-center text-text-muted text-base">No events found.</div>;
+        return (
+            <div className="py-10 px-5 text-center text-text-muted text-base">
+                No events found.
+            </div>
+        );
     }
 
     return (
         <div id="list-view-events" className="flex flex-col gap-3">
-            {sortedDates.map(dateKey => (
+            {sortedDates.map((dateKey) => (
                 <ListEventGroup
                     key={dateKey}
                     dateKey={dateKey}

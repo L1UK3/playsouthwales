@@ -30,14 +30,15 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
     showAdminControls,
     columns,
     showInfo,
-    layout = 'grid'
+    layout = 'grid',
 }) => {
-    const gridColsClass = {
-        1: 'grid-cols-1',
-        2: 'grid-cols-1 sm:grid-cols-2',
-        3: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-        4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-    }[columns ?? 3] ?? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3';
+    const gridColsClass =
+        {
+            1: 'grid-cols-1',
+            2: 'grid-cols-1 sm:grid-cols-2',
+            3: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+            4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+        }[columns ?? 3] ?? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3';
 
     const sortedLeagues = React.useMemo(() => {
         return [...leagues].sort((a, b) => a.name.localeCompare(b.name));
@@ -50,11 +51,11 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
             <div
                 className={
                     isScroll
-                        ? "flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border-color/70 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb:hover]:bg-text-muted"
+                        ? 'flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border-color/70 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb:hover]:bg-text-muted'
                         : `grid ${gridColsClass} gap-4`
                 }
             >
-                {sortedLeagues.map(league => (
+                {sortedLeagues.map((league) => (
                     <LeagueCard
                         key={league.leagueId}
                         league={league}
@@ -63,7 +64,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                         onEdit={onEdit}
                         onDelete={onDelete}
                         showInfo={showInfo}
-                        className={isScroll ? "w-60 shrink-0" : ""}
+                        className={isScroll ? 'w-60 shrink-0' : ''}
                     />
                 ))}
 
@@ -71,8 +72,8 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                     <div
                         className={
                             isScroll
-                                ? "flex flex-col items-center justify-center min-h-30 w-60 shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]"
-                                : "flex flex-col items-center justify-center min-h-30 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]"
+                                ? 'flex flex-col items-center justify-center min-h-30 w-60 shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]'
+                                : 'flex flex-col items-center justify-center min-h-30 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]'
                         }
                         onClick={onAdd}
                     >

@@ -6,9 +6,9 @@ import { Calendar, MapPin, Trophy, ShieldAlert } from 'lucide-react';
 
 const CLERK_SIGN_IN_APPEARANCE = {
     elements: {
-        footerAction: { display: 'none' as const }
+        footerAction: { display: 'none' as const },
     },
-    theme: neobrutalism
+    theme: neobrutalism,
 };
 
 const MobileNavBar: React.FC = () => {
@@ -21,7 +21,9 @@ const MobileNavBar: React.FC = () => {
             <Link
                 to="/schedule"
                 className={`flex flex-col items-center gap-1 py-1 px-3 text-text-muted no-underline transition-colors duration-150 ${
-                    path.startsWith('/schedule') ? 'text-primary!' : 'hover:text-text-main'
+                    path.startsWith('/schedule')
+                        ? 'text-primary!'
+                        : 'hover:text-text-main'
                 }`}
             >
                 <Calendar className="w-5 h-5 transition-transform duration-200 active:scale-95" />
@@ -31,7 +33,9 @@ const MobileNavBar: React.FC = () => {
             <Link
                 to="/leagues"
                 className={`flex flex-col items-center gap-1 py-1 px-3 text-text-muted no-underline transition-colors duration-150 ${
-                    path.startsWith('/leagues') ? 'text-primary!' : 'hover:text-text-main'
+                    path.startsWith('/leagues')
+                        ? 'text-primary!'
+                        : 'hover:text-text-main'
                 }`}
             >
                 <MapPin className="w-5 h-5 transition-transform duration-200 active:scale-95" />
@@ -41,7 +45,9 @@ const MobileNavBar: React.FC = () => {
             <Link
                 to="/rankings"
                 className={`flex flex-col items-center gap-1 py-1 px-3 text-text-muted no-underline transition-colors duration-150 ${
-                    path.startsWith('/rankings') ? 'text-primary!' : 'hover:text-text-main'
+                    path.startsWith('/rankings')
+                        ? 'text-primary!'
+                        : 'hover:text-text-main'
                 }`}
             >
                 <Trophy className="w-5 h-5 transition-transform duration-200 active:scale-95" />
@@ -52,7 +58,9 @@ const MobileNavBar: React.FC = () => {
                 <Link
                     to="/admin"
                     className={`flex flex-col items-center gap-1 py-1 px-3 text-text-muted no-underline transition-colors duration-150 ${
-                        path.startsWith('/admin') ? 'text-primary!' : 'hover:text-text-main'
+                        path.startsWith('/admin')
+                            ? 'text-primary!'
+                            : 'hover:text-text-main'
                     }`}
                 >
                     <ShieldAlert className="w-5 h-5 transition-transform duration-200 active:scale-95" />
@@ -61,7 +69,10 @@ const MobileNavBar: React.FC = () => {
             )}
 
             {isLoaded && !isSignedIn && (
-                <SignInButton mode="modal" appearance={CLERK_SIGN_IN_APPEARANCE}>
+                <SignInButton
+                    mode="modal"
+                    appearance={CLERK_SIGN_IN_APPEARANCE}
+                >
                     <button
                         type="button"
                         className="flex flex-col items-center gap-1 py-1 px-3 text-text-muted bg-transparent border-none cursor-pointer transition-colors duration-150 hover:text-text-main"

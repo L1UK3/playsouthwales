@@ -19,7 +19,8 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ message }) => {
                 </div>
 
                 <p className="text-sm font-medium text-text-muted leading-relaxed max-w-[320px] m-0">
-                    {message ?? "We're currently building this feature. Check back soon for updates!"}
+                    {message ??
+                        "We're currently building this feature. Check back soon for updates!"}
                 </p>
 
                 <div className="w-full pt-2 border-t border-border-color/60 mt-2">

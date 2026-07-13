@@ -6,7 +6,8 @@ import Header from '@layouts/Header';
 import MobileNavBar from '@/components/MobileNavBar';
 
 export const RootComponent: React.FC = () => {
-    const { isSettingsOpen, handleSettingsBox, handleCloseSettings } = useHeaderLogic();
+    const { isSettingsOpen, handleSettingsBox, handleCloseSettings } =
+        useHeaderLogic();
 
     return (
         <div className="appRoot">

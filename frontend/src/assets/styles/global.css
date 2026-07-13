@@ -1,29 +1,28 @@
 /* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
-@import "tailwindcss";
-
+@import 'tailwindcss';
 
 @theme {
     /* Colors */
     --color-primary: oklch(0.55 0.22 25);
-    --color-primary-hover: oklch(0.48 0.20 25);
+    --color-primary-hover: oklch(0.48 0.2 25);
     --color-secondary: oklch(0.48 0.15 250);
-    --color-secondary-hover: oklch(0.40 0.13 250);
+    --color-secondary-hover: oklch(0.4 0.13 250);
     --color-accent: oklch(0.82 0.18 85);
 
     /* Backgrounds */
     --color-bg-main: oklch(0.98 0.005 240);
-    --color-bg-card: oklch(1.0 0.0 240);
+    --color-bg-card: oklch(1 0 240);
     --color-bg-card-hover: oklch(0.96 0.005 240);
     --color-bg-cell-empty: rgba(0, 0, 0, 0.02);
     --color-bg-day-header: rgba(246, 248, 250, 0.85);
 
     /* Text */
-    --color-text-main: oklch(0.20 0.01 240);
-    --color-text-muted: oklch(0.50 0.01 240);
+    --color-text-main: oklch(0.2 0.01 240);
+    --color-text-muted: oklch(0.5 0.01 240);
     --color-text-darker: oklch(0.12 0.01 240);
 
     /* Borders */
-    --color-border-color: oklch(0.90 0.01 240);
+    --color-border-color: oklch(0.9 0.01 240);
 
     /* Shadows */
     --shadow-main: 0 4px 14px 0 rgba(0, 0, 0, 0.08);
@@ -34,7 +33,9 @@
     --radius-lg: 12px;
 
     /* Fonts */
-    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-sans:
+        'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        sans-serif;
 
     /* Event Colors */
     --color-event-bg: rgba(227, 53, 13, 0.15);
@@ -146,7 +147,11 @@
         font-size: 13px;
         font-weight: 700;
         cursor: pointer;
-        transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+        transition:
+            background-color var(--dur-short) var(--ease-out),
+            border-color var(--dur-short) var(--ease-out),
+            color var(--dur-short) var(--ease-out),
+            transform var(--dur-short) var(--ease-out);
         border: 1px solid transparent;
         display: inline-flex;
         align-items: center;
@@ -168,7 +173,8 @@
     .btn-primary:hover {
         background-color: var(--color-primary-hover) !important;
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px color-mix(in oklch, var(--color-primary) 15%, transparent);
+        box-shadow: 0 4px 8px
+            color-mix(in oklch, var(--color-primary) 15%, transparent);
     }
 
     .btn-secondary {
@@ -249,23 +255,23 @@
 }
 
 .type-PRE-RELEASE {
-    --type-bg: oklch(0.70 0.30 300 / 0.15);
-    --type-border: oklch(0.70 0.30 300);
+    --type-bg: oklch(0.7 0.3 300 / 0.15);
+    --type-border: oklch(0.7 0.3 300);
 }
 
 .type-SPECIAL {
-    --type-bg: oklch(0.72 0.30 340 / 0.15);
-    --type-border: oklch(0.72 0.30 340);
+    --type-bg: oklch(0.72 0.3 340 / 0.15);
+    --type-border: oklch(0.72 0.3 340);
 }
 
 .type-REGIONAL {
-    --type-bg: oklch(0.70 0.25 35 / 0.15);
-    --type-border: oklch(0.70 0.25 35);
+    --type-bg: oklch(0.7 0.25 35 / 0.15);
+    --type-border: oklch(0.7 0.25 35);
 }
 
 .type-INTERNATIONAL {
-    --type-bg: oklch(0.80 0.20 200 / 0.15);
-    --type-border: oklch(0.80 0.20 200);
+    --type-bg: oklch(0.8 0.2 200 / 0.15);
+    --type-border: oklch(0.8 0.2 200);
 }
 
 .type-WORLDS {
@@ -284,13 +290,36 @@
 
 @utility gradient-card {
     --card-color: var(--store-color, var(--color-primary));
-    background: linear-gradient(135deg, color-mix(in oklch, var(--card-color) var(--card-bg-mix), transparent) 0%, var(--color-bg-card) 100%) !important;
-    border-top: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
-    border-right: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
-    border-bottom: 1.5px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    background: linear-gradient(
+        135deg,
+        color-mix(in oklch, var(--card-color) var(--card-bg-mix), transparent)
+            0%,
+        var(--color-bg-card) 100%
+    ) !important;
+    border-top: 1.5px solid
+        color-mix(
+            in oklch,
+            var(--card-color) var(--card-border-mix),
+            transparent
+        ) !important;
+    border-right: 1.5px solid
+        color-mix(
+            in oklch,
+            var(--card-color) var(--card-border-mix),
+            transparent
+        ) !important;
+    border-bottom: 1.5px solid
+        color-mix(
+            in oklch,
+            var(--card-color) var(--card-border-mix),
+            transparent
+        ) !important;
     border-left: 4px solid var(--type-border, var(--color-primary)) !important;
     box-shadow: var(--shadow-main) !important;
-    transition: border-color 0.2s var(--ease-out), background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+    transition:
+        border-color 0.2s var(--ease-out),
+        background-color 0.2s var(--ease-out),
+        transform 0.2s var(--ease-out);
 
     &:hover {
         border-top-color: var(--card-color) !important;
@@ -304,16 +333,41 @@
 
 @utility calendar-card {
     --card-color: var(--store-color, var(--color-primary));
-    background-color: color-mix(in oklch, var(--card-color) var(--cal-card-bg-mix), transparent) !important;
-    border-top: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
-    border-right: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
-    border-bottom: 1px solid color-mix(in oklch, var(--card-color) var(--card-border-mix), transparent) !important;
+    background-color: color-mix(
+        in oklch,
+        var(--card-color) var(--cal-card-bg-mix),
+        transparent
+    ) !important;
+    border-top: 1px solid
+        color-mix(
+            in oklch,
+            var(--card-color) var(--card-border-mix),
+            transparent
+        ) !important;
+    border-right: 1px solid
+        color-mix(
+            in oklch,
+            var(--card-color) var(--card-border-mix),
+            transparent
+        ) !important;
+    border-bottom: 1px solid
+        color-mix(
+            in oklch,
+            var(--card-color) var(--card-border-mix),
+            transparent
+        ) !important;
     border-left: 4px solid var(--type-border, var(--color-primary)) !important;
     box-shadow: var(--shadow-main) !important;
-    transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+    transition:
+        background-color 0.2s var(--ease-out),
+        border-color 0.2s var(--ease-out);
 
     &:hover {
-        background-color: color-mix(in oklch, var(--card-color) var(--cal-card-hover-mix), transparent) !important;
+        background-color: color-mix(
+            in oklch,
+            var(--card-color) var(--cal-card-hover-mix),
+            transparent
+        ) !important;
         border-top-color: var(--card-color) !important;
         border-right-color: var(--card-color) !important;
         border-bottom-color: var(--card-color) !important;
@@ -340,9 +394,9 @@ html.dark {
     --color-text-muted: oklch(0.65 0.005 240);
     --color-text-darker: oklch(0.95 0.005 240);
 
-    --color-border-color: oklch(0.30 0.01 240);
-    --color-primary: oklch(0.62 0.20 25);
-    --color-primary-hover: oklch(0.55 0.20 25);
+    --color-border-color: oklch(0.3 0.01 240);
+    --color-primary: oklch(0.62 0.2 25);
+    --color-primary-hover: oklch(0.55 0.2 25);
     --color-secondary: oklch(0.55 0.15 250);
     --color-secondary-hover: oklch(0.48 0.13 250);
 
@@ -357,28 +411,28 @@ html.dark body {
 
 /* --- High Contrast Variables --- */
 html.high-contrast {
-    --color-bg-main: #FFFFFF;
-    --color-bg-card: #FFFFFF;
-    --color-bg-card-hover: #E5E7EB;
-    --color-bg-cell-empty: #F3F4F6;
-    --color-bg-day-header: #E5E7EB;
+    --color-bg-main: #ffffff;
+    --color-bg-card: #ffffff;
+    --color-bg-card-hover: #e5e7eb;
+    --color-bg-cell-empty: #f3f4f6;
+    --color-bg-day-header: #e5e7eb;
 
     --color-text-main: #000000;
     --color-text-muted: #111827;
     --color-text-darker: #000000;
 
     --color-border-color: #000000;
-    --color-primary: #B30000;
+    --color-primary: #b30000;
     --color-primary-hover: #800000;
-    --color-secondary: #002B66;
-    --color-secondary-hover: #001A3D;
+    --color-secondary: #002b66;
+    --color-secondary-hover: #001a3d;
 
     --shadow-main: none;
 }
 
 html.high-contrast body {
     background-image: none !important;
-    background-color: #FFFFFF !important;
+    background-color: #ffffff !important;
     color: #000000 !important;
 }
 
@@ -387,16 +441,16 @@ html.high-contrast * {
     box-shadow: none !important;
 }
 
-html.high-contrast a, 
+html.high-contrast a,
 html.high-contrast button {
     outline: 2px solid #000000;
     font-weight: 800 !important;
 }
 
-html.high-contrast a:hover, 
+html.high-contrast a:hover,
 html.high-contrast button:hover {
     outline: 3px solid #000000;
-    background-color: #E5E7EB !important;
+    background-color: #e5e7eb !important;
     color: #000000 !important;
 }
 

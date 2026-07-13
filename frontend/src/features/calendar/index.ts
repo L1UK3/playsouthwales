@@ -27,4 +27,3 @@ export { default as SelectedDaySection } from './components/SelectedDaySection';
 export { default as Cell } from './components/Cell';
 export { default as NavBar } from './components/NavBar';
 export { default as ActiveMarkerOverlay } from './components/ActiveMarkerOverlay';
-

@@ -2,14 +2,24 @@
  * Global constants used for application configuration and display.
  */
 
-import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { EventTypeMap } from '@/types/EventTypeMap';
 
 /**
  * An array of month names for display and formatting purposes.
  */
 export const MONTH_NAMES = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
 ];
 
 /**
@@ -28,7 +38,7 @@ export const DEFAULT_DEPTH = 1;
  */
 export const DEFAULT_CENTER = {
     lat: 51.58,
-    lng: -3.58
+    lng: -3.58,
 };
 
 /**
@@ -39,13 +49,13 @@ export const DEFAULT_ZOOM = 9;
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const EVENT_TYPE_MAP: EventTypeMap = {
-    "CASUAL": "C",
-    "STANDARD": "S",
-    "CHALLENGE": "🏅",
-    "CUP": "🏆",
-    "PRE-RELEASE": "PR",
-    "SPECIAL": "📍",
-    "REGIONAL": "📍",
-    "INTERNATIONAL": "INT",
-    "WORLDS": "🌍"
+    CASUAL: 'C',
+    STANDARD: 'S',
+    CHALLENGE: '🏅',
+    CUP: '🏆',
+    'PRE-RELEASE': 'PR',
+    SPECIAL: '📍',
+    REGIONAL: '📍',
+    INTERNATIONAL: 'INT',
+    WORLDS: '🌍',
 };

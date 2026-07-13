@@ -1,4 +1,3 @@
-
 export const getParams = () => {
     const isMobile = window.innerWidth < 640;
     return {

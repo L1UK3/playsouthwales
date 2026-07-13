@@ -22,7 +22,8 @@ const JUMP_DURATION = 480;
 const IDLE_SPEED = 0.0028;
 const ROTATION_SPEED = 1.4;
 
-const easeInOutQuad = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+const easeInOutQuad = (t: number) =>
+    t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 interface Point {
@@ -36,7 +37,11 @@ interface Point {
  * @param {ActiveMarkerOverlayProps} props - The properties passed to the component.
  * @returns {JSX.Element} A transparent canvas overlaid on the calendar grid.
  */
-const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef, selectedDateKey, todayKey }) => {
+const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
+    containerRef,
+    selectedDateKey,
+    todayKey,
+}) => {
     const { settings } = useSettings();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const activeKeyRef = useRef<string>(selectedDateKey ?? todayKey);
@@ -58,7 +63,11 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef,
         const camera = new THREE.OrthographicCamera(0, 1, 1, 0, 0.1, 1000);
         camera.position.z = 100;
 
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias: true,
+        });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
         scene.add(new THREE.AmbientLight(0xffffff, 1.0));
@@ -75,7 +84,9 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef,
         // The resting spot for the active day, in DOM pixel space (origin top-left,
         // y-down) -- the top-right "whitespace" of the cell, beside the date number.
         const computeRestSpot = (): Point | null => {
-            const cell = container.querySelector<HTMLElement>(`[data-date-key="${activeKeyRef.current}"]`);
+            const cell = container.querySelector<HTMLElement>(
+                `[data-date-key="${activeKeyRef.current}"]`
+            );
             if (!cell) return null;
 
             const cellRect = cell.getBoundingClientRect();
@@ -84,13 +95,20 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef,
             const { ballDiameter, rightMargin, topMargin } = getParams();
 
             return {
-                x: cellRect.right - canvasRect.left - rightMargin - ballDiameter / 2,
-                y: cellRect.top - canvasRect.top + topMargin
+                x:
+                    cellRect.right -
+                    canvasRect.left -
+                    rightMargin -
+                    ballDiameter / 2,
+                y: cellRect.top - canvasRect.top + topMargin,
             };
         };
 
         // Three.js camera space here is y-up; DOM rects are y-down.
-        const toCameraSpace = (p: Point): Point => ({ x: p.x, y: viewHeight - p.y });
+        const toCameraSpace = (p: Point): Point => ({
+            x: p.x,
+            y: viewHeight - p.y,
+        });
 
         let base: Point | null = null;
         let jumpFrom: Point = { x: 0, y: 0 };
@@ -204,7 +222,9 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef,
                 const t = Math.min((now - jumpStart) / JUMP_DURATION, 1);
                 const eased = easeInOutQuad(t);
                 displayX = lerp(jumpFrom.x, base.x, eased);
-                displayY = lerp(jumpFrom.y, base.y, eased) + Math.sin(Math.PI * t) * arcHeight;
+                displayY =
+                    lerp(jumpFrom.y, base.y, eased) +
+                    Math.sin(Math.PI * t) * arcHeight;
                 scaleMod = 1 + Math.sin(Math.PI * t) * 0.18;
 
                 if (t >= 1) {
@@ -257,7 +277,12 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({ containerRef,
         return null;
     }
 
-    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-5" />;
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none z-5"
+        />
+    );
 };
 
 export default ActiveMarkerOverlay;

@@ -2,7 +2,6 @@ import React from 'react';
 import { InfoWindow } from '@vis.gl/react-google-maps';
 import type { League } from '@/types/League';
 
-
 interface InfoBoxProps {
     selectedLeague: League;
     onCloseClick: () => void;
@@ -12,7 +11,10 @@ interface InfoBoxProps {
  * InfoBox renders the Google Map InfoWindow popup card detailing a selected league,
  * styling links and actions with the league's brand color.
  */
-export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }) => {
+export const InfoBox: React.FC<InfoBoxProps> = ({
+    selectedLeague,
+    onCloseClick,
+}) => {
     if (
         selectedLeague.latitude === undefined ||
         selectedLeague.longitude === undefined ||
@@ -26,7 +28,10 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
 
     return (
         <InfoWindow
-            position={{ lat: selectedLeague.latitude, lng: selectedLeague.longitude }}
+            position={{
+                lat: selectedLeague.latitude,
+                lng: selectedLeague.longitude,
+            }}
             onCloseClick={onCloseClick}
         >
             <div
@@ -45,7 +50,9 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }
                             className="w-7 h-7 rounded-md object-contain bg-white border border-[#e2e8f0] p-px"
                         />
                     )}
-                    <h3 className="m-0 text-[15px] font-bold text-[#0f172a] leading-tight">{selectedLeague.name}</h3>
+                    <h3 className="m-0 text-[15px] font-bold text-[#0f172a] leading-tight">
+                        {selectedLeague.name}
+                    </h3>
                 </div>
                 {selectedLeague.location && (
                     <p className="m-0 mb-2.5 text-[13px] text-[#475569]">

@@ -44,11 +44,10 @@ export function useEvents(currentDate: any, includeExcluded = false) {
 
         // now loop through all weekly events templates
         for (const temp of list2) {
-            
             // get start date
             const start = new Date(temp.date.slice(0, 10) + 'T00:00:00');
             if (isNaN(start.getTime())) {
-                console.log("bad date found!");
+                console.log('bad date found!');
                 continue;
             }
 
@@ -66,10 +65,10 @@ export function useEvents(currentDate: any, includeExcluded = false) {
                 if (dayDate.getTime() >= start.getTime()) {
                     if (dayDate.getDay() === targetDay) {
                         // format date string manually
-                        const mStr = month < 10 ? "0" + month : "" + month;
-                        const dStr = d < 10 ? "0" + d : "" + d;
+                        const mStr = month < 10 ? '0' + month : '' + month;
+                        const dStr = d < 10 ? '0' + d : '' + d;
 
-                        const dateString = year + "-" + mStr + "-" + dStr;
+                        const dateString = year + '-' + mStr + '-' + dStr;
 
                         // Skip if this specific date is excluded in the recurring template
                         const excludedDates = temp.excludedDates ?? [];
@@ -79,7 +78,11 @@ export function useEvents(currentDate: any, includeExcluded = false) {
                         }
 
                         // create a virtual id so react doesn't crash with duplicate keys
-                        const vId = temp.id * 10000000 + (year - 2000) * 10000 + month * 100 + d;
+                        const vId =
+                            temp.id * 10000000 +
+                            (year - 2000) * 10000 +
+                            month * 100 +
+                            d;
 
                         const newEvent = {
                             ...temp,
@@ -87,7 +90,7 @@ export function useEvents(currentDate: any, includeExcluded = false) {
                             recurringEventId: temp.id,
                             date: dateString,
                             isRecurring: true,
-                            isExcluded: isExcluded
+                            isExcluded: isExcluded,
                         };
 
                         finalArray.push(newEvent);
@@ -96,14 +99,20 @@ export function useEvents(currentDate: any, includeExcluded = false) {
             }
         }
 
-        console.log("loaded events count:", finalArray.length);
+        console.log('loaded events count:', finalArray.length);
         return finalArray;
-    }, [eventsQuery.data, weeklyEventsQuery.data, year, month, includeExcluded]);
+    }, [
+        eventsQuery.data,
+        weeklyEventsQuery.data,
+        year,
+        month,
+        includeExcluded,
+    ]);
 
     return {
         data: data,
         isLoading: isLoading,
         isError: isError,
-        error: error
+        error: error,
     };
 }

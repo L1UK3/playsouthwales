@@ -15,7 +15,7 @@ interface SettingsContextType {
 const COOKIE_NAME = 'playwales-settings';
 
 function getCookie(name: string): string | null {
-    const nameEQ = name + "=";
+    const nameEQ = name + '=';
     const ca = document.cookie.split(';');
     for (let c of ca) {
         while (c.startsWith(' ')) c = c.substring(1, c.length);
@@ -25,18 +25,23 @@ function getCookie(name: string): string | null {
 }
 
 function setCookie(name: string, value: string, days = 365) {
-    let expires = "";
+    let expires = '';
     if (days) {
         const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=Lax";
+    document.cookie =
+        name + '=' + (value || '') + expires + '; path=/; SameSite=Lax';
 }
 
-const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
+const SettingsContext = createContext<SettingsContextType | undefined>(
+    undefined
+);
 
-export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     const [settings, setSettings] = useState<Settings>(() => {
         try {
             const saved = getCookie(COOKIE_NAME);
@@ -61,7 +66,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setCookie(COOKIE_NAME, encodeURIComponent(JSON.stringify(settings)));
 
         const root = document.documentElement;
-        
+
         if (settings.highContrast) {
             root.classList.add('high-contrast');
         } else {
@@ -88,7 +93,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, [settings]);
 
     const toggleSetting = (key: keyof Settings) => {
-        setSettings(prev => ({
+        setSettings((prev) => ({
             ...prev,
             [key]: !prev[key],
         }));
