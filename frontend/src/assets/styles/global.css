@@ -288,91 +288,12 @@
     --cal-card-hover-mix: 18%;
 }
 
-@utility gradient-card {
-    --card-color: var(--store-color, var(--color-primary));
-    background: linear-gradient(
-        135deg,
-        color-mix(in oklch, var(--card-color) var(--card-bg-mix), transparent)
-            0%,
-        var(--color-bg-card) 100%
-    ) !important;
-    border-top: 1.5px solid
-        color-mix(
-            in oklch,
-            var(--card-color) var(--card-border-mix),
-            transparent
-        ) !important;
-    border-right: 1.5px solid
-        color-mix(
-            in oklch,
-            var(--card-color) var(--card-border-mix),
-            transparent
-        ) !important;
-    border-bottom: 1.5px solid
-        color-mix(
-            in oklch,
-            var(--card-color) var(--card-border-mix),
-            transparent
-        ) !important;
-    border-left: 4px solid var(--type-border, var(--color-primary)) !important;
-    box-shadow: var(--shadow-main) !important;
-    transition:
-        border-color 0.2s var(--ease-out),
-        background-color 0.2s var(--ease-out),
-        transform 0.2s var(--ease-out);
-
-    &:hover {
-        border-top-color: var(--card-color) !important;
-        border-right-color: var(--card-color) !important;
-        border-bottom-color: var(--card-color) !important;
-        border-left-color: var(--type-border, var(--color-primary)) !important;
-        box-shadow: var(--shadow-main) !important;
-        transform: translateY(-2px);
-    }
-}
-
 @utility calendar-card {
     --card-color: var(--store-color, var(--color-primary));
-    background-color: color-mix(
-        in oklch,
-        var(--card-color) var(--cal-card-bg-mix),
-        transparent
-    ) !important;
-    border-top: 1px solid
-        color-mix(
-            in oklch,
-            var(--card-color) var(--card-border-mix),
-            transparent
-        ) !important;
-    border-right: 1px solid
-        color-mix(
-            in oklch,
-            var(--card-color) var(--card-border-mix),
-            transparent
-        ) !important;
-    border-bottom: 1px solid
-        color-mix(
-            in oklch,
-            var(--card-color) var(--card-border-mix),
-            transparent
-        ) !important;
-    border-left: 4px solid var(--type-border, var(--color-primary)) !important;
+    color: var(--color-text-main) !important;
+    background-color: var(--card-color) !important;
     box-shadow: var(--shadow-main) !important;
-    transition:
-        background-color 0.2s var(--ease-out),
-        border-color 0.2s var(--ease-out);
-
-    &:hover {
-        background-color: color-mix(
-            in oklch,
-            var(--card-color) var(--cal-card-hover-mix),
-            transparent
-        ) !important;
-        border-top-color: var(--card-color) !important;
-        border-right-color: var(--card-color) !important;
-        border-bottom-color: var(--card-color) !important;
-        box-shadow: var(--shadow-main) !important;
-    }
+    border-radius: var(--radius-md) !important;
 }
 
 /* --- Dark Mode Variables --- */
@@ -409,51 +330,6 @@ html.dark body {
     background-image: none !important;
 }
 
-/* --- High Contrast Variables --- */
-html.high-contrast {
-    --color-bg-main: #ffffff;
-    --color-bg-card: #ffffff;
-    --color-bg-card-hover: #e5e7eb;
-    --color-bg-cell-empty: #f3f4f6;
-    --color-bg-day-header: #e5e7eb;
-
-    --color-text-main: #000000;
-    --color-text-muted: #111827;
-    --color-text-darker: #000000;
-
-    --color-border-color: #000000;
-    --color-primary: #b30000;
-    --color-primary-hover: #800000;
-    --color-secondary: #002b66;
-    --color-secondary-hover: #001a3d;
-
-    --shadow-main: none;
-}
-
-html.high-contrast body {
-    background-image: none !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;
-}
-
-html.high-contrast * {
-    border-color: #000000 !important;
-    box-shadow: none !important;
-}
-
-html.high-contrast a,
-html.high-contrast button {
-    outline: 2px solid #000000;
-    font-weight: 800 !important;
-}
-
-html.high-contrast a:hover,
-html.high-contrast button:hover {
-    outline: 3px solid #000000;
-    background-color: #e5e7eb !important;
-    color: #000000 !important;
-}
-
 /* --- Large Text Scale --- */
 html.large-text {
     font-size: 115%;
@@ -482,14 +358,4 @@ html.disable-animations *::after {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
-}
-
-.type-LEGALITY {
-    --type-bg: oklch(0.75 0.25 180 / 0.15);
-    --type-border: oklch(0.75 0.25 180);
-}
-
-.type-RELEASE {
-    --type-bg: oklch(0.72 0.28 120 / 0.15);
-    --type-border: oklch(0.72 0.28 120);
 }

@@ -23,6 +23,7 @@ modern-minimal
 - Mono: Geist Mono, weight 400
 - Display tracking: -0.02em
 - Type scale anchor: --text-md = 1.125rem
+- Emoji Policy: Don't use emojis apart from event types.
 
 ## Spacing
 4-point named scale. The values are in \global.css\. Pages must use named tokens (\ar(--space-md)\), never raw values.

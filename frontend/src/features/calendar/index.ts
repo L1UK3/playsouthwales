@@ -1,8 +1,8 @@
 export * from './components/CalendarView';
 export * from './components/ListView';
-export * from './components/event-card/EventCard';
-export * from './components/event-card/ListCard';
-export * from './components/event-card/Card';
+export * from '@components/event-card/EventCard';
+export * from '@components/event-card/ListCard';
+export * from '@components/event-card/Card';
 export * from './components/ListEventGroup';
 export * from './components/Filters';
 export * from './components/SelectedDaySection';
@@ -17,9 +17,9 @@ export * from './types/EventCard.types';
 
 export { default as CalendarView } from './components/CalendarView';
 export { default as ListView } from './components/ListView';
-export { default as EventCard } from './components/event-card/EventCard';
-export { default as ListCard } from './components/event-card/ListCard';
-export { default as Card } from './components/event-card/Card';
+export { default as EventCard } from '@components/event-card/EventCard';
+export { default as ListCard } from '@components/event-card/ListCard';
+export { default as Card } from '@components/event-card/Card';
 export { default as ListEventGroup } from './components/ListEventGroup';
 export { default as Filters } from './components/Filters';
 export { default as SelectedDaySection } from './components/SelectedDaySection';

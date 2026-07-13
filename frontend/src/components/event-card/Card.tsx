@@ -26,9 +26,9 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
                 : (league?.name ?? event.leagueName ?? 'Event');
         const storeColor =
             event.eventType === 'LEGALITY'
-                ? 'oklch(0.75 0.25 180)'
+                ? 'black'
                 : event.eventType === 'RELEASE'
-                    ? 'oklch(0.72 0.28 120)'
+                    ? 'black'
                     : (league?.brandColor ??
                         `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
 
@@ -36,20 +36,21 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
             <div
                 className={`
                 flex justify-between
-                items-center gap-1.5 py-1 px-1.5
+                items-center gap-1 py-0.5 px-1
                 rounded-md calendar-card
-                text-text-main text-[11px]
+                text-white! text-[9.5px]
                 font-bold
                 cursor-pointer
-                max-sm:text-[10px]
-                max-sm:py-1 max-sm:px-1.5
+                max-sm:text-[8px]
+                max-sm:py-0.5 max-sm:px-0.5
+                max-sm:gap-0.5
                 type-${event.eventType}
                 ${isOtherMonth ? 'opacity-35! grayscale! pointer-events-none!' : ''}
             `}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
             >
                 <span className="truncate min-w-0">{leagueName}</span>
-                <span className="shrink-0 text-[10px] text-text-muted">
+                <span className="shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0 text-center type-${event.eventType} bg-white text-black dark:bg-white dark:text-black">
                     {types[event.eventType] ?? event.eventType}
                 </span>
             </div>

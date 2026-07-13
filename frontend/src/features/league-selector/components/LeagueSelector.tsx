@@ -79,8 +79,8 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                     <div
                         className={
                             isScroll
-                                ? 'flex flex-col items-center justify-center min-h-30 w-60 shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]'
-                                : 'flex flex-col items-center justify-center min-h-30 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-[rgba(227,53,13,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(227,53,13,0.08)]'
+                                ? 'flex flex-col items-center justify-center min-h-28 w-60 shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8'
+                                : 'flex flex-col items-center justify-center min-h-28 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8'
                         }
                         onClick={onAdd}
                     >
