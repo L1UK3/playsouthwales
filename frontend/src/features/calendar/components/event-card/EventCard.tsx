@@ -22,11 +22,11 @@ const EventCard: React.FC<EventCardProps> = React.memo(
             event.eventType === 'LEGALITY'
                 ? 'var(--secondary)'
                 : (league?.brandColor ??
-                  `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
+                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
 
         return (
             <div
-                className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main gradient-card type-${event.eventType} ${league?.isChampionshipSeries ? 'border-2 border-amber-500/50 bg-gradient-to-br from-amber-500/10 to-transparent' : ''}`}
+                className={`flex flex-col gap-2 p-3.5 rounded-lg shadow-main calendar-card type-${event.eventType} ${league?.isChampionshipSeries ? 'border-2 border-amber-500/50 bg-linear-to-br from-amber-500/10 to-transparent' : ''}`}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
             >
                 <div className="flex flex-col gap-2">

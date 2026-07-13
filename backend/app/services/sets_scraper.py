@@ -2,9 +2,9 @@ import json
 import logging
 import os
 import re
-import urllib.parse
-import urllib.request
 from datetime import datetime, timedelta
+
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -189,34 +189,23 @@ async def run_sets_sync() -> dict:
     Scrapes upcoming and current set data from Bulbapedia, calculates standard legality,
     and updates backend/app/data/sets.json with sets released starting from SV9 (2025-03-28) onwards.
     """
-    title = "List of Pokémon Trading Card Game expansions"
     params = {
         "action": "query",
         "prop": "revisions",
-        "titles": title,
+        "titles": "List of Pokémon Trading Card Game expansions",
         "rvslots": "*",
         "rvprop": "content",
         "format": "json",
     }
-    query_string = urllib.parse.urlencode(params)
-    url = f"https://bulbapedia.bulbagarden.net/w/api.php?{query_string}"
-
+    url = "https://bulbapedia.bulbagarden.net/w/api.php"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-    req = urllib.request.Request(url, headers=headers)
 
     try:
         logger.info("Fetching TCG set expansions from Bulbapedia...")
-
-        # We run the synchronous request in an executor to avoid blocking the async loop
-        import asyncio
-
-        loop = asyncio.get_event_loop()
-
-        def fetch_data():
-            with urllib.request.urlopen(req) as response:
-                return json.loads(response.read().decode("utf-8"))
-
-        data = await loop.run_in_executor(None, fetch_data)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, params=params, headers=headers, timeout=15.0)
+            response.raise_for_status()
+            data = response.json()
 
         pages = data.get("query", {}).get("pages", {})
         wikitext = ""

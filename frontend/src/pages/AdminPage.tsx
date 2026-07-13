@@ -36,7 +36,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@clerk/react';
 import type { LeaderboardEntry } from '@/features/admin/components/LeaderboardFormModal';
 
-// TODO: #44 Properly implement this page using React Native.
 
 const AdminPage: React.FC = () => {
     useDocumentMetadata({

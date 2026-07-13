@@ -1,11 +1,12 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, lazy, Suspense } from 'react';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 import type { CellData } from '@calendar/types/CellData';
 import Cell from '@calendar/components/Cell';
-import ActiveMarkerOverlay from '@calendar/components/ActiveMarkerOverlay';
 import type { EventTypeMap } from '@/types/EventTypeMap';
+
+const ActiveMarkerOverlay = lazy(() => import('./ActiveMarkerOverlay'));
 
 /**
  * Properties for the CalendarView component.
@@ -126,11 +127,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                     />
                 ))}
             </div>
-            <ActiveMarkerOverlay
-                containerRef={wrapperRef}
-                selectedDateKey={selectedDateKey}
-                todayKey={todayKey}
-            />
+            <Suspense fallback={null}>
+                <ActiveMarkerOverlay
+                    containerRef={wrapperRef}
+                    selectedDateKey={selectedDateKey}
+                    todayKey={todayKey}
+                />
+            </Suspense>
         </div>
     );
 };

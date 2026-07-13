@@ -28,22 +28,22 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
             event.eventType === 'LEGALITY'
                 ? 'oklch(0.75 0.25 180)'
                 : event.eventType === 'RELEASE'
-                  ? 'oklch(0.72 0.28 120)'
-                  : (league?.brandColor ??
-                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
+                    ? 'oklch(0.72 0.28 120)'
+                    : (league?.brandColor ??
+                        `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
 
         return (
             <div
                 className={`
-                flex justify-between 
-                items-center gap-1.5 py-1 px-1.5 
+                flex justify-between
+                items-center gap-1.5 py-1 px-1.5
                 rounded-md calendar-card
-                text-text-main text-[11px] 
-                font-bold 
-                cursor-pointer 
-                max-sm:text-[10px] 
-                max-sm:py-1 max-sm:px-1.5 
-                type-${event.eventType} 
+                text-text-main text-[11px]
+                font-bold
+                cursor-pointer
+                max-sm:text-[10px]
+                max-sm:py-1 max-sm:px-1.5
+                type-${event.eventType}
                 ${isOtherMonth ? 'opacity-35! grayscale! pointer-events-none!' : ''}
             `}
                 style={{ '--store-color': storeColor } as React.CSSProperties}

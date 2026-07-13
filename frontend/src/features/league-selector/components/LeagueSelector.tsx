@@ -41,7 +41,14 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
         }[columns ?? 3] ?? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3';
 
     const sortedLeagues = React.useMemo(() => {
-        return [...leagues].sort((a, b) => a.name.localeCompare(b.name));
+        return [...leagues].sort((a, b) => {
+            const aChamp = !!a.isChampionshipSeries;
+            const bChamp = !!b.isChampionshipSeries;
+            if (aChamp !== bChamp) {
+                return aChamp ? 1 : -1;
+            }
+            return a.name.localeCompare(b.name);
+        });
     }, [leagues]);
 
     const isScroll = layout === 'scroll';
@@ -77,7 +84,6 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
                         }
                         onClick={onAdd}
                     >
-                        {/* TODO: #40 Championship series should always be displayed after regular leagues and before 'add new league' */}
                         <div className="flex flex-col items-center gap-2 font-bold text-[15px]">
                             <span className="text-2xl font-normal">+</span>
                             <span>Add New League</span>

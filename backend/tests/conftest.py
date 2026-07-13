@@ -127,7 +127,6 @@ def client(mock_supabase):
     # Patch supabase in all modules that import it at module level
     with (
         patch("app.dependencies.supabase", mock_supabase),
-        patch("app.main.supabase", mock_supabase),
         patch("app.services.pokedata_sync.supabase", mock_supabase),
         patch("app.services.top20_scraper.supabase", mock_supabase),
     ):

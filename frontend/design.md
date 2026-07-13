@@ -1,4 +1,4 @@
-﻿# Design — Play! South Wales
+# Design — Play! South Wales
 
 A locked design system for this app. Every page redesign reads this file before emitting code.
 
@@ -9,18 +9,18 @@ modern-minimal
 - App pages: Workbench (split directories, maps, and sidebar/calendar)
 
 ## Theme
-- \--color-paper\: \oklch(0.98 0.005 240)\
-- \--color-paper-2\: \oklch(0.95 0.005 240)\
-- \--color-ink\: \oklch(0.20 0.01 240)\
-- \--color-ink-2\: \oklch(0.40 0.01 240)\
-- \--color-rule\: \oklch(0.90 0.01 240)\
+- \--color-paper\: \oklch(0.985 0.006 28)\ /* Warm sand paper */
+- \--color-paper-2\: \oklch(0.995 0.004 28)\ /* Warm off-white card */
+- \--color-ink\: \oklch(0.20 0.014 28)\ /* Deep warm charcoal */
+- \--color-ink-2\: \oklch(0.45 0.012 28)\ /* Warm muted grey */
+- \--color-rule\: \oklch(0.91 0.008 28)\ /* Clean warm border */
 - \--color-accent\: \oklch(0.55 0.22 25)\ /* Pokemon Red */
 - \--color-focus\: \oklch(0.48 0.15 250)\ /* Pokemon Blue */
 
 ## Typography
 - Display: Outfit, weight 700, style normal
-- Body: Outfit, weight 400
-- Mono: monospace, weight 400
+- Body: Geist, weight 400
+- Mono: Geist Mono, weight 400
 - Display tracking: -0.02em
 - Type scale anchor: --text-md = 1.125rem
 

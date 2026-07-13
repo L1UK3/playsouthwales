@@ -24,11 +24,11 @@ class PokedataEvent(BaseModel):
     league: str
     type: str
     product: str = "tcg"
-    shop: str
-    street_address: str
-    city: str
-    state: str
-    pokemon_url: str
+    shop: str | None = None
+    street_address: str | None = None
+    city: str | None = None
+    state: str | None = None
+    pokemon_url: str | None = None
     cost: str = ""
     event_website: str = Field(default="", alias="Event_website")
     third_party_registration_website: str = Field(

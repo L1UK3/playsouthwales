@@ -1,21 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { loadEvents, loadWeeklyEvents } from '@services/api';
 import { useMemo } from 'react';
+import type { Event } from '@/types/Event';
 
 // hook to get all events for calendar
-export function useEvents(currentDate: any, includeExcluded = false) {
+export function useEvents(currentDate: Date, includeExcluded = false) {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
 
     // fetch normal events from api
-    const eventsQuery = useQuery<any[]>({
+    const eventsQuery = useQuery<Event[]>({
         queryKey: ['events', year, month],
         queryFn: () => loadEvents(month, year),
         staleTime: 300000, // 5 mins in milliseconds
     });
 
     // fetch weekly templates from api
-    const weeklyEventsQuery = useQuery<any[]>({
+    const weeklyEventsQuery = useQuery<Event[]>({
         queryKey: ['weekly-events'],
         queryFn: () => loadWeeklyEvents(),
         staleTime: 600000, // 10 mins in milliseconds
@@ -35,7 +36,7 @@ export function useEvents(currentDate: any, includeExcluded = false) {
         const list1 = eventsQuery.data;
         const list2 = weeklyEventsQuery.data;
 
-        const finalArray: any[] = [];
+        const finalArray: Event[] = [];
 
         // first copy all normal events
         for (const element of list1) {
@@ -47,7 +48,7 @@ export function useEvents(currentDate: any, includeExcluded = false) {
             // get start date
             const start = new Date(temp.date.slice(0, 10) + 'T00:00:00');
             if (isNaN(start.getTime())) {
-                console.log('bad date found!');
+                console.error(`Invalid start date found for weekly event template: ID ${temp.id}`);
                 continue;
             }
 
@@ -79,15 +80,15 @@ export function useEvents(currentDate: any, includeExcluded = false) {
 
                         // create a virtual id so react doesn't crash with duplicate keys
                         const vId =
-                            temp.id * 10000000 +
+                            Number(temp.id) * 10000000 +
                             (year - 2000) * 10000 +
                             month * 100 +
                             d;
 
-                        const newEvent = {
+                        const newEvent: Event = {
                             ...temp,
                             id: vId,
-                            recurringEventId: temp.id,
+                            recurringEventId: Number(temp.id),
                             date: dateString,
                             isRecurring: true,
                             isExcluded: isExcluded,
@@ -99,7 +100,6 @@ export function useEvents(currentDate: any, includeExcluded = false) {
             }
         }
 
-        console.log('loaded events count:', finalArray.length);
         return finalArray;
     }, [
         eventsQuery.data,
