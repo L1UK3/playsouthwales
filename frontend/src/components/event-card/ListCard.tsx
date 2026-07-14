@@ -85,7 +85,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
         // Error state row
         if (isError) {
             return (
-                <div className="py-3 px-4 rounded-xl border-2 border-red-500/20 bg-red-500/[0.01] shadow-sm flex items-center justify-between w-full">
+                <div className="py-3 px-4 rounded-xl border-2 border-red-500/20 bg-red-500/1 shadow-sm flex items-center justify-between w-full">
                     <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-xs">
                         <span>Failed to load event</span>
                     </div>
@@ -181,7 +181,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
 
                 {/* Expanded Content (Pure CSS transition based on height) */}
                 <div
-                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${isExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${isExpanded ? 'max-h-150 opacity-100' : 'max-h-0 opacity-0'
                         }`}
                 >
                     <div className="p-4 flex flex-col gap-3.5">

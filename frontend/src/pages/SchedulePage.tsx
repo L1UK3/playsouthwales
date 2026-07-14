@@ -53,26 +53,26 @@ const SchedulePage: React.FC = () => {
             id: `legality-${s.code}`,
             name: s.name,
             date: s.legalDate,
-            startTime: null,
-            leagueId: null,
+            startTime: '',
+            leagueId: -1,
             eventType: 'LEGALITY',
             game: 'TCG',
             description: `Official standard legality date for ${s.name} (${s.code}).`,
-            entryFee: null,
+            entryFee: '',
         }));
     }, [sets]);
 
     const virtualReleaseEvents = useMemo(() => {
         return sets.map((s) => ({
             id: `release-${s.code}`,
-            leagueId: null,
+            leagueId: -1,
             name: s.name,
             date: s.releaseDate,
-            startTime: null,
+            startTime: '',
             eventType: 'RELEASE',
             game: 'TCG',
             description: `Official English release date for ${s.name} (${s.code}).`,
-            entryFee: null,
+            entryFee: '',
         }));
     }, [sets]);
 
