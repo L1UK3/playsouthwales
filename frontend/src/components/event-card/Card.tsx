@@ -1,3 +1,4 @@
+/* Hallmark ◆ genre: modern-minimal ◆ component: Card ◆ design-system: design.md ◆ designed-as-app */
 import React from 'react';
 import type { EventCardProps } from '@calendar/types/EventCard.types';
 
@@ -36,14 +37,14 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
             <div
                 className={`
                 flex justify-between
-                items-center gap-1 py-0.5 px-1
-                rounded-md calendar-card
-                text-white! text-[9.5px]
-                font-bold
+                items-center gap-1.5 py-1 px-2
+                calendar-card
+                text-text-main text-[10px]
+                font-semibold
                 cursor-pointer
-                max-sm:text-[8px]
-                max-sm:py-0.5 max-sm:px-0.5
-                max-sm:gap-0.5
+                max-sm:text-[8.5px]
+                max-sm:py-0.5 max-sm:px-1.5
+                max-sm:gap-1
                 type-${event.eventType}
                 ${isOtherMonth ? 'opacity-35! grayscale! pointer-events-none!' : ''}
             `}

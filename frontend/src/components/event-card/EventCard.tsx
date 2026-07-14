@@ -85,18 +85,18 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> = React.mem
         const isChampionship = league?.isChampionshipSeries ?? false;
         const champStyles = isChampionship
             ? 'border-2 border-amber-500/40 bg-linear-to-br from-amber-500/[0.04] to-transparent shadow-md shadow-amber-500/5'
-            : 'border border-border-color/60 border-l-[6px] border-l-(--store-color) bg-bg-card shadow-xs';
+            : 'border-2 border-(--store-color) bg-bg-card shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
 
         // Combine wrapper styling
         const cardClasses = `
             flex flex-col gap-3 p-4 rounded-xl transition-all duration-200 outline-hidden
             ${champStyles}
             ${successBorder}
-            ${isHover ? '-translate-y-0.5 shadow-md bg-bg-card-hover border-l-(--store-color)' : 'hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover'}
+            ${isHover ? '-translate-y-0.5 shadow-md bg-bg-card-hover border-(--store-color) shadow-[0_0_12px_color-mix(in_oklch,var(--store-color)_30%,transparent)]' : 'hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover'}
             ${isFocus ? 'ring-2 ring-focus ring-offset-2' : ''}
             ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
             ${isDisabled ? 'opacity-55 pointer-events-none cursor-not-allowed' : ''}
-            ${isReleaseCard ? 'bg-bg-card-release border-l-black' : ''}
+            ${isReleaseCard ? 'bg-bg-card-release border-2 border-black shadow-[0_0_8px_rgba(0,0,0,0.15)]' : ''}
         `.trim().replace(/\s+/g, ' ');
 
         if (isReleaseCard) {

@@ -100,14 +100,14 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
         const isChampionship = league?.isChampionshipSeries ?? false;
         const champStyles = isChampionship
             ? 'border-2 border-amber-500 bg-linear-to-br from-amber-500 to-amber-600 text-white shadow-sm'
-            : 'border border-border-color/60 border-l-[6px] border-l-(--store-color) bg-bg-card text-text-main shadow-xs';
+            : 'border-2 border-(--store-color) bg-bg-card text-text-main shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
 
         // Combine class styling
         const cardClasses = `
             rounded-xl overflow-hidden cursor-pointer transition-all duration-200 outline-hidden
             ${champStyles}
             ${successBorder}
-            ${isHover ? '-translate-y-0.5 shadow-md bg-bg-card-hover border-l-(--store-color) translate-x-0.5' : 'hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover hover:translate-x-0.5'}
+            ${isHover ? '-translate-y-0.5 shadow-md bg-bg-card-hover border-(--store-color) shadow-[0_0_12px_color-mix(in_oklch,var(--store-color)_30%,transparent)] translate-x-0.5' : 'hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover hover:translate-x-0.5'}
             ${isFocus ? 'ring-2 ring-focus ring-offset-2' : ''}
             ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
             ${event.isExcluded ? 'opacity-55 grayscale-[30%] border-dashed border-red-500/20' : ''}

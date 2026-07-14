@@ -279,6 +279,16 @@
     --type-border: oklch(0.88 0.25 95);
 }
 
+.type-LEGALITY {
+    --type-bg: oklch(0.2 0.01 28 / 0.08);
+    --type-border: oklch(0.2 0.01 28);
+}
+
+.type-RELEASE {
+    --type-bg: oklch(0.2 0.01 28 / 0.08);
+    --type-border: oklch(0.2 0.01 28);
+}
+
 :root {
     --card-bg-mix: 6%;
     --card-border-mix: 100%;
@@ -290,10 +300,19 @@
 
 @utility calendar-card {
     --card-color: var(--store-color, var(--color-primary));
+    background-color: var(--color-bg-card) !important;
+    border: 1.5px solid var(--card-color) !important;
+
     color: var(--color-text-main) !important;
-    background-color: var(--card-color) !important;
-    box-shadow: var(--shadow-main) !important;
-    border-radius: var(--radius-md) !important;
+    border-radius: var(--radius-sm) !important;
+    transition: all var(--dur-short) var(--ease-out) !important;
+
+    &:hover {
+        background-color: var(--color-bg-card-hover) !important;
+        transform: translateY(-0.5px) !important;
+        box-shadow: 0 0 10px
+            color-mix(in oklch, var(--card-color) 25%, transparent) !important;
+    }
 }
 
 /* --- Dark Mode Variables --- */
@@ -323,6 +342,15 @@ html.dark {
 
     --color-event-bg: rgba(255, 77, 77, 0.2);
     --color-event-more-bg: rgba(255, 255, 255, 0.1);
+
+    .type-LEGALITY {
+        --type-bg: oklch(0.88 0.005 28 / 0.12);
+        --type-border: oklch(0.88 0.005 28);
+    }
+    .type-RELEASE {
+        --type-bg: oklch(0.88 0.005 28 / 0.12);
+        --type-border: oklch(0.88 0.005 28);
+    }
 }
 
 html.dark body {
