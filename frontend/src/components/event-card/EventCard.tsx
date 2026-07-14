@@ -39,6 +39,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> = React.mem
         const isLoading = state === 'loading';
         const isError = state === 'error';
         const isSuccess = state === 'success';
+        const isReleaseCard = event.eventType === 'RELEASE' || event.eventType === 'LEGALITY';
 
         // Loading state (Skeleton layout)
         if (isLoading) {
@@ -65,7 +66,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> = React.mem
         // Error state fallback banner inside card
         if (isError) {
             return (
-                <div className="flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/[0.02] shadow-sm w-full max-w-sm">
+                <div className="flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/2 shadow-sm w-full max-w-sm">
                     <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm">
                         <span></span>
                         <span>Failed to load event details</span>
@@ -95,7 +96,47 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> = React.mem
             ${isFocus ? 'ring-2 ring-focus ring-offset-2' : ''}
             ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
             ${isDisabled ? 'opacity-55 pointer-events-none cursor-not-allowed' : ''}
+            ${isReleaseCard ? 'bg-bg-card-release border-l-black' : ''}
         `.trim().replace(/\s+/g, ' ');
+
+        if (isReleaseCard) {
+            return (
+                <div
+                    className={cardClasses}
+                    style={{ '--store-color': storeColor } as React.CSSProperties}
+                >
+                    <div className="flex items-start gap-3">
+                        {/* Metadata & Title */}
+                        <div className="flex flex-col gap-0.5 grow min-w-0">
+                            <h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug truncate">
+                                {event.name}
+                            </h3>
+                        </div>
+                    </div>
+
+                    {/* Event Format Tags */}
+                    <div className="flex flex-wrap gap-1.5 items-center">
+                        <span
+                            className={`px-2.5 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider uppercase border border-(--type-border)/30 text-(--type-border) bg-(--type-bg) type-${event.eventType}`}
+                            style={{
+                                '--type-bg': `var(--type-bg, rgba(0, 0, 0, 0.05))`,
+                                '--type-border': `var(--type-border, var(--color-text-muted))`
+                            } as React.CSSProperties}
+                        >
+                            {types[event.eventType] ? `${types[event.eventType]} ` : ''}{event.eventType}
+                        </span>
+                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
+                            {event.game}
+                        </span>
+                    </div>
+
+                    {/* Description */}
+                    <div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
+                        {event.description}
+                    </div>
+                </div>
+            )
+        }
 
         return (
             <div
@@ -123,12 +164,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> = React.mem
                     {/* Metadata & Title */}
                     <div className="flex flex-col gap-0.5 grow min-w-0">
                         <div className="text-[10px] font-bold uppercase tracking-wider text-text-muted flex flex-wrap items-center gap-1.5 leading-none">
-                            <span className="truncate max-w-[120px]">{leagueName}</span>
-                            {isChampionship && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[8px] font-bold uppercase tracking-wide">
-                                    🏆 Championship
-                                </span>
-                            )}
+                            <span className="truncate max-w-30">{leagueName}</span>
                         </div>
                         <h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug truncate">
                             {event.name}

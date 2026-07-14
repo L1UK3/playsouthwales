@@ -53,28 +53,29 @@ const SchedulePage: React.FC = () => {
             id: `legality-${s.code}`,
             name: s.name,
             date: s.legalDate,
-            startTime: '00:00',
-            leagueId: -1,
+            startTime: null,
+            leagueId: null,
             eventType: 'LEGALITY',
             game: 'TCG',
             description: `Official standard legality date for ${s.name} (${s.code}).`,
-            entryFee: 'N/A',
+            entryFee: null,
         }));
     }, [sets]);
 
     const virtualReleaseEvents = useMemo(() => {
         return sets.map((s) => ({
             id: `release-${s.code}`,
+            leagueId: null,
             name: s.name,
             date: s.releaseDate,
-            startTime: '00:00',
-            leagueId: -1,
+            startTime: null,
             eventType: 'RELEASE',
             game: 'TCG',
             description: `Official English release date for ${s.name} (${s.code}).`,
-            entryFee: 'N/A',
+            entryFee: null,
         }));
     }, [sets]);
+
     const [direction, setDirection] = useState<
         'left' | 'right' | 'up' | 'down' | null
     >('up');
@@ -223,9 +224,7 @@ const SchedulePage: React.FC = () => {
         const dayEvents = selectedDateKey
             ? (filteredEventsGrouped[selectedDateKey] ?? [])
             : [];
-        return dayEvents.filter(
-            (e) => e.eventType !== 'LEGALITY' && e.eventType !== 'RELEASE'
-        );
+        return dayEvents
     }, [selectedDateKey, filteredEventsGrouped]);
 
     const activeMonthEvents = useMemo(() => {
@@ -238,7 +237,7 @@ const SchedulePage: React.FC = () => {
                     event.eventType === 'LEGALITY' ||
                     event.eventType === 'RELEASE'
                 )
-                    return false;
+                    return true;
                 if (!event.date.startsWith(monthKeyPrefix)) return false;
                 if (filters.league && String(event.leagueId) !== filters.league)
                     return false;
@@ -262,12 +261,12 @@ const SchedulePage: React.FC = () => {
         direction === 'left'
             ? 'animate-swipe-left'
             : direction === 'right'
-              ? 'animate-swipe-right'
-              : direction === 'down'
-                ? 'animate-swipe-down'
-                : direction === 'up'
-                  ? 'animate-swipe-up'
-                  : '';
+                ? 'animate-swipe-right'
+                : direction === 'down'
+                    ? 'animate-swipe-down'
+                    : direction === 'up'
+                        ? 'animate-swipe-up'
+                        : '';
 
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 

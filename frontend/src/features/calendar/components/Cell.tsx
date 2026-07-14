@@ -4,6 +4,7 @@ import Card from '@components/event-card/Card';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
+import { useSortEvents } from '../../../hooks/useSortEvents';
 
 /**
  * @interface CellProps
@@ -52,17 +53,7 @@ const Cell: React.FC<CellProps> = React.memo(
         const isSelected = dateKey === selectedDateKey;
         const isToday = dateKey === todayKey;
 
-        const sortedEvents = React.useMemo(() => {
-            return [...eventsForDay].sort((a, b) => {
-                const aIsSetEvent =
-                    a.eventType === 'LEGALITY' || a.eventType === 'RELEASE';
-                const bIsSetEvent =
-                    b.eventType === 'LEGALITY' || b.eventType === 'RELEASE';
-                if (aIsSetEvent && !bIsSetEvent) return -1;
-                if (!aIsSetEvent && bIsSetEvent) return 1;
-                return 0;
-            });
-        }, [eventsForDay]);
+        const sortedEvents = useSortEvents(eventsForDay);
 
         return (
             <div
@@ -132,3 +123,5 @@ const Cell: React.FC<CellProps> = React.memo(
 );
 
 export default Cell;
+
+

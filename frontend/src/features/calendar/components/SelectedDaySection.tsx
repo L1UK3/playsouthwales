@@ -5,6 +5,7 @@ import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
 import Footer from '@/layouts/Footer';
+import { useSortEvents } from '@/hooks/useSortEvents';
 
 /**
  * Properties for the SelectedDaySection component.
@@ -47,6 +48,8 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
         )
         : 'Selected Day';
 
+    const sortedEvents = useSortEvents(selectedDayEvents);
+
     return (
         <div
             id="selected-day-section"
@@ -73,13 +76,13 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
                             events.
                         </p>
                     </div>
-                ) : selectedDayEvents.length === 0 ? (
+                ) : sortedEvents.length === 0 ? (
                     <div className="text-text-muted text-sm p-2.5 rounded-xl bg-bg-main text-center">
                         No events scheduled.
                     </div>
                 ) : (
                     <div className="flex flex-col gap-2.5">
-                        {selectedDayEvents.map((event) => (
+                        {sortedEvents.map((event) => (
                             <EventCard
                                 key={event.id}
                                 event={event}
