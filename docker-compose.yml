@@ -33,6 +33,17 @@ services:
         depends_on:
             - backend
 
+    bot:
+        build: ./bot
+        command: node build/main.js
+        environment:
+            - BOT_TOKEN=${BOT_TOKEN}
+        env_file:
+            - ./bot/.env
+        restart: always
+        depends_on:
+            - backend
+
 networks:
     default:
         name: supabase_network_playwales
