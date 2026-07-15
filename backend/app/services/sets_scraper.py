@@ -203,7 +203,9 @@ async def run_sets_sync() -> dict:
     try:
         logger.info("Fetching TCG set expansions from Bulbapedia...")
         async with httpx.AsyncClient() as client:
-            response = await client.get(url, params=params, headers=headers, timeout=15.0)
+            response = await client.get(
+                url, params=params, headers=headers, timeout=15.0
+            )
             response.raise_for_status()
             data = response.json()
 
@@ -250,14 +252,3 @@ async def run_sets_sync() -> dict:
     except Exception as e:
         logger.error(f"Failed to sync upcoming sets: {e}")
         return {"success": False, "error": str(e)}
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    async def test():
-        logging.basicConfig(level=logging.INFO)
-        res = await run_sets_sync()
-        print("Scrape results:", res)
-
-    asyncio.run(test())

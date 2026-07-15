@@ -12,7 +12,7 @@ from app.models import (
     LeagueCreate,
     LeagueUpdate,
 )
-from app.services.pokedata_sync import sync_pokedata
+from app.services.pokedata_scraper import sync_pokedata
 from app.services.sets_scraper import run_sets_sync
 
 logger = logging.getLogger(__name__)

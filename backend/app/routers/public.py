@@ -7,7 +7,6 @@ from supabase import Client
 
 from app.dependencies import get_supabase
 from app.models import EventResponse, LeagueResponse, WeeklyEventResponse
-from app.services.top20_data import load_top20_payload
 
 logger = logging.getLogger(__name__)
 
@@ -157,24 +156,6 @@ async def get_leagues(db: Client = Depends(get_supabase)):
         }
         for league in leagues
     ]
-
-
-@router.get("/api/players/top20")
-async def get_top_20_players(season: str | None = None):
-    """
-    Fetch the top 20 players for a season.
-    """
-    try:
-        return load_top20_payload(season)
-    except Exception as e:
-        logger.error(f"Failed to fetch top 20 players: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={
-                "code": "internal_error",
-                "message": "Failed to fetch top 20 players",
-            },
-        )
 
 
 @router.get("/api/leaderboard/{league_id}")
