@@ -38,7 +38,9 @@ from app.config import get_settings  # noqa: E402
 get_settings.cache_clear()
 
 # Now we can safely import the FastAPI app
-from app.main import app  # noqa: E402
+from app import create_app  # noqa: E402
+
+app = create_app()
 
 
 # ---------------------------------------------------------------------------
@@ -127,8 +129,7 @@ def client(mock_supabase):
     # Patch supabase in all modules that import it at module level
     with (
         patch("app.dependencies.supabase", mock_supabase),
-        patch("app.services.pokedata_sync.supabase", mock_supabase),
-        patch("app.services.top20_scraper.supabase", mock_supabase),
+        patch("app.services.pokedata_scraper.supabase", mock_supabase),
     ):
         with TestClient(app) as tc:
             yield tc

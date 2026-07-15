@@ -14,7 +14,7 @@ Format of a pokedata request:
 ```JSON
 {
     "type": "League Cup",
-    "name": "Kraken Gaming Ltd's Pokémon League Mid-Year Celebration 1",
+    "name": "Kraken Gaming Ltd's League Mid-Year Celebration 1",
     "date": "2026-07-18",
     "shop": "KRAKEN GAMING LTD",
     "street_address": "None STEPNEY ST, WALES SA15 3TW, GB",
@@ -22,7 +22,7 @@ Format of a pokedata request:
     "city": "Llanelli",
     "postal_code": "",
     "country_code": "GB",
-    "pokemon_url": "https://www.pokemon.com/us/pokemon-trainer-club/play-pokemon-tournaments/26-07-001295/",
+    "p******_url": "",
     "guid": "fccfd164-341d-491e-a6c9-937a72498b21",
     "latitude": "51.6821",
     "longitude": "-4.16229",
@@ -46,11 +46,11 @@ Format of a pokedata request:
   }
 ```
 
-Refactoring of the guids might be necessary so that admins can edit events without 
+Refactoring of the guids might be necessary so that admins can edit events without
 the data being reset every hour.
 If a guid has been fetched before, don't update its data.
 
-Event table schema: 
+Event table schema:
 ```Python
 class EventBase(BaseModel):
     name: str
@@ -66,6 +66,6 @@ class EventBase(BaseModel):
     excludedDates: Optional[list[str]] = None
 ```
 A class to assign matching data in a pokedata request to the events table class
-the id of an event should now match the guid from the raw JSON data. 
-make sure that I can manually update the league ids in my production environment so that they match the 
+the id of an event should now match the guid from the raw JSON data.
+make sure that I can manually update the league ids in my production environment so that they match the
 league id from the fetched data.

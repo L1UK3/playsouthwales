@@ -1,17 +1,10 @@
 import logging
-import os
-import sys
 from typing import Any
 
 import httpx
 from pydantic import BaseModel, Field
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(os.path.dirname(current_dir))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-
-from app.dependencies import supabase  # noqa: E402
+from app.dependencies import supabase
 
 logger = logging.getLogger(__name__)
 
@@ -220,22 +213,3 @@ async def sync_pokedata() -> dict[str, Any]:
         "skipped_existing": skipped_existing_count,
         "skipped_no_league": skipped_no_league_count,
     }
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    from dotenv import load_dotenv
-
-    load_dotenv(os.path.join(project_root, ".env"))
-
-    async def run():
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        )
-        print("Starting pokedata sync...")
-        res = await sync_pokedata()
-        print("Sync results:", res)
-
-    asyncio.run(run())

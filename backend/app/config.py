@@ -3,11 +3,15 @@ import sys
 from functools import lru_cache
 from typing import Annotated
 
+from dotenv import load_dotenv
 from pydantic import ValidationError, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 env_file_path = os.path.join(os.path.dirname(current_dir), ".env")
+
+
+load_dotenv()
 
 
 class Settings(BaseSettings):

@@ -36,7 +36,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@clerk/react';
 import type { LeaderboardEntry } from '@/features/admin/components/LeaderboardFormModal';
 
-
 const AdminPage: React.FC = () => {
     useDocumentMetadata({
         title: 'Admin Dashboard',

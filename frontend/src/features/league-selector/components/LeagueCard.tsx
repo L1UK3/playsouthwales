@@ -16,7 +16,15 @@ export interface LeagueCardProps {
     onDelete?: (league: League) => void;
     showInfo?: boolean;
     className?: string;
-    state?: 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'error' | 'success';
+    state?:
+        | 'default'
+        | 'hover'
+        | 'focus'
+        | 'active'
+        | 'disabled'
+        | 'loading'
+        | 'error'
+        | 'success';
 }
 
 /**
@@ -75,7 +83,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     // Error state card
     if (isError) {
         return (
-            <div className="flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/[0.01] shadow-sm w-full">
+            <div className="flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/1 shadow-sm w-full">
                 <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-xs">
                     <span>⚠️</span>
                     <span>Failed to load league</span>
@@ -85,7 +93,9 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     }
 
     // Success state border adjustment
-    const successBorder = isSuccess ? 'border-2 border-emerald-500/30 bg-emerald-50' : '';
+    const successBorder = isSuccess
+        ? 'border-2 border-emerald-500/30 bg-emerald-50'
+        : '';
 
     // Championship series styles
     const champStyles = isChampionship
@@ -108,7 +118,9 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
         ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
         ${isDisabled ? 'opacity-40 pointer-events-none cursor-not-allowed' : ''}
         ${className}
-    `.trim().replace(/\s+/g, ' ');
+    `
+        .trim()
+        .replace(/\s+/g, ' ');
 
     return (
         <div
@@ -141,9 +153,12 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                 {/* Title and Championship Indicator */}
                 <div className="flex flex-col gap-0.5 grow min-w-0">
                     <h3 className="text-sm font-bold text-text-darker truncate flex items-center gap-1.5 leading-snug">
-                        {isChampionship && <span className="text-amber-500 text-xs shrink-0">🏆</span>}
+                        {isChampionship && (
+                            <span className="text-amber-500 text-xs shrink-0">
+                                🏆
+                            </span>
+                        )}
                         <span className="truncate">{league.name}</span>
-
                     </h3>
                 </div>
             </div>
@@ -153,25 +168,37 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                 <div className="flex flex-col gap-2.5 mt-0.5">
                     {league.location && (
                         <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                            <span className="font-semibold text-text-main">Location</span>
-                            <span className="leading-relaxed">{league.location}</span>
+                            <span className="font-semibold text-text-main">
+                                Location
+                            </span>
+                            <span className="leading-relaxed">
+                                {league.location}
+                            </span>
                         </div>
                     )}
                     {league.directions && (
                         <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                            <span className="font-semibold text-text-main">Directions</span>
-                            <span className="leading-relaxed">{league.directions}</span>
+                            <span className="font-semibold text-text-main">
+                                Directions
+                            </span>
+                            <span className="leading-relaxed">
+                                {league.directions}
+                            </span>
                         </div>
                     )}
                     {league.accessibility && (
                         <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                            <span className="font-semibold text-text-main">Accessibility</span>
-                            <span className="leading-relaxed">{league.accessibility}</span>
+                            <span className="font-semibold text-text-main">
+                                Accessibility
+                            </span>
+                            <span className="leading-relaxed">
+                                {league.accessibility}
+                            </span>
                         </div>
                     )}
 
                     {/* External Website & Event Links */}
-                    {(league.website || league.eventLink) && (
+                    {(league.website ?? league.eventLink) && (
                         <div className="flex flex-wrap gap-2 mt-1">
                             {league.website && (
                                 <a
@@ -201,7 +228,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
             )}
 
             {/* Admin Controls */}
-            {(onEdit || onDelete) && (
+            {(onEdit ?? onDelete) && (
                 <div className="flex flex-wrap gap-2 mt-2 pt-2 border-t border-border-color/30">
                     {onEdit && (
                         <button

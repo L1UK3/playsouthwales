@@ -54,17 +54,17 @@ To minimize database storage, the system does not write every single occurrence 
 - **Date Generation**: The frontend calculates all Wednesdays in the current month.
 - **Virtual ID Formula**:
   The calendar assigns a virtual ID to each occurrence by multiplying the template ID by 10,000,000 and adding a date representation index:
-  
+
   ```
   Virtual ID = template_id * 10000000
   ```
-  
+
   For example, virtual ID `10000000` refers to template `1`.
 - **Parsing Exclusions**:
   When a user deletes a single instance of a weekly series, the backend appends the selected date to the template's `excludedDates` list. The frontend reads this list and skips rendering that specific Wednesday.
 - **Backend ID Extraction**:
   When a PUT, PATCH, or DELETE operation targets a virtual ID, the backend extracts the template identifier by integer dividing:
-  
+
   ```python
   template_id = virtual_id // 10000000
   ```
@@ -77,6 +77,6 @@ The backend runs automated synchronization tasks using the FastAPI lifespan.
 
 When the server starts, it spawns a background asyncio task. Every 60 minutes, the task executes three sync operations:
 
-- **TCG sets sync**: Fetches Pokémon card expansion tables from Bulbapedia, calculates standard format legality, and writes to `sets.json`.
+- **TCG sets sync**: Fetches card expansion tables from Bulbapedia, calculates standard format legality, and writes to `sets.json`.
 - **Pokedata schedule sync**: Pulls cup and challenge details from the pokedata.ovh API and inserts new events.
 - **Top 20 Welsh players sync**: Syncs verified Welsh player profiles from the database and updates Championship Point (CP) standings in `top20.json`.

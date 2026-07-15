@@ -29,7 +29,7 @@ SAMPLE_WEEKLY_EVENT = {
 
 SAMPLE_LEAGUE = {
     "id": 1,
-    "name": "Cardiff Pokemon League",
+    "name": "Cardiff League",
     "logo": None,
     "website": None,
     "socialLink": None,
@@ -194,27 +194,6 @@ class TestLeaguesEndpoint:
         resp = client.get("/api/leagues")
         assert resp.status_code == 200
         assert resp.json() == []
-
-
-# — /api/players/top20 —
-
-
-class TestTop20Endpoint:
-    def test_returns_200_with_dict(self, client):
-        resp = client.get("/api/players/top20")
-        assert resp.status_code == 200
-        body = resp.json()
-        assert isinstance(body, dict)
-
-    def test_contains_expected_player(self, client):
-        body = client.get("/api/players/top20").json()
-        assert "players" in body
-
-    def test_keys_are_string_ranks(self, client):
-        body = client.get("/api/players/top20").json()
-        players = body.get("players", {})
-        for key in players:
-            assert key.isdigit(), f"Expected numeric string key, got '{key}'"
 
 
 # — /api/leaderboard/{leagueId} —

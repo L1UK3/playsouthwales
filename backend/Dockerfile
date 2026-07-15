@@ -1,4 +1,4 @@
-﻿# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1
 
 ARG PYTHON_VERSION=3.12-slim
 FROM python:${PYTHON_VERSION} AS development
@@ -31,4 +31,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 COPY . .
 
 EXPOSE 5000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000", "--reload"]
+CMD ["uvicorn", "app:create_app", "--factory", "--host", "0.0.0.0", "--port", "5000", "--reload"]

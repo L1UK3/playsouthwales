@@ -7,7 +7,6 @@ import Leaderboard from '@leaderboard/components/Leaderboard';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 import ComingSoon from '@/components/ComingSoon';
 
-
 function getTop20SeasonLabel(date = new Date()) {
     const startYear =
         date.getMonth() >= 6 ? date.getFullYear() : date.getFullYear() - 1;
@@ -23,9 +22,9 @@ function getSeasonOptions() {
 
 const RankingsPage: React.FC = () => {
     useDocumentMetadata({
-        title: 'South Wales Pokemon Championship Rankings',
+        title: 'South Wales Championship Rankings',
         description:
-            'Track the South Wales Pokemon Top 20 championship points leaderboard and local league rankings for TCG and VGC players.',
+            'Track the South Wales Top 20 championship points leaderboard and local league rankings for TCG and VGC players.',
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = React.useState<

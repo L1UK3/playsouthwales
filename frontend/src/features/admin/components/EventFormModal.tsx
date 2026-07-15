@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Event } from '@/types/Event';
 
@@ -29,7 +29,9 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
         initialData?.eventType ??
             (isChampionshipLeague ? 'REGIONAL' : 'STANDARD')
     );
-    const [game, setGame] = useState(initialData?.game ?? 'TCG');
+    const [game, setGame] = useState(
+        initialData?.game ?? (isChampionshipLeague ? 'ALL' : 'TCG')
+    );
     const [entryFee, setEntryFee] = useState(initialData?.entryFee ?? '');
     const [ticketLink, setTicketLink] = useState(initialData?.ticketLink ?? '');
     const [description, setDescription] = useState(
@@ -250,13 +252,30 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
                                     onChange={(e) => setGame(e.target.value)}
                                     className="py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
                                 >
-                                    <option value="TCG">
-                                        TCG (Trading Card Game)
-                                    </option>
-                                    <option value="VGC">
-                                        VGC (Video Game Championships)
-                                    </option>
-                                    <option value="GO">GO</option>
+                                    {isChampionshipLeague ? (
+                                        <>
+                                            <option value="ALL">
+                                                All Games (TCG, VGC, GO)
+                                            </option>
+                                            <option value="TCG">
+                                                TCG (Trading Card Game)
+                                            </option>
+                                            <option value="VGC">
+                                                VGC (Video Game Championships)
+                                            </option>
+                                            <option value="GO">GO</option>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option value="TCG">
+                                                TCG (Trading Card Game)
+                                            </option>
+                                            <option value="VGC">
+                                                VGC (Video Game Championships)
+                                            </option>
+                                            <option value="GO">GO</option>
+                                        </>
+                                    )}
                                 </select>
                             </div>
 

@@ -15,7 +15,7 @@ SETS_PATH = os.path.join(os.path.dirname(CURRENT_DIR), "data", "sets.json")
 
 def clean_name(name_text: str) -> str:
     """
-    Clean Pokémon expansion names by stripping wiki TCG templates.
+    Clean expansion names by stripping wiki TCG templates.
     e.g., converts '{{tcg|Prismatic Fates}}' to 'Prismatic Fates'.
     """
     name_text = name_text.strip()
@@ -143,7 +143,7 @@ def parse_wikitext(content: str) -> list[dict]:
                 name_cell = row[3].strip()
                 release_date_cell = row[6].strip()
 
-                # Check if set_no fits Pokémon TCG expansions style (e.g. SV1, SV9, ME1, ME5, 30th, etc.)
+                # Check if set_no fits TCG expansions style (e.g. SV1, SV9, ME1, ME5, 30th, etc.)
                 if not re.match(
                     r"^(SV\d+(\.\d+)?|ME\d+(\.\d+)?|\d+th|\d+)$", set_no
                 ):
@@ -192,7 +192,7 @@ async def run_sets_sync() -> dict:
     params = {
         "action": "query",
         "prop": "revisions",
-        "titles": "List of Pokémon Trading Card Game expansions",
+        "titles": "List of Trading Card Game expansions",
         "rvslots": "*",
         "rvprop": "content",
         "format": "json",
@@ -203,13 +203,15 @@ async def run_sets_sync() -> dict:
     try:
         logger.info("Fetching TCG set expansions from Bulbapedia...")
         async with httpx.AsyncClient() as client:
-            response = await client.get(url, params=params, headers=headers, timeout=15.0)
+            response = await client.get(
+                url, params=params, headers=headers, timeout=15.0
+            )
             response.raise_for_status()
             data = response.json()
 
         pages = data.get("query", {}).get("pages", {})
         wikitext = ""
-        for _page_id, page_data in pages.items():
+        for page_data in pages.items():
             revisions = page_data.get("revisions", [])
             if revisions:
                 wikitext = (
@@ -250,14 +252,3 @@ async def run_sets_sync() -> dict:
     except Exception as e:
         logger.error(f"Failed to sync upcoming sets: {e}")
         return {"success": False, "error": str(e)}
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    async def test():
-        logging.basicConfig(level=logging.INFO)
-        res = await run_sets_sync()
-        print("Scrape results:", res)
-
-    asyncio.run(test())
