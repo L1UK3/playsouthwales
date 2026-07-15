@@ -69,7 +69,7 @@ async def fetch_championship_data(url: str) -> list[dict] | dict:
         return []
 
 
-def get_calendar_date(date_range: str, season_year_str: str) -> str:
+def get_calendar_date(date_range: str, season_year_str: str) -> list[int]:
     """
     Parse the start date from displayDateRange_s and year_s to get YYYY-MM-DD.
     Example: 'Aug. 28-30', '2026' -> '2026-08-28'
@@ -130,7 +130,11 @@ def get_calendar_date(date_range: str, season_year_str: str) -> str:
     else:
         calendar_year = season_year
 
-    return f"{calendar_year}-{month_val:02d}-{int(day_num):02d}"
+    return [calendar_year, month_val, int(day_num)]
+
+
+def get_calendar_date_str(date_list: list[int]) -> str:
+    return f"{date_list[0]}-{date_list[1]:02d}-{date_list[2]:02d}"
 
 
 async def sync_championship_data() -> dict:
@@ -282,23 +286,37 @@ async def sync_championship_data() -> dict:
             f"Location: {location_str}."
         )
 
-        event_dict = {
-            "id": event_id,
-            "name": championship_event.eventName_s,
-            "date": calendar_date,
-            "startTime": None,
-            "leagueId": league_id,
-            "ticketLink": CHAMP_SERIES_URL + championship_event.uRL_s,
-            "eventType": event_type,
-            "game": "ALL",
-            "description": description,
-            "entryFee": None,
-            "excludedDates": None,
-        }
+        days_to_insert = 3 if event_type in ["WORLDS", "INTERNATIONAL"] else 2
+        ticket_link = (
+            f"{CHAMP_SERIES_URL}{championship_event.uRL_s}"
+            if CHAMP_SERIES_URL and championship_event.uRL_s
+            else None
+        )
 
-        events_to_insert.append(event_dict)
-        existing_event_ids.add(event_id)
-        inserted_count += 1
+        for day_offset in range(days_to_insert):
+            new_date = calendar_date[2] + day_offset
+            new_calendar_date = [
+                calendar_date[0],
+                calendar_date[1],
+                new_date,
+            ]
+            event_dict = {
+                "id": f"{event_id}-{day_offset + 1}",
+                "name": championship_event.eventName_s,
+                "date": get_calendar_date_str(new_calendar_date),
+                "startTime": None,
+                "leagueId": league_id,
+                "ticketLink": ticket_link,
+                "eventType": event_type,
+                "game": "ALL",
+                "description": description,
+                "entryFee": None,
+                "excludedDates": None,
+            }
+
+            events_to_insert.append(event_dict)
+            existing_event_ids.add(event_dict["id"])
+            inserted_count += 1
 
     # 4. Perform bulk insert
     if events_to_insert:
