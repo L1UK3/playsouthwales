@@ -48,7 +48,9 @@ export function useEvents(currentDate: Date, includeExcluded = false) {
             // get start date
             const start = new Date(temp.date.slice(0, 10) + 'T00:00:00');
             if (isNaN(start.getTime())) {
-                console.error(`Invalid start date found for weekly event template: ID ${temp.id}`);
+                console.error(
+                    `Invalid start date found for weekly event template: ID ${temp.id}`
+                );
                 continue;
             }
 

@@ -38,14 +38,14 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 
     const title = isDateSelected
         ? new Date(selectedDateKey + 'T00:00:00').toLocaleDateString(
-            undefined,
-            {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-            }
-        )
+              undefined,
+              {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+              }
+          )
         : 'Selected Day';
 
     const sortedEvents = useSortEvents(selectedDayEvents);

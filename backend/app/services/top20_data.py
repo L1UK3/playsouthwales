@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(
 
 
 def _current_top20_season() -> str:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     start_year = now.year if now.month >= 7 else now.year - 1
     return f"{start_year}-{start_year + 1}"
 
@@ -22,7 +22,9 @@ def _current_top20_season() -> str:
 def _load_raw_top20_data() -> dict[str, Any]:
     try:
         if not os.path.exists(DATA_PATH):
-            logger.warning("Top 20 data file not found. Returning default structure.")
+            logger.warning(
+                "Top 20 data file not found. Returning default structure."
+            )
             return {"defaultSeason": _current_top20_season(), "seasons": {}}
         with open(DATA_PATH, encoding="utf-8") as file_handle:
             return json.load(file_handle)

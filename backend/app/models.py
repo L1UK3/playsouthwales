@@ -101,3 +101,23 @@ class WeeklyEventResponse(WeeklyEventBase):
 
 class LeaderboardUpdate(BaseModel):
     data: list[dict]
+
+
+class RawChampionshipEvent(BaseModel):
+    eventName_s: str
+    previewImage_s: str | None = None
+    previewImageAltText_s: str | None = None
+    uRL_s: str
+    displayDateRange_s: str
+    isStreaming_b: str | bool
+    cardLinkTarget_s: str
+    type_s: str
+    region_s: str
+    year_s: str
+    locale_s: str
+    eventLocation_s: str
+
+
+class ChampionshipsPayload(BaseModel):
+    itemsFound: int
+    items: list[RawChampionshipEvent]

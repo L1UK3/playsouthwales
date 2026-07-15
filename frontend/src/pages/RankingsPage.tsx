@@ -7,7 +7,6 @@ import Leaderboard from '@leaderboard/components/Leaderboard';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 import ComingSoon from '@/components/ComingSoon';
 
-
 function getTop20SeasonLabel(date = new Date()) {
     const startYear =
         date.getMonth() >= 6 ? date.getFullYear() : date.getFullYear() - 1;

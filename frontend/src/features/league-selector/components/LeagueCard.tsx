@@ -16,7 +16,15 @@ export interface LeagueCardProps {
     onDelete?: (league: League) => void;
     showInfo?: boolean;
     className?: string;
-    state?: 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'error' | 'success';
+    state?:
+        | 'default'
+        | 'hover'
+        | 'focus'
+        | 'active'
+        | 'disabled'
+        | 'loading'
+        | 'error'
+        | 'success';
 }
 
 /**
@@ -85,7 +93,9 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
     }
 
     // Success state border adjustment
-    const successBorder = isSuccess ? 'border-2 border-emerald-500/30 bg-emerald-50' : '';
+    const successBorder = isSuccess
+        ? 'border-2 border-emerald-500/30 bg-emerald-50'
+        : '';
 
     // Championship series styles
     const champStyles = isChampionship
@@ -108,7 +118,9 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
         ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
         ${isDisabled ? 'opacity-40 pointer-events-none cursor-not-allowed' : ''}
         ${className}
-    `.trim().replace(/\s+/g, ' ');
+    `
+        .trim()
+        .replace(/\s+/g, ' ');
 
     return (
         <div
@@ -141,9 +153,12 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                 {/* Title and Championship Indicator */}
                 <div className="flex flex-col gap-0.5 grow min-w-0">
                     <h3 className="text-sm font-bold text-text-darker truncate flex items-center gap-1.5 leading-snug">
-                        {isChampionship && <span className="text-amber-500 text-xs shrink-0">🏆</span>}
+                        {isChampionship && (
+                            <span className="text-amber-500 text-xs shrink-0">
+                                🏆
+                            </span>
+                        )}
                         <span className="truncate">{league.name}</span>
-
                     </h3>
                 </div>
             </div>
@@ -153,20 +168,32 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
                 <div className="flex flex-col gap-2.5 mt-0.5">
                     {league.location && (
                         <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                            <span className="font-semibold text-text-main">Location</span>
-                            <span className="leading-relaxed">{league.location}</span>
+                            <span className="font-semibold text-text-main">
+                                Location
+                            </span>
+                            <span className="leading-relaxed">
+                                {league.location}
+                            </span>
                         </div>
                     )}
                     {league.directions && (
                         <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                            <span className="font-semibold text-text-main">Directions</span>
-                            <span className="leading-relaxed">{league.directions}</span>
+                            <span className="font-semibold text-text-main">
+                                Directions
+                            </span>
+                            <span className="leading-relaxed">
+                                {league.directions}
+                            </span>
                         </div>
                     )}
                     {league.accessibility && (
                         <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                            <span className="font-semibold text-text-main">Accessibility</span>
-                            <span className="leading-relaxed">{league.accessibility}</span>
+                            <span className="font-semibold text-text-main">
+                                Accessibility
+                            </span>
+                            <span className="leading-relaxed">
+                                {league.accessibility}
+                            </span>
                         </div>
                     )}
 

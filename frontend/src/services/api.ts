@@ -402,3 +402,22 @@ export async function syncSets(token: string): Promise<any> {
     }
     return await response.json();
 }
+
+/**
+ * Fetches upcoming Pok?mon Championships events from the API.
+ * @returns {Promise<any[]>} A promise resolving to championships events.
+ */
+export async function loadChampionshipsEvents(): Promise<any[]> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/championships-events`);
+        if (!response.ok) {
+            throw new Error(
+                'Failed to fetch championships events: ' + response.statusText
+            );
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching championships events:', error);
+        throw error;
+    }
+}

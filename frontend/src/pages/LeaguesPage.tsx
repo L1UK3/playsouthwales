@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react';
 import { LeagueMap } from '@map';
 import SuspenseLoader from '@/components/SuspenseLoader';
 
-
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
  * @returns {JSX.Element} The rendered LeaguesPage.

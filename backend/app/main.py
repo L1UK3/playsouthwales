@@ -51,6 +51,19 @@ async def lifespan(app: FastAPI):
             except Exception as e:
                 logger.error(f"Error in background sets sync: {e}")
 
+            try:
+                logger.info("Starting background championships sync...")
+                from app.services.championships_scraper import (
+                    scrape_championships_events,
+                )
+
+                res_champ = await scrape_championships_events()
+                logger.info(
+                    f"Background championships sync completed: {res_champ}"
+                )
+            except Exception as e:
+                logger.error(f"Error in background championships sync: {e}")
+
             # Run every hour
             await asyncio.sleep(3600)
 

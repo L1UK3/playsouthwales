@@ -236,3 +236,29 @@ async def get_sets():
                 "message": "Failed to fetch sets data",
             },
         )
+
+
+@router.get("/api/championships-events")
+async def get_championships_events():
+    """
+    Fetch upcoming Pokemon Championships events (scraped from the official API).
+    """
+    data_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "data", "championships.json"
+    )
+
+    try:
+        if not os.path.exists(data_path):
+            raise FileNotFoundError("Championships data file not found")
+        with open(data_path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        logger.error(f"Failed to fetch championships events: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch championships events",
+            },
+        )

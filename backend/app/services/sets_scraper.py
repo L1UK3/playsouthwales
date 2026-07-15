@@ -203,7 +203,9 @@ async def run_sets_sync() -> dict:
     try:
         logger.info("Fetching TCG set expansions from Bulbapedia...")
         async with httpx.AsyncClient() as client:
-            response = await client.get(url, params=params, headers=headers, timeout=15.0)
+            response = await client.get(
+                url, params=params, headers=headers, timeout=15.0
+            )
             response.raise_for_status()
             data = response.json()
 

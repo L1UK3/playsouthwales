@@ -15,7 +15,15 @@ export interface ListCardProps {
     onDelete?: (event: Event) => void;
     onExclude?: (event: Event) => void;
     onUnexclude?: (event: Event) => void;
-    state?: 'default' | 'hover' | 'focus' | 'active' | 'disabled' | 'loading' | 'error' | 'success';
+    state?:
+        | 'default'
+        | 'hover'
+        | 'focus'
+        | 'active'
+        | 'disabled'
+        | 'loading'
+        | 'error'
+        | 'success';
 }
 
 /**
@@ -47,7 +55,7 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
             event.eventType === 'LEGALITY'
                 ? 'var(--color-secondary)'
                 : (league?.brandColor ??
-                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
+                  `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 
         // Resolve states
         const isHover = state === 'hover';
@@ -94,10 +102,16 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
         }
 
         // Success state border adjustment
-        const successBorder = isSuccess ? 'border-2 border-emerald-500/30 bg-emerald-500/[0.01]' : '';
+        const successBorder = isSuccess
+            ? 'border-2 border-emerald-500/30 bg-emerald-500/[0.01]'
+            : '';
 
         // Championship series styles
-        const isChampionship = league?.isChampionshipSeries ?? false;
+        const isChampionship =
+            (league?.isChampionshipSeries ?? false) ||
+            ['REGIONAL', 'SPECIAL', 'INTERNATIONAL', 'WORLDS'].includes(
+                event.eventType
+            );
         const champStyles = isChampionship
             ? 'border-2 border-amber-500 bg-linear-to-br from-amber-500 to-amber-600 text-white shadow-sm'
             : 'border-2 border-(--store-color) bg-bg-card text-text-main shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
@@ -112,7 +126,9 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
             ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
             ${event.isExcluded ? 'opacity-55 grayscale-[30%] border-dashed border-red-500/20' : ''}
             ${isDisabled && state === 'disabled' ? 'opacity-40 pointer-events-none cursor-not-allowed' : ''}
-        `.trim().replace(/\s+/g, ' ');
+        `
+            .trim()
+            .replace(/\s+/g, ' ');
 
         return (
             <div
@@ -134,7 +150,9 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                         <div className="flex flex-col gap-0.5 grow min-w-0">
                             <div className="text-sm font-bold text-text-darker flex flex-wrap items-center gap-1.5 leading-snug">
                                 {isChampionship && (
-                                    <span className="text-amber-500 text-xs shrink-0">🏆</span>
+                                    <span className="text-amber-500 text-xs shrink-0">
+                                        🏆
+                                    </span>
                                 )}
                                 <span className="truncate">{event.name}</span>
                                 {event.isExcluded && (
@@ -166,14 +184,22 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                     <div className="flex items-center gap-3 shrink-0">
                         <span
                             className={`px-2 py-0.5 rounded text-[9px] font-extrabold tracking-wider uppercase border border-(--type-border)/25 text-(--type-border) bg-(--type-bg) type-${event.eventType}`}
-                            style={{
-                                '--type-bg': 'var(--type-bg, rgba(0, 0, 0, 0.05))',
-                                '--type-border': 'var(--type-border, var(--color-text-muted))'
-                            } as React.CSSProperties}
+                            style={
+                                {
+                                    '--type-bg':
+                                        'var(--type-bg, rgba(0, 0, 0, 0.05))',
+                                    '--type-border':
+                                        'var(--type-border, var(--color-text-muted))',
+                                } as React.CSSProperties
+                            }
                         >
-                            {types[event.eventType] ? `${types[event.eventType]} ` : ''}
+                            {types[event.eventType]
+                                ? `${types[event.eventType]} `
+                                : ''}
                         </span>
-                        <span className={`text-[9px] text-text-muted/70 transition-transform duration-250 ${isExpanded ? 'rotate-180 text-text-main' : ''}`}>
+                        <span
+                            className={`text-[9px] text-text-muted/70 transition-transform duration-250 ${isExpanded ? 'rotate-180 text-text-main' : ''}`}
+                        >
                             ▼
                         </span>
                     </div>
@@ -181,17 +207,26 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
 
                 {/* Expanded Content (Pure CSS transition based on height) */}
                 <div
-                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${isExpanded ? 'max-h-150 opacity-100' : 'max-h-0 opacity-0'
-                        }`}
+                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${
+                        isExpanded
+                            ? 'max-h-150 opacity-100'
+                            : 'max-h-0 opacity-0'
+                    }`}
                 >
                     <div className="p-4 flex flex-col gap-3.5">
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted">
                             <span>
-                                <strong className="text-text-main font-bold">Format:</strong> {event.eventType}
+                                <strong className="text-text-main font-bold">
+                                    Format:
+                                </strong>{' '}
+                                {event.eventType}
                             </span>
                             {event.entryFee && (
                                 <span>
-                                    <strong className="text-text-main font-bold">Entry:</strong> {event.entryFee}
+                                    <strong className="text-text-main font-bold">
+                                        Entry:
+                                    </strong>{' '}
+                                    {event.entryFee}
                                 </span>
                             )}
                         </div>
@@ -205,22 +240,32 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
 
                         {event.prizes && (
                             <div className="text-xs leading-relaxed text-text-muted pl-3 border-l-2 border-amber-500/40 flex gap-1.5 items-start">
-                                <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">Prizes:</span>
+                                <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">
+                                    Prizes:
+                                </span>
                                 <span>{event.prizes}</span>
                             </div>
                         )}
 
                         {league?.directions && (
                             <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                                <span className="font-semibold text-text-main">📍 Directions</span>
-                                <span className="leading-relaxed">{league.directions}</span>
+                                <span className="font-semibold text-text-main">
+                                    📍 Directions
+                                </span>
+                                <span className="leading-relaxed">
+                                    {league.directions}
+                                </span>
                             </div>
                         )}
 
                         {league?.accessibility && (
                             <div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
-                                <span className="font-semibold text-text-main">♿ Accessibility</span>
-                                <span className="leading-relaxed">{league.accessibility}</span>
+                                <span className="font-semibold text-text-main">
+                                    ♿ Accessibility
+                                </span>
+                                <span className="leading-relaxed">
+                                    {league.accessibility}
+                                </span>
                             </div>
                         )}
 
@@ -261,18 +306,20 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                                     Unexclude
                                 </button>
                             )}
-                            {!event.isExcluded && event.isRecurring && onExclude && (
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary border-red-500! text-red-600! dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onExclude(event);
-                                    }}
-                                >
-                                    Exclude
-                                </button>
-                            )}
+                            {!event.isExcluded &&
+                                event.isRecurring &&
+                                onExclude && (
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary border-red-500! text-red-600! dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onExclude(event);
+                                        }}
+                                    >
+                                        Exclude
+                                    </button>
+                                )}
                             {onDelete && (
                                 <button
                                     type="button"
@@ -282,7 +329,9 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                                         onDelete(event);
                                     }}
                                 >
-                                    {event.isRecurring ? 'Delete Series' : 'Delete'}
+                                    {event.isRecurring
+                                        ? 'Delete Series'
+                                        : 'Delete'}
                                 </button>
                             )}
                         </div>

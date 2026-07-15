@@ -101,9 +101,9 @@ const Cell: React.FC<CellProps> = React.memo(
                                             isOtherMonth
                                                 ? {}
                                                 : {
-                                                    backgroundColor:
-                                                        storeColor,
-                                                }
+                                                      backgroundColor:
+                                                          storeColor,
+                                                  }
                                         }
                                         title={league?.name ?? event.leagueName}
                                     />
@@ -123,5 +123,3 @@ const Cell: React.FC<CellProps> = React.memo(
 );
 
 export default Cell;
-
-

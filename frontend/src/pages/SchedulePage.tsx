@@ -1,4 +1,4 @@
-/* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
+/* Hallmark ? genre: modern-minimal ? macrostructure: Workbench ? design-system: design.md ? designed-as-app */
 import { MONTH_NAMES } from '@/constants';
 import {
     useEvents,
@@ -6,6 +6,7 @@ import {
     useLeagues,
     useDocumentMetadata,
     useSetLegality,
+    useChampionshipsEvents,
 } from '@/hooks';
 import {
     CalendarView,
@@ -20,7 +21,6 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import type { Event } from '@/types/Event';
 import SuspenseLoader from '@/components/SuspenseLoader';
-
 
 export type ViewMode = 'calendar' | 'list';
 
@@ -180,9 +180,16 @@ const SchedulePage: React.FC = () => {
         useEvents(currentDate);
     const { data: prevEvents = [] } = useEvents(prevMonthDate);
     const { data: nextEvents = [] } = useEvents(nextMonthDate);
+    const {
+        data: championshipsEvents = [],
+        isLoading: isChampionshipsLoading,
+    } = useChampionshipsEvents();
 
     const isLoading =
-        isLeaguesLoading || isTypesLoading || isCurrentEventsLoading;
+        isLeaguesLoading ||
+        isTypesLoading ||
+        isCurrentEventsLoading ||
+        isChampionshipsLoading;
 
     const allEvents = useMemo(() => {
         return [
@@ -191,6 +198,7 @@ const SchedulePage: React.FC = () => {
             ...nextEvents,
             ...virtualLegalityEvents,
             ...virtualReleaseEvents,
+            ...championshipsEvents,
         ];
     }, [
         prevEvents,
@@ -198,6 +206,7 @@ const SchedulePage: React.FC = () => {
         nextEvents,
         virtualLegalityEvents,
         virtualReleaseEvents,
+        championshipsEvents,
     ]);
 
     const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
@@ -224,7 +233,7 @@ const SchedulePage: React.FC = () => {
         const dayEvents = selectedDateKey
             ? (filteredEventsGrouped[selectedDateKey] ?? [])
             : [];
-        return dayEvents
+        return dayEvents;
     }, [selectedDateKey, filteredEventsGrouped]);
 
     const activeMonthEvents = useMemo(() => {
@@ -261,12 +270,12 @@ const SchedulePage: React.FC = () => {
         direction === 'left'
             ? 'animate-swipe-left'
             : direction === 'right'
-                ? 'animate-swipe-right'
-                : direction === 'down'
-                    ? 'animate-swipe-down'
-                    : direction === 'up'
-                        ? 'animate-swipe-up'
-                        : '';
+              ? 'animate-swipe-right'
+              : direction === 'down'
+                ? 'animate-swipe-down'
+                : direction === 'up'
+                  ? 'animate-swipe-up'
+                  : '';
 
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 
@@ -296,7 +305,7 @@ const SchedulePage: React.FC = () => {
 
                 <div className="flex-1 block opacity-100">
                     {isLoading ? (
-                        <SuspenseLoader message="Loading schedule…" />
+                        <SuspenseLoader message="Loading schedule..." />
                     ) : viewMode === 'calendar' ? (
                         <div key={calendarKey} className={`${animationClass}`}>
                             <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">

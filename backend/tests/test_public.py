@@ -238,3 +238,22 @@ class TestLeaderboardEndpoint:
         body = client.get("/api/leaderboard/999").json()
         assert body["detail"]["code"] == "not_found"
         assert "message" in body["detail"]
+
+
+# ?? /api/championships-events ??
+
+
+class TestChampionshipsEventsEndpoint:
+    def test_returns_200_and_list(self, client):
+        resp = client.get("/api/championships-events")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert isinstance(body, list)
+        if body:
+            event = body[0]
+            assert "name" in event
+            assert "ticketLink" in event
+            assert "date" in event
+            assert "eventType" in event
+            assert "game" in event
+            assert "description" in event
