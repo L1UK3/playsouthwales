@@ -54,13 +54,13 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
         <div
             id="selected-day-section"
             key={selectedDateKey ?? 'empty'}
-            className="block! animate-swipe-up overflow-hidden lg:absolute lg:inset-0 lg:flex! lg:flex-col"
+            className="block! animate-swipe-up overflow-hidden @6xl:absolute @6xl:inset-0 @6xl:flex! @6xl:flex-col"
         >
-            <div className="text-base font-bold p-3.5 bg-bg-day-header text-text-main lg:shrink-0 lg:h-11 lg:flex lg:items-center lg:px-4 lg:py-0 flex items-center justify-between border-b border-border-color">
+            <div className="text-base font-bold p-3.5 bg-bg-day-header text-text-main @6xl:shrink-0 @6xl:h-11 @6xl:flex @6xl:items-center @6xl:px-4 @6xl:py-0 flex items-center justify-between border-b border-border-color">
                 <span>{title}</span>
             </div>
             <div
-                className="flex flex-col gap-2.5 p-3.5 lg:flex-1 lg:min-h-0 lg:overflow-y-auto
+                className="flex flex-col gap-2.5 p-3.5 @6xl:flex-1 @6xl:min-h-0 @6xl:overflow-y-auto
                             [&::-webkit-scrollbar]:w-1.5
                             [&::-webkit-scrollbar-track]:bg-transparent
                             [&::-webkit-scrollbar-thumb]:bg-border-color/70

@@ -107,7 +107,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                 ))}
             </div>
             <div
-                className="relative grid grid-cols-7 grid-rows-[repeat(auto-fill,minmax(0,1fr))] lg:grid-rows-[repeat(var(--num-rows,5),minmax(0,1fr))]! gap-px bg-border-color border-2 border-border-color border-t-0 rounded-b-lg overflow-hidden lg:flex-1"
+                className="relative grid grid-cols-7 grid-rows-[repeat(auto-fill,minmax(0,1fr))] @6xl:grid-rows-[repeat(var(--num-rows,5),minmax(0,1fr))]! gap-px bg-border-color border-2 border-border-color border-t-0 rounded-b-lg overflow-hidden @6xl:flex-1"
                 style={
                     { '--num-rows': cells.length / 7 } as React.CSSProperties
                 }

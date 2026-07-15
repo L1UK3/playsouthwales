@@ -44,6 +44,7 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
                 text-text-main text-[10px]
                 font-semibold
                 cursor-pointer
+                min-w-0 w-full
                 max-sm:text-[8.5px]
                 max-sm:py-0.5 max-sm:px-1.5
                 max-sm:gap-1

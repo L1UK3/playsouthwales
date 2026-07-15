@@ -57,17 +57,17 @@ const Cell: React.FC<CellProps> = React.memo(
 
         return (
             <div
-                className={`min-h-12 sm:min-h-36 sm:h-full min-w-0 w-full p-1.5 sm:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
+                className={`min-h-12 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full p-1.5 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >
-                <div className="text-xs font-bold text-text-main mb-1 sm:mb-1.5">
+                <div className="text-xs font-bold text-text-main mb-1 @min-[700px]:mb-1.5">
                     {day}
                 </div>
                 {eventsForDay.length > 0 ? (
                     <>
                         {/* Desktop/Tablet view: show full card list */}
-                        <div className="hidden sm:grid gap-1">
+                        <div className="hidden @min-[700px]:grid gap-1 min-w-0">
                             {sortedEvents.slice(0, 3).map((event) => (
                                 <Card
                                     key={event.id}
@@ -85,7 +85,7 @@ const Cell: React.FC<CellProps> = React.memo(
                         </div>
 
                         {/* Mobile view: show small dots representing events */}
-                        <div className="flex sm:hidden justify-center gap-1 mt-1 flex-wrap">
+                        <div className="flex @min-[700px]:hidden justify-center gap-1 mt-1 flex-wrap">
                             {sortedEvents.slice(0, 3).map((event) => {
                                 const league = event.leagueId
                                     ? leagueMap[event.leagueId]

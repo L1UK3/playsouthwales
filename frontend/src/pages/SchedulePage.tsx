@@ -125,7 +125,7 @@ const SchedulePage: React.FC = () => {
             const nextVal = prev === dateKey ? null : dateKey;
             if (nextVal !== null) {
                 setTimeout(() => {
-                    if (window.innerWidth < 1024) {
+                    if (window.innerWidth < 1200) {
                         const element = document.getElementById(
                             'selected-day-section'
                         );
@@ -302,9 +302,9 @@ const SchedulePage: React.FC = () => {
                     {isLoading ? (
                         <SuspenseLoader message="Loading schedule…" />
                     ) : viewMode === 'calendar' ? (
-                        <div key={calendarKey} className={`${animationClass}`}>
-                            <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-stretch">
-                                <div className="flex-1 min-w-0 lg:flex lg:flex-col">
+                        <div key={calendarKey} className={`@container ${animationClass}`}>
+                            <div className="flex flex-col items-stretch gap-4 @6xl:flex-row @6xl:items-stretch">
+                                <div className="flex-1 min-w-0 @6xl:flex @6xl:flex-col">
                                     <CalendarView
                                         currentDate={currentDate}
                                         events={filteredEventsGrouped}
@@ -314,7 +314,7 @@ const SchedulePage: React.FC = () => {
                                         onSelectDay={handleSelectDay}
                                     />
                                 </div>
-                                <div className="lg:relative lg:flex-[0_0_400px] lg:max-w-100 w-full lg:w-auto">
+                                <div className="@6xl:relative @6xl:flex-[0_0_400px] @6xl:max-w-100 w-full @6xl:w-auto">
                                     <SelectedDaySection
                                         selectedDateKey={selectedDateKey}
                                         selectedDayEvents={eventsToDisplay}
