@@ -12,6 +12,7 @@ from app.models import (
     LeagueCreate,
     LeagueUpdate,
 )
+from app.services.championship_scraper import sync_championship_data
 from app.services.pokedata_scraper import sync_pokedata
 from app.services.sets_scraper import run_sets_sync
 
@@ -292,7 +293,7 @@ async def trigger_pokedata_sync(auth: dict = Depends(require_auth)):
 @router.post("/api/events/sync-sets")
 async def trigger_sets_sync(auth: dict = Depends(require_auth)):
     """
-    Manually trigger the sync of Pokémon TCG sets from Bulbapedia. Requires Clerk authorization.
+    Manually trigger the sync of TCG sets from Bulbapedia. Requires Clerk authorization.
     """
     try:
         result = await run_sets_sync()
@@ -318,6 +319,41 @@ async def trigger_sets_sync(auth: dict = Depends(require_auth)):
             detail={
                 "code": "internal_error",
                 "message": "Failed to manually run sets sync",
+            },
+        )
+
+
+@router.post("/api/events/sync-championship")
+async def trigger_championship_sync(auth: dict = Depends(require_auth)):
+    """
+    Manually trigger the sync of official Championship Series events. Requires Clerk authorization.
+    """
+    try:
+        result = await sync_championship_data()
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={
+                    "code": "internal_error",
+                    "message": result.get(
+                        "error", "Failed to sync championship events"
+                    ),
+                },
+            )
+        return {
+            "success": True,
+            "message": "Championship events sync completed",
+            "metrics": result,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to manually run championship sync: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to manually run championship sync",
             },
         )
 
@@ -417,11 +453,25 @@ async def delete_league(
     """
     try:
         # Verify league exists
-        res = db.table("leagues").select("id").eq("id", league_id).execute()
+        res = (
+            db.table("leagues")
+            .select("id", "isChampionshipSeries")
+            .eq("id", league_id)
+            .execute()
+        )
         if not res.data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail={"code": "not_found", "message": "League not found"},
+            )
+
+        if res.data[0].get("isChampionshipSeries"):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={
+                    "code": "bad_request",
+                    "message": "The championship series league cannot be deleted.",
+                },
             )
 
         db.table("events").delete().eq("leagueId", league_id).execute()

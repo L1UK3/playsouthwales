@@ -31,7 +31,8 @@ export const filterAndGroupEvents = (
             return false;
         if (filters.eventType && event.eventType !== filters.eventType)
             return false;
-        if (filters.game && event.game !== filters.game) return false;
+        if (filters.game && event.game !== filters.game && event.game !== 'ALL')
+            return false;
         return true;
     });
 

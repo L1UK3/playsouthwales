@@ -52,7 +52,7 @@ Run the following commands in the workspace root to install dependencies and run
   ```
 - **Run backend**: Start the development server using Uvicorn:
   ```bash
-  uvicorn app.main:app --host 127.0.0.1 --port 5000 --reload
+  uvicorn app:create_app --factory --host 127.0.0.1 --port 5000 --reload
   ```
 - **Set up frontend**: Navigate to [frontend](file:///C:/Users/lukee/Documents/Projects/playwales/frontend) to install npm packages:
   ```bash

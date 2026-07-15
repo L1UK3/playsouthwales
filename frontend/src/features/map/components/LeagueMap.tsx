@@ -50,9 +50,12 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
     if (!apiKey) {
         return (
             <div className="flex flex-col items-center justify-center w-full h-full p-6 text-center border-2 border-dashed border-border-color rounded-lg bg-bg-card text-text-muted min-h-75">
-                <p className="font-bold text-[16px] text-text-main mb-2">Map Unavailable</p>
+                <p className="font-bold text-[16px] text-text-main mb-2">
+                    Map Unavailable
+                </p>
                 <p className="text-sm max-w-sm">
-                    Configure <code>VITE_GOOGLE_MAPS_API_KEY</code> in your frontend environment to view local league venues.
+                    Configure <code>VITE_GOOGLE_MAPS_API_KEY</code> in your
+                    frontend environment to view local league venues.
                 </p>
             </div>
         );

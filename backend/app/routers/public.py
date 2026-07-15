@@ -197,7 +197,7 @@ async def get_leaderboard(league_id: int, db: Client = Depends(get_supabase)):
 @router.get("/api/sets")
 async def get_sets():
     """
-    Fetch Pokemon TCG set legality dates.
+    Fetch TCG set legality dates.
     Returns sets sorted by release date (newest first).
     """
     sets_path = os.path.join(

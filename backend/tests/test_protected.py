@@ -19,6 +19,7 @@ PROTECTED_ROUTES = [
     ("DELETE", "/api/events/abc-123"),
     ("POST", "/api/events/sync-pokedata"),
     ("POST", "/api/events/sync-sets"),
+    ("POST", "/api/events/sync-championship"),
     ("POST", "/api/leagues"),
     ("PUT", "/api/leagues/1"),
     ("PATCH", "/api/leagues/1"),
@@ -120,6 +121,10 @@ class TestProtectedEventRoutes:
         resp = client.post("/api/events/sync-sets")
         assert resp.status_code == 401
 
+    def test_sync_championship_no_auth(self, client):
+        resp = client.post("/api/events/sync-championship")
+        assert resp.status_code == 401
+
 
 class TestProtectedLeagueRoutes:
     """Spot-checks on individual league routes."""
@@ -135,3 +140,73 @@ class TestProtectedLeagueRoutes:
     def test_delete_leagues_no_auth(self, client):
         resp = client.delete("/api/leagues/1")
         assert resp.status_code == 401
+
+
+class TestDeleteLeagueAuth:
+    """Tests for deleting leagues with authenticated sessions."""
+
+    def test_delete_championship_league_blocked(self, client, supabase_table):
+        from unittest.mock import MagicMock
+
+        from clerk_backend_api.security.types import RequestState
+
+        from app.auth import require_auth
+
+        # Mock the leagues table check to return a championship series league
+        supabase_table(
+            "leagues",
+            [
+                {
+                    "id": 5,
+                    "name": "Championship Series",
+                    "isChampionshipSeries": True,
+                }
+            ],
+        )
+
+        mock_state = MagicMock(spec=RequestState)
+        mock_state.is_signed_in = True
+
+        client.app.dependency_overrides[require_auth] = lambda: mock_state
+
+        try:
+            resp = client.delete("/api/leagues/5")
+            assert resp.status_code == 400
+            body = resp.json()
+            assert body["detail"]["code"] == "bad_request"
+            assert (
+                "championship series league"
+                in body["detail"]["message"].lower()
+            )
+        finally:
+            if require_auth in client.app.dependency_overrides:
+                del client.app.dependency_overrides[require_auth]
+
+    def test_delete_normal_league_succeeds(self, client, supabase_table):
+        from unittest.mock import MagicMock
+
+        from clerk_backend_api.security.types import RequestState
+
+        from app.auth import require_auth
+
+        # Mock the leagues table check to return a normal league
+        supabase_table(
+            "leagues",
+            [{"id": 1, "name": "Normal League", "isChampionshipSeries": False}],
+        )
+
+        mock_state = MagicMock(spec=RequestState)
+        mock_state.is_signed_in = True
+
+        client.app.dependency_overrides[require_auth] = lambda: mock_state
+
+        try:
+            resp = client.delete("/api/leagues/1")
+            assert resp.status_code == 200
+            assert resp.json() == {
+                "success": True,
+                "message": "League deleted successfully",
+            }
+        finally:
+            if require_auth in client.app.dependency_overrides:
+                del client.app.dependency_overrides[require_auth]

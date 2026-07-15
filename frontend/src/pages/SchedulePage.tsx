@@ -21,7 +21,6 @@ import { useCallback, useMemo, useState } from 'react';
 import type { Event } from '@/types/Event';
 import SuspenseLoader from '@/components/SuspenseLoader';
 
-
 export type ViewMode = 'calendar' | 'list';
 
 /**
@@ -224,7 +223,7 @@ const SchedulePage: React.FC = () => {
         const dayEvents = selectedDateKey
             ? (filteredEventsGrouped[selectedDateKey] ?? [])
             : [];
-        return dayEvents
+        return dayEvents;
     }, [selectedDateKey, filteredEventsGrouped]);
 
     const activeMonthEvents = useMemo(() => {
@@ -243,7 +242,12 @@ const SchedulePage: React.FC = () => {
                     return false;
                 if (filters.eventType && event.eventType !== filters.eventType)
                     return false;
-                if (filters.game && event.game !== filters.game) return false;
+                if (
+                    filters.game &&
+                    event.game !== filters.game &&
+                    event.game !== 'ALL'
+                )
+                    return false;
                 return true;
             })
             .sort(
@@ -261,12 +265,12 @@ const SchedulePage: React.FC = () => {
         direction === 'left'
             ? 'animate-swipe-left'
             : direction === 'right'
-                ? 'animate-swipe-right'
-                : direction === 'down'
-                    ? 'animate-swipe-down'
-                    : direction === 'up'
-                        ? 'animate-swipe-up'
-                        : '';
+              ? 'animate-swipe-right'
+              : direction === 'down'
+                ? 'animate-swipe-down'
+                : direction === 'up'
+                  ? 'animate-swipe-up'
+                  : '';
 
     const calendarKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
 

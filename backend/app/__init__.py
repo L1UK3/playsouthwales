@@ -1,8 +1,9 @@
 import logging
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.config import get_settings
 from app.lifespan import lifespan
@@ -41,3 +42,19 @@ def create_app() -> FastAPI:
 
     app.include_router(public.router)
     app.include_router(protected.router)
+
+    @app.exception_handler(Exception)
+    async def global_exception_handler(request: Request, exc: Exception):
+        logger.error(
+            f"Unhandled exception on {request.method} {request.url.path}: {exc}",
+            exc_info=True,
+        )
+        return JSONResponse(
+            status_code=500,
+            content={
+                "code": "internal_error",
+                "message": "An unexpected server error occurred.",
+            },
+        )
+
+    return app

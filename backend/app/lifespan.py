@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Run the pokedata sync in the background
-    from backend.app.services.pokedata_scraper import sync_pokedata
+    from app.services.pokedata_scraper import sync_pokedata
 
     async def run_periodic_sync():
         # Wait 1 second after startup
@@ -33,6 +33,19 @@ async def lifespan(app: FastAPI):
             except Exception as e:
                 logger.error(f"Error in background sets sync: {e}")
 
+            try:
+                logger.info("Starting background championship sync...")
+                from app.services.championship_scraper import (
+                    sync_championship_data,
+                )
+
+                res_champ = await sync_championship_data()
+                logger.info(
+                    f"Background championship sync completed: {res_champ}"
+                )
+            except Exception as e:
+                logger.error(f"Error in background championship sync: {e}")
+
             # Run every hour
             await asyncio.sleep(3600)
 
@@ -43,20 +56,3 @@ async def lifespan(app: FastAPI):
         await sync_task
     except asyncio.CancelledError:
         logger.info("Background sync task cancelled.")
-
-
-"""
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    logger.error(
-        f"Unhandled exception on {request.method} {request.url.path}: {exc}",
-        exc_info=True,
-    )
-    return JSONResponse(
-        status_code=500,
-        content={
-            "code": "internal_error",
-            "message": "An unexpected server error occurred.",
-        },
-    )
-"""

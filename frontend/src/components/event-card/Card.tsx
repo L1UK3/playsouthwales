@@ -29,9 +29,9 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
             event.eventType === 'LEGALITY'
                 ? 'black'
                 : event.eventType === 'RELEASE'
-                    ? 'black'
-                    : (league?.brandColor ??
-                        `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
+                  ? 'black'
+                  : (league?.brandColor ??
+                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
 
         const logo = league?.logo ?? null;
 
@@ -52,14 +52,17 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
             `}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
             >
-
-                <span className="truncate min-w-0">{logo && (
-                    <img
-                        src={logo}
-                        className="rounded-full object-cover text-align-left w-4 h-4 max-sm:w-3.5 max-sm:h-3.5"
-                    />
-                )}</span>
-                <span className="truncate min-w-0 text-align-left">{leagueName}</span>
+                <span className="truncate min-w-0">
+                    {logo && (
+                        <img
+                            src={logo}
+                            className="rounded-full object-cover text-align-left w-4 h-4 max-sm:w-3.5 max-sm:h-3.5"
+                        />
+                    )}
+                </span>
+                <span className="truncate min-w-0 text-align-left">
+                    {leagueName}
+                </span>
                 <span className="shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0 text-right type-${event.eventType} bg-white text-black dark:bg-white dark:text-black">
                     {types[event.eventType] ?? event.eventType}
                 </span>

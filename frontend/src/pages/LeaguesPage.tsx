@@ -5,16 +5,15 @@ import { useCallback, useState } from 'react';
 import { LeagueMap } from '@map';
 import SuspenseLoader from '@/components/SuspenseLoader';
 
-
 /**
  * LeaguesPage component displays a list of participating leagues/stores.
  * @returns {JSX.Element} The rendered LeaguesPage.
  */
 const LeaguesPage: React.FC = () => {
     useDocumentMetadata({
-        title: 'South Wales Pokemon League Map & Stores',
+        title: 'South Wales League Map & Stores',
         description:
-            'Find local TCG, VGC, and Pokemon GO leagues and stores across South Wales with our interactive venue map and store directory.',
+            'Find local TCG, VGC, and GO leagues and stores across South Wales with our interactive venue map and store directory.',
     });
 
     const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(

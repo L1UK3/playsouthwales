@@ -18,7 +18,7 @@ This guide teaches you how to trigger manual synchronization runs for tournament
 
 You can manually trigger synchronization routines using the API endpoints.
 
-### Sync Pokémon TCG expansions
+### Sync TCG expansions
 
 Bulbapedia hosts the list of official Trading Card Game (TCG) expansions. To sync newly released expansions starting from SV9 onwards:
 

@@ -91,7 +91,7 @@ pip install -r requirements.txt
 4. Start the development server using uvicorn:
 
 ```bash
-uvicorn app.main:app --host 127.0.0.1 --port 5000 --reload
+uvicorn app:create_app --factory --host 127.0.0.1 --port 5000 --reload
 ```
 
 ### Install and run the frontend
