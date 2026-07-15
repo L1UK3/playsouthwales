@@ -138,29 +138,93 @@ Follow these design conventions:
 - **Hover effects**: Apply specific CSS transition transitions instead of broad transition resets
 - **Call-to-action (CTA)**: Style primary actions with the accent background and bold Outfit font
 
+## Model Context Protocol servers
+
+The project integrates Model Context Protocol (MCP) servers to enable the agent to query APIs and databases.
+
+### Workspace configuration
+
+Define required workspace-level MCP servers in the `.agents/mcp_config.json` configuration file. The Antigravity IDE and CLI automatically discover and run these servers when you open the project.
+
+### Active workspace servers
+
+The project uses these workspace MCP servers:
+- **chrome-devtools-mcp**: Enables browser testing and visual inspections using Playwright
+- **gmp-code-assist**: Provides Google Maps Platform API documentation and reference guides
+
+### Management and reloading
+
+You can manage and inspect MCP connections using the `/mcp` command in the Antigravity CLI. This interactive manager allows you to:
+- **Check status**: View connection states and active tool schemas
+- **Reload configurations**: Apply updates made to `.agents/mcp_config.json` without restarting
+- **Inspect logs**: Debug server startup errors or execution parameters
+
 ## Agent skills reference
 
-The repository contains pre-configured agent skills in the `.agents/skills` folder.
+Manage and execute agent skills using the Skills Command Line Interface (CLI) (`npx skills`). All skills are installed locally within the gitignored `.agents` directory and do not commit to the repository.
 
 ### Locked skills
 
-The [skills-lock.json](file:///C:/Users/lukee/Documents/Projects/playwales/skills-lock.json) file locks these external skills:
-- **api-design-principles**: Guides REST API endpoint structures and payload schemas
-- **fastapi-templates**: Provides patterns for routers, dependency injection, and Pydantic validation
-- **hallmark**: Governs the visual design and UX standards for page layouts
-- **theme-factory**: Standardizes typography and color palettes for the project
+The project uses [skills-lock.json](file:///C:/Users/lukee/Documents/Projects/playwales/skills-lock.json) to lock all local and project-specific skills.
 
-### Utility and validation skills
+To include all locally installed skills in the lock file, run:
+```bash
+npx skills add ./.agents/skills -y
+```
 
-You have access to these local skills:
-- **lint-and-validate**: Runs validation commands after code edits
-- **webapp-testing**: Tests browser behaviors using Playwright
-- **fixing-accessibility**: Audits and repairs Web Content Accessibility Guidelines (WCAG) issues
-- **systematic-debugging**: Follows systematic debugging protocols for test failures
-- **tailwind-design-system**: Guides custom design systems with Tailwind CSS v4
+To restore the locked skills on a new machine, run:
+```bash
+npx skills experimental_install
+```
+
+### Active skills in the lock file
+
+The lock file records and tracks these local skills split by development domain:
+
+#### Frontend and React development
+- **frontend-developer**: Builds React 19 components and manages client-side states
+- **frontend-design**: Guides visual aesthetics, typography, and theme styling decisions
+- **next-dev-loop**: Verifies runtime behavior in Next.js applications
+- **nextjs-app-router-patterns**: Master Next.js App Router with Server Components and advanced data fetching
+- **nextjs-best-practices**: Recommends Next.js App Router performance and rendering patterns
+- **react-best-practices**: Standardizes React and Next.js performance optimizations
+- **responsive-design**: Implements fluid typography and container query layouts
+- **shadcn**: Manages shadcn/ui components and design system templates
+- **tailwind-design-system**: Standardizes styling systems using Tailwind CSS v4 tokens
+- **tailwind-patterns**: Guides custom layouts using Tailwind CSS v4 container queries
 - **tailwind-v4-shadcn**: Integrates shadcn/ui components with Tailwind CSS v4
-- **supabase-postgres-best-practices**: Optimizes PostgreSQL schemas, indices, and Row-Level Security (RLS) policies
-- **typescript-advanced-types**: Standardizes type-safe logic and complex TypeScript signatures
+- **typescript-advanced-types**: Implements type-safe logic and complex TypeScript signatures
+- **vercel-react-best-practices**: Standardizes React component rendering patterns from Vercel Engineering
+
+#### Backend and database engineering
+- **api-design-principles**: Guides Representational State Transfer (REST) and GraphQL API design structures and schemas
+- **fastapi-templates**: Provides patterns for routers, dependency injection, and Pydantic validation
+- **flaskapi**: Scaffolds lightweight Python web APIs using Flask blueprints and extensions
+- **supabase**: Orchestrates database, auth, and edge functions within Supabase
+- **supabase-postgres-best-practices**: Optimizes PostgreSQL schemas, indexes, and Row-Level Security (RLS) policies
+
+#### Testing, quality, and performance
+- **accessibility**: Audits and improves web accessibility following Web Content Accessibility Guidelines (WCAG) 2.2 standards
+- **fixing-accessibility**: Audits and repairs page accessibility and keyboard navigation
+- **form-cro**: Optimizes surveys, lead capture forms, and general checkout experiences
+- **kaizen**: Guides continuous code improvements and error-proofing integrations
+- **lint-and-validate**: Runs validation commands after code edits to ensure correctness
+- **performance**: Audits and optimizes loading speeds for web applications
+- **seo-audit**: Audits pages for search engine technical optimizations
+- **systematic-debugging**: Follows structured protocols to debug runtime failures
+- **webapp-testing**: Tests frontend functionalities using automated Playwright browser scripts
+
+#### DevOps, git, and productivity
+- **algorithm-design**: Designs algorithms with LaTeX pseudocode and Unified Modeling Language (UML) diagrams
+- **concise-planning**: Generates clear, actionable, and atomic plans for coding tasks
+- **devcontainer-setup**: Creates devcontainers with development tooling and sandboxed environments
+- **docker-expert**: Optimizes, secures, and configures Docker containerization setups
+- **find-skills**: Discovers and installs skills from the open agent skills ecosystem
+- **git-guardrails-claude-code**: Sets up hooks to block destructive git commands
+- **git-pushing**: Stages changes, writes conventional commits, and pushes to remote
+- **github-actions-docs**: Writes and troubleshoots GitHub Actions workflows and CI/CD runs
+- **hallmark**: Governs the visual design and UX standards for page layouts
+- **theme-factory**: Standardizes typography and color palettes for document styling
 
 ## Writing guidelines compliance
 

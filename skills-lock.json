@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "skills": {
+    "accessibility": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "ebfa09617a2ac4fd64afd73267726b787145a8d14294df3f8802b462c91594ab"
+    },
+    "algorithm-design": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "5177107bf00ba948f1beff6dcfac05824af7a4d1e3847c0b27238aead3bfd0a9"
+    },
+    "api-design-principles": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "a91429c25bb978f99f5da8d8752b8ae87ece51abcb24acb3953a5b1662c9bd5c"
+    },
+    "concise-planning": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "fb60e5909303e727cd9be32aaee8853a581b595e75a489e3e8de2ed83cd4fb88"
+    },
+    "devcontainer-setup": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "d98ee54e53449ba38c70a1ac3d4844fa5480fdd0ecc117237184e8d5032fd8c5"
+    },
+    "docker-expert": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "7be30b1c18b91628dcd8437a89e7e20acce76bae4349533e4ebdeb376a660bcb"
+    },
+    "fastapi-templates": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "e28ca940d4a3a85eaa9150f0d4c0cc36c16de33368963b7f9da5875842b328b4"
+    },
+    "find-skills": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "1c27b1774a4ec17ad4556a72e3c0168beab3af0183b2c1b8aa9e320af3ff41ce"
+    },
+    "fixing-accessibility": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "f8ddcb0a8c7b8728105eab18e17223e41d74fb8649becba58a6deb90c6a5ce8d"
+    },
+    "flaskapi": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "3b416318279513ce3f723811e3ef5a2c971ed7329848cd5a218ec7161d25b135"
+    },
+    "form-cro": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "fc1437ff81f768abdd0659e1213a15879d4c716db261687d49a7dc6da95c04cf"
+    },
+    "frontend-design": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "93f53fd1c0352d3d7ec17b8f73d7351bf76f4821e55d123c9d2abc2c53ba48e4"
+    },
+    "frontend-developer": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "2f13e723d068b8d6f53feabf65ce1d830e7d7b5a9b2088f1aa5cb935aaa58127"
+    },
+    "git-guardrails-claude-code": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "a04bf71be9abc44ca3b00e2f1740b37d2e471abadd20d43a31bccff7135baedf"
+    },
+    "git-pushing": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "e0b7fa5d0c66897df893e08493b37ce6c7e2c77d93a87f6c3151743446701ba2"
+    },
+    "github-actions-docs": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "ead3fa2aff18e829c468dee593e1dc897aa95dc7a07d9ff8ff9f30c296b19af8"
+    },
+    "hallmark": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "d3a20aae61e43793d74932c92b63bcad5882e73ec1c8545b858910fd95b25136"
+    },
+    "kaizen": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "2a95e36f94a82d3ec005855f597b3149580878e7ee5753a74bf96e47d20c88ab"
+    },
+    "lint-and-validate": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "37854110489e24a286c4ef95629e9eac158f4f63464ab02c02983c3d51ef9561"
+    },
+    "next-dev-loop": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "aad97b32ba6efd31e92d063ec77120a694fe0d4a9401daf9af4c205cd5e21b07"
+    },
+    "nextjs-app-router-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "c5eb866197481c59ab594b5becfe91eb022eedb4237e152301ac0a47822a0063"
+    },
+    "nextjs-best-practices": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "3c40a7ea604cdbee772bd7b3efe59aafd6fedf62252a76d43b9f835a6adc92cd"
+    },
+    "performance": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "646931a3af896ae12a3cad3d762668cb6487fe3ab179daf8fdc974fb79acfe49"
+    },
+    "react-best-practices": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "0de58562407e40b42ea14a670817a6db7583657a2503b833c25834e5832aebb1"
+    },
+    "responsive-design": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "155eff4b1bc8d867ae6bea9900c485ab1081de0b4873c1900adb66bf62466aed"
+    },
+    "seo-audit": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "606da61224d9d5687020816292c88152a7fcb27ce375b22f92f429e074f07f34"
+    },
+    "shadcn": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "bd198115592fce84d86953e8c212be6adad9b42f37c2bafbd9b6a0e1664372b9"
+    },
+    "supabase": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "61638e85394d2e39d1109cbf607593afb9733e0de19cdf0b52ec9bc32d95ea74"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "3639bed1f40b3fbadae79fee631c42c89b2d1f5c30b05d5aa3cca06422a6bbbc"
+    },
+    "systematic-debugging": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "5b4df52335ab790b6aac1973d4acb6b968b7eda2fb79a5b1192a0ea74c128a13"
+    },
+    "tailwind-design-system": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "992ab1e874c4f4159aa18d4ff45d1c3f86f322f0bd2a6744cc32f7d6147f9f06"
+    },
+    "tailwind-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "cc4becc5ff22926bf9f4c5243ffe9ed2bf3b7897b9f4bf06b102443f1c1f382c"
+    },
+    "tailwind-v4-shadcn": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "4eb905e229fce4220feecbc03b93c957a0b027a7200777c73f3925137d6c1c59"
+    },
+    "theme-factory": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "e9ec1fe85faa729e9f3d1731cd7e4e485f98c099ccc7c1c0d198f473aa4b654a"
+    },
+    "typescript-advanced-types": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "bc33bc9653d649a461e49abe45634b6b11a7aeeae552b05ec4d54d4589d16739"
+    },
+    "vercel-react-best-practices": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "3219a1944e404ffc14d1d9d6aef6dd2e3855b81387ee0a044ccbfe14d34c2357"
+    },
+    "webapp-testing": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "3f14af7f5690695209c22fbf8c8d133769a86d64892602c09bb13f135e14e857"
+    }
+  }
+}
