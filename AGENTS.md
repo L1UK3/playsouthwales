@@ -4,7 +4,7 @@ meta.contentType: Reference
 
 # How do AI agents develop Play! South Wales?
 
-This document outlines system architecture, build commands, and coding standards. It guides AI agents (like Antigravity or Claude Code) when modifying code or documentation.
+This document outlines system architecture, build commands, and coding standards. It guides AI coding agents (such as Claude Code, Cursor, Copilot, or Antigravity) when modifying code or documentation.
 
 ## Plan
 
@@ -144,7 +144,7 @@ The project integrates Model Context Protocol (MCP) servers to enable the agent 
 
 ### Workspace configuration
 
-Define required workspace-level MCP servers in the `.agents/mcp_config.json` configuration file. The Antigravity IDE and CLI automatically discover and run these servers when you open the project.
+Define required workspace-level MCP servers in the `.agents/mcp_config.json` configuration file. Most modern AI coding agents automatically discover and run these servers when you open the project.
 
 ### Active workspace servers
 
@@ -154,7 +154,7 @@ The project uses these workspace MCP servers:
 
 ### Management and reloading
 
-You can manage and inspect MCP connections using the `/mcp` command in the Antigravity CLI. This interactive manager allows you to:
+You can manage and inspect MCP connections using your agent client. For example, in the Antigravity CLI, you can run the `/mcp` command to:
 - **Check status**: View connection states and active tool schemas
 - **Reload configurations**: Apply updates made to `.agents/mcp_config.json` without restarting
 - **Inspect logs**: Debug server startup errors or execution parameters
