@@ -29,28 +29,40 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
             event.eventType === 'LEGALITY'
                 ? 'black'
                 : event.eventType === 'RELEASE'
-                  ? 'black'
-                  : (league?.brandColor ??
-                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
+                    ? 'black'
+                    : event.eventType === 'WORLDS'
+                        || event.eventType === 'REGIONALS'
+                        || event.eventType === 'SPECIAL'
+                        || event.eventType === 'INTERNATIONAL'
+                        ? 'gold'
+                        : (league?.brandColor ??
+                            `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
 
         const logo = league?.logo ?? null;
+
+        // Championship series decoration
+        const isChampionship = league?.isChampionshipSeries ?? false;
+        const champStyles = isChampionship
+            ? 'border-2 border-amber-500/40 bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5'
+            : 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
 
         return (
             <div
                 className={`
-                flex justify-between
-                items-center gap-1.5 py-1 px-2
-                calendar-card
-                text-text-main text-[10px]
-                font-semibold
-                cursor-pointer
-                min-w-0 w-full
-                max-sm:text-[8.5px]
-                max-sm:py-0.5 max-sm:px-1.5
-                max-sm:gap-1
-                type-${event.eventType}
-                ${isOtherMonth ? 'opacity-35! grayscale! pointer-events-none!' : ''}
-            `}
+                    ${champStyles}
+                    flex justify-between
+                    items-center gap-1.5 py-1 px-2
+                    calendar-card
+                    text-text-main text-[10px]
+                    font-semibold
+                    cursor-pointer
+                    min-w-0 w-full
+                    max-sm:text-[8.5px]
+                    max-sm:py-0.5 max-sm:px-1.5
+                    max-sm:gap-1
+                    type-${event.eventType}
+                    ${isOtherMonth ? 'opacity-35! grayscale! pointer-events-none!' : ''}
+                `}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
             >
                 <span className="truncate min-w-0">

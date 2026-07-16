@@ -9,14 +9,14 @@ import type { EventCardProps } from '@calendar/types/EventCard.types';
 
 interface EventCardAdditionalProps {
     state?:
-        | 'default'
-        | 'hover'
-        | 'focus'
-        | 'active'
-        | 'disabled'
-        | 'loading'
-        | 'error'
-        | 'success';
+    | 'default'
+    | 'hover'
+    | 'focus'
+    | 'active'
+    | 'disabled'
+    | 'loading'
+    | 'error'
+    | 'success';
 }
 
 /**
@@ -37,7 +37,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             event.eventType === 'LEGALITY'
                 ? 'var(--color-secondary)'
                 : (league?.brandColor ??
-                  `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
+                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 
         // Resolve states
         const isHover = state === 'hover';
@@ -96,8 +96,8 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
         // Championship series decoration
         const isChampionship = league?.isChampionshipSeries ?? false;
         const champStyles = isChampionship
-            ? 'border-2 border-amber-500/40 bg-linear-to-br from-amber-500/[0.04] to-transparent shadow-md shadow-amber-500/5'
-            : 'border-2 border-(--store-color) bg-bg-card shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
+            ? 'border-2 border-amber-500/40 bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5'
+            : 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
 
         // Combine wrapper styling
         const cardClasses = `
@@ -185,11 +185,11 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                     {/* Metadata & Title */}
                     <div className="flex flex-col gap-0.5 grow min-w-0">
                         <div className="text-[10px] font-bold uppercase tracking-wider text-text-muted flex flex-wrap items-center gap-1.5 leading-none">
-                            <span className="truncate max-w-30">
+                            <span className="">
                                 {leagueName}
                             </span>
                         </div>
-                        <h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug truncate">
+                        <h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug">
                             {event.name}
                         </h3>
                     </div>
