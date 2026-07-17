@@ -9,6 +9,7 @@ class BackgroundScheduler:
     def __init__(self):
         self._task: asyncio.Task | None = None
         self._running: bool = False
+        self._first_run: bool = True
 
     async def start(self) -> None:
         """Starts the background task scheduler."""
@@ -45,6 +46,15 @@ class BackgroundScheduler:
         while self._running:
             now = datetime.datetime.now(datetime.UTC)
             current_date = now.date()
+
+            # Skip immediate runs on the first loop iteration after startup
+            if self._first_run:
+                # Initialize last run dates to today to prevent immediate execution
+                last_daily_run = current_date
+                last_weekly_run = current_date
+                self._first_run = False
+                await asyncio.sleep(3600)
+                continue
 
             # Daily Update: Runs in the early afternoon (>= 13:00 UTC) once per day
             if now.hour >= 13:

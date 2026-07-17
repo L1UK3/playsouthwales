@@ -1,6 +1,7 @@
 import calendar
 import datetime
 import logging
+
 from supabase import Client
 
 from app.services.exceptions import NotFoundError
@@ -32,7 +33,7 @@ async def get_events_from_db(
         end_dt = day
         expand_recurring = True
     elif weekly:
-        today = datetime.datetime.now(datetime.timezone.utc).date()
+        today = datetime.datetime.now(datetime.UTC).date()
         days_to_monday = 7 - today.weekday()
         start_dt = today + datetime.timedelta(days=days_to_monday)
         end_dt = start_dt + datetime.timedelta(days=6)
@@ -74,7 +75,7 @@ async def get_events_from_db(
         weekly_events = []
 
     if not start_dt or not end_dt:
-        today = datetime.datetime.now(datetime.timezone.utc).date()
+        today = datetime.datetime.now(datetime.UTC).date()
         start_dt = start_dt or today
         end_dt = end_dt or (today + datetime.timedelta(days=30))
 
@@ -234,9 +235,9 @@ async def delete_event(
             excluded = weekly_event.get("excludedDates") or []
             if exclude_date not in excluded:
                 excluded.append(exclude_date)
-            db.table("weekly_events").update(
-                {"excludedDates": excluded}
-            ).eq("id", template_id).execute()
+            db.table("weekly_events").update({"excludedDates": excluded}).eq(
+                "id", template_id
+            ).execute()
             return {
                 "success": True,
                 "message": f"Occurrence on {exclude_date} excluded successfully",
