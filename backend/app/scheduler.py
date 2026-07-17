@@ -92,10 +92,10 @@ class BackgroundScheduler:
         try:
             logger.info("[Scheduler] Running daily background sync...")
             from app.dependencies import supabase
-            from app.integrations.discord.discord_connection import (
+            from app.integrations.discord import (
                 DiscordConnectionService,
             )
-            from app.services.web.pokedata_scraper import sync_pokedata
+            from app.web.pokedata_scraper import sync_pokedata
 
             res = await sync_pokedata()
             logger.info(f"[Scheduler] Daily pokedata sync completed: {res}")

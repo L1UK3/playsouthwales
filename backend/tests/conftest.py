@@ -129,7 +129,7 @@ def client(mock_supabase):
     # Patch supabase in all modules that import it at module level
     with (
         patch("app.dependencies.supabase", mock_supabase),
-        patch("app.services.pokedata_scraper.supabase", mock_supabase),
+        patch("app.web.pokedata_scraper.supabase", mock_supabase),
     ):
         with TestClient(app) as tc:
             yield tc

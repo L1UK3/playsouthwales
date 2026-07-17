@@ -12,10 +12,14 @@
       "computedHash": "5177107bf00ba948f1beff6dcfac05824af7a4d1e3847c0b27238aead3bfd0a9"
     },
     "api-design-principles": {
-      "source": "wshobson/agents",
-      "sourceType": "github",
-      "skillPath": "plugins/backend-development/skills/api-design-principles/SKILL.md",
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
       "computedHash": "a91429c25bb978f99f5da8d8752b8ae87ece51abcb24acb3953a5b1662c9bd5c"
+    },
+    "clerk-testing": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "7502df29d90ea1f14ecbd16bf91c10717bb765eafde3d247499bc60c91d1ff91"
     },
     "concise-planning": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
@@ -38,16 +42,20 @@
       "sourceType": "local",
       "computedHash": "7be30b1c18b91628dcd8437a89e7e20acce76bae4349533e4ebdeb376a660bcb"
     },
+    "e2e-testing-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "20a171bc2e543efec9d7158e06d6ee66e7dbd5205a7ebe1aa89cea90ef508cd8"
+    },
     "fastapi-templates": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
       "computedHash": "e28ca940d4a3a85eaa9150f0d4c0cc36c16de33368963b7f9da5875842b328b4"
     },
     "find-skills": {
-      "source": "vercel-labs/skills",
-      "sourceType": "github",
-      "skillPath": "skills/find-skills/SKILL.md",
-      "computedHash": "781bd6d3f9b19f8c9af6b53d8d0e4876d0183841b565db34ca7092ffa412d111"
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "1c27b1774a4ec17ad4556a72e3c0168beab3af0183b2c1b8aa9e320af3ff41ce"
     },
     "fixing-accessibility": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
@@ -100,10 +108,9 @@
       "computedHash": "2a95e36f94a82d3ec005855f597b3149580878e7ee5753a74bf96e47d20c88ab"
     },
     "lint-and-validate": {
-      "source": "sickn33/antigravity-awesome-skills",
-      "sourceType": "github",
-      "skillPath": "skills/lint-and-validate/SKILL.md",
-      "computedHash": "159f61cb63fa637f40cdb45bb968a2b17408cd8534ffc7c6d460439d5ad00e16"
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "37854110489e24a286c4ef95629e9eac158f4f63464ab02c02983c3d51ef9561"
     },
     "next-dev-loop": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
@@ -137,10 +144,20 @@
       "skillPath": "plugins/python-development/skills/python-performance-optimization/SKILL.md",
       "computedHash": "393407ad12fa7c847db0e77935783908f394b883efc05442e886ad70f9fa34f5"
     },
+    "python-testing-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "f4de9bdbf2db1c1f8e8211e6af463ad49956f15aa604e2f08ae716c71e71f64b"
+    },
     "react-best-practices": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
       "computedHash": "0de58562407e40b42ea14a670817a6db7583657a2503b833c25834e5832aebb1"
+    },
+    "react19-test-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "16d1d800fcf2b0d06d1bc745252afcaec946a4a347354148c743d8200f964d1a"
     },
     "responsive-design": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",

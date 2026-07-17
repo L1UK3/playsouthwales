@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from app.services import championship_scraper
+from app.web import championship_scraper
 
 BASE_EVENT = {
     "previewImage_s": None,

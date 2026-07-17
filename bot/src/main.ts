@@ -66,7 +66,12 @@ async function run() {
     }
 
     // Log in with your bot token
-    await bot.login(process.env.BOT_TOKEN);
+    try {
+        await bot.login(process.env.BOT_TOKEN);
+    } catch (err) {
+        console.error(`[Bot] Failed to connect to Discord: ${(err as Error).message}`);
+        console.warn("[Bot] Running bot in offline/mock mode for local development...");
+    }
 
     // Start a lightweight HTTP listener for backend notifications
     const port = process.env.PORT || 5001;

@@ -14,9 +14,9 @@ from app.models import (
 )
 from app.services import event_service, leaderboard_service, league_service
 from app.services.exceptions import NotFoundError, ValidationError
-from app.services.web.championship_scraper import sync_championship_data
-from app.services.web.pokedata_scraper import sync_pokedata
-from app.services.web.sets_scraper import run_sets_sync
+from app.web.championship_scraper import sync_championship_data
+from app.web.pokedata_scraper import sync_pokedata
+from app.web.sets_scraper import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
