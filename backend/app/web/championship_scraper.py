@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import re
@@ -132,11 +133,6 @@ def get_calendar_date(date_range: str, season_year_str: str) -> list[int]:
 
     return [calendar_year, month_val, int(day_num)]
 
-
-def get_calendar_date_str(date_list: list[int]) -> str:
-    return f"{date_list[0]}-{date_list[1]:02d}-{date_list[2]:02d}"
-
-
 async def sync_championship_data() -> dict:
     """
     Map ChampionshipEvent data to the supabase database.
@@ -221,7 +217,6 @@ async def sync_championship_data() -> dict:
     skipped_count = 0
     events_to_insert = []
 
-    # 3. Process each raw event
     for raw in items:
         try:
             championship_event = ChampionshipEvent.model_validate(raw)
@@ -293,17 +288,20 @@ async def sync_championship_data() -> dict:
             else None
         )
 
+        try:
+            start_date_obj = datetime.date(calendar_date[0], calendar_date[1], calendar_date[2])
+        except Exception as dt_err:
+            logger.warning(
+                f"Failed to create start date object for event: {championship_event.eventName_s}. Error: {dt_err}"
+            )
+            continue
+
         for day_offset in range(days_to_insert):
-            new_date = calendar_date[2] + day_offset
-            new_calendar_date = [
-                calendar_date[0],
-                calendar_date[1],
-                new_date,
-            ]
+            evt_date = start_date_obj + datetime.timedelta(days=day_offset)
             event_dict = {
                 "id": f"{event_id}-{day_offset + 1}",
                 "name": championship_event.eventName_s,
-                "date": get_calendar_date_str(new_calendar_date),
+                "date": evt_date.isoformat(),
                 "startTime": None,
                 "leagueId": league_id,
                 "ticketLink": ticket_link,
@@ -318,7 +316,6 @@ async def sync_championship_data() -> dict:
             existing_event_ids.add(event_dict["id"])
             inserted_count += 1
 
-    # 4. Perform bulk insert
     if events_to_insert:
         try:
             chunk_size = 50

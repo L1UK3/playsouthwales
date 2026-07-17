@@ -7,6 +7,8 @@ from supabase import Client
 
 from app.dependencies import get_supabase
 from app.models import EventResponse, LeagueResponse, WeeklyEventResponse
+from app.services import event_service, leaderboard_service, league_service
+from app.services.exceptions import NotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -25,26 +27,44 @@ async def health_check():
 async def get_events(
     month: str | None = None,
     year: str | None = None,
+    day: str | None = None,
+    weekly: bool = Query(False),
     league_id: int | None = Query(None, alias="leagueId"),
     db: Client = Depends(get_supabase),
 ):
     """
-    Fetch standard events, optionally filtered by leagueId, month, and year.
+    Fetch standard and optionally expanded weekly events, with flexible filtering.
     """
-    main_query = db.table("events").select("*")
+    import datetime
 
-    if league_id is not None:
-        main_query = main_query.eq("leagueId", league_id)
+    day_date = None
+    if day:
+        try:
+            day_date = datetime.date.fromisoformat(day)
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={
+                    "code": "invalid_parameter",
+                    "message": "Invalid date format for day parameter. Use YYYY-MM-DD.",
+                },
+            )
 
-    if month and year:
-        date_prefix = f"{year}-{month.zfill(2)}"
-        main_query = main_query.like("date", f"{date_prefix}%")
+    month_int = int(month) if month else None
+    year_int = int(year) if year else None
 
     try:
-        main_result = main_query.execute()
-        events = main_result.data or []
+        events = await event_service.get_events_from_db(
+            db=db,
+            month=month_int,
+            year=year_int,
+            league_id=league_id,
+            day=day_date,
+            weekly=weekly,
+            expand_recurring=bool(day or weekly),
+        )
     except Exception as e:
-        logger.error(f"Failed to fetch events from Supabase: {e}")
+        logger.error(f"Failed to fetch events: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -62,8 +82,7 @@ async def get_weekly_events(db: Client = Depends(get_supabase)):
     Fetch all weekly events.
     """
     try:
-        res = db.table("weekly_events").select("*").execute()
-        events = res.data or []
+        events = await event_service.get_weekly_events(db)
     except Exception as e:
         logger.error(f"Failed to fetch weekly events from Supabase: {e}")
         raise HTTPException(
@@ -85,23 +104,16 @@ async def get_weekly_event(league_id: int, db: Client = Depends(get_supabase)):
     Fetch a specific weekly event by its league ID.
     """
     try:
-        res = (
-            db.table("weekly_events")
-            .select("*")
-            .eq("leagueId", league_id)
-            .execute()
+        event = await event_service.get_weekly_event(db, league_id)
+        return event
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
         )
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={
-                    "code": "not_found",
-                    "message": "Weekly event not found",
-                },
-            )
-        return res.data[0]
-    except HTTPException:
-        raise
     except Exception as e:
         logger.error(
             f"Failed to fetch weekly event {league_id} from Supabase: {e}"
@@ -121,8 +133,8 @@ async def get_leagues(db: Client = Depends(get_supabase)):
     Fetch all leagues.
     """
     try:
-        res = db.table("leagues").select("*").execute()
-        leagues = res.data or []
+        leagues = await league_service.get_leagues(db)
+        return leagues
     except Exception as e:
         logger.error(f"Failed to fetch leagues from Supabase: {e}")
         raise HTTPException(
@@ -133,30 +145,6 @@ async def get_leagues(db: Client = Depends(get_supabase)):
             },
         )
 
-    # Check which leagues have standings/leaderboards uploaded
-    try:
-        leaderboards_res = db.table("leaderboards").select("leagueId").execute()
-        leagues_with_standings = (
-            {row["leagueId"] for row in leaderboards_res.data}
-            if leaderboards_res.data
-            else set()
-        )
-    except Exception as e:
-        logger.warning(
-            f"Failed to query leaderboards (falling back to mock default): {e}"
-        )
-        # In local development where the table might not exist yet, fallback to mock leagues with standings
-        leagues_with_standings = {1, 2, 3, 4}
-
-    return [
-        {
-            "leagueId": league.get("id"),
-            "hasStandings": league.get("id") in leagues_with_standings,
-            **league,
-        }
-        for league in leagues
-    ]
-
 
 @router.get("/api/leaderboard/{league_id}")
 async def get_leaderboard(league_id: int, db: Client = Depends(get_supabase)):
@@ -164,23 +152,16 @@ async def get_leaderboard(league_id: int, db: Client = Depends(get_supabase)):
     Fetch the leaderboard for a specific league.
     """
     try:
-        res = (
-            db.table("leaderboards")
-            .select("*")
-            .eq("leagueId", league_id)
-            .execute()
+        leaderboard = await leaderboard_service.get_leaderboard(db, league_id)
+        return leaderboard
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
         )
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={
-                    "code": "not_found",
-                    "message": "Leaderboard not found",
-                },
-            )
-        return res.data[0]
-    except HTTPException:
-        raise
     except Exception as e:
         logger.error(
             f"Failed to fetch leaderboard {league_id} from Supabase: {e}"

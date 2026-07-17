@@ -9,13 +9,13 @@ from app.config import get_settings
 from app.lifespan import lifespan
 from app.routers import protected, public
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 
 
 def create_app() -> FastAPI:
+    logging.basicConfig(level=logging.INFO)
 
     settings = get_settings()
     app = FastAPI(

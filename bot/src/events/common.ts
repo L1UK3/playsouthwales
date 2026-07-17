@@ -1,9 +1,25 @@
 import { Discord, On, type ArgsOf, type Client } from "discordx";
+import { bot } from "../main.js";
 
 @Discord()
-export class Example {
-  @On()
-  messageDelete([message]: ArgsOf<"messageDelete">, client: Client): void {
-    console.log("Message Deleted", client.user?.username, message.content);
-  }
+export class CommonEvents {
+    @On({ event: "ready" })
+    onReady(_args: ArgsOf<"ready">, client: Client): void {
+        console.log(`[Bot] Logged in as ${client.user?.tag}!`);
+    }
+
+    @On({ event: "dailyUpdate" })
+    async onDailyUpdate(message: string, channelId?: string): Promise<void> {
+        console.log(`[Bot] Received dailyUpdate: ${message}`);
+        if (channelId) {
+            try {
+                const channel = await bot.channels.fetch(channelId);
+                if (channel && channel.isTextBased() && "send" in channel) {
+                    await channel.send(message);
+                }
+            } catch (error) {
+                console.error(`[Bot] Failed to send daily update:`, error);
+            }
+        }
+    }
 }

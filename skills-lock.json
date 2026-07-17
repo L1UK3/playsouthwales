@@ -12,8 +12,9 @@
       "computedHash": "5177107bf00ba948f1beff6dcfac05824af7a4d1e3847c0b27238aead3bfd0a9"
     },
     "api-design-principles": {
-      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
-      "sourceType": "local",
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/backend-development/skills/api-design-principles/SKILL.md",
       "computedHash": "a91429c25bb978f99f5da8d8752b8ae87ece51abcb24acb3953a5b1662c9bd5c"
     },
     "concise-planning": {
@@ -26,6 +27,12 @@
       "sourceType": "local",
       "computedHash": "d98ee54e53449ba38c70a1ac3d4844fa5480fdd0ecc117237184e8d5032fd8c5"
     },
+    "discord-bot": {
+      "source": "claude-office-skills/skills",
+      "sourceType": "github",
+      "skillPath": "discord-bot/SKILL.md",
+      "computedHash": "692511fcf42a4939ab5aa0d08b2a3de81d230721c58ee85d4ab20ada1962cdef"
+    },
     "docker-expert": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
@@ -37,9 +44,10 @@
       "computedHash": "e28ca940d4a3a85eaa9150f0d4c0cc36c16de33368963b7f9da5875842b328b4"
     },
     "find-skills": {
-      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
-      "sourceType": "local",
-      "computedHash": "1c27b1774a4ec17ad4556a72e3c0168beab3af0183b2c1b8aa9e320af3ff41ce"
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "781bd6d3f9b19f8c9af6b53d8d0e4876d0183841b565db34ca7092ffa412d111"
     },
     "fixing-accessibility": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
@@ -92,9 +100,10 @@
       "computedHash": "2a95e36f94a82d3ec005855f597b3149580878e7ee5753a74bf96e47d20c88ab"
     },
     "lint-and-validate": {
-      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
-      "sourceType": "local",
-      "computedHash": "37854110489e24a286c4ef95629e9eac158f4f63464ab02c02983c3d51ef9561"
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/lint-and-validate/SKILL.md",
+      "computedHash": "159f61cb63fa637f40cdb45bb968a2b17408cd8534ffc7c6d460439d5ad00e16"
     },
     "next-dev-loop": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
@@ -115,6 +124,18 @@
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
       "computedHash": "646931a3af896ae12a3cad3d762668cb6487fe3ab179daf8fdc974fb79acfe49"
+    },
+    "playwright-cli": {
+      "source": "microsoft/playwright-cli",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-cli/SKILL.md",
+      "computedHash": "438b922468b7bb2ab5ce4a0f318fc65db93337f0df03908a5476effbae9487e6"
+    },
+    "python-performance-optimization": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/python-development/skills/python-performance-optimization/SKILL.md",
+      "computedHash": "393407ad12fa7c847db0e77935783908f394b883efc05442e886ad70f9fa34f5"
     },
     "react-best-practices": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",

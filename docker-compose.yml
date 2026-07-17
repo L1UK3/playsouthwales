@@ -33,14 +33,17 @@ services:
         depends_on:
             - backend
 
-    # bot:
-    #    build: ./bot
-    #    command: node build/main.js
-    #    env_file:
-    #        - ./bot/.env
-    #    restart: always
-    #    depends_on:
-    #        - backend
+    bot:
+        build:
+            context: ./bot
+            dockerfile: Dockerfile
+        ports:
+            - '5001:5001'
+        env_file:
+            - ./bot/.env
+        restart: always
+        depends_on:
+            - backend
 
 networks:
     default:
