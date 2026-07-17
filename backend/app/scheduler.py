@@ -117,13 +117,13 @@ class BackgroundScheduler:
         try:
             logger.info("[Scheduler] Running weekly background sync...")
             from app.dependencies import supabase
-            from app.integrations.discord.discord_connection import (
+            from app.integrations.discord import (
                 DiscordConnectionService,
             )
-            from app.services.web.championship_scraper import (
+            from app.web.championship_scraper import (
                 sync_championship_data,
             )
-            from app.services.web.sets_scraper import run_sets_sync
+            from app.web.sets_scraper import run_sets_sync
 
             res_sets = await run_sets_sync()
             logger.info(f"[Scheduler] Weekly sets sync completed: {res_sets}")

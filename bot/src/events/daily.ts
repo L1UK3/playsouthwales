@@ -11,6 +11,10 @@ export class CommonEvents {
     @On({ event: "dailyUpdate" })
     async onDailyUpdate(message: string, channelId?: string): Promise<void> {
         console.log(`[Bot] Received dailyUpdate: ${message}`);
+        if (!bot.token || !bot.user) {
+            console.warn("[Bot] Skipping Discord delivery (bot is in offline/mock mode).");
+            return;
+        }
         if (channelId) {
             try {
                 const channel = await bot.channels.fetch(channelId);

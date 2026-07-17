@@ -6,6 +6,10 @@ export class WeeklyEvents {
     @On({ event: "weeklyUpdate" })
     async weeklyUpdate(message: string, channelId?: string): Promise<void> {
         console.log(`[Bot] Received weeklyUpdate: ${message}`);
+        if (!bot.token || !bot.user) {
+            console.warn("[Bot] Skipping Discord delivery (bot is in offline/mock mode).");
+            return;
+        }
         if (channelId) {
             try {
                 const channel = await bot.channels.fetch(channelId);
