@@ -17,19 +17,13 @@ load_dotenv()
 class Settings(BaseSettings):
     clerk_secret_key: str
     clerk_jwt_key: str | None = None
-    clerk_authorized_parties: Annotated[list[str], NoDecode] = [
-        "http://localhost:5173",
-        "https://www.playsouthwales.uk",
-        "https://playsouthwales.uk",
-    ]
+    clerk_authorized_parties: Annotated[list[str], NoDecode] = []
     clerk_webhook_signing_secret: str | None = None
     supabase_url: str
     supabase_secret_key: str
-    allowed_origins: Annotated[list[str], NoDecode] = [
-        "http://localhost:5173",
-        "https://www.playsouthwales.uk",
-        "https://playsouthwales.uk",
-    ]
+    allowed_origins: Annotated[list[str], NoDecode] = []
+    discord_bot_url: str | None = None
+    discord_announcements_channel_id: str | None = None
 
     @field_validator(
         "clerk_authorized_parties", "allowed_origins", mode="before"

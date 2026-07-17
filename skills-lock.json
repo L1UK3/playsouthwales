@@ -16,6 +16,11 @@
       "sourceType": "local",
       "computedHash": "a91429c25bb978f99f5da8d8752b8ae87ece51abcb24acb3953a5b1662c9bd5c"
     },
+    "clerk-testing": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "7502df29d90ea1f14ecbd16bf91c10717bb765eafde3d247499bc60c91d1ff91"
+    },
     "concise-planning": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
@@ -26,10 +31,21 @@
       "sourceType": "local",
       "computedHash": "d98ee54e53449ba38c70a1ac3d4844fa5480fdd0ecc117237184e8d5032fd8c5"
     },
+    "discord-bot": {
+      "source": "claude-office-skills/skills",
+      "sourceType": "github",
+      "skillPath": "discord-bot/SKILL.md",
+      "computedHash": "692511fcf42a4939ab5aa0d08b2a3de81d230721c58ee85d4ab20ada1962cdef"
+    },
     "docker-expert": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
       "computedHash": "7be30b1c18b91628dcd8437a89e7e20acce76bae4349533e4ebdeb376a660bcb"
+    },
+    "e2e-testing-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "20a171bc2e543efec9d7158e06d6ee66e7dbd5205a7ebe1aa89cea90ef508cd8"
     },
     "fastapi-templates": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
@@ -116,10 +132,32 @@
       "sourceType": "local",
       "computedHash": "646931a3af896ae12a3cad3d762668cb6487fe3ab179daf8fdc974fb79acfe49"
     },
+    "playwright-cli": {
+      "source": "microsoft/playwright-cli",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-cli/SKILL.md",
+      "computedHash": "438b922468b7bb2ab5ce4a0f318fc65db93337f0df03908a5476effbae9487e6"
+    },
+    "python-performance-optimization": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/python-development/skills/python-performance-optimization/SKILL.md",
+      "computedHash": "393407ad12fa7c847db0e77935783908f394b883efc05442e886ad70f9fa34f5"
+    },
+    "python-testing-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "f4de9bdbf2db1c1f8e8211e6af463ad49956f15aa604e2f08ae716c71e71f64b"
+    },
     "react-best-practices": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
       "sourceType": "local",
       "computedHash": "0de58562407e40b42ea14a670817a6db7583657a2503b833c25834e5832aebb1"
+    },
+    "react19-test-patterns": {
+      "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",
+      "sourceType": "local",
+      "computedHash": "16d1d800fcf2b0d06d1bc745252afcaec946a4a347354148c743d8200f964d1a"
     },
     "responsive-design": {
       "source": "C:\\Users\\lukee\\Documents\\Projects\\playwales\\.agents\\skills",

@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 # Path to the sets JSON data file
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-SETS_PATH = os.path.join(os.path.dirname(CURRENT_DIR), "data", "sets.json")
+BASE_DIR = os.path.join(CURRENT_DIR, "..")
+SETS_PATH = os.path.join(BASE_DIR, "data", "sets.json")
 
 
 def clean_name(name_text: str) -> str:
