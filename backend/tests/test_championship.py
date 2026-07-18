@@ -2,7 +2,8 @@ import asyncio
 from unittest.mock import AsyncMock
 
 import pytest
-from backend.app.web import championship_series
+
+from app.web import championship_series
 
 BASE_EVENT = {
     "previewImage_s": None,

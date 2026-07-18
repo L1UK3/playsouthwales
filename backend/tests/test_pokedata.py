@@ -3,8 +3,9 @@ from unittest.mock import AsyncMock, MagicMock
 
 import httpx
 import pytest
-from backend.app.web import pokedata
-from backend.app.web.pokedata import clean_text, fetch_pokedata_events
+
+from app.web import pokedata
+from app.web.pokedata import clean_text, fetch_pokedata_events
 
 
 @pytest.mark.parametrize(

@@ -1,7 +1,8 @@
 import logging
 
-from backend.app.exceptions import NotFoundError, ValidationError
 from supabase import Client
+
+from app.exceptions import NotFoundError, ValidationError
 
 logger = logging.getLogger(__name__)
 

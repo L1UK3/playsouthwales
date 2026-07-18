@@ -2,8 +2,9 @@ import calendar
 import datetime
 import logging
 
-from backend.app.exceptions import NotFoundError
 from supabase import Client
+
+from app.exceptions import NotFoundError
 
 logger = logging.getLogger(__name__)
 

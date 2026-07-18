@@ -74,9 +74,8 @@ class BackgroundScheduler:
         self, start_date: datetime.date, end_date: datetime.date
     ) -> list[dict]:
         """Retrieve standard and expanded weekly events within a date range."""
-        from backend.app.services.event import get_events_from_db
-
         from app.dependencies import supabase
+        from app.services.event import get_events_from_db
 
         return await get_events_from_db(
             db=supabase,
@@ -102,12 +101,11 @@ class BackgroundScheduler:
         """Run the daily background sync and send today's events update."""
         try:
             logger.info("[Scheduler] Running daily background sync...")
-            from backend.app.web.pokedata import sync_pokedata
-
             from app.dependencies import supabase
             from app.integrations.discord import (
                 DiscordConnectionService,
             )
+            from app.web.pokedata import sync_pokedata
 
             res = await sync_pokedata()
             logger.info(f"[Scheduler] Daily pokedata sync completed: {res}")
@@ -128,15 +126,14 @@ class BackgroundScheduler:
         """Run the weekly background sync and send the weekly premier events update."""
         try:
             logger.info("[Scheduler] Running weekly background sync...")
-            from backend.app.web.championship_series import (
-                sync_championship_data,
-            )
-            from backend.app.web.sets_releases import run_sets_sync
-
             from app.dependencies import supabase
             from app.integrations.discord import (
                 DiscordConnectionService,
             )
+            from app.web.championship_series import (
+                sync_championship_data,
+            )
+            from app.web.sets_releases import run_sets_sync
 
             res_sets = await run_sets_sync()
             logger.info(f"[Scheduler] Weekly sets sync completed: {res_sets}")
