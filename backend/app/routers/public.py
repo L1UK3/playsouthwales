@@ -2,13 +2,13 @@ import json
 import logging
 import os
 
-from backend.app.exceptions import NotFoundError
-from backend.app.services import event, league
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from supabase import Client
 
 from app.dependencies import get_supabase
+from app.exceptions import NotFoundError
 from app.models import EventResponse, LeagueResponse, WeeklyEventResponse
+from app.services import event, league
 
 logger = logging.getLogger(__name__)
 

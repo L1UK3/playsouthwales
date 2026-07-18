@@ -1,15 +1,11 @@
 import logging
 
-from backend.app.exceptions import NotFoundError, ValidationError
-from backend.app.services import event, league
-from backend.app.web.championship_series import sync_championship_data
-from backend.app.web.pokedata import sync_pokedata
-from backend.app.web.sets_releases import run_sets_sync
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from supabase import Client
 
 from app.auth import require_auth
 from app.dependencies import get_supabase
+from app.exceptions import NotFoundError, ValidationError
 from app.models import (
     EventCreate,
     EventUpdate,
@@ -17,6 +13,10 @@ from app.models import (
     LeagueCreate,
     LeagueUpdate,
 )
+from app.services import event, league
+from app.web.championship_series import sync_championship_data
+from app.web.pokedata import sync_pokedata
+from app.web.sets_releases import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
