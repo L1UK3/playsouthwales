@@ -1,14 +1,21 @@
 {
-    "name": "playwales",
+    "name": "playsouthwales",
     "version": "1.0.0",
     "description": "An interactive, full-stack league scheduling and management application for South Wales leagues.",
-    "homepage": "https://github.com/L1UK3/playwales#readme",
+    "keywords": [
+        "tcg",
+        "typescript",
+        "react",
+        "python",
+        "fastapi"
+    ],
+    "homepage": "https://github.com/L1UK3/playsouthwales#readme",
     "bugs": {
-        "url": "https://github.com/L1UK3/playwales/issues"
+        "url": "https://github.com/L1UK3/playsouthwales/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/L1UK3/playwales.git"
+        "url": "git+https://github.com/L1UK3/playsouthwales.git"
     },
     "license": "ISC",
     "author": "",
