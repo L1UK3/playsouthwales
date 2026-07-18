@@ -1,99 +1,94 @@
-<div>
-  <p align="center">
-    <a href="https://discordx.js.org" target="_blank" rel="nofollow">
-      <img src="https://discordx.js.org/discordx.svg" width="546" />
-    </a>
-  </p>
-  <p align="center">
-    <a href="https://discordx.js.org/discord"
-      ><img
-        src="https://img.shields.io/discord/874802018361950248?color=5865F2&logo=discord&logoColor=white"
-        alt="Discord server"
-    /></a>
-    <a href="https://www.npmjs.com/package/discordx"
-      ><img
-        src="https://img.shields.io/npm/v/discordx.svg?maxAge=3600"
-        alt="NPM version"
-    /></a>
-    <a href="https://www.npmjs.com/package/discordx"
-      ><img
-        src="https://img.shields.io/npm/dt/discordx.svg?maxAge=3600"
-        alt="NPM downloads"
-    /></a>
-    <a href="https://github.com/discordx-ts/discordx/actions"
-      ><img
-        src="https://github.com/discordx-ts/discordx/workflows/Build/badge.svg"
-        alt="Build status"
-    /></a>
-    <a href="https://www.paypal.me/vijayxmeena"
-      ><img
-        src="https://img.shields.io/badge/donate-paypal-F96854.svg"
-        alt="paypal"
-    /></a>
-  </p>
-  <p align="center">
-    <b> Create a discord bot with TypeScript and Decorators! </b>
-  </p>
-</div>
+---
+meta.contentType: Reference
+---
 
-# 📖 Introduction
+# How do I configure and run the Discord bot?
 
-A starter template equipped with several interaction commands and one event.
+This document guides you through setting up, configuring, and deploying the Play! South Wales Discord notifier bot.
 
-# 🏗 Development
+## Plan
 
-```
+- **Overview**: Reference documentation for the Discord bot client.
+- **Goal**: Register slash commands, configure credentials, run the HTTP server, and deploy the service.
+- **Audience**: Core developers and system administrators.
+- **Content Plan**: Step-by-step token setup, Express REST endpoints details, slash commands listing, running tasks, and Docker deployment.
+- **Open Questions**: None.
+
+## System requirements
+
+Ensure you have the following software installed:
+- Node.js (version 18.0.0 or higher)
+- NPM package manager
+
+## Bot setup and configuration
+
+Follow these steps to configure your Discord bot:
+
+1. Create a new Discord application at the [Discord Developer Portal](https://discord.com/developers/applications).
+2. Create a bot user under the **Bot** section and click **Reset Token** to copy your credentials.
+3. Enable the **Message Content Intent** toggle under the Privileged Gateway Intents section.
+4. Navigate to the **OAuth2 > URL Generator** tab.
+5. Select the `bot` and `applications.commands` scopes.
+6. Check the required permissions (Send Messages, Embed Links, Read Message History) and copy the generated invite link to authorize the bot in your guild.
+7. Create a `.env` file in the bot root directory by copying the example:
+   ```bash
+   cp .env.example .env
+   ```
+8. Populate the variables with your credentials:
+   - **`BOT_TOKEN`**: The secret token of your Discord bot.
+   - **`CLIENT_ID`**: The Application ID of your bot.
+   - **`GUILD_ID`**: The ID of your testing Discord server (forces instant slash command sync).
+
+## Run the bot locally
+
+To install dependencies and start the hot-reload watch runner:
+```bash
 npm install
-npm run dev
-```
-
-If you want to use [Nodemon](https://nodemon.io/) to auto-reload while in development:
-
-```
 npm run watch
 ```
 
-# 💻 Production
+If you do not specify a valid `BOT_TOKEN`, the bot starts in offline/mock mode for local development.
 
-```
-npm install --production
+## Express HTTP notifier API
+
+The bot runs an Express HTTP server listening on port `5001` (configurable via the `PORT` environment variable) to receive updates from the backend:
+
+- **`GET /` or `/health`**: Returns a status message indicating the service is online.
+- **`POST /api/notify`**: Posts a message to a Discord channel.
+  - Payload:
+    ```json
+    {
+      "channelId": "your_channel_id_here",
+      "message": "Notification content"
+    }
+    ```
+- **`POST /api/emit`**: Emits a custom client event.
+  - Payload:
+    ```json
+    {
+      "event": "event_name_here",
+      "args": []
+    }
+    ```
+
+## Slash commands
+
+The bot registers the following global slash commands:
+
+- **`/ping`**: Checks bot latency to the gateway.
+- **`/help`**: Lists bot features, automated event schedules, and available commands.
+
+## Deploy the bot
+
+To compile TypeScript and start the production server:
+```bash
 npm run build
 npm run start
 ```
 
-# 🐋 Docker
+### Docker deployment
 
-To start your application:
-
+Build and start the container in detached mode:
+```bash
+docker-compose up -d --build bot
 ```
-docker-compose up -d
-```
-
-To shut down your application:
-
-```
-docker-compose down
-```
-
-To view your application's logs:
-
-```
-docker-compose logs
-```
-
-For the full command list please view the [Docker Documentation](https://docs.docker.com/engine/reference/commandline/cli/).
-
-# 📜 Documentation
-
-- [discordx.js.org](https://discordx.js.org)
-- [Tutorials (dev.to)](https://dev.to/vijayymmeena/series/14317)
-
-# ☎️ Need help?
-
-- [Check frequently asked questions](https://discordx.js.org/docs/faq)
-- [Check examples](https://github.com/discordx-ts/discordx/tree/main/packages/discordx/examples)
-- Ask in the community [Discord server](https://discordx.js.org/discord)
-
-# 💖 Thank you
-
-You can support [discordx](https://www.npmjs.com/package/discordx) by giving it a [GitHub](https://github.com/discordx-ts/discordx) star.
