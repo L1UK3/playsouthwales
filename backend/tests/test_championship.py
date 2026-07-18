@@ -2,8 +2,7 @@ import asyncio
 from unittest.mock import AsyncMock
 
 import pytest
-
-from app.web import championship_scraper
+from backend.app.web import championship_series
 
 BASE_EVENT = {
     "previewImage_s": None,
@@ -52,17 +51,17 @@ def test_sync_championship_data_creates_expected_rows(
     supabase_table("leagues", [{"id": 7}])
     events_chain = supabase_table("events", [])
 
-    monkeypatch.setattr(championship_scraper, "supabase", mock_supabase)
+    monkeypatch.setattr(championship_series, "supabase", mock_supabase)
     monkeypatch.setattr(
-        championship_scraper, "CHAMP_SERIES_URL", "https://example.com"
+        championship_series, "CHAMP_SERIES_URL", "https://example.com"
     )
     monkeypatch.setattr(
-        championship_scraper,
+        championship_series,
         "CHAMP_SERIES_API_URL",
         "https://api.example.com/championships",
     )
     monkeypatch.setattr(
-        championship_scraper,
+        championship_series,
         "fetch_championship_data",
         AsyncMock(
             return_value=[
@@ -80,7 +79,7 @@ def test_sync_championship_data_creates_expected_rows(
         ),
     )
 
-    result = asyncio.run(championship_scraper.sync_championship_data())
+    result = asyncio.run(championship_series.sync_championship_data())
 
     assert result["success"] is True
     assert result["inserted"] == expected_count

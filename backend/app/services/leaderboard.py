@@ -1,18 +1,15 @@
 import logging
-from supabase import Client
 
-from app.services.exceptions import NotFoundError
+from backend.app.exceptions import NotFoundError
+from supabase import Client
 
 logger = logging.getLogger(__name__)
 
 
 async def get_leaderboard(db: Client, league_id: int) -> dict:
-    """Fetch the leaderboard for a specific league."""
+    """Retrieve the standings leaderboard for a specific league."""
     res = (
-        db.table("leaderboards")
-        .select("*")
-        .eq("leagueId", league_id)
-        .execute()
+        db.table("leaderboards").select("*").eq("leagueId", league_id).execute()
     )
     if not res.data:
         raise NotFoundError("Leaderboard not found")
@@ -22,7 +19,7 @@ async def get_leaderboard(db: Client, league_id: int) -> dict:
 async def update_leaderboard(
     db: Client, league_id: int, leaderboard_data: list[dict]
 ) -> dict:
-    """Upsert the leaderboard data for a specific league."""
+    """Upsert the standings leaderboard data for a specific league."""
     existing = (
         db.table("leaderboards")
         .select("id")

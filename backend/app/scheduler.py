@@ -12,7 +12,7 @@ class BackgroundScheduler:
         self._first_run: bool = True
 
     async def start(self) -> None:
-        """Starts the background task scheduler."""
+        """Start the background task scheduler."""
         if self._running:
             logger.warning("[Scheduler] Already running.")
             return
@@ -22,7 +22,7 @@ class BackgroundScheduler:
         logger.info("[Scheduler] Started background tasks.")
 
     async def stop(self) -> None:
-        """Stops the background task scheduler."""
+        """Stop the background task scheduler."""
         if not self._running:
             return
 
@@ -37,7 +37,7 @@ class BackgroundScheduler:
         logger.info("[Scheduler] Stopped background tasks.")
 
     async def _run_loop(self) -> None:
-        """The main loop for the background scheduler."""
+        """Run the main loop for the background scheduler."""
         await asyncio.sleep(1)
 
         last_daily_run = None
@@ -73,9 +73,10 @@ class BackgroundScheduler:
     async def _get_events_for_date_range(
         self, start_date: datetime.date, end_date: datetime.date
     ) -> list[dict]:
-        """Fetch standard and expanded weekly events within a date range."""
+        """Retrieve standard and expanded weekly events within a date range."""
+        from backend.app.services.event import get_events_from_db
+
         from app.dependencies import supabase
-        from app.services.event_service import get_events_from_db
 
         return await get_events_from_db(
             db=supabase,
@@ -85,7 +86,7 @@ class BackgroundScheduler:
         )
 
     def _get_leagues_map(self, db) -> dict[int, str]:
-        """Fetch leagues mapping from the database."""
+        """Retrieve the leagues map from the database."""
         try:
             res = db.table("leagues").select("id, name").execute()
             return (
@@ -98,14 +99,15 @@ class BackgroundScheduler:
             return {}
 
     async def _run_daily(self) -> None:
-        """Runs the daily background sync and sends today's events update."""
+        """Run the daily background sync and send today's events update."""
         try:
             logger.info("[Scheduler] Running daily background sync...")
+            from backend.app.web.pokedata import sync_pokedata
+
             from app.dependencies import supabase
             from app.integrations.discord import (
                 DiscordConnectionService,
             )
-            from app.web.pokedata_scraper import sync_pokedata
 
             res = await sync_pokedata()
             logger.info(f"[Scheduler] Daily pokedata sync completed: {res}")
@@ -123,17 +125,18 @@ class BackgroundScheduler:
             logger.error(f"[Scheduler] Error in daily background sync: {e}")
 
     async def _run_weekly(self) -> None:
-        """Runs the weekly background sync and sends the weekly premier events update."""
+        """Run the weekly background sync and send the weekly premier events update."""
         try:
             logger.info("[Scheduler] Running weekly background sync...")
+            from backend.app.web.championship_series import (
+                sync_championship_data,
+            )
+            from backend.app.web.sets_releases import run_sets_sync
+
             from app.dependencies import supabase
             from app.integrations.discord import (
                 DiscordConnectionService,
             )
-            from app.web.championship_scraper import (
-                sync_championship_data,
-            )
-            from app.web.sets_scraper import run_sets_sync
 
             res_sets = await run_sets_sync()
             logger.info(f"[Scheduler] Weekly sets sync completed: {res_sets}")

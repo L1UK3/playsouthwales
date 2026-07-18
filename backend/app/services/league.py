@@ -1,13 +1,13 @@
 import logging
-from supabase import Client
 
-from app.services.exceptions import NotFoundError, ValidationError
+from backend.app.exceptions import NotFoundError, ValidationError
+from supabase import Client
 
 logger = logging.getLogger(__name__)
 
 
 async def get_leagues(db: Client) -> list[dict]:
-    """Fetch all leagues and flag those with standings leaderboards."""
+    """Retrieve all leagues and flag those with standings leaderboards."""
     res = db.table("leagues").select("*").execute()
     leagues = res.data or []
 
@@ -35,7 +35,7 @@ async def get_leagues(db: Client) -> list[dict]:
 
 
 async def create_league(db: Client, league_data: dict) -> dict:
-    """Create a new league."""
+    """Create a new gaming league."""
     res = db.table("leagues").insert(league_data).execute()
     if not res.data:
         raise Exception("Failed to insert league, no data returned.")
@@ -48,7 +48,7 @@ async def create_league(db: Client, league_data: dict) -> dict:
 
 
 async def patch_league(db: Client, league_id: int, league_data: dict) -> dict:
-    """Update details of an existing league."""
+    """Update details of an existing gaming league."""
     res = db.table("leagues").select("id").eq("id", league_id).execute()
     if not res.data:
         raise NotFoundError("League not found")
@@ -60,7 +60,7 @@ async def patch_league(db: Client, league_id: int, league_data: dict) -> dict:
 
 
 async def delete_league(db: Client, league_id: int) -> dict:
-    """Delete a league and clean up associated events."""
+    """Delete a gaming league and clean up associated events."""
     res = (
         db.table("leagues")
         .select("id", "isChampionshipSeries")
@@ -71,7 +71,9 @@ async def delete_league(db: Client, league_id: int) -> dict:
         raise NotFoundError("League not found")
 
     if res.data[0].get("isChampionshipSeries"):
-        raise ValidationError("The championship series league cannot be deleted.")
+        raise ValidationError(
+            "The championship series league cannot be deleted."
+        )
 
     db.table("events").delete().eq("leagueId", league_id).execute()
     db.table("weekly_events").delete().eq("leagueId", league_id).execute()

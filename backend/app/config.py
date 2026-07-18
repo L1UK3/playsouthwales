@@ -55,6 +55,7 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
+    """Retrieve cached application configuration settings."""
     try:
         return Settings()
     except ValidationError as e:

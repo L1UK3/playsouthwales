@@ -2,9 +2,8 @@ import calendar
 import datetime
 import logging
 
+from backend.app.exceptions import NotFoundError
 from supabase import Client
-
-from app.services.exceptions import NotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -20,10 +19,10 @@ async def get_events_from_db(
     weekly: bool = False,
     expand_recurring: bool = False,
 ) -> list[dict]:
-    """
-    Fetches events from the database with flexible filtering.
-    If expand_recurring is True (or if day/weekly is specified), it expands
-    weekly events and merges them with standard (one-off) events.
+    """Retrieve events from the database with flexible filtering.
+
+    If you set expand_recurring to True, this function expands weekly events
+    and merges them with standard one-off events.
     """
     start_dt = start_date
     end_dt = end_date
@@ -120,13 +119,13 @@ async def get_events_from_db(
 
 
 async def get_weekly_events(db: Client) -> list[dict]:
-    """Fetch all weekly event templates."""
+    """Retrieve all weekly event templates."""
     res = db.table("weekly_events").select("*").execute()
     return res.data or []
 
 
 async def get_weekly_event(db: Client, league_id: int) -> dict:
-    """Fetch a specific weekly event template by league ID."""
+    """Retrieve a specific weekly event template by league ID."""
     res = (
         db.table("weekly_events")
         .select("*")
@@ -210,7 +209,7 @@ async def patch_event(db: Client, event_id: str, event_data: dict) -> dict:
 async def delete_event(
     db: Client, event_id: str, exclude_date: str | None = None
 ) -> dict:
-    """Delete an event, a weekly series, or exclude a single occurrence."""
+    """Delete an event, weekly series, or single occurrence."""
     is_virtual = False
     try:
         val = int(event_id)

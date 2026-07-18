@@ -9,8 +9,8 @@ supabase: Client = create_client(
 
 
 def get_supabase() -> Client:
-    """
-    FastAPI dependency that returns the Supabase client.
-    Can be overridden in tests.
+    """Retrieve the Supabase client.
+
+    Override this dependency during tests to use a mock client.
     """
     return supabase

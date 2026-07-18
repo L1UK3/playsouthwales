@@ -4,7 +4,7 @@ meta.contentType: Reference
 
 # Where can I find the endpoint routes and payload schemas?
 
-This document provides a complete reference of the Play! South Wales backend API endpoints, their expected input models, and response formats.
+This reference lists the Play! South Wales backend API endpoints, input models, and response formats.
 
 ## Plan
 
@@ -16,21 +16,21 @@ This document provides a complete reference of the Play! South Wales backend API
 
 ## Authentication
 
-Protected routes require a Clerk session token in the authorization header:
+Provide a Clerk session token in the Authorization header to request protected routes:
 
 ```http
 Authorization: Bearer your_clerk_session_token_here
 ```
 
-Missing or invalid session tokens trigger a `410 Unauthorized` response.
+Missing or invalid session tokens result in a `401 Unauthorized` response.
 
 ## Public API endpoints
 
-These endpoints do not require authentication headers.
+These endpoints do not require authentication.
 
 ### GET `/api/health`
 
-Confirms server availability.
+Verify if the API server is online and running.
 
 - **Response Body**:
   ```json
@@ -41,7 +41,7 @@ Confirms server availability.
 
 ### GET `/api/events`
 
-Fetches standard events.
+Retrieve standard events scheduled for a specific date range or league.
 
 - **Query Parameters**:
   - **month**: Month number (e.g. `7` or `07`)
@@ -68,14 +68,14 @@ Fetches standard events.
 
 ### GET `/api/weekly-events`
 
-Fetches all recurring weekly event templates.
+Retrieve recurring weekly event templates.
 
 - **Response Body**:
   Same structure as standard events, returned inside a list array.
 
 ### GET `/api/leagues`
 
-Fetches all active gaming leagues.
+Retrieve active gaming leagues.
 
 - **Response Body**:
   ```json
@@ -94,7 +94,7 @@ Fetches all active gaming leagues.
 
 ### GET `/api/players/top20`
 
-Fetches top ranked Welsh players for a Championship Point (CP) season.
+Retrieve the top Welsh players ranked by Championship Points (CP) for a specific season.
 
 - **Query Parameters**:
   - **season**: Season identifier (e.g., `2026-2027`)
@@ -116,11 +116,11 @@ Fetches top ranked Welsh players for a Championship Point (CP) season.
 
 ## Protected API endpoints
 
-These endpoints require valid Clerk authentication headers.
+These endpoints require a valid Clerk authentication header.
 
 ### POST `/api/events`
 
-Creates a new event.
+Create a new event.
 
 - **Request Body**:
   ```json
@@ -144,7 +144,7 @@ Creates a new event.
 
 ### PATCH `/api/events/{event_id}`
 
-Partially updates an existing event or recurring template.
+Partially update an existing event or recurring template.
 
 - **Path Parameters**:
   - **event_id**: Unique identifier string. If `event_id` is an integer `>= 10000000`, the server extracts the recurring series ID (`template_id = event_id // 10000000`).
@@ -160,7 +160,7 @@ Partially updates an existing event or recurring template.
 
 ### DELETE `/api/events/{event_id}`
 
-Deletes an event, occurrence, or recurring series.
+Delete an event, occurrence, or recurring series.
 
 - **Query Parameters**:
   - **excludeDate**: Date string (e.g., `2026-07-25`) to exclude a single occurrence from a series instead of deleting the entire series.
@@ -176,7 +176,7 @@ Deletes an event, occurrence, or recurring series.
 
 ## Standard error schema
 
-The backend uses a uniform structure for API errors:
+The backend API returns errors in a standard JSON structure:
 
 ```json
 {

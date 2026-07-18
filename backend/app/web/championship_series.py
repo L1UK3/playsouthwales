@@ -30,9 +30,7 @@ class ChampionshipEvent(BaseModel):
 
 
 async def fetch_championship_data(url: str) -> list[dict] | dict:
-    """
-    Fetches championship data from an external API
-    """
+    """Retrieve championship data from the external API."""
     import asyncio
 
     max_retries = 3
@@ -71,8 +69,8 @@ async def fetch_championship_data(url: str) -> list[dict] | dict:
 
 
 def get_calendar_date(date_range: str, season_year_str: str) -> list[int]:
-    """
-    Parse the start date from displayDateRange_s and year_s to get YYYY-MM-DD.
+    """Parse the start date from displayDateRange_s and year_s to get YYYY-MM-DD format.
+
     Example: 'Aug. 28-30', '2026' -> '2026-08-28'
              'Sept. 18-20', '2027' -> '2026-09-18' (2027 season starts in 2026)
     """
@@ -134,9 +132,7 @@ def get_calendar_date(date_range: str, season_year_str: str) -> list[int]:
     return [calendar_year, month_val, int(day_num)]
 
 async def sync_championship_data() -> dict:
-    """
-    Map ChampionshipEvent data to the supabase database.
-    """
+    """Map official Championship Series event data to the Supabase database."""
     url = CHAMP_SERIES_API_URL
 
     try:

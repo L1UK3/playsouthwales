@@ -3,9 +3,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import httpx
 import pytest
-
-from app.web import pokedata_scraper
-from app.web.pokedata_scraper import clean_text, fetch_pokedata_events
+from backend.app.web import pokedata
+from backend.app.web.pokedata import clean_text, fetch_pokedata_events
 
 
 @pytest.mark.parametrize(
@@ -109,11 +108,11 @@ def test_sync_pokedata_processes_and_inserts_new_events(
     # Monkeypatch fetch function to return our raw mock events on first call, empty lists on others
     mock_fetch = AsyncMock()
     mock_fetch.side_effect = [raw_mock_events, [], []]
-    monkeypatch.setattr(pokedata_scraper, "fetch_pokedata_events", mock_fetch)
-    monkeypatch.setattr(pokedata_scraper, "supabase", mock_supabase)
+    monkeypatch.setattr(pokedata, "fetch_pokedata_events", mock_fetch)
+    monkeypatch.setattr(pokedata, "supabase", mock_supabase)
 
     # 2. Act
-    result = asyncio.run(pokedata_scraper.sync_pokedata())
+    result = asyncio.run(pokedata.sync_pokedata())
 
     # 3. Assert
     assert result == {

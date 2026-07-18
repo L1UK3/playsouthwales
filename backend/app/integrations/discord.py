@@ -12,7 +12,7 @@ class DiscordConnectionService:
     async def send_notification(
         message: str, channel_id: str | None = None
     ) -> bool:
-        """Sends a notification message to the Discord bot HTTP API."""
+        """Send a notification message to the Discord bot HTTP API."""
         settings = get_settings()
         target_channel = channel_id or settings.discord_announcements_channel_id
         if not target_channel:
@@ -52,7 +52,7 @@ class DiscordConnectionService:
 
     @staticmethod
     async def emit_event(event: str, args: list | None = None) -> bool:
-        """Emits a custom event to the Discord bot HTTP API."""
+        """Emit a custom event to the Discord bot HTTP API."""
         settings = get_settings()
         base_url = settings.discord_bot_url
         if not base_url:
@@ -90,7 +90,7 @@ class DiscordConnectionService:
     async def send_daily_update(
         cls, events: list[dict], leagues_map: dict[int, str]
     ) -> bool:
-        """Formats and sends the daily event update to Discord."""
+        """Format and send the daily event update to Discord."""
         import datetime
 
         today = datetime.datetime.now(datetime.UTC).date()
@@ -139,7 +139,7 @@ class DiscordConnectionService:
     async def send_weekly_update(
         cls, events: list[dict], leagues_map: dict[int, str]
     ) -> bool:
-        """Formats and sends the weekly premier events update to Discord."""
+        """Format and send the weekly premier events update to Discord."""
         import datetime
 
         premier_types = {

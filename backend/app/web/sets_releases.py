@@ -15,9 +15,9 @@ SETS_PATH = os.path.join(BASE_DIR, "data", "sets.json")
 
 
 def clean_name(name_text: str) -> str:
-    """
-    Clean expansion names by stripping wiki TCG templates.
-    e.g., converts '{{tcg|Prismatic Fates}}' to 'Prismatic Fates'.
+    """Clean expansion names by stripping wiki TCG templates.
+
+    Example: converts '{{tcg|Prismatic Fates}}' to 'Prismatic Fates'.
     """
     name_text = name_text.strip()
     match = re.match(r"\{\{[Tt][Cc][Gg]\|([^|]+)(?:\|([^}]+))?\}\}", name_text)
@@ -28,9 +28,9 @@ def clean_name(name_text: str) -> str:
 
 
 def parse_cell_content(cell: str) -> str:
-    """
-    Parse a wikitext table cell to extract its raw text content.
-    Identifies the last pipe '|' character outside of links or templates.
+    """Parse a wikitext table cell to extract its raw text content.
+
+    Identify the last pipe '|' character outside of links or templates.
     """
     cell = cell.strip()
     # Find the last '|' that is not inside [[...]] or {{...}}
@@ -59,9 +59,7 @@ def parse_cell_content(cell: str) -> str:
 
 
 def parse_wikitext(content: str) -> list[dict]:
-    """
-    Parse Bulbapedia wikitext to extract expansion codes, names, and release dates.
-    """
+    """Parse Bulbapedia wikitext to extract expansion codes, names, and release dates."""
     # Find all table blocks in wikitext
     table_blocks = re.findall(r"\{\|.*?(?:\n\|\})", content, re.DOTALL)
 
@@ -186,9 +184,9 @@ def parse_wikitext(content: str) -> list[dict]:
 
 
 async def run_sets_sync() -> dict:
-    """
-    Scrapes upcoming and current set data from Bulbapedia, calculates standard legality,
-    and updates backend/app/data/sets.json with sets released starting from SV9 (2025-03-28) onwards.
+    """Scrape upcoming and current set data from Bulbapedia, and calculate standard legality.
+
+    Update backend/app/data/sets.json with sets released starting from SV9 (2025-03-28) onwards.
     """
     params = {
         "action": "query",

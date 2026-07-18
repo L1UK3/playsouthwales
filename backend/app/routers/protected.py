@@ -1,5 +1,10 @@
 import logging
 
+from backend.app.exceptions import NotFoundError, ValidationError
+from backend.app.services import event, league
+from backend.app.web.championship_series import sync_championship_data
+from backend.app.web.pokedata import sync_pokedata
+from backend.app.web.sets_releases import run_sets_sync
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from supabase import Client
 
@@ -12,11 +17,6 @@ from app.models import (
     LeagueCreate,
     LeagueUpdate,
 )
-from app.services import event_service, leaderboard_service, league_service
-from app.services.exceptions import NotFoundError, ValidationError
-from app.web.championship_scraper import sync_championship_data
-from app.web.pokedata_scraper import sync_pokedata
-from app.web.sets_scraper import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
@@ -29,12 +29,10 @@ async def create_event(
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
-    """
-    Create a new event. Requires Clerk authorization.
-    """
+    """Create a new event."""
     try:
         event_data = event.model_dump()
-        result = await event_service.create_event(db, event_data)
+        result = await event.create_event(db, event_data)
         return result
     except Exception as e:
         logger.error(f"Failed to create event: {e}")
@@ -55,13 +53,10 @@ async def patch_event(
     auth: dict = Depends(require_auth),  # type: ignore
     db: Client = Depends(get_supabase),
 ):
-    """
-    Partially update an existing event. Requires Clerk authorization.
-    Supports virtual IDs for recurring events.
-    """
+    """Partially update an existing event, supporting virtual IDs for recurring events."""
     try:
         event_data = event.model_dump(exclude_unset=True)
-        result = await event_service.patch_event(db, event_id, event_data)
+        result = await event.patch_event(db, event_id, event_data)
         return result
     except NotFoundError as e:
         raise HTTPException(
@@ -89,11 +84,9 @@ async def delete_event(
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
-    """
-    Delete an event or a weekly event series/occurrence. Requires Clerk authorization.
-    """
+    """Delete an event, occurrence, or recurring series."""
     try:
-        result = await event_service.delete_event(db, event_id, exclude_date)
+        result = await event.delete_event(db, event_id, exclude_date)
         return result
     except NotFoundError as e:
         raise HTTPException(
@@ -116,9 +109,7 @@ async def delete_event(
 
 @router.post("/api/events/sync-pokedata")
 async def trigger_pokedata_sync(auth: dict = Depends(require_auth)):
-    """
-    Manually trigger the sync of events from pokedata.ovh. Requires Clerk authorization.
-    """
+    """Trigger a manual synchronization of events from Pokédata."""
     try:
         result = await sync_pokedata()
         if "error" in result:
@@ -146,9 +137,7 @@ async def trigger_pokedata_sync(auth: dict = Depends(require_auth)):
 
 @router.post("/api/events/sync-sets")
 async def trigger_sets_sync(auth: dict = Depends(require_auth)):
-    """
-    Manually trigger the sync of TCG sets from Bulbapedia. Requires Clerk authorization.
-    """
+    """Trigger a manual synchronization of TCG sets from Bulbapedia."""
     try:
         result = await run_sets_sync()
         if not result.get("success"):
@@ -179,9 +168,7 @@ async def trigger_sets_sync(auth: dict = Depends(require_auth)):
 
 @router.post("/api/events/sync-championship")
 async def trigger_championship_sync(auth: dict = Depends(require_auth)):
-    """
-    Manually trigger the sync of official Championship Series events. Requires Clerk authorization.
-    """
+    """Trigger a manual synchronization of Championship Series events."""
     try:
         result = await sync_championship_data()
         if not result.get("success"):
@@ -218,12 +205,10 @@ async def create_league(
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
-    """
-    Create a new league. Requires Clerk authorization.
-    """
+    """Create a new gaming league."""
     try:
         league_data = league.model_dump()
-        result = await league_service.create_league(db, league_data)
+        result = await league.create_league(db, league_data)
         return result
     except Exception as e:
         logger.error(f"Failed to create league: {e}")
@@ -244,12 +229,10 @@ async def patch_league(
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
-    """
-    Partially update an existing league. Requires Clerk authorization.
-    """
+    """Partially update an existing gaming league."""
     try:
         league_data = league.model_dump(exclude_unset=True)
-        result = await league_service.patch_league(db, league_id, league_data)
+        result = await league.patch_league(db, league_id, league_data)
         return result
     except NotFoundError as e:
         raise HTTPException(
@@ -276,11 +259,9 @@ async def delete_league(
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
-    """
-    Delete a league. Requires Clerk authorization.
-    """
+    """Delete a gaming league."""
     try:
-        result = await league_service.delete_league(db, league_id)
+        result = await league.delete_league(db, league_id)
         return result
     except NotFoundError as e:
         raise HTTPException(
@@ -316,11 +297,9 @@ async def update_leaderboard(
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
-    """
-    Upsert the leaderboard for a specific league. Requires Clerk authorization.
-    """
+    """Upsert the standings leaderboard for a specific league."""
     try:
-        result = await leaderboard_service.update_leaderboard(
+        result = await leaderboard.update_leaderboard(
             db, league_id, leaderboard.data
         )
         return result
