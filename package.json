@@ -355,7 +355,7 @@
         "typescript": "^6.0.3",
         "typescript-eslint": "^8.62.1",
         "ufo": "^1.6.4",
-        "undici": "^6.24.1",
+        "undici": "^6.27.0",
         "undici-types": "^8.7.0",
         "unpipe": "^1.0.0",
         "update-browserslist-db": "^1.2.3",
