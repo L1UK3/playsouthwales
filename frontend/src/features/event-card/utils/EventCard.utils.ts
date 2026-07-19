@@ -6,6 +6,9 @@ import type { EventCardAdditionalProps } from '../types/EventCard.types';
 
 /**
  * Extract league information and computed store color.
+ * @param event {Event} - The event object containing event details.
+ * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
+ * @returns {{ league: League | null, leagueName: string }} - An object containing the league and its name.
  */
 export function getLeagueInfo(event: Event, leagueMap: Record<number, League>) {
     const league =
@@ -19,21 +22,30 @@ export function getLeagueInfo(event: Event, leagueMap: Record<number, League>) {
     return { league, leagueName };
 }
 
+/**
+ * Compute the store color for an event based on its type and associated league.
+ * @param event {Event} - The event object containing event details.
+ * @param league {League | null} - The league object associated with the event, or null if not applicable.
+ * @returns {string} - The computed store color as a CSS variable or HSL value.
+ */
 export function getStoreColor(event: Event, league: League | null): string {
     return event.eventType === 'LEGALITY'
         ? 'var(--color-secondary)'
         : (league?.brandColor ??
-              `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
+            `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 }
 
 /**
  * Resolve component state flags.
+ * @param state {EventCardAdditionalProps['state']} - The current state of the card.
+ * @param event {Event} - The event object containing event details.
+ * @returns {stateFlags} - An object containing flags for each state.
  */
 export function getStateFlags(
     state: EventCardAdditionalProps['state'],
     event: Event
 ) {
-    return {
+    const stateFlags = {
         isHover: state === 'hover',
         isFocus: state === 'focus',
         isActive: state === 'active',
@@ -44,47 +56,40 @@ export function getStateFlags(
         isReleaseCard:
             event.eventType === 'RELEASE' || event.eventType === 'LEGALITY',
     };
+    return stateFlags;
 }
 
 /**
  * Resolves Tailwind styling classes for a card based on event characteristics.
+ * @param eventType {string} - The type of the event.
+ * @param isChampionship {boolean} - Whether the event is a championship.
+ * @returns {string} - The Tailwind styling classes for the card.
  */
 export function getCardStyles(
     eventType: string,
     isChampionship: boolean,
-    cardType: 'list' | 'schedule' | 'calendar'
 ): string {
     const isCup = eventType === 'CUP';
     const isChallenge = eventType === 'CHALLENGE';
     const isPrerelease = eventType === 'PRE-RELEASE';
 
-    if (cardType === 'list') {
-        if (isChampionship) {
-            return 'border-2 border-amber-500 bg-linear-to-br from-amber-500 to-amber-600 text-white shadow-sm';
-        }
-        if (isCup) {
-            return 'border-2 border-slate-400 bg-linear-to-br from-slate-400 to-slate-500 text-white shadow-sm';
-        }
-        if (isChallenge) {
-            return 'border-2 border-amber-700 bg-linear-to-br from-amber-700 to-amber-800 text-white shadow-sm';
-        }
-        if (isPrerelease) {
-            return 'border-2 border-purple-500 bg-linear-to-br from-purple-500 to-purple-600 text-white shadow-sm';
-        }
-        return 'border-2 border-(--store-color) bg-bg-card text-text-main shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
-    } else {
-        if (isChampionship) {
-            return 'border-2 border-amber-500/40 bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5';
-        }
-        if (isCup) {
-            return 'border-2 border-slate-400/40 bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white';
-        }
-        if (isChallenge) {
-            return 'border-2 border-amber-700/40 bg-linear-to-br from-amber-800/[0.5] to-transparent shadow-md shadow-amber-700/5 text-white';
-        }
-        if (isPrerelease) {
-            return 'border-2 border-purple-500/40 bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white';
-        }
-        return 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
+    let theme: 'gold' | 'silver' | 'purple' | 'default' = 'default';
+    if (isChampionship) {
+        theme = 'gold';
+    } else if (isChallenge || isCup) {
+        theme = 'silver';
+    } else if (isPrerelease) {
+        theme = 'purple';
+    }
+
+    switch (theme) {
+        case 'gold':
+            return 'border-2 border-(--store-color) bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5';
+        case 'silver':
+            return 'border-2 border-(--store-color) bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white';
+        case 'purple':
+            return 'border-2 border-(--store-color) bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white';
+        default:
+            return 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
     }
 }
