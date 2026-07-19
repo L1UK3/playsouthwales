@@ -39,7 +39,7 @@ export function useEventCard(
 
         const stateFlags = getStateFlags(state, event);
         const cardStyles = cardType
-            ? getCardStyles(event.eventType, isChampionship, cardType)
+            ? getCardStyles(event.eventType, isChampionship)
             : '';
 
         const successBorder = stateFlags.isSuccess
