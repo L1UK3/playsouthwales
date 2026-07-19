@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Card from '@components/event-card/Card';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
-import { useSortEvents } from '../../../hooks/useSortEvents';
+import { CalendarCard } from '@/features/event-card';
+import { useSortEvents } from '@/hooks/useSortEvents';
 
 /**
  * @interface CellProps
@@ -69,7 +69,7 @@ const Cell: React.FC<CellProps> = React.memo(
                         {/* Desktop/Tablet view: show full card list */}
                         <div className="hidden @min-[700px]:grid gap-1 min-w-0">
                             {sortedEvents.slice(0, 3).map((event) => (
-                                <Card
+                                <CalendarCard
                                     key={event.id}
                                     event={event}
                                     leagueMap={leagueMap}

@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 
-import ListCard from '@components/event-card/ListCard';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
+import { ListCard } from '@/features/event-card';
 
 /**
  * Properties for the ListEventGroup component.

@@ -5,32 +5,32 @@
  */
 import React from 'react';
 
-import type { EventCardProps } from '@calendar/types/EventCard.types';
 import type { Event } from '@/types/Event';
+import type {
+    EventCardProps,
+    EventCardAdditionalProps,
+} from '../types/EventCard.types';
+import { useEventCard } from '../hooks/useEventCard';
+import {
+    TAG_BASE_CLASSES,
+    TAG_STYLE_PROPERTIES,
+} from '../constants/EventCard.constants';
 
-export interface ListCardProps {
+export interface ListCardProps
+    extends EventCardProps, EventCardAdditionalProps {
     isExpanded?: boolean;
     onToggle?: (id: number | string) => void;
     onEdit?: (event: Event) => void;
     onDelete?: (event: Event) => void;
     onExclude?: (event: Event) => void;
     onUnexclude?: (event: Event) => void;
-    state?:
-        | 'default'
-        | 'hover'
-        | 'focus'
-        | 'active'
-        | 'disabled'
-        | 'loading'
-        | 'error'
-        | 'success';
 }
 
 /**
  * ListCard component represents a single event entry within a list view.
  * Redesigned with a soft tone, proper keyboard accessibility, and 8-state support.
  */
-const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
+const ListCard: React.FC<ListCardProps> = React.memo(
     ({
         event,
         leagueMap,
@@ -43,28 +43,17 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
         onUnexclude,
         state,
     }) => {
-        const league =
-            event.leagueId && event.leagueId !== -1
-                ? leagueMap[event.leagueId]
-                : null;
-        const leagueName =
-            event.eventType === 'LEGALITY'
-                ? 'Standard TCG Legality'
-                : (league?.name ?? event.leagueName ?? 'Unknown League');
-        const storeColor =
-            event.eventType === 'LEGALITY'
-                ? 'var(--color-secondary)'
-                : (league?.brandColor ??
-                  `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
-
-        // Resolve states
-        const isHover = state === 'hover';
-        const isFocus = state === 'focus';
-        const isActive = state === 'active';
-        const isDisabled = state === 'disabled' || event.isExcluded;
-        const isLoading = state === 'loading';
-        const isError = state === 'error';
-        const isSuccess = state === 'success';
+        const {
+            league,
+            leagueName,
+            storeColor,
+            isChampionship,
+            stateFlags,
+            cardClasses,
+            isOfficial,
+        } = useEventCard(event, leagueMap, state, 'list');
+        const { isLoading, isError, isDisabled: isStateDisabled } = stateFlags;
+        const isDisabled = isStateDisabled || event.isExcluded;
 
         // Keyboard press handler for toggle
         const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -100,31 +89,6 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
                 </div>
             );
         }
-
-        // Success state border adjustment
-        const successBorder = isSuccess
-            ? 'border-2 border-emerald-500/30 bg-emerald-500/[0.01]'
-            : '';
-
-        // Championship series styles
-        const isChampionship = league?.isChampionshipSeries ?? false;
-        const champStyles = isChampionship
-            ? 'border-2 border-amber-500 bg-linear-to-br from-amber-500 to-amber-600 text-white shadow-sm'
-            : 'border-2 border-(--store-color) bg-bg-card text-text-main shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
-
-        // Combine class styling
-        const cardClasses = `
-            rounded-xl overflow-hidden cursor-pointer transition-all duration-200 outline-hidden
-            ${champStyles}
-            ${successBorder}
-            ${isHover ? '-translate-y-0.5 shadow-md bg-bg-card-hover border-(--store-color) shadow-[0_0_12px_color-mix(in_oklch,var(--store-color)_30%,transparent)] translate-x-0.5' : 'hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover hover:translate-x-0.5'}
-            ${isFocus ? 'ring-2 ring-focus ring-offset-2' : ''}
-            ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
-            ${event.isExcluded ? 'opacity-55 grayscale-[30%] border-dashed border-red-500/20' : ''}
-            ${isDisabled && state === 'disabled' ? 'opacity-40 pointer-events-none cursor-not-allowed' : ''}
-        `
-            .trim()
-            .replace(/\s+/g, ' ');
 
         return (
             <div
@@ -181,16 +145,14 @@ const ListCard: React.FC<EventCardProps & ListCardProps> = React.memo(
 
                     {/* Format Emoji & Expand Arrow */}
                     <div className="flex items-center gap-3 shrink-0">
+                        {isOfficial && (
+                            <span className="px-1.5 py-0.5 rounded text-[8px] font-extrabold tracking-wider uppercase bg-white/20 text-white border border-white/30">
+                                Official
+                            </span>
+                        )}
                         <span
-                            className={`px-2 py-0.5 rounded text-[9px] font-extrabold tracking-wider uppercase border border-(--type-border)/25 text-(--type-border) bg-(--type-bg) type-${event.eventType}`}
-                            style={
-                                {
-                                    '--type-bg':
-                                        'var(--type-bg, rgba(0, 0, 0, 0.05))',
-                                    '--type-border':
-                                        'var(--type-border, var(--color-text-muted))',
-                                } as React.CSSProperties
-                            }
+                            className={`${TAG_BASE_CLASSES} px-2 py-0.5 rounded type-${event.eventType}`}
+                            style={TAG_STYLE_PROPERTIES as React.CSSProperties}
                         >
                             {types[event.eventType]
                                 ? `${types[event.eventType]} `

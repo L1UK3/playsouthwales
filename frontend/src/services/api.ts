@@ -204,8 +204,8 @@ export async function createLeague(
         const errData = await response.json().catch(() => ({}));
         throw new Error(
             errData.error?.message ??
-            errData.error ??
-            'Failed to create league: ' + response.statusText
+                errData.error ??
+                'Failed to create league: ' + response.statusText
         );
     }
     return await response.json();
@@ -234,8 +234,8 @@ export async function updateLeague(
         const errData = await response.json().catch(() => ({}));
         throw new Error(
             errData.error?.message ??
-            errData.error ??
-            'Failed to update league: ' + response.statusText
+                errData.error ??
+                'Failed to update league: ' + response.statusText
         );
     }
     return await response.json();
@@ -257,8 +257,8 @@ export async function deleteLeague(id: number, token: string): Promise<void> {
         const errData = await response.json().catch(() => ({}));
         throw new Error(
             errData.error?.message ??
-            errData.error ??
-            'Failed to delete league: ' + response.statusText
+                errData.error ??
+                'Failed to delete league: ' + response.statusText
         );
     }
 }
@@ -335,8 +335,8 @@ export async function updateLeaderboard(
         const errData = await response.json().catch(() => ({}));
         throw new Error(
             errData.error?.message ??
-            errData.error ??
-            'Failed to update leaderboard: ' + response.statusText
+                errData.error ??
+                'Failed to update leaderboard: ' + response.statusText
         );
     }
     return await response.json();
@@ -375,8 +375,8 @@ export async function syncPokedata(token: string): Promise<any> {
         const errData = await response.json().catch(() => ({}));
         throw new Error(
             errData.error?.message ??
-            errData.error ??
-            'Failed to sync pokedata: ' + response.statusText
+                errData.error ??
+                'Failed to sync pokedata: ' + response.statusText
         );
     }
     return await response.json();
@@ -396,8 +396,8 @@ export async function syncSets(token: string): Promise<any> {
         const errData = await response.json().catch(() => ({}));
         throw new Error(
             errData.error?.message ??
-            errData.error ??
-            'Failed to sync sets: ' + response.statusText
+                errData.error ??
+                'Failed to sync sets: ' + response.statusText
         );
     }
     return await response.json();
