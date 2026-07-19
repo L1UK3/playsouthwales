@@ -15,10 +15,7 @@ export function getLeagueInfo(event: Event, leagueMap: Record<number, League>) {
         event.leagueId && event.leagueId !== -1
             ? leagueMap[event.leagueId]
             : null;
-    const leagueName =
-        event.eventType === 'LEGALITY'
-            ? 'Standard TCG Legality'
-            : (league?.name ?? event.leagueName ?? 'Unknown League');
+    const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
     return { league, leagueName };
 }
 
