@@ -47,5 +47,5 @@ services:
 
 networks:
     default:
-        name: supabase_network_playwales
+        name: supabase_network_playsouthwales
         external: true
