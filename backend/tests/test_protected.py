@@ -1,8 +1,8 @@
-"""
+OK_STATUS_CODE = 200UNAUTHORIZED_STATUS_CODE = 401BAD_REQUEST_STATUS_CODE = 400"""
 Tests for protected (authenticated) API routes.
 
 Every endpoint decorated with ``Depends(require_auth)`` must return
-401 Unauthorized when no bearer token is supplied.  These tests verify
+UNAUTHORIZED_STATUS_CODE Unauthorized when no bearer token is supplied.  These tests verify
 that the auth gate works without needing a real Clerk token.
 
 Also tests that PATCH aliases behave identically to PUT.
@@ -171,7 +171,7 @@ class TestDeleteLeagueAuth:
 
         try:
             resp = client.delete("/api/leagues/5")
-            assert resp.status_code == 400
+            assert resp.status_code == BAD_REQUEST_STATUS_CODE
             body = resp.json()
             assert body["detail"]["code"] == "bad_request"
             assert (
@@ -202,7 +202,7 @@ class TestDeleteLeagueAuth:
 
         try:
             resp = client.delete("/api/leagues/1")
-            assert resp.status_code == 200
+            assert resp.status_code == OK_STATUS_CODE
             assert resp.json() == {
                 "success": True,
                 "message": "League deleted successfully",
