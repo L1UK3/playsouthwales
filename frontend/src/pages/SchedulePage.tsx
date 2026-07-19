@@ -302,7 +302,10 @@ const SchedulePage: React.FC = () => {
                     {isLoading ? (
                         <SuspenseLoader message="Loading schedule…" />
                     ) : viewMode === 'calendar' ? (
-                        <div key={calendarKey} className={`@container ${animationClass}`}>
+                        <div
+                            key={calendarKey}
+                            className={`@container ${animationClass}`}
+                        >
                             <div className="flex flex-col items-stretch gap-4 @6xl:flex-row @6xl:items-stretch">
                                 <div className="flex-1 min-w-0 @6xl:flex @6xl:flex-col">
                                     <CalendarView

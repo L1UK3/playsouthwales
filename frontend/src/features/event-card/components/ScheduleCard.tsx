@@ -5,19 +5,15 @@
  */
 import React from 'react';
 
-import type { EventCardProps } from '@calendar/types/EventCard.types';
-
-interface EventCardAdditionalProps {
-    state?:
-    | 'default'
-    | 'hover'
-    | 'focus'
-    | 'active'
-    | 'disabled'
-    | 'loading'
-    | 'error'
-    | 'success';
-}
+import { useEventCard } from '../hooks/useEventCard';
+import type {
+    EventCardProps,
+    EventCardAdditionalProps,
+} from '../types/EventCard.types';
+import {
+    TAG_BASE_CLASSES,
+    TAG_STYLE_PROPERTIES,
+} from '../constants/EventCard.constants';
 
 /**
  * EventCard component displays information about a single event.
@@ -25,30 +21,15 @@ interface EventCardAdditionalProps {
  */
 const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
     React.memo(({ event, leagueMap, types, state }) => {
-        const league =
-            event.leagueId && event.leagueId !== -1
-                ? leagueMap[event.leagueId]
-                : null;
-        const leagueName =
-            event.eventType === 'LEGALITY'
-                ? 'Standard TCG Legality'
-                : (league?.name ?? event.leagueName ?? 'Unknown League');
-        const storeColor =
-            event.eventType === 'LEGALITY'
-                ? 'var(--color-secondary)'
-                : (league?.brandColor ??
-                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
-
-        // Resolve states
-        const isHover = state === 'hover';
-        const isFocus = state === 'focus';
-        const isActive = state === 'active';
-        const isDisabled = state === 'disabled';
-        const isLoading = state === 'loading';
-        const isError = state === 'error';
-        const isSuccess = state === 'success';
-        const isReleaseCard =
-            event.eventType === 'RELEASE' || event.eventType === 'LEGALITY';
+        const {
+            league,
+            leagueName,
+            storeColor,
+            stateFlags,
+            cardClasses,
+            isOfficial,
+        } = useEventCard(event, leagueMap, state, 'schedule');
+        const { isLoading, isError, isReleaseCard } = stateFlags;
 
         // Loading state (Skeleton layout)
         if (isLoading) {
@@ -88,31 +69,6 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             );
         }
 
-        // Success state styling adjustment
-        const successBorder = isSuccess
-            ? 'border-2 border-emerald-500/30 bg-emerald-500/[0.01]'
-            : '';
-
-        // Championship series decoration
-        const isChampionship = league?.isChampionshipSeries ?? false;
-        const champStyles = isChampionship
-            ? 'border-2 border-amber-500/40 bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5'
-            : 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
-
-        // Combine wrapper styling
-        const cardClasses = `
-            flex flex-col gap-3 p-4 rounded-xl transition-all duration-200 outline-hidden
-            ${champStyles}
-            ${successBorder}
-            ${isHover ? '-translate-y-0.5 shadow-md bg-bg-card-hover border-(--store-color) shadow-[0_0_12px_color-mix(in_oklch,var(--store-color)_30%,transparent)]' : 'hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover'}
-            ${isFocus ? 'ring-2 ring-focus ring-offset-2' : ''}
-            ${isActive ? 'scale-[0.99] translate-y-px' : 'active:scale-[0.99] active:translate-y-px'}
-            ${isDisabled ? 'opacity-55 pointer-events-none cursor-not-allowed' : ''}
-            ${isReleaseCard ? 'bg-bg-card-release border-2 border-black shadow-[0_0_8px_rgba(0,0,0,0.15)]' : ''}
-        `
-            .trim()
-            .replace(/\s+/g, ' ');
-
         if (isReleaseCard) {
             return (
                 <div
@@ -133,13 +89,8 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                     {/* Event Format Tags */}
                     <div className="flex flex-wrap gap-1.5 items-center">
                         <span
-                            className={`px-2.5 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider uppercase border border-(--type-border)/30 text-(--type-border) bg-(--type-bg) type-${event.eventType}`}
-                            style={
-                                {
-                                    '--type-bg': `var(--type-bg, rgba(0, 0, 0, 0.05))`,
-                                    '--type-border': `var(--type-border, var(--color-text-muted))`,
-                                } as React.CSSProperties
-                            }
+                            className={`${TAG_BASE_CLASSES} px-2.5 py-0.5 rounded-full type-${event.eventType}`}
+                            style={TAG_STYLE_PROPERTIES as React.CSSProperties}
                         >
                             {types[event.eventType]
                                 ? `${types[event.eventType]} `
@@ -148,6 +99,9 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                         </span>
                         <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                             {event.game === 'ALL' ? 'TCG, VGC, GO' : event.game}
+                        </span>
+                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider bg-white/20 text-white border-white/30">
+                            Official
                         </span>
                     </div>
 
@@ -185,9 +139,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                     {/* Metadata & Title */}
                     <div className="flex flex-col gap-0.5 grow min-w-0">
                         <div className="text-[10px] font-bold uppercase tracking-wider text-text-muted flex flex-wrap items-center gap-1.5 leading-none">
-                            <span className="">
-                                {leagueName}
-                            </span>
+                            <span className="">{leagueName}</span>
                         </div>
                         <h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug">
                             {event.name}
@@ -198,13 +150,8 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 {/* Event Format Tags */}
                 <div className="flex flex-wrap gap-1.5 items-center">
                     <span
-                        className={`px-2.5 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider uppercase border border-(--type-border)/30 text-(--type-border) bg-(--type-bg) type-${event.eventType}`}
-                        style={
-                            {
-                                '--type-bg': `var(--type-bg, rgba(0, 0, 0, 0.05))`,
-                                '--type-border': `var(--type-border, var(--color-text-muted))`,
-                            } as React.CSSProperties
-                        }
+                        className={`${TAG_BASE_CLASSES} px-2.5 py-0.5 rounded-full type-${event.eventType}`}
+                        style={TAG_STYLE_PROPERTIES as React.CSSProperties}
                     >
                         {types[event.eventType]
                             ? `${types[event.eventType]} `
@@ -214,6 +161,11 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                     <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                         {event.game === 'ALL' ? 'TCG, VGC, GO' : event.game}
                     </span>
+                    {isOfficial && (
+                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider bg-white/20 text-white border-white/30">
+                            Official
+                        </span>
+                    )}
                 </div>
 
                 {/* Time & Cost Info */}

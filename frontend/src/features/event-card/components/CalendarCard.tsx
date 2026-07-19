@@ -1,55 +1,36 @@
 /* Hallmark ◆ genre: modern-minimal ◆ component: Card ◆ design-system: design.md ◆ designed-as-app */
 import React from 'react';
-import type { EventCardProps } from '@calendar/types/EventCard.types';
+import type { EventCardProps } from '../types/EventCard.types';
+import { useEventCard } from '../hooks/useEventCard';
 
 /**
- * Additional props for the Card component.
+ * Additional props for the CalendarCard component.
  * @property {boolean} [isOtherMonth] - Indicates if the card is for a day in another month, which may affect its styling.
  */
-export interface CardProps {
+export interface CalendarCardProps extends EventCardProps {
     isOtherMonth?: boolean;
 }
 
 /**
- * Card component represents a single event entry within a calendar cell.
- * @param {EventCardProps & CardProps} props - The properties passed to the component including the event, leagueMap, and event types.
+ * CalendarCard component represents a single event entry within a calendar cell.
+ * @param {CalendarCardProps} props - The properties passed to the component including the event, leagueMap, and event types.
  * @returns {JSX.Element} The rendered card component.
  */
-const Card: React.FC<EventCardProps & CardProps> = React.memo(
+const CalendarCard: React.FC<CalendarCardProps> = React.memo(
     ({ event, leagueMap, types, isOtherMonth }) => {
-        const league =
-            event.leagueId && event.leagueId !== -1
-                ? leagueMap[event.leagueId]
-                : null;
-        const leagueName =
-            event.eventType === 'LEGALITY' || event.eventType === 'RELEASE'
-                ? event.name
-                : (league?.name ?? event.leagueName ?? 'Event');
-        const storeColor =
-            event.eventType === 'LEGALITY'
-                ? 'black'
-                : event.eventType === 'RELEASE'
-                    ? 'black'
-                    : event.eventType === 'WORLDS'
-                        || event.eventType === 'REGIONALS'
-                        || event.eventType === 'SPECIAL'
-                        || event.eventType === 'INTERNATIONAL'
-                        ? 'gold'
-                        : (league?.brandColor ??
-                            `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`);
+        const { league, leagueName, storeColor, cardClasses } = useEventCard(
+            event,
+            leagueMap,
+            undefined,
+            'calendar'
+        );
 
         const logo = league?.logo ?? null;
-
-        // Championship series decoration
-        const isChampionship = league?.isChampionshipSeries ?? false;
-        const champStyles = isChampionship
-            ? 'border-2 border-amber-500/40 bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5'
-            : 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
 
         return (
             <div
                 className={`
-                    ${champStyles}
+                    ${cardClasses}
                     flex justify-between
                     items-center gap-1.5 py-1 px-2
                     calendar-card
@@ -84,4 +65,4 @@ const Card: React.FC<EventCardProps & CardProps> = React.memo(
     }
 );
 
-export default Card;
+export default CalendarCard;
