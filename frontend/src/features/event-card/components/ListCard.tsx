@@ -16,6 +16,15 @@ import {
     TAG_STYLE_PROPERTIES,
 } from '../constants/EventCard.constants';
 
+/**
+ * ListCardProps interface extends EventCardProps and EventCardAdditionalProps to include additional properties specific to the ListCard component.
+ * @param isExpanded {boolean} - Whether the card is expanded to show additional details.
+ * @param onToggle {function} - Callback function invoked when the card is toggled (expanded/collapsed).
+ * @param onEdit {function} - Callback function invoked when the edit button is clicked.
+ * @param onDelete {function} - Callback function invoked when the delete button is clicked.
+ * @param onExclude {function} - Callback function invoked when the exclude button is clicked.
+ * @param onUnexclude {function} - Callback function invoked when the unexclude button is clicked.
+ */
 export interface ListCardProps
     extends EventCardProps, EventCardAdditionalProps {
     isExpanded?: boolean;
@@ -29,6 +38,17 @@ export interface ListCardProps
 /**
  * ListCard component represents a single event entry within a list view.
  * Redesigned with a soft tone, proper keyboard accessibility, and 8-state support.
+ * @param event {Event} - The event object containing event details.
+ * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
+ * @param types {EventTypeMap} - A mapping of event types to their corresponding properties.
+ * @param isExpanded {boolean} - Whether the card is expanded to show additional details.
+ * @param onToggle {function} - Callback function invoked when the card is toggled (expanded/collapsed).
+ * @param onEdit {function} - Callback function invoked when the edit button is clicked.
+ * @param onDelete {function} - Callback function invoked when the delete button is clicked.
+ * @param onExclude {function} - Callback function invoked when the exclude button is clicked.
+ * @param onUnexclude {function} - Callback function invoked when the unexclude button is clicked.
+ * @param state {EventCardAdditionalProps['state']} - The current visual state of the card.
+ * @returns A React component rendering the event card with appropriate styles, states, and accessibility features.
  */
 const ListCard: React.FC<ListCardProps> = React.memo(
     ({
@@ -168,11 +188,10 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 
                 {/* Expanded Content (Pure CSS transition based on height) */}
                 <div
-                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${
-                        isExpanded
-                            ? 'max-h-150 opacity-100'
-                            : 'max-h-0 opacity-0'
-                    }`}
+                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${isExpanded
+                        ? 'max-h-150 opacity-100'
+                        : 'max-h-0 opacity-0'
+                        }`}
                 >
                     <div className="p-4 flex flex-col gap-3.5">
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted">

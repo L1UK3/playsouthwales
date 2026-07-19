@@ -20,6 +20,11 @@ import {
 /**
  * Custom React hook that resolves and memoizes event card metadata, store colors,
  * interactive state flags, and computed CSS classes based on Vercel's React best practices.
+ * @param event {Event} - The event object containing event details.
+ * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
+ * @param state {EventCardAdditionalProps['state']} - The current state of the card.
+ * @param cardType {'list' | 'schedule' | 'calendar'} - The type of card being rendered.
+ * @returns An object containing league info, store color, state flags, and computed CSS classes.
  */
 export function useEventCard(
     event: Event,

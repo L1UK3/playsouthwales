@@ -18,6 +18,11 @@ import {
 /**
  * EventCard component displays information about a single event.
  * Redesigned with a soft tone, microinteraction states, and no nested cards.
+ * @param event {Event} - The event object containing event details.
+ * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
+ * @param types {EventTypeMap} - A mapping of event types to their corresponding properties.
+ * @param state {EventCardAdditionalProps['state']} - The current state of the card.
+ * @returns A React component rendering the event card with appropriate styles and states.
  */
 const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
     React.memo(({ event, leagueMap, types, state }) => {
