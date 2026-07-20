@@ -188,10 +188,11 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 
                 {/* Expanded Content (Pure CSS transition based on height) */}
                 <div
-                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${isExpanded
-                        ? 'max-h-150 opacity-100'
-                        : 'max-h-0 opacity-0'
-                        }`}
+                    className={`transition-all duration-300 ease-out border-t border-border-color/30 bg-bg-main/30 overflow-hidden ${
+                        isExpanded
+                            ? 'max-h-150 opacity-100'
+                            : 'max-h-0 opacity-0'
+                    }`}
                 >
                     <div className="p-4 flex flex-col gap-3.5">
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted">

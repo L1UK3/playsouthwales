@@ -97,9 +97,6 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                             className={`${TAG_BASE_CLASSES} px-2.5 py-0.5 rounded-full type-${event.eventType}`}
                             style={TAG_STYLE_PROPERTIES as React.CSSProperties}
                         >
-                            {types[event.eventType]
-                                ? `${types[event.eventType]} `
-                                : ''}
                             {event.eventType}
                         </span>
                         <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
@@ -158,10 +155,12 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                         className={`${TAG_BASE_CLASSES} px-2.5 py-0.5 rounded-full type-${event.eventType}`}
                         style={TAG_STYLE_PROPERTIES as React.CSSProperties}
                     >
-                        {types[event.eventType]
-                            ? `${types[event.eventType]} `
-                            : ''}
-                        {event.eventType}
+                        {isOfficial
+                            ? `${types[event.eventType]}` + ` ${event.eventType}`
+                            :
+                            event.eventType}
+
+
                     </span>
                     <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                         {event.game === 'ALL' ? 'TCG, VGC, GO' : event.game}
