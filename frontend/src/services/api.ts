@@ -402,3 +402,22 @@ export async function syncSets(token: string): Promise<any> {
     }
     return await response.json();
 }
+
+/**
+ * Fetches the VGC regulation dates.
+ * @returns {Promise<any[]>} A promise resolving to VGC regulation records.
+ */
+export async function loadRegs(): Promise<any[]> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/regs`);
+        if (!response.ok) {
+            throw new Error(
+                'Failed to fetch VGC regulations: ' + response.statusText
+            );
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching VGC regulations:', error);
+        throw error;
+    }
+}

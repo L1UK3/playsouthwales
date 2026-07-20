@@ -20,12 +20,13 @@ export interface EventCardProps {
  * Can be one of 'default', 'hover', 'focus', 'active', 'disabled', 'loading', 'error', or 'success'.
  */
 export interface EventCardAdditionalProps {
-    state?: 'default'
-    | 'hover'
-    | 'focus'
-    | 'active'
-    | 'disabled'
-    | 'loading'
-    | 'error'
-    | 'success';
+    state?:
+        | 'default'
+        | 'hover'
+        | 'focus'
+        | 'active'
+        | 'disabled'
+        | 'loading'
+        | 'error'
+        | 'success';
 }

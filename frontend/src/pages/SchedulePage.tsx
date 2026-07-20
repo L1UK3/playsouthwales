@@ -20,6 +20,7 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import type { Event } from '@/types/Event';
 import SuspenseLoader from '@/components/SuspenseLoader';
+import { useRegs } from '@/hooks/useRegs';
 
 export type ViewMode = 'calendar' | 'list';
 
@@ -46,6 +47,7 @@ const SchedulePage: React.FC = () => {
         game: '',
     });
     const { data: sets = [] } = useSetLegality();
+    const { data: regs = [] } = useRegs();
 
     const virtualLegalityEvents = useMemo(() => {
         return sets.map((s) => ({
@@ -74,6 +76,20 @@ const SchedulePage: React.FC = () => {
             entryFee: '',
         }));
     }, [sets]);
+
+    const virtualRegulationEvents = useMemo(() => {
+        return regs.map((r) => ({
+            id: `reg-${r.name.toLowerCase().replace(/\s+/g, '-')}`,
+            leagueId: -1,
+            name: r.name,
+            date: r.date,
+            startTime: '',
+            eventType: 'REGULATION',
+            game: 'VGC',
+            description: `Official VGC regulation date for ${r.name}.`,
+            entryFee: '',
+        }));
+    }, [regs]);
 
     const [direction, setDirection] = useState<
         'left' | 'right' | 'up' | 'down' | null
@@ -190,6 +206,7 @@ const SchedulePage: React.FC = () => {
             ...nextEvents,
             ...virtualLegalityEvents,
             ...virtualReleaseEvents,
+            ...virtualRegulationEvents,
         ];
     }, [
         prevEvents,
@@ -197,6 +214,7 @@ const SchedulePage: React.FC = () => {
         nextEvents,
         virtualLegalityEvents,
         virtualReleaseEvents,
+        virtualRegulationEvents,
     ]);
 
     const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
@@ -210,7 +228,10 @@ const SchedulePage: React.FC = () => {
         const result: Record<string, Event[]> = {};
         for (const [date, list] of Object.entries(filteredEventsGrouped)) {
             const filtered = list.filter(
-                (e) => e.eventType !== 'LEGALITY' && e.eventType !== 'RELEASE'
+                (e) =>
+                    e.eventType !== 'LEGALITY' &&
+                    e.eventType !== 'RELEASE' &&
+                    e.eventType !== 'REGULATION'
             );
             if (filtered.length > 0) {
                 result[date] = filtered;
@@ -234,7 +255,8 @@ const SchedulePage: React.FC = () => {
             .filter((event) => {
                 if (
                     event.eventType === 'LEGALITY' ||
-                    event.eventType === 'RELEASE'
+                    event.eventType === 'RELEASE' ||
+                    event.eventType === 'REGULATION'
                 )
                     return true;
                 if (!event.date.startsWith(monthKeyPrefix)) return false;

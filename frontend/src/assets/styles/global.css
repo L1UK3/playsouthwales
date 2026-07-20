@@ -289,6 +289,11 @@
     --type-border: oklch(0.2 0.01 28);
 }
 
+.type-REGULATION {
+    --type-bg: oklch(0.2 0.01 28 / 0.08);
+    --type-border: oklch(0.2 0.01 28);
+}
+
 :root {
     --card-bg-mix: 6%;
     --card-border-mix: 100%;
@@ -348,6 +353,10 @@ html.dark {
         --type-border: oklch(0.88 0.005 28);
     }
     .type-RELEASE {
+        --type-bg: oklch(0.88 0.005 28 / 0.12);
+        --type-border: oklch(0.88 0.005 28);
+    }
+    .type-REGULATION {
         --type-bg: oklch(0.88 0.005 28 / 0.12);
         --type-border: oklch(0.88 0.005 28);
     }

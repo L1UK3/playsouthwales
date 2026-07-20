@@ -183,3 +183,25 @@ async def get_sets():
                 "message": "Failed to fetch sets data",
             },
         )
+
+
+@router.get("/api/regs")
+async def get_regs():
+    """Retrieve VGC regulation dates."""
+    regs_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "data", "regs.json"
+    )
+
+    try:
+        with open(regs_path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        logger.error(f"Failed to fetch regulation data: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch regulation data",
+            },
+        )

@@ -10,7 +10,7 @@ import type { EventCardAdditionalProps } from '../types/EventCard.types';
  * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
  * @returns {{ league: League | null, leagueName: string }} - An object containing the league and its name.
  */
-export function getLeagueInfo(event: Event, leagueMap: Record<number, League>) {
+export function getLeagueInfo(event: Event, leagueMap: Record<number, League>): { league: League | null; leagueName: string; } {
     const league =
         event.leagueId && event.leagueId !== -1
             ? leagueMap[event.leagueId]
@@ -26,7 +26,9 @@ export function getLeagueInfo(event: Event, leagueMap: Record<number, League>) {
  * @returns {string} - The computed store color as a CSS variable or HSL value.
  */
 export function getStoreColor(event: Event, league: League | null): string {
-    return event.eventType === 'LEGALITY'
+    return event.eventType === 'LEGALITY' ||
+        event.eventType === 'RELEASE' ||
+        event.eventType === 'REGULATION'
         ? 'var(--color-secondary)'
         : (league?.brandColor ??
             `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
@@ -51,7 +53,9 @@ export function getStateFlags(
         isError: state === 'error',
         isSuccess: state === 'success',
         isReleaseCard:
-            event.eventType === 'RELEASE' || event.eventType === 'LEGALITY',
+            event.eventType === 'RELEASE' ||
+            event.eventType === 'LEGALITY' ||
+            event.eventType === 'REGULATION'
     };
     return stateFlags;
 }
@@ -64,7 +68,7 @@ export function getStateFlags(
  */
 export function getCardStyles(
     eventType: string,
-    isChampionship: boolean,
+    isChampionship: boolean
 ): string {
     const isCup = eventType === 'CUP';
     const isChallenge = eventType === 'CHALLENGE';
