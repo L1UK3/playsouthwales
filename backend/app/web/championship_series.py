@@ -131,6 +131,7 @@ def get_calendar_date(date_range: str, season_year_str: str) -> list[int]:
 
     return [calendar_year, month_val, int(day_num)]
 
+
 async def sync_championship_data() -> dict:
     """Map official Championship Series event data to the Supabase database."""
     url = CHAMP_SERIES_API_URL
@@ -285,7 +286,9 @@ async def sync_championship_data() -> dict:
         )
 
         try:
-            start_date_obj = datetime.date(calendar_date[0], calendar_date[1], calendar_date[2])
+            start_date_obj = datetime.date(
+                calendar_date[0], calendar_date[1], calendar_date[2]
+            )
         except Exception as dt_err:
             logger.warning(
                 f"Failed to create start date object for event: {championship_event.eventName_s}. Error: {dt_err}"

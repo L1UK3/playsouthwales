@@ -1,8 +1,9 @@
+import json
 import logging
 import os
-import json
 import re
 from typing import Any
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -69,7 +70,9 @@ def parse_date_str(date_str: str, year: str) -> str:
         if month and day_str:
             return f"{year}-{month:02d}-{int(day_str):02d}"
 
-    raise ValueError(f"Could not parse date string: {date_str} with year {year}")
+    raise ValueError(
+        f"Could not parse date string: {date_str} with year {year}"
+    )
 
 
 def extract_dates_from_regulation(
@@ -135,9 +138,7 @@ def parse_regs_html(html_content: str) -> list[dict[str, Any]]:
                                     r"^(Regulation\s+[A-Za-z0-9-]+)", text
                                 )
                                 name = (
-                                    name_match.group(1)
-                                    if name_match
-                                    else text
+                                    name_match.group(1) if name_match else text
                                 )
 
                                 start_date, end_date = (
@@ -196,7 +197,7 @@ def fetch_vgc_regs() -> list[dict[str, Any]]:
     if not html_content:
         if os.path.exists(HTML_CACHE_PATH):
             logger.info(f"Loading cached HTML from {HTML_CACHE_PATH}")
-            with open(HTML_CACHE_PATH, "r", encoding="utf-8") as f:
+            with open(HTML_CACHE_PATH, encoding="utf-8") as f:
                 html_content = f.read()
         else:
             logger.error("No online data and no HTML cache found.")

@@ -8,7 +8,7 @@ from supabase import Client
 from app.dependencies import get_supabase
 from app.exceptions import NotFoundError
 from app.models import EventResponse, LeagueResponse, WeeklyEventResponse
-from app.services import event, league
+from app.services import event, leaderboard, league
 
 logger = logging.getLogger(__name__)
 
@@ -96,8 +96,8 @@ async def get_weekly_events(db: Client = Depends(get_supabase)):
 async def get_weekly_event(league_id: int, db: Client = Depends(get_supabase)):
     """Retrieve a specific weekly event by its league ID."""
     try:
-        event = await event.get_weekly_event(db, league_id)
-        return event
+        weekly_event = await event.get_weekly_event(db, league_id)
+        return weekly_event
     except NotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -140,8 +140,8 @@ async def get_leagues(db: Client = Depends(get_supabase)):
 async def get_leaderboard(league_id: int, db: Client = Depends(get_supabase)):
     """Retrieve the standings leaderboard for a specific league."""
     try:
-        leaderboard = await leaderboard.get_leaderboard(db, league_id)
-        return leaderboard
+        data = await leaderboard.get_leaderboard(db, league_id)
+        return data
     except NotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

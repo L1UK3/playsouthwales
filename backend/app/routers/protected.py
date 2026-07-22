@@ -13,7 +13,7 @@ from app.models import (
     LeagueCreate,
     LeagueUpdate,
 )
-from app.services import event, league
+from app.services import event, leaderboard, league
 from app.web.championship_series import sync_championship_data
 from app.web.pokedata import sync_pokedata
 from app.web.sets_releases import run_sets_sync
@@ -25,13 +25,13 @@ router = APIRouter()
 
 @router.post("/api/events", status_code=status.HTTP_201_CREATED)
 async def create_event(
-    event: EventCreate,
+    event_in: EventCreate,
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
     """Create a new event."""
     try:
-        event_data = event.model_dump()
+        event_data = event_in.model_dump()
         result = await event.create_event(db, event_data)
         return result
     except Exception as e:
@@ -49,13 +49,13 @@ async def create_event(
 @router.put("/api/events/{event_id}")
 async def patch_event(
     event_id: str,
-    event: EventUpdate,
+    event_in: EventUpdate,
     auth: dict = Depends(require_auth),  # type: ignore
     db: Client = Depends(get_supabase),
 ):
     """Partially update an existing event, supporting virtual IDs for recurring events."""
     try:
-        event_data = event.model_dump(exclude_unset=True)
+        event_data = event_in.model_dump(exclude_unset=True)
         result = await event.patch_event(db, event_id, event_data)
         return result
     except NotFoundError as e:
@@ -201,13 +201,13 @@ async def trigger_championship_sync(auth: dict = Depends(require_auth)):
 
 @router.post("/api/leagues", status_code=status.HTTP_201_CREATED)
 async def create_league(
-    league: LeagueCreate,
+    league_in: LeagueCreate,
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
     """Create a new gaming league."""
     try:
-        league_data = league.model_dump()
+        league_data = league_in.model_dump()
         result = await league.create_league(db, league_data)
         return result
     except Exception as e:
@@ -225,7 +225,7 @@ async def create_league(
 @router.put("/api/leagues/{league_id}")
 async def patch_league(
     league_id: int,
-    league: LeagueUpdate,
+    league_in: LeagueUpdate,
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
@@ -293,14 +293,14 @@ async def delete_league(
 @router.put("/api/leaderboard/{league_id}")
 async def update_leaderboard(
     league_id: int,
-    leaderboard: LeaderboardUpdate,
+    leaderboard_in: LeaderboardUpdate,
     auth: dict = Depends(require_auth),
     db: Client = Depends(get_supabase),
 ):
     """Upsert the standings leaderboard for a specific league."""
     try:
         result = await leaderboard.update_leaderboard(
-            db, league_id, leaderboard.data
+            db, league_id, leaderboard_in.data
         )
         return result
     except Exception as e:

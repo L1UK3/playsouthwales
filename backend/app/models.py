@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class LeagueBase(BaseModel):
     """Base schema for gaming league properties."""
+
     id: int | None = None
     name: str
     logo: str | None = None
@@ -47,6 +48,7 @@ class LeagueResponse(LeagueBase):
 
 class EventBase(BaseModel):
     """Base schema for gaming event properties."""
+
     name: str
     date: str
     startTime: str | None = None
@@ -85,6 +87,7 @@ class EventResponse(EventBase):
 
 class WeeklyEventBase(BaseModel):
     """Base schema for recurring weekly event properties."""
+
     name: str
     date: str
     startTime: str | None = None
@@ -104,4 +107,5 @@ class WeeklyEventResponse(WeeklyEventBase):
 
 class LeaderboardUpdate(BaseModel):
     """Schema for updating league standings leaderboards."""
+
     data: list[dict]
