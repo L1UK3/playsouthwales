@@ -17,14 +17,14 @@ export interface LeagueCardProps {
     showInfo?: boolean;
     className?: string;
     state?:
-        | 'default'
-        | 'hover'
-        | 'focus'
-        | 'active'
-        | 'disabled'
-        | 'loading'
-        | 'error'
-        | 'success';
+    | 'default'
+    | 'hover'
+    | 'focus'
+    | 'active'
+    | 'disabled'
+    | 'loading'
+    | 'error'
+    | 'success';
 }
 
 /**
@@ -99,7 +99,8 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 
     // Championship series styles
     const champStyles = isChampionship
-        ? 'border-2 border-amber-500 bg-linear-to-br from-amber-500 to-amber-600 text-white shadow-sm'
+
+        ? 'border-2 border - (--store - color) bg - linear - to - br from - yellow - 600 / [0.5] to - transparent shadow - md shadow - amber - 500 / 5'
         : 'border-2 border-(--store-color) bg-bg-card text-text-main shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
 
     // Selected styles
