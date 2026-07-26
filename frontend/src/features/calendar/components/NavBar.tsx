@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 /**
  * Properties for the NavBar component, providing navigation controls for the calendar and list views.
 
@@ -35,7 +34,7 @@ const NavBar: React.FC<NavBarProps> = ({
     onGoToToday,
     onPrevMonth,
     onNextMonth,
-    onToggleViewMode
+    onToggleViewMode,
 }) => {
     return (
         <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-between sm:items-center">
@@ -43,9 +42,24 @@ const NavBar: React.FC<NavBarProps> = ({
                 {monthName} {year}
             </h2>
             <div className="flex items-center gap-1.5 justify-center sm:justify-end w-full sm:w-auto">
-                <button className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial" onClick={onGoToToday}>Today</button>
-                <button className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial" onClick={onPrevMonth}>&larr;</button>
-                <button className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial" onClick={onNextMonth}>&rarr;</button>
+                <button
+                    className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
+                    onClick={onGoToToday}
+                >
+                    Today
+                </button>
+                <button
+                    className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
+                    onClick={onPrevMonth}
+                >
+                    &larr;
+                </button>
+                <button
+                    className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
+                    onClick={onNextMonth}
+                >
+                    &rarr;
+                </button>
                 {viewMode && onToggleViewMode && (
                     <button
                         className="btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold cursor-pointer flex-1 sm:flex-initial"

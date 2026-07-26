@@ -1,5 +1,3 @@
-import pytest
-
 SAMPLE_EVENT = {
     "id": "abc-123",
     "name": "Cardiff Challenge",
@@ -31,7 +29,7 @@ SAMPLE_WEEKLY_EVENT = {
 
 SAMPLE_LEAGUE = {
     "id": 1,
-    "name": "Cardiff Pokemon League",
+    "name": "Cardiff League",
     "logo": None,
     "website": None,
     "socialLink": None,
@@ -96,7 +94,7 @@ class TestEventsEndpoint:
         resp = client.get("/api/events", params={"month": "7", "year": "2026"})
         assert resp.status_code == 200
 
-    def test_filters_by_leagueId(self, client, supabase_table):
+    def test_filters_by_league_id(self, client, supabase_table):
         supabase_table("events", [SAMPLE_EVENT])
         resp = client.get("/api/events", params={"leagueId": 1})
         assert resp.status_code == 200
@@ -174,13 +172,17 @@ class TestLeaguesEndpoint:
         assert "leagueId" in league
         assert "hasStandings" in league
 
-    def test_has_standings_is_true_when_leaderboard_exists(self, client, supabase_table):
+    def test_has_standings_is_true_when_leaderboard_exists(
+        self, client, supabase_table
+    ):
         supabase_table("leagues", [SAMPLE_LEAGUE])
         supabase_table("leaderboards", [{"leagueId": 1}])
         league = client.get("/api/leagues").json()[0]
         assert league["hasStandings"] is True
 
-    def test_has_standings_is_false_when_no_leaderboard(self, client, supabase_table):
+    def test_has_standings_is_false_when_no_leaderboard(
+        self, client, supabase_table
+    ):
         supabase_table("leagues", [SAMPLE_LEAGUE])
         supabase_table("leaderboards", [])
         league = client.get("/api/leagues").json()[0]
@@ -192,27 +194,6 @@ class TestLeaguesEndpoint:
         resp = client.get("/api/leagues")
         assert resp.status_code == 200
         assert resp.json() == []
-
-
-# — /api/players/top20 —
-
-
-class TestTop20Endpoint:
-    def test_returns_200_with_dict(self, client):
-        resp = client.get("/api/players/top20")
-        assert resp.status_code == 200
-        body = resp.json()
-        assert isinstance(body, dict)
-
-    def test_contains_expected_player(self, client):
-        body = client.get("/api/players/top20").json()
-        assert "players" in body
-
-    def test_keys_are_string_ranks(self, client):
-        body = client.get("/api/players/top20").json()
-        players = body.get("players", {})
-        for key in players:
-            assert key.isdigit(), f"Expected numeric string key, got '{key}'"
 
 
 # — /api/leaderboard/{leagueId} —

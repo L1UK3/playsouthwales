@@ -59,7 +59,6 @@ Thumbs.db
 # Agent configs
 .agents/
 .playwright-mcp/
-skills-lock.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask,reactnative,react,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,reactnative,react,visualstudiocode

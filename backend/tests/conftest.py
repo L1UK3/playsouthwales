@@ -4,8 +4,8 @@ Shared fixtures for the Play! South Wales backend test suite.
 Mocks the Supabase client, Clerk auth, environment variables, and app lifespan
 so tests run without any external dependencies.
 """
+
 import os
-import sys
 from contextlib import asynccontextmanager
 from unittest.mock import MagicMock, patch
 
@@ -38,7 +38,9 @@ from app.config import get_settings  # noqa: E402
 get_settings.cache_clear()
 
 # Now we can safely import the FastAPI app
-from app.main import app  # noqa: E402
+from app import create_app  # noqa: E402
+
+app = create_app()
 
 
 # ---------------------------------------------------------------------------
@@ -119,12 +121,18 @@ def client(mock_supabase):
     """Provide a Starlette ``TestClient`` wired to the mocked app."""
     from starlette.testclient import TestClient
 
+    from app.dependencies import get_supabase
+
+    # Register the override for route handlers using Depends(get_supabase)
+    app.dependency_overrides[get_supabase] = lambda: mock_supabase
+
     # Patch supabase in all modules that import it at module level
     with (
-        patch("app.main.supabase", mock_supabase),
-        patch("app.routers.public.supabase", mock_supabase),
-        patch("app.routers.protected.supabase", mock_supabase),
-        patch("app.services.pokedata_sync.supabase", mock_supabase),
+        patch("app.dependencies.supabase", mock_supabase),
+        patch("app.web.pokedata.supabase", mock_supabase),
     ):
         with TestClient(app) as tc:
             yield tc
+
+    # Clean up overrides after test completes
+    app.dependency_overrides.clear()

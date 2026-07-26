@@ -2,6 +2,8 @@ from pydantic import BaseModel
 
 
 class LeagueBase(BaseModel):
+    """Base schema for gaming league properties."""
+
     id: int | None = None
     name: str
     logo: str | None = None
@@ -17,8 +19,10 @@ class LeagueBase(BaseModel):
     accessibility: str | None = None
     isChampionshipSeries: bool | None = False
 
+
 class LeagueCreate(LeagueBase):
     pass
+
 
 class LeagueUpdate(BaseModel):
     id: int | None = None
@@ -36,11 +40,15 @@ class LeagueUpdate(BaseModel):
     accessibility: str | None = None
     isChampionshipSeries: bool | None = None
 
+
 class LeagueResponse(LeagueBase):
     leagueId: int
     hasStandings: bool = False
 
+
 class EventBase(BaseModel):
+    """Base schema for gaming event properties."""
+
     name: str
     date: str
     startTime: str | None = None
@@ -52,9 +60,11 @@ class EventBase(BaseModel):
     prizes: str | None = None
     entryFee: str | None = None
     excludedDates: list[str] | None = None
-        
+
+
 class EventCreate(EventBase):
     isRecurring: bool | None = None
+
 
 class EventUpdate(BaseModel):
     name: str | None = None
@@ -70,11 +80,14 @@ class EventUpdate(BaseModel):
     isRecurring: bool | None = None
     excludedDates: list[str] | None = None
 
+
 class EventResponse(EventBase):
     id: int | str
 
 
 class WeeklyEventBase(BaseModel):
+    """Base schema for recurring weekly event properties."""
+
     name: str
     date: str
     startTime: str | None = None
@@ -87,8 +100,12 @@ class WeeklyEventBase(BaseModel):
     entryFee: str | None = None
     excludedDates: list[str] | None = None
 
+
 class WeeklyEventResponse(WeeklyEventBase):
     id: int | str
 
+
 class LeaderboardUpdate(BaseModel):
+    """Schema for updating league standings leaderboards."""
+
     data: list[dict]

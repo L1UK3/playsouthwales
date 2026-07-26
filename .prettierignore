@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+package-lock.json
+.git
+.vscode
+.devcontainer
+.agents
+*.md

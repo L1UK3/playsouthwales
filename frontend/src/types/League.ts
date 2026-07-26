@@ -2,7 +2,7 @@
  * Represents a competitive gaming league or store.
  * @interface League
  * @description Defines the structure of a league object, including its identification, branding, and external links.
- * 
+ *
  * @example
  * {
  *   leagueId: 101,
@@ -17,7 +17,7 @@
  *   eventLink: "https://events.example.com/en-us/leagues/101"
  *   webLink: "https://example.com"
  * }
- * 
+ *
  * @property {number} leagueId - Unique identifier for the league.
  * @property {string} name - The display name of the league or store.
  * @property {string} [logo] - Optional URL or path to the league's logo image.

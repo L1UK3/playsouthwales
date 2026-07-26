@@ -1,9 +1,11 @@
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from supabase import Client
 
 from app.auth import require_auth
-from app.main import supabase
+from app.dependencies import get_supabase
+from app.exceptions import NotFoundError, ValidationError
 from app.models import (
     EventCreate,
     EventUpdate,
@@ -11,223 +13,114 @@ from app.models import (
     LeagueCreate,
     LeagueUpdate,
 )
-from app.services.pokedata_sync import sync_pokedata
-from app.services.sets_scraper import run_sets_sync
+from app.services import event, leaderboard, league
+from app.web.championship_series import sync_championship_data
+from app.web.pokedata import sync_pokedata
+from app.web.sets_releases import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.post("/api/events", status_code=status.HTTP_201_CREATED)
-async def createEvent(
-    event: EventCreate,
-    auth: dict = Depends(require_auth)
-):
-    """
-    Create a new event. Requires Clerk authorization.
-    """
-    try:
-        eventData = event.model_dump()
-        is_recurring = eventData.pop('isRecurring', None)
-        tableName = 'weekly_events' if is_recurring == True else 'events'
-        
-        res = supabase.table(tableName).insert(eventData).execute()
-        if not res.data:
-            raise Exception("No data returned from Supabase insert.")
 
-        return {
-            'success': True,
-            'message': 'Event created successfully'
-        }
-    except HTTPException:
-        raise
+@router.post("/api/events", status_code=status.HTTP_201_CREATED)
+async def create_event(
+    event_in: EventCreate,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
+):
+    """Create a new event."""
+    try:
+        event_data = event_in.model_dump()
+        result = await event.create_event(db, event_data)
+        return result
     except Exception as e:
         logger.error(f"Failed to create event: {e}")
         raise HTTPException(
-            status_code=500,
-            detail={"code": "internal_error", "message": str(e)}
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to create event",
+            },
         )
 
 
-@router.patch("/api/events/{eventId}")
-@router.put("/api/events/{eventId}")
-async def patchEvent(
-    eventId: str,
-    event: EventUpdate,
-    auth: dict = Depends(require_auth)
+@router.patch("/api/events/{event_id}")
+@router.put("/api/events/{event_id}")
+async def patch_event(
+    event_id: str,
+    event_in: EventUpdate,
+    auth: dict = Depends(require_auth),  # type: ignore
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Partially update an existing event. Requires Clerk authorization.
-    Supports virtual IDs for recurring events.
-    """
+    """Partially update an existing event, supporting virtual IDs for recurring events."""
     try:
-        is_virtual = False
-        try:
-            val = int(eventId)
-            if val >= 10000000:
-                is_virtual = True
-                templateId = val // 10000000
-        except ValueError:
-            pass
-
-        if is_virtual:
-            res = supabase.table('weekly_events').select('id').eq('id', templateId).execute()
-            if not res.data:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail={"code": "not_found", "message": "Weekly event template not found"}
-                )
-            tableName = 'weekly_events'
-            targetId = templateId
-        else:
-            # Check if the event exists in the events table
-            res = supabase.table('events').select('id').eq('id', eventId).execute()
-            if res.data:
-                tableName = 'events'
-                targetId = eventId
-            else:
-                # If not found, check the weekly_events table (where ID is integer)
-                try:
-                    int_id = int(eventId)
-                    res = supabase.table('weekly_events').select('id').eq('id', int_id).execute()
-                    if res.data:
-                        tableName = 'weekly_events'
-                        targetId = int_id
-                    else:
-                        raise ValueError()
-                except ValueError:
-                    raise HTTPException(
-                        status_code=status.HTTP_404_NOT_FOUND,
-                        detail={"code": "not_found", "message": "Event not found"}
-                    )
-
-        # Perform updates
-        eventData = event.model_dump(exclude_unset=True)
-        eventData.pop('isRecurring', None) # Pop isRecurring to prevent database mismatch
-
-        # Safely remove fields to prevent PGRST204 schema cache errors if columns are not yet created in the DB
-        if tableName == 'events' or ('excludedDates' in eventData and eventData.get('excludedDates') is None):
-            eventData.pop('excludedDates', None)
-
-        if eventData:
-            supabase.table(tableName).update(eventData).eq('id', targetId).execute()
-
-        return {
-            'success': True,
-            'message': 'Event updated successfully'
-        }
-    except HTTPException:
-        raise
+        event_data = event_in.model_dump(exclude_unset=True)
+        result = await event.patch_event(db, event_id, event_data)
+        return result
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
+        )
     except Exception as e:
-        logger.error(f"Failed to update event {eventId}: {e}")
+        logger.error(f"Failed to update event {event_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
+            detail={
+                "code": "internal_error",
+                "message": "An unexpected database error occurred",
+            },
         )
 
-   
-@router.delete("/api/events/{eventId}")
-async def deleteEvent(
-    eventId: str,
-    excludeDate: str | None = None,
-    auth: dict = Depends(require_auth)
+
+@router.delete("/api/events/{event_id}")
+async def delete_event(
+    event_id: str,
+    exclude_date: str | None = Query(None, alias="excludeDate"),
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Delete an event or a weekly event series/occurrence. Requires Clerk authorization.
-    """
+    """Delete an event, occurrence, or recurring series."""
     try:
-        is_virtual = False
-        try:
-            val = int(eventId)
-            if val >= 10000000:
-                is_virtual = True
-                templateId = val // 10000000
-        except ValueError:
-            pass
-
-        # Check if virtual ID for a recurring event
-        if is_virtual:
-            res = supabase.table('weekly_events').select('*').eq('id', templateId).execute()
-            if not res.data:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail={"code": "not_found", "message": "Event template not found"}
-                )
-            
-            if excludeDate:
-                # Add to excludedDates list in weekly_events
-                weekly_event = res.data[0]
-                excluded = weekly_event.get('excludedDates') or []
-                if excludeDate not in excluded:
-                    excluded.append(excludeDate)
-                supabase.table('weekly_events').update({'excludedDates': excluded}).eq('id', templateId).execute()
-                return {
-                    'success': True,
-                    'message': f"Occurrence on {excludeDate} excluded successfully"
-                }
-            else:
-                # Delete the entire series
-                supabase.table('weekly_events').delete().eq('id', templateId).execute()
-                return {
-                    'success': True,
-                    'message': 'Weekly event series deleted successfully'
-                }
-        else:
-            # Check if the event exists in the events table
-            res = supabase.table('events').select('id').eq('id', eventId).execute()
-            if res.data:
-                tableName = 'events'
-                targetId = eventId
-            else:
-                # If not found, check the weekly_events table (where ID is integer)
-                try:
-                    int_id = int(eventId)
-                    res = supabase.table('weekly_events').select('id').eq('id', int_id).execute()
-                    if res.data:
-                        tableName = 'weekly_events'
-                        targetId = int_id
-                    else:
-                        raise ValueError()
-                except ValueError:
-                    raise HTTPException(
-                        status_code=status.HTTP_404_NOT_FOUND,
-                        detail={"code": "not_found", "message": "Event not found"}
-                    )
-
-            # Perform deletion
-            supabase.table(tableName).delete().eq('id', targetId).execute()
-
-            return {
-                'success': True,
-                'message': 'Event deleted successfully'
-            }
-    except HTTPException:
-        raise
+        result = await event.delete_event(db, event_id, exclude_date)
+        return result
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
+        )
     except Exception as e:
-        logger.error(f"Failed to delete event {eventId}: {e}")
+        logger.error(f"Failed to delete event {event_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
+            detail={
+                "code": "internal_error",
+                "message": "An unexpected database error occurred",
+            },
         )
+
 
 @router.post("/api/events/sync-pokedata")
-async def trigger_pokedata_sync(
-    auth: dict = Depends(require_auth)
-):
-    """
-    Manually trigger the sync of events from pokedata.ovh. Requires Clerk authorization.
-    """
+async def trigger_pokedata_sync(auth: dict = Depends(require_auth)):
+    """Trigger a manual synchronization of events from Pokédata."""
     try:
         result = await sync_pokedata()
         if "error" in result:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"code": "internal_error", "message": result["error"]}
+                detail={"code": "internal_error", "message": result["error"]},
             )
         return {
             "success": True,
             "message": "Pokedata sync completed",
-            "metrics": result
+            "metrics": result,
         }
     except HTTPException:
         raise
@@ -235,28 +128,30 @@ async def trigger_pokedata_sync(
         logger.error(f"Failed to manually run pokedata sync: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": str(e)}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to manually run pokedata sync",
+            },
         )
 
 
 @router.post("/api/events/sync-sets")
-async def trigger_sets_sync(
-    auth: dict = Depends(require_auth)
-):
-    """
-    Manually trigger the sync of Pokémon TCG sets from Bulbapedia. Requires Clerk authorization.
-    """
+async def trigger_sets_sync(auth: dict = Depends(require_auth)):
+    """Trigger a manual synchronization of TCG sets from Bulbapedia."""
     try:
         result = await run_sets_sync()
         if not result.get("success"):
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"code": "internal_error", "message": result.get("error", "Failed to sync sets")}
+                detail={
+                    "code": "internal_error",
+                    "message": result.get("error", "Failed to sync sets"),
+                },
             )
         return {
             "success": True,
             "message": "TCG sets sync completed",
-            "metrics": result
+            "metrics": result,
         }
     except HTTPException:
         raise
@@ -264,156 +159,158 @@ async def trigger_sets_sync(
         logger.error(f"Failed to manually run sets sync: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": str(e)}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to manually run sets sync",
+            },
+        )
+
+
+@router.post("/api/events/sync-championship")
+async def trigger_championship_sync(auth: dict = Depends(require_auth)):
+    """Trigger a manual synchronization of Championship Series events."""
+    try:
+        result = await sync_championship_data()
+        if not result.get("success"):
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail={
+                    "code": "internal_error",
+                    "message": result.get(
+                        "error", "Failed to sync championship events"
+                    ),
+                },
+            )
+        return {
+            "success": True,
+            "message": "Championship events sync completed",
+            "metrics": result,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to manually run championship sync: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to manually run championship sync",
+            },
         )
 
 
 @router.post("/api/leagues", status_code=status.HTTP_201_CREATED)
-async def createLeague(
-    league: LeagueCreate,
-    auth: dict = Depends(require_auth)
+async def create_league(
+    league_in: LeagueCreate,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Create a new league. Requires Clerk authorization.
-    """
+    """Create a new gaming league."""
     try:
-        leagueData = league.model_dump()
-        res = supabase.table('leagues').insert(leagueData).execute()
-        if not res.data:
-            raise Exception("Failed to insert league, no data returned.")
-        
-        newLeagueId = res.data[0]['id']
-
-        return {
-            'success': True,
-            'leagueId': newLeagueId,
-            'message': 'League created successfully'
-        }
+        league_data = league_in.model_dump()
+        result = await league.create_league(db, league_data)
+        return result
     except Exception as e:
         logger.error(f"Failed to create league: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": str(e)}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to create league",
+            },
         )
 
 
-@router.patch("/api/leagues/{leagueId}")
-@router.put("/api/leagues/{leagueId}")
-async def patchLeague(
-    leagueId: int,
-    league: LeagueUpdate,
-    auth: dict = Depends(require_auth)
+@router.patch("/api/leagues/{league_id}")
+@router.put("/api/leagues/{league_id}")
+async def patch_league(
+    league_id: int,
+    league_in: LeagueUpdate,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Partially update an existing league. Requires Clerk authorization.
-    """
-    # Verify league exists
+    """Partially update an existing gaming league."""
     try:
-        res = supabase.table('leagues').select('id').eq('id', leagueId).execute()
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "League not found"}
-            )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Failed to query league {leagueId}: {e}")
+        league_data = league.model_dump(exclude_unset=True)
+        result = await league.patch_league(db, league_id, league_data)
+        return result
+    except NotFoundError as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
         )
-
-    # Perform updates
-    try:
-        leagueData = league.model_dump(exclude_unset=True)
-        if leagueData:
-            supabase.table('leagues').update(leagueData).eq('id', leagueId).execute()
-                
-        return {
-            'success': True,
-            'message': 'League updated successfully'
-        }
     except Exception as e:
-        logger.error(f"Failed to update league {leagueId}: {e}")
+        logger.error(f"Failed to update league {league_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "An unexpected database error occurred"}
+            detail={
+                "code": "internal_error",
+                "message": "An unexpected database error occurred",
+            },
         )
 
 
-@router.delete("/api/leagues/{leagueId}")
-async def deleteLeague(
-    leagueId: int,
-    auth: dict = Depends(require_auth)
+@router.delete("/api/leagues/{league_id}")
+async def delete_league(
+    league_id: int,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Delete a league. Requires Clerk authorization.
-    """
+    """Delete a gaming league."""
     try:
-        # Verify league exists
-        res = supabase.table('leagues').select('id').eq('id', leagueId).execute()
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "League not found"}
-            )
-
-        supabase.table('events').delete().eq('leagueId', leagueId).execute()
-        supabase.table('weekly_events').delete().eq('leagueId', leagueId).execute()
-
-        # Perform deletion
-        supabase.table('leagues').delete().eq('id', leagueId).execute()
-
-        return {
-            'success': True,
-            'message': 'League deleted successfully'
-        }
-    except HTTPException:
-        raise
+        result = await league.delete_league(db, league_id)
+        return result
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
+        )
+    except ValidationError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "code": "bad_request",
+                "message": str(e),
+            },
+        )
     except Exception as e:
-        logger.error(f"Failed to delete league {leagueId}: {e}")
+        logger.error(f"Failed to delete league {league_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": str(e)}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to delete league",
+            },
         )
 
 
-@router.put("/api/leaderboard/{leagueId}")
-async def updateLeaderboard(
-    leagueId: int,
-    leaderboard: LeaderboardUpdate,
-    auth: dict = Depends(require_auth)
+@router.put("/api/leaderboard/{league_id}")
+async def update_leaderboard(
+    league_id: int,
+    leaderboard_in: LeaderboardUpdate,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Upsert the leaderboard for a specific league. Requires Clerk authorization.
-    If a leaderboard row exists for this league, update it; otherwise insert a new one.
-    """
+    """Upsert the standings leaderboard for a specific league."""
     try:
-        # Check if a leaderboard already exists for this league
-        existing = supabase.table('leaderboards').select('id').eq('leagueId', leagueId).execute()
-
-        if existing.data:
-            # Update existing row
-            supabase.table('leaderboards').update({
-                'data': leaderboard.data
-            }).eq('leagueId', leagueId).execute()
-        else:
-            # Insert new row
-            supabase.table('leaderboards').insert({
-                'leagueId': leagueId,
-                'data': leaderboard.data
-            }).execute()
-
-        return {
-            'success': True,
-            'message': 'Leaderboard updated successfully'
-        }
-    except HTTPException:
-        raise
+        result = await leaderboard.update_leaderboard(
+            db, league_id, leaderboard_in.data
+        )
+        return result
     except Exception as e:
-        logger.error(f"Failed to update leaderboard for league {leagueId}: {e}")
+        logger.error(
+            f"Failed to update leaderboard for league {league_id}: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to update leaderboard"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to update leaderboard",
+            },
         )

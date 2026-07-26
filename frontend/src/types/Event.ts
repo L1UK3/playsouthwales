@@ -2,7 +2,7 @@
  * Represents a scheduled event within the system.
  * @interface Event
  * @description Defines the structure of an event object, including its timing, location (league), and categorization.
- * 
+ *
  * @example
  * {
  *   id: 1,
@@ -12,7 +12,7 @@
  *   type: "Tournament",
  *   game: "TCG"
  * }
- * 
+ *
  * @property {number} id - Unique identifier for the event.
  * @property {string} name - The title or name of the event.
  * @property {string} date - The date of the event (ISO 8601 format: YYYY-MM-DD).
@@ -44,5 +44,3 @@ export interface Event {
     excludedDates?: string[];
     isExcluded?: boolean;
 }
-
-

@@ -5,7 +5,7 @@
  * @property {string} game - The specific game title to filter by.
  */
 export interface EventFilters {
-	league: string;
-	eventType: string;
-	game: string;
+    league: string;
+    eventType: string;
+    game: string;
 }

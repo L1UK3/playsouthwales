@@ -1,30 +1,19 @@
 export * from './components/CalendarView';
 export * from './components/ListView';
-export * from './components/event-card/EventCard';
-export * from './components/event-card/ListCard';
-export * from './components/event-card/Card';
 export * from './components/ListEventGroup';
 export * from './components/Filters';
 export * from './components/SelectedDaySection';
 export * from './components/Cell';
 export * from './components/NavBar';
-export * from './components/ActiveMarkerOverlay';
 export * from './utils/EventFilters';
 export * from './utils/playMarkerPop';
 export * from './utils/getLocalDateString';
 export * from './utils/dataProcessing';
 export * from './types/CellData';
-export * from './types/EventCard.types';
-
 export { default as CalendarView } from './components/CalendarView';
 export { default as ListView } from './components/ListView';
-export { default as EventCard } from './components/event-card/EventCard';
-export { default as ListCard } from './components/event-card/ListCard';
-export { default as Card } from './components/event-card/Card';
 export { default as ListEventGroup } from './components/ListEventGroup';
 export { default as Filters } from './components/Filters';
 export { default as SelectedDaySection } from './components/SelectedDaySection';
 export { default as Cell } from './components/Cell';
 export { default as NavBar } from './components/NavBar';
-export { default as ActiveMarkerOverlay } from './components/ActiveMarkerOverlay';
-

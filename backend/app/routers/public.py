@@ -2,11 +2,13 @@ import json
 import logging
 import os
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from supabase import Client
 
-from app.main import supabase
+from app.dependencies import get_supabase
+from app.exceptions import NotFoundError
 from app.models import EventResponse, LeagueResponse, WeeklyEventResponse
-from app.services.top20_data import load_top20_payload
+from app.services import event, leaderboard, league
 
 logger = logging.getLogger(__name__)
 
@@ -14,173 +16,192 @@ router = APIRouter()
 
 
 @router.get("/api/health")
-async def healthCheck():
-    """
-    Lightweight endpoint for server health checks and warmups.
-    """
+async def health_check():
+    """Run a server health check."""
     return {"status": "healthy"}
 
 
-
 @router.get("/api/events", response_model=list[EventResponse])
-async def getEvents(
+async def get_events(
     month: str | None = None,
     year: str | None = None,
-    leagueId: int | None = None
+    day: str | None = None,
+    weekly: bool = Query(False),
+    league_id: int | None = Query(None, alias="leagueId"),
+    db: Client = Depends(get_supabase),
 ):
-    """
-    Fetch standard events, optionally filtered by leagueId, month, and year.
-    """
-    mainQuery = supabase.table('events').select('*')
+    """Retrieve standard and expanded events with optional filtering."""
+    import datetime
 
-    if leagueId is not None:
-        mainQuery = mainQuery.eq('leagueId', leagueId)
+    day_date = None
+    if day:
+        try:
+            day_date = datetime.date.fromisoformat(day)
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={
+                    "code": "invalid_parameter",
+                    "message": "Invalid date format for day parameter. Use YYYY-MM-DD.",
+                },
+            )
 
-    if month and year:
-        datePrefix = f"{year}-{month.zfill(2)}"
-        mainQuery = mainQuery.like('date', f"{datePrefix}%")
+    month_int = int(month) if month else None
+    year_int = int(year) if year else None
 
     try:
-        mainResult = mainQuery.execute()
-        events = mainResult.data or []
+        events = await event.get_events_from_db(
+            db=db,
+            month=month_int,
+            year=year_int,
+            league_id=league_id,
+            day=day_date,
+            weekly=weekly,
+            expand_recurring=bool(day or weekly),
+        )
     except Exception as e:
-        logger.error(f"Failed to fetch events from Supabase: {e}")
+        logger.error(f"Failed to fetch events: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch events"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch events",
+            },
         )
 
     return events
 
 
 @router.get("/api/weekly-events", response_model=list[WeeklyEventResponse])
-async def getWeeklyEvents():
-    """
-    Fetch all weekly events.
-    """
+async def get_weekly_events(db: Client = Depends(get_supabase)):
+    """Retrieve all recurring weekly events."""
     try:
-        res = supabase.table('weekly_events').select('*').execute()
-        events = res.data or []
+        events = await event.get_weekly_events(db)
     except Exception as e:
         logger.error(f"Failed to fetch weekly events from Supabase: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch weekly events"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch weekly events",
+            },
         )
 
     return events
 
 
-@router.get("/api/weekly-events/{leagueId}", response_model=WeeklyEventResponse)
-async def getWeeklyEvent(leagueId: int):
-    """
-    Fetch a specific weekly event by its league ID.
-    """
+@router.get(
+    "/api/weekly-events/{league_id}", response_model=WeeklyEventResponse
+)
+async def get_weekly_event(league_id: int, db: Client = Depends(get_supabase)):
+    """Retrieve a specific weekly event by its league ID."""
     try:
-        res = supabase.table('weekly_events').select('*').eq('leagueId', leagueId).execute()
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "Weekly event not found"}
-            )
-        return res.data[0]
-    except HTTPException:
-        raise
+        weekly_event = await event.get_weekly_event(db, league_id)
+        return weekly_event
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
+        )
     except Exception as e:
-        logger.error(f"Failed to fetch weekly event {leagueId} from Supabase: {e}")
+        logger.error(
+            f"Failed to fetch weekly event {league_id} from Supabase: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch weekly event"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch weekly event",
+            },
         )
-    
-    
+
+
 @router.get("/api/leagues", response_model=list[LeagueResponse])
-async def getLeagues():
-    """
-    Fetch all leagues.
-    """
+async def get_leagues(db: Client = Depends(get_supabase)):
+    """Retrieve all active gaming leagues."""
     try:
-        res = supabase.table('leagues').select('*').execute()
-        leagues = res.data or []
+        leagues = await league.get_leagues(db)
+        return leagues
     except Exception as e:
         logger.error(f"Failed to fetch leagues from Supabase: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch leagues"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch leagues",
+            },
         )
 
-    # Check which leagues have standings/leaderboards uploaded
+
+@router.get("/api/leaderboard/{league_id}")
+async def get_leaderboard(league_id: int, db: Client = Depends(get_supabase)):
+    """Retrieve the standings leaderboard for a specific league."""
     try:
-        leaderboards_res = supabase.table('leaderboards').select('leagueId').execute()
-        leagues_with_standings = {row['leagueId'] for row in leaderboards_res.data} if leaderboards_res.data else set()
+        data = await leaderboard.get_leaderboard(db, league_id)
+        return data
+    except NotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "not_found",
+                "message": str(e),
+            },
+        )
     except Exception as e:
-        logger.warning(f"Failed to query leaderboards (falling back to mock default): {e}")
-        # In local development where the table might not exist yet, fallback to mock leagues with standings
-        leagues_with_standings = {1, 2, 3, 4}
-
-    return [
-        {
-            "leagueId": league.get("id"),
-            "hasStandings": league.get("id") in leagues_with_standings,
-            **league
-        }
-        for league in leagues
-    ]
-
-
-@router.get("/api/players/top20")
-async def getTop20Players(season: str | None = None):
-    """
-    Fetch the top 20 players for a season.
-    """
-    try:
-        return load_top20_payload(season)
-    except Exception as e:
-        logger.error(f"Failed to fetch top 20 players: {e}")
+        logger.error(
+            f"Failed to fetch leaderboard {league_id} from Supabase: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch top 20 players"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch leaderboard",
+            },
         )
-    
 
-@router.get("/api/leaderboard/{leagueId}")
-async def getLeaderboard(leagueId: int):
-    """
-    Fetch the leaderboard for a specific league.
-    """
-    try:
-        res = supabase.table('leaderboards').select('*').eq('leagueId', leagueId).execute()
-        if not res.data:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail={"code": "not_found", "message": "Leaderboard not found"}
-            )
-        return res.data[0]
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Failed to fetch leaderboard {leagueId} from Supabase: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch leaderboard"}
-        )
-    
 
 @router.get("/api/sets")
-async def getSets():
-    """
-    Fetch Pokemon TCG set legality dates.
-    Returns sets sorted by release date (newest first).
-    """
-    SETS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'sets.json')
+async def get_sets():
+    """Retrieve TCG set legality dates sorted by release date."""
+    sets_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "data", "sets.json"
+    )
 
     try:
-        with open(SETS_PATH, encoding='utf-8') as f:
+        with open(sets_path, encoding="utf-8") as f:
             data = json.load(f)
         return data
     except Exception as e:
         logger.error(f"Failed to fetch sets data: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"code": "internal_error", "message": "Failed to fetch sets data"}
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch sets data",
+            },
+        )
+
+
+@router.get("/api/regs")
+async def get_regs():
+    """Retrieve VGC regulation dates."""
+    regs_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "data", "regs.json"
+    )
+
+    try:
+        with open(regs_path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        logger.error(f"Failed to fetch regulation data: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch regulation data",
+            },
         )

@@ -1,0 +1,14 @@
+name: Auto Github Issue Labeller
+
+on:
+    issues:
+        types: [opened, edited]
+permissions:
+    issues: write
+
+jobs:
+    labeler:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Auto Github Issue Labeller
+              uses: larrylawl/auto-github-issue-labeller-action@v1.0

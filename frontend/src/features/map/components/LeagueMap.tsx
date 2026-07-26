@@ -1,11 +1,15 @@
 import React from 'react';
-import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import {
+    APIProvider,
+    Map,
+    AdvancedMarker,
+    Pin,
+} from '@vis.gl/react-google-maps';
 import type { League } from '@/types/League';
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@constants';
 import MapHandler from '../helper/MapHandler';
 import InfoBox from './InfoBox';
 import useMarker from '../hooks/useMarker';
-
 
 /**
  * Properties for the LeagueMap component, displaying leagues on an interactive map.
@@ -37,7 +41,25 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
         handleMarkerClick,
         handleMapClick,
         handleCloseInfoWindow,
-    } = useMarker({ leagues, selectedLeagueId, onLeagueSelect });
+    } = useMarker({
+        leagues,
+        selectedLeagueId,
+        onLeagueSelect,
+    });
+
+    if (!apiKey) {
+        return (
+            <div className="flex flex-col items-center justify-center w-full h-full p-6 text-center border-2 border-dashed border-border-color rounded-lg bg-bg-card text-text-muted min-h-75">
+                <p className="font-bold text-[16px] text-text-main mb-2">
+                    Map Unavailable
+                </p>
+                <p className="text-sm max-w-sm">
+                    Configure <code>VITE_GOOGLE_MAPS_API_KEY</code> in your
+                    frontend environment to view local league venues.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <APIProvider apiKey={apiKey}>
@@ -49,14 +71,16 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                     mapId="DEMO_MAP_ID"
                     onClick={handleMapClick}
                 >
-                    {markers.map(marker => {
+                    {markers.map((marker) => {
                         const isSelected = marker.id === selectedLeagueId;
 
                         return (
                             <AdvancedMarker
                                 key={marker.id}
                                 position={marker.position}
-                                onClick={(e) => handleMarkerClick(marker.id, e.domEvent)}
+                                onClick={(e) =>
+                                    handleMarkerClick(marker.id, e.domEvent)
+                                }
                             >
                                 <Pin
                                     background={marker.brandColor}
@@ -87,4 +111,3 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 };
 
 export default LeagueMap;
-

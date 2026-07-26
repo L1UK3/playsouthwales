@@ -6,5 +6,6 @@ export function useLeagues() {
     return useQuery<League[]>({
         queryKey: ['leagues'],
         queryFn: loadLeagues,
+        staleTime: 1000 * 60 * 30, // 30 minutes (leagues change very infrequently)
     });
 }
