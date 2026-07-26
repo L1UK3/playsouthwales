@@ -276,7 +276,7 @@
         "picocolors": "^1.1.1",
         "picomatch": "^4.0.5",
         "pngjs": "^5.0.0",
-        "postcss": "^8.5.16",
+        "postcss": "^8.5.23",
         "prelude-ls": "^1.2.1",
         "prettier": "^3.9.5",
         "pretty-format": "^29.7.0",
