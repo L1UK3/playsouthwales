@@ -66,6 +66,24 @@ const Cell: React.FC<CellProps> = React.memo(
                 </div>
                 {eventsForDay.length > 0 ? (
                     <>
+                        {/* Mobile view: show compact CalendarCard */}
+                        <div className="grid @min-[700px]:hidden gap-1 min-w-0">
+                            {sortedEvents.slice(0, 1).map((event) => (
+                                <CalendarCard
+                                    key={event.id}
+                                    event={event}
+                                    leagueMap={leagueMap}
+                                    types={types}
+                                    isOtherMonth={isOtherMonth}
+                                />
+                            ))}
+                            {sortedEvents.length > 1 ? (
+                                <div className="py-0.5 px-1 rounded bg-event-more-bg text-event-more-text text-[9px] text-center font-semibold">
+                                    +{sortedEvents.length - 1} more
+                                </div>
+                            ) : null}
+                        </div>
+
                         {/* Desktop/Tablet view: show full card list */}
                         <div className="hidden @min-[700px]:grid gap-1 min-w-0">
                             {sortedEvents.slice(0, 3).map((event) => (
@@ -81,38 +99,6 @@ const Cell: React.FC<CellProps> = React.memo(
                                 <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
                                     {sortedEvents.length - 3} more
                                 </div>
-                            ) : null}
-                        </div>
-
-                        {/* Mobile view: show small dots representing events */}
-                        <div className="flex @min-[700px]:hidden justify-center gap-1 mt-1 flex-wrap">
-                            {sortedEvents.slice(0, 3).map((event) => {
-                                const league = event.leagueId
-                                    ? leagueMap[event.leagueId]
-                                    : null;
-                                const storeColor =
-                                    league?.brandColor ??
-                                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`;
-                                return (
-                                    <span
-                                        key={event.id}
-                                        className={`size-1.5 rounded-full shrink-0 ${isOtherMonth ? 'opacity-40 bg-gray-400' : ''}`}
-                                        style={
-                                            isOtherMonth
-                                                ? {}
-                                                : {
-                                                      backgroundColor:
-                                                          storeColor,
-                                                  }
-                                        }
-                                        title={league?.name ?? event.leagueName}
-                                    />
-                                );
-                            })}
-                            {sortedEvents.length > 3 ? (
-                                <span className="text-[9px] leading-none text-text-muted font-bold select-none">
-                                    +
-                                </span>
                             ) : null}
                         </div>
                     </>
