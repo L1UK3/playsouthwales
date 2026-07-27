@@ -137,25 +137,7 @@ const SchedulePage: React.FC = () => {
     }, [currentDate]);
 
     const handleSelectDay = useCallback((dateKey: string) => {
-        setSelectedDateKey((prev) => {
-            const nextVal = prev === dateKey ? null : dateKey;
-            if (nextVal !== null) {
-                setTimeout(() => {
-                    if (window.innerWidth < 1200) {
-                        const element = document.getElementById(
-                            'selected-day-section'
-                        );
-                        if (element) {
-                            element.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start',
-                            });
-                        }
-                    }
-                }, 100);
-            }
-            return nextVal;
-        });
+        setSelectedDateKey((prev) => (prev === dateKey ? null : dateKey));
     }, []);
 
     const handleToggleViewMode = useCallback(() => {
