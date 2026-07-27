@@ -1,0 +1,54 @@
+frontend:
+    - changed-files:
+          - AnyGlobToAnyFilePath: 'frontend/**/*'
+
+backend:
+    - changed-files:
+          - AnyGlobToAnyFilePath: 'backend/**/*'
+
+bot:
+    - changed-files:
+          - AnyGlobToAnyFilePath: 'bot/**/*'
+
+database:
+    - changed-files:
+          - AnyGlobToAnyFilePath: 'supabase/**/*'
+
+ci:
+    - changed-files:
+          - AnyGlobToAnyFilePath: '.github/**/*'
+
+documentation:
+    - changed-files:
+          - AnyGlobToAnyFilePath:
+                - 'docs/**/*'
+                - '*.md'
+
+devops:
+    - changed-files:
+          - AnyGlobToAnyFilePath:
+                - '.devcontainer/**/*'
+                - 'docker-compose.yml'
+                - '**/Dockerfile'
+                - '**/.dockerignore'
+
+dependencies:
+    - changed-files:
+          - AnyGlobToAnyFilePath:
+                - '**/package.json'
+                - '**/package-lock.json'
+                - '**/pyproject.toml'
+                - '**/requirements.txt'
+                - '**/uv.lock'
+
+config:
+    - changed-files:
+          - AnyGlobToAnyFilePath:
+                - '**/.editorconfig'
+                - '**/.prettierrc*'
+                - '**/.prettierignore'
+                - '**/.eslintrc*'
+                - '**/eslint.config.js'
+                - '**/ruff.toml'
+                - '**/tsconfig*.json'
+                - '**/.env*'

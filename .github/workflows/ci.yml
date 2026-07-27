@@ -16,33 +16,31 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            - name: Set up Python
-              uses: actions/setup-python@v5
+            - name: Install uv and Set up Python
+              uses: astral-sh/setup-uv@v5
               with:
-                  python-version-file: backend/.python-version
-                  cache: pip
+                  enable-cache: true
+                  cache-dependency-glob: backend/uv.lock
 
             - name: Install dependencies
               run: |
                   cd backend
-                  python -m pip install --upgrade pip
-                  pip install -r requirements.txt
-                  pip install ruff pytest httpx
+                  uv sync --frozen
 
             - name: Run Ruff Linter
               run: |
                   cd backend
-                  ruff check .
+                  uv run ruff check .
 
             - name: Check Ruff Code Format
               run: |
                   cd backend
-                  ruff format --check .
+                  uv run ruff format --check .
 
             - name: Run Python Tests
               run: |
                   cd backend
-                  pytest
+                  uv run pytest
 
     frontend-validation:
         name: Frontend Validation
@@ -54,7 +52,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22
                   cache: npm
                   cache-dependency-path: frontend/package-lock.json
 
