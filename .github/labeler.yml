@@ -1,0 +1,17 @@
+frontend:
+    - changed-files:
+          - AnyGlobToAnyFilePath: 'frontend/**/*'
+
+backend:
+    - changed-files:
+          - AnyGlobToAnyFilePath: 'backend/**/*'
+
+ci:
+    - changed-files:
+          - AnyGlobToAnyFilePath: '.github/**/*'
+
+documentation:
+    - changed-files:
+          - AnyGlobToAnyFilePath:
+                - 'docs/**/*'
+                - '*.md'
