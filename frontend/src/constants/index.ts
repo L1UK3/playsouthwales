@@ -23,16 +23,6 @@ export const MONTH_NAMES = [
 ];
 
 /**
- * The default maximum number of months to store in the event cache.
- */
-export const CACHE_SIZE = 12;
-
-/**
- * The default number of adjacent months to pre-fetch when loading event data.
- */
-export const DEFAULT_DEPTH = 1;
-
-/**
  * The default center of the map, based on an approximate geographical
  * center of South Wales
  */

@@ -76,10 +76,10 @@ export function useLeaderboard(leagueId: string | number, season?: string) {
             try {
                 const response = await loadLocalLeaderboard(Number(leagueId));
                 if (response?.data && response.data.length > 0) {
-                    return response.data.map((player: any) => {
+                    return response.data.map((player: LeaderboardPosition) => {
                         const index =
                             (player.position
-                                ? parseInt(player.position, 10)
+                                ? parseInt(String(player.position), 10)
                                 : 1) - 1;
                         const fallbackName =
                             mockNames[index] ??
@@ -101,9 +101,11 @@ export function useLeaderboard(leagueId: string | number, season?: string) {
 
             const data = mockData as Record<string, LeaderboardPosition[]>;
             const rawMock = data['1'] || [];
-            return rawMock.map((player: any) => {
+            return rawMock.map((player: LeaderboardPosition) => {
                 const index =
-                    (player.position ? parseInt(player.position, 10) : 1) - 1;
+                    (player.position
+                        ? parseInt(String(player.position), 10)
+                        : 1) - 1;
                 const fallbackName =
                     mockNames[index] ?? 'Player ' + (player.position ?? 1);
                 return {

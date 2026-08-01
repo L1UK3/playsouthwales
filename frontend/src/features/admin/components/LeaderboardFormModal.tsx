@@ -251,9 +251,11 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
 
             await onSubmit(finalSorted);
             onClose();
-        } catch (err: any) {
+        } catch (err) {
             setErrorMsg(
-                err.message ?? 'An error occurred updating leaderboards.'
+                err instanceof Error
+                    ? err.message
+                    : 'An error occurred updating leaderboards.'
             );
         } finally {
             setIsSubmitting(false);
