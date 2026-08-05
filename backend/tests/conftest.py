@@ -79,7 +79,17 @@ def _chain_mock(data=None):
     result.data = data if data is not None else []
 
     # Each chainable method returns the same chain mock
-    for method in ("select", "eq", "like", "insert", "update", "delete", "neq"):
+    for method in (
+        "select",
+        "eq",
+        "gte",
+        "lte",
+        "like",
+        "insert",
+        "update",
+        "delete",
+        "neq",
+    ):
         getattr(chain, method).return_value = chain
 
     chain.execute.return_value = result
