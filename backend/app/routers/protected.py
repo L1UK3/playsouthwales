@@ -231,7 +231,7 @@ async def patch_league(
 ):
     """Partially update an existing gaming league."""
     try:
-        league_data = league.model_dump(exclude_unset=True)
+        league_data = league_in.model_dump(exclude_unset=True)
         result = await league.patch_league(db, league_id, league_data)
         return result
     except NotFoundError as e:
