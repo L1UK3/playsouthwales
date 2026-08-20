@@ -47,22 +47,14 @@ class BackgroundScheduler:
             now = datetime.datetime.now(datetime.UTC)
             current_date = now.date()
 
-            # Skip immediate runs on the first loop iteration after startup
-            if self._first_run:
-                # Initialize last run dates to today to prevent immediate execution
-                last_daily_run = current_date
-                last_weekly_run = current_date
-                self._first_run = False
-                await asyncio.sleep(3600)
-                continue
-
-            # Daily Update: Runs in the early afternoon (>= 13:00 UTC) once per day
+            # Daily Update: Runs in the early afternoon once per day
+            # Will run on startup if the run time has passed for the day and it hasn't run yet
             if now.hour >= 13:
                 if last_daily_run is None or current_date > last_daily_run:
                     await self._run_daily()
                     last_daily_run = current_date
 
-            # Weekly Update: Runs on Sunday evenings (weekday 6, >= 18:00 UTC) once per week
+            # Weekly Update: Runs on Sunday evenings once per week
             if now.weekday() == 6 and now.hour >= 18:
                 if last_weekly_run is None or current_date != last_weekly_run:
                     await self._run_weekly()
