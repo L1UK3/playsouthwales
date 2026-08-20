@@ -68,7 +68,7 @@ async def fetch_pokedata_events(url: str) -> list[dict[str, Any]]:
         return []
 
 
-def clean_text(text: str) -> str:
+def clean_text(text: str | None, max_length: int | None = None) -> str:
     if not text:
         return ""
 
@@ -76,6 +76,11 @@ def clean_text(text: str) -> str:
     text = text.replace("Pok\u01e3mon", "Pok\xe9mon")
     text = text.replace("Pok\u01f8mon", "Pok\xe9mon")
     text = text.replace("\ufffd", "\xa3")
+    text = " ".join(text.split()).strip()
+
+    if max_length and len(text) > max_length:
+        text = text[:max_length].rstrip()
+
     return text
 
 
@@ -157,26 +162,42 @@ async def sync_pokedata() -> dict[str, Any]:
             skipped_no_league_count += 1
             continue
 
-        ticket_link = pokedata_event.third_party_registration_website or None
+        ticket_link = (
+            pokedata_event.third_party_registration_website.strip()
+            if pokedata_event.third_party_registration_website
+            else None
+        )
 
         name = clean_text(pokedata_event.name)
+        start_time = (
+            clean_text(pokedata_event.time, max_length=50)
+            if pokedata_event.time
+            else None
+        )
         entry_fee = (
-            clean_text(pokedata_event.cost) if pokedata_event.cost else None
+            clean_text(pokedata_event.cost, max_length=100)
+            if pokedata_event.cost
+            else None
+        )
+
+        raw_event_type = (
+            pokedata_event.type.strip() if pokedata_event.type else ""
+        )
+        event_type = clean_text(
+            event_type_map.get(raw_event_type, raw_event_type), max_length=50
         )
 
         game_map = {"tcg": "TCG", "vgc": "VGC", "go": "GO"}
-        game = game_map.get(pokedata_event.product.lower(), "TCG")
+        game = game_map.get(pokedata_event.product.lower(), "TCG")[:20]
 
         event_dict = {
             "id": guid,
             "name": name,
-            "date": pokedata_event.date,
-            "startTime": pokedata_event.time,
+            "date": clean_text(pokedata_event.date, max_length=50),
+            "startTime": start_time,
             "leagueId": league_id,
             "ticketLink": ticket_link,
-            "eventType": event_type_map.get(
-                pokedata_event.type.strip(), pokedata_event.type
-            ),
+            "eventType": event_type,
             "game": game,
             "description": None,
             "entryFee": entry_fee,
