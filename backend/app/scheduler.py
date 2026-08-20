@@ -101,23 +101,24 @@ class BackgroundScheduler:
         """Run the daily background sync and send today's events update."""
         try:
             logger.info("[Scheduler] Running daily background sync...")
-            from app.dependencies import supabase
-            from app.integrations.discord import (
-                DiscordConnectionService,
-            )
+            #from app.dependencies import supabase
+
+            #from app.integrations.discord import (
+            #    DiscordConnectionService,
+            #)
             from app.web.pokedata import sync_pokedata
 
             res = await sync_pokedata()
             logger.info(f"[Scheduler] Daily pokedata sync completed: {res}")
-            now = datetime.datetime.now(datetime.UTC)
-            today = now.date()
-            events = await self._get_events_for_date_range(today, today)
+            #now = datetime.datetime.now(datetime.UTC)
+            #today = now.date()
+            #events = await self._get_events_for_date_range(today, today)
 
-            leagues_map = self._get_leagues_map(supabase)
+            #leagues_map = self._get_leagues_map(supabase)
 
-            await DiscordConnectionService.send_daily_update(
-                events, leagues_map
-            )
+            #await DiscordConnectionService.send_daily_update(
+            #    events, leagues_map
+            #)
 
         except Exception as e:
             logger.error(f"[Scheduler] Error in daily background sync: {e}")
@@ -126,10 +127,11 @@ class BackgroundScheduler:
         """Run the weekly background sync and send the weekly premier events update."""
         try:
             logger.info("[Scheduler] Running weekly background sync...")
-            from app.dependencies import supabase
-            from app.integrations.discord import (
-                DiscordConnectionService,
-            )
+            #from app.dependencies import supabase
+
+            #from app.integrations.discord import (
+            #    DiscordConnectionService,
+            #)
             from app.web.championship_series import (
                 sync_championship_data,
             )
@@ -143,16 +145,16 @@ class BackgroundScheduler:
                 f"[Scheduler] Weekly championship sync completed: {res_champ}"
             )
 
-            now = datetime.datetime.now(datetime.UTC)
-            start_date = now.date() + datetime.timedelta(days=1)  # next Monday
-            end_date = now.date() + datetime.timedelta(days=7)  # next Sunday
-            events = await self._get_events_for_date_range(start_date, end_date)
+            #now = datetime.datetime.now(datetime.UTC)
+            #start_date = now.date() + datetime.timedelta(days=1)  # next Monday
+            #end_date = now.date() + datetime.timedelta(days=7)  # next Sunday
+            #events = await self._get_events_for_date_range(start_date, end_date)
 
-            leagues_map = self._get_leagues_map(supabase)
+            #leagues_map = self._get_leagues_map(supabase)
 
-            await DiscordConnectionService.send_weekly_update(
-                events, leagues_map
-            )
+            #await DiscordConnectionService.send_weekly_update(
+            #    events, leagues_map
+            #)
 
         except Exception as e:
             logger.error(f"[Scheduler] Error in weekly background sync: {e}")
