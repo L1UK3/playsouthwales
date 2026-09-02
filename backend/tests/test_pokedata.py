@@ -168,6 +168,3 @@ def test_get_cp(monkeypatch):
     assert mock_post.call_count == 1
     mock_table.update.assert_called_with({"cp": 82})
     mock_update.eq.assert_called_with("name", "Luke Enness")
-
-
-

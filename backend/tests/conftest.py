@@ -78,7 +78,6 @@ def _chain_mock(data=None):
     result = MagicMock()
     result.data = data if data is not None else []
 
-    # Each chainable method returns the same chain mock
     for method in (
         "select",
         "eq",
@@ -89,6 +88,8 @@ def _chain_mock(data=None):
         "update",
         "delete",
         "neq",
+        "order",
+        "limit",
     ):
         getattr(chain, method).return_value = chain
 
