@@ -42,7 +42,7 @@
     --color-event-text: var(--color-primary);
     --color-event-more-bg: rgba(0, 0, 0, 0.05);
     --color-event-more-text: var(--color-secondary);
-    --color-today-border: var(--color-accent);
+    --color-today-border: var(--color-secondary);
     --color-selected-border: var(--color-primary);
     --color-special-day: var(--color-accent);
     --color-special-day-border: oklch(0.75 0.18 80);

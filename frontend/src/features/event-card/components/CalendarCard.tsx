@@ -66,11 +66,8 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
                 <span className="truncate min-w-0 flex-1 text-left text-[7.5px] @min-[700px]:text-[10px] leading-tight">
                     {displayName}
                 </span>
-                <span className="shrink-0 text-[7px] @min-[700px]:text-[8.5px] rounded-xs px-0.5 @min-[700px]:px-1 py-0 text-center font-extrabold leading-none border border-(--type-border)/30 text-(--type-border) bg-(--type-bg)">
-                    <span className="@min-[700px]:hidden">{shortType}</span>
-                    <span className="hidden @min-[700px]:inline">
-                        {rawType}
-                    </span>
+                <span className="shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0 text-right type-${event.eventType} bg-white text-black dark:bg-white dark:text-black">
+                    {types[event.eventType] ?? event.eventType}
                 </span>
             </div>
         );
