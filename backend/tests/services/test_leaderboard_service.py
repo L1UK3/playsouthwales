@@ -28,7 +28,7 @@ class TestGetTop20:
 
         result = asyncio.run(get_top20(mock_supabase))
         assert result["players"] == {}
-        assert len(result["availableSeasons"]) == 2
+        assert len(result["availableSeasons"]) == 1
 
 
 class TestUpdateLeaderboard:

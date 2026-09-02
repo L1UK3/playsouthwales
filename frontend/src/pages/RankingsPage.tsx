@@ -5,19 +5,15 @@ import SuspenseLoader from '@/components/SuspenseLoader';
 import { useLeagues, useDocumentMetadata } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
-import ComingSoon from '@/components/ComingSoon';
 
 function getTop20SeasonLabel(date = new Date()) {
-    const startYear =
-        date.getMonth() >= 6 ? date.getFullYear() : date.getFullYear() - 1;
-    return `${startYear}-${startYear + 1}`;
+    const seasonYear =
+        date.getMonth() >= 6 ? date.getFullYear() + 1 : date.getFullYear();
+    return String(seasonYear);
 }
 
 function getSeasonOptions() {
-    const currentSeason = getTop20SeasonLabel();
-    const [startYear] = currentSeason.split('-').map(Number);
-
-    return [`${startYear - 1}-${startYear}`, currentSeason];
+    return ['2027'];
 }
 
 const RankingsPage: React.FC = () => {
@@ -49,6 +45,7 @@ const RankingsPage: React.FC = () => {
 
     const leaguesWithStandings = React.useMemo(() => {
         return leagues
+            .filter((league) => !league.isChampionshipSeries)
             .map((league) => {
                 return {
                     ...league,
@@ -77,7 +74,10 @@ const RankingsPage: React.FC = () => {
     }, [leagues, selectedSeason]);
 
     const activeLeagueId =
-        selectedLeagueId ?? leaguesWithStandings[0]?.leagueId ?? null;
+        (selectedLeagueId !== null &&
+        leaguesWithStandings.some((l) => l.leagueId === selectedLeagueId)
+            ? selectedLeagueId
+            : leaguesWithStandings[0]?.leagueId) ?? null;
 
     const handleLeagueSelect = (id: number | null) => {
         setSelectedLeagueId(id);
@@ -99,7 +99,7 @@ const RankingsPage: React.FC = () => {
 
     return (
         <div className="relative flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:h-[calc(100vh-140px)] h-[calc(100vh-200px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main animate-swipe-up max-[576px]:rounded-md max-[576px]:border-2">
-            <ComingSoon message="The South Wales Top 20 and local league standings are currently under development. Check back soon for updates!" />
+            {/*<ComingSoon message="The South Wales Top 20 and local league standings are currently under development. Check back soon for updates!" />*/}
             {/* Mobile Tab Toggle for Rankings */}
             <div className="flex border-b border-border-color bg-bg-card p-1 lg:hidden shrink-0">
                 <button
@@ -127,9 +127,6 @@ const RankingsPage: React.FC = () => {
                         <Trophy className="w-5 h-5 text-amber-500" />
                         South Wales Top 20
                     </h1>
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20">
-                        National
-                    </span>
                 </div>
                 <p className="text-xs text-text-muted mb-3 flex-none leading-relaxed">
                     The South Wales Top 20 shows the players with the highest CP
