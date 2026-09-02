@@ -29,8 +29,7 @@ export interface CellProps {
     types: EventTypeMap;
     selectedDateKey: string | null;
     todayKey: string;
-    isReleaseDay: boolean;
-    isLegalityDay: boolean;
+    isSpecialDay: boolean;
     onSelectDay: (dateKey: string) => void;
 }
 
@@ -50,8 +49,7 @@ const Cell: React.FC<CellProps> = React.memo(
         types,
         selectedDateKey,
         todayKey,
-        isReleaseDay,
-        isLegalityDay,
+        isSpecialDay,
         onSelectDay,
     }) => {
         const isSelected = dateKey === selectedDateKey;
@@ -65,8 +63,7 @@ const Cell: React.FC<CellProps> = React.memo(
                 ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''}
                 ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''}
                 ${isToday ? 'border-2! border-today-border!' : ''}
-                ${isReleaseDay ? 'border-2! outline-release-day!' : ''}
-                ${isLegalityDay ? 'border-2! outline-legality-day!' : ''}`}
+                ${isSpecialDay ? 'border-2! border-special-day-border!' : ''}`}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >

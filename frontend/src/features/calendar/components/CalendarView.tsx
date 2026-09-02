@@ -123,14 +123,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                         types={types}
                         selectedDateKey={selectedDateKey}
                         todayKey={todayKey}
-                        isReleaseDay={
+                        isSpecialDay={
                             events[cell.dateKey]?.some(
-                                (event) => event.eventType === 'RELEASE'
-                            ) ?? false
-                        }
-                        isLegalityDay={
-                            events[cell.dateKey]?.some(
-                                (event) => event.eventType === 'LEGALITY'
+                                (event) =>
+                                    event.eventType === 'RELEASE' ||
+                                    event.eventType === 'LEGALITY' ||
+                                    event.eventType === 'REGULATION'
                             ) ?? false
                         }
                         onSelectDay={onSelectDay}
