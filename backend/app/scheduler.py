@@ -47,10 +47,12 @@ class BackgroundScheduler:
             now = datetime.datetime.now(datetime.UTC)
             current_date = now.date()
 
+            current_hour = (current_date, now.hour)
+
             # Hourly Update: Runs every hour once per hour
-            if last_hourly_run is None or current_date > last_hourly_run:
+            if last_hourly_run is None or current_hour != last_hourly_run:
                 await self._run_hourly()
-                last_hourly_run = current_date
+                last_hourly_run = current_hour
 
             # Daily Update: Runs in the early afternoon (>= 13:00 UTC) once per day
             if now.hour >= 13:
@@ -88,33 +90,37 @@ class BackgroundScheduler:
             return {}
 
     async def _run_hourly(self) -> None:
-        """Run the hourly background sync and send today's events update."""
+        """Run the hourly background sync."""
         try:
-            logger.info("[Scheduler] Running daily background sync...")
+            logger.info("[Scheduler] Running hourly background sync...")
             from app.web.pokedata import get_cp, sync_pokedata
 
-            res = await sync_pokedata() + await get_cp()
+            res_pokedata = await sync_pokedata()
+            logger.info(
+                f"[Scheduler] Hourly pokedata sync completed: {res_pokedata}"
+            )
 
-            logger.info(f"[Scheduler] Daily pokedata sync completed: {res}")
+            await get_cp()
+            logger.info("[Scheduler] Hourly CP sync completed")
 
         except Exception as e:
             logger.error(f"[Scheduler] Error in hourly background sync: {e}")
 
     async def _run_daily(self) -> None:
-        """Run the weekly background sync and send the weekly premier events update."""
+        """Run the daily background sync."""
         try:
-            logger.info("[Scheduler] Running weekly background sync...")
+            logger.info("[Scheduler] Running daily background sync...")
             from app.web.championship_series import (
                 sync_championship_data,
             )
             from app.web.sets_releases import run_sets_sync
 
             res_sets = await run_sets_sync()
-            logger.info(f"[Scheduler] Weekly sets sync completed: {res_sets}")
+            logger.info(f"[Scheduler] Daily sets sync completed: {res_sets}")
 
             res_champ = await sync_championship_data()
             logger.info(
-                f"[Scheduler] Weekly championship sync completed: {res_champ}"
+                f"[Scheduler] Daily championship sync completed: {res_champ}"
             )
 
         except Exception as e:
