@@ -4,112 +4,51 @@ meta.contentType: How-to
 
 # How do I synchronize events and update database schemas?
 
-This guide teaches you how to trigger manual synchronization runs for tournament sets, update Welsh player standings, exclude recurring dates, and apply database migrations.
+This guide covers running manual scraper syncs, excluding recurring event dates, and applying database migrations.
 
-## Plan
+## Trigger manual synchronizations
 
-- **Overview**: Step-by-step instructions for data ingestion and schema upgrades.
-- **Goal**: Ingest external tournament schedules, modify player standings, and alter Supabase tables safely.
-- **Audience**: Backend developers and operations administrators.
-- **Content Plan**: Run scraper endpoints, edit recurring exclusion dates, and write matching DDL scripts.
-- **Open Questions**: None.
+Send an authorized `POST` request with your Clerk JWT token:
 
-## Triggering data synchronization
+### 1. Sync TCG expansions from Bulbapedia
 
-You can manually trigger synchronization routines using the API endpoints.
-
-### Sync TCG expansions
-
-Bulbapedia hosts the list of official Trading Card Game (TCG) expansions. To sync newly released expansions starting from SV9 onwards:
-
-1. Send an authorized `POST` request to the sync-sets endpoint:
-
-```http
-POST /api/events/sync-sets
-Authorization: Bearer your_clerk_auth_token_here
+```bash
+curl -X POST http://localhost:5000/api/events/sync-sets \
+  -H "Authorization: Bearer <clerk_token>"
 ```
 
-2. Confirm the successful JSON response payload:
+### 2. Sync local tournaments from Pokédata
 
-```json
-{
-    "success": true,
-    "message": "TCG sets sync completed",
-    "metrics": {
-        "success": true,
-        "sets_synced": 12
-    }
-}
+```bash
+curl -X POST http://localhost:5000/api/events/sync-pokedata \
+  -H "Authorization: Bearer <clerk_token>"
 ```
 
-### Sync local tournament schedules
+### 3. Sync Championship Series events
 
-Pokedata publishes event schedules within geographical coordinates. To pull the latest local tournaments:
-
-1. Send an authorized `POST` request to the sync-pokedata endpoint:
-
-```http
-POST /api/events/sync-pokedata
-Authorization: Bearer your_clerk_auth_token_here
+```bash
+curl -X POST http://localhost:5000/api/events/sync-championship \
+  -H "Authorization: Bearer <clerk_token>"
 ```
 
-2. Inspect the returned synchronization metrics:
+## Exclude a recurring event date
 
-```json
-{
-    "success": true,
-    "message": "Pokedata sync completed",
-    "metrics": {
-        "inserted": 3,
-        "skipped_existing": 14,
-        "skipped_no_league": 2
-    }
-}
-```
+To cancel an occurrence on a holiday without deleting the entire series:
 
-## Excluding recurring dates
+- **Via UI**: In `/admin`, open the event and click **Delete Occurrence**.
+- **Via API**:
+    ```bash
+    curl -X DELETE "http://localhost:5000/api/events/10000000?excludeDate=2026-12-25" \
+      -H "Authorization: Bearer <clerk_token>"
+    ```
 
-When a weekly event falls on a holiday, you must exclude that specific date.
+This appends the date to `excluded_dates` in the `weekly_events` table.
 
-1. Navigate to the admin dashboard calendar view.
-2. Select the specific occurrence you want to cancel.
-3. Click **Delete Occurrence**.
-4. The system updates the database:
-   It appends the selected date string (e.g., `2026-07-25`) to the `excludedDates` list in the `weekly_events` table. The frontend automatically filters out this date.
+## Update database schema
 
-## Updating the database schema (DDL Sync)
-
-Since the project does not use ORM-managed automated migrations, you must apply database updates manually.
-
-<Steps>
-
-### Write the SQL migration script
-
-Draft a raw SQL script to apply changes in the Supabase SQL editor. Use lowercase for commands and table definitions:
-
-```sql
-alter table events
-add column registration_limit integer default 32;
-```
-
-### Update the Pydantic schema
-
-Add the new column to your backend model structure.
-
-1. Open [models.py](file:///C:/Users/Luke%20Enness/Documents/projects/playsouthwales/backend/app/models.py).
-2. Add the field to the matching schema class:
-
-```python
-class EventBase(BaseModel):
-    name: str
-    date: str
-    registration_limit: int | None = 32
-```
-
-### Apply SQL in Supabase
-
-1. Open your Supabase console dashboard.
-2. Navigate to the **SQL Editor** tab.
-3. Paste and run your drafted SQL script.
-
-</Steps>
+1. Add a raw SQL file in [supabase/migrations/](../supabase/migrations/):
+    ```sql
+    alter table events add column note text;
+    ```
+2. Run the SQL script in your Supabase Dashboard SQL editor.
+3. Update [backend/app/models.py](../backend/app/models.py) and [frontend/src/types/](../frontend/src/types/) to match.

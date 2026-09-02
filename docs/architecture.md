@@ -2,81 +2,44 @@
 meta.contentType: Conceptual
 ---
 
-# How does the Play! South Wales application work?
+# Architecture Overview
 
-This document explains the codebase architecture, data model relationships, and background synchronization flows of Play! South Wales.
-
-## Plan
-
-- **Overview**: Core concepts and architectural flows.
-- **Goal**: Explain the integration of servers, authentication sync, and recurring schedules.
-- **Audience**: Core maintainers designing new backend services or frontend features.
-- **Content Plan**: Discuss system topology, authentication logic, virtual event ID formulas, and scraping pipelines.
-- **Open Questions**: None.
+Play! South Wales uses a decoupled client-server architecture with automated background scrapers.
 
 ## System topology
 
-The application uses a separated client-server design.
-
-- **Vite Frontend**: SPA written in React, styled with Tailwind CSS, and powered by TanStack Query and TanStack Router.
-- **FastAPI Backend**: Python REST API serving data models from Supabase and validating sessions via Clerk.
-- **Supabase Database**: PostgreSQL backend storing persistent tables (events, leagues, leaderboards).
-- **Clerk Auth**: Identity provider managing user login states.
-
-Data flows through standard HTTP queries:
-
 ```mermaid
 graph TD
-    Client[React Frontend] -->|HTTP Request / JWT Bearer| API[FastAPI Backend]
-    API -->|Auth Verification| Clerk[Clerk Auth Service]
-    API -->|SQL Queries| DB[Supabase Database]
-    Cron[Uvicorn Lifespan background task] -->|HTTP GET Scrapes| Poke[Pokedata.ovh & Bulbapedia]
-    Cron -->|Writes Standings| DB
+    Client[React 19 Frontend :5173] -->|HTTP / JWT Bearer| API[FastAPI Backend :5000]
+    API -->|Validate Token| Clerk[Clerk Auth Service]
+    API -->|SQL Queries / RLS| DB[(Supabase PostgreSQL)]
+    API -->|HTTP Notifications| Bot[Discord Bot Service :5001]
+    Bot -->|Channel Updates| Discord[Discord Guild]
+    Cron[Asyncio Lifespan Task] -->|Scrapers| Ext[Bulbapedia & Pokédata]
+    Cron -->|Writes Data| DB
 ```
 
----
+## Key architectural patterns
 
-## Authentication verification
+### 1. Authentication
 
-The backend secures endpoints using Clerk verification headers.
+- The frontend requests a session JWT from Clerk.
+- Protected requests pass the token in `Authorization: Bearer <token>`.
+- The backend `require_auth` dependency validates the token signature and authorized parties.
 
-The frontend retrieves a JSON Web Token (JWT) session token from Clerk. When sending request payloads, the client attaches this token inside the `Authorization` header.
+### 2. Virtual recurring event IDs
 
-The backend [require_auth](file:///C:/Users/Luke%20Enness/Documents/projects/playsouthwales/backend/app/auth.py#L13) dependency intercepts the request, decodes the token signature, and checks the authorized parties list. If validation fails, the backend returns a `401 Unauthorized` status immediately.
+- To avoid generating infinite database rows, weekly recurring events stay as templates in `weekly_events`.
+- The frontend derives virtual IDs:
+  $$\text{Virtual ID} = \text{template\_id} \times 10{,}000{,}000$$
+- When updating or deleting an occurrence, the backend extracts the template ID via integer division:
+    ```python
+    template_id = virtual_id // 10000000
+    ```
+- Specific holiday cancellations append dates to the `excluded_dates` array on the template.
 
----
+### 3. Background scheduler
 
-## Virtual IDs and recurring event generation
-
-To minimize database storage, the system does not write every single occurrence of a weekly event to the database.
-
-- **Weekly Event Template**: Stored in the `weekly_events` table (e.g., ID `1` represents Cardiff Casual League on Wednesdays).
-- **Date Generation**: The frontend calculates all Wednesdays in the current month.
-- **Virtual ID Formula**:
-  The calendar assigns a virtual ID to each occurrence by multiplying the template ID by 10,000,000 and adding a date representation index:
-
-  ```
-  Virtual ID = template_id * 10000000
-  ```
-
-  For example, virtual ID `10000000` refers to template `1`.
-- **Parsing Exclusions**:
-  When a user deletes a single instance of a weekly series, the backend appends the selected date to the template's `excludedDates` list. The frontend reads this list and skips rendering that specific Wednesday.
-- **Backend ID Extraction**:
-  When a PUT, PATCH, or DELETE operation targets a virtual ID, the backend extracts the template identifier by integer dividing:
-
-  ```python
-  template_id = virtual_id // 10000000
-  ```
-
----
-
-## Synchronization lifecycle
-
-The backend runs automated synchronization tasks using the FastAPI lifespan.
-
-When the server starts, it spawns a background asyncio task. Every 60 minutes, the task executes three sync operations:
-
-- **TCG sets sync**: Fetches card expansion tables from Bulbapedia, calculates standard format legality, and writes to `sets.json`.
-- **Pokedata schedule sync**: Pulls cup and challenge details from the pokedata.ovh API and inserts new events.
-- **Top 20 Welsh players sync**: Syncs verified Welsh player profiles from the database and updates Championship Point (CP) standings in `top20.json`.
+- An asyncio task runs inside FastAPI lifespan:
+    - **Hourly**: Syncs local tournament schedules from Pokédata.
+    - **Daily (>= 13:00 UTC)**: Syncs TCG card expansions and Championship Series standings.

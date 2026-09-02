@@ -5,7 +5,7 @@
 ## Getting Started
 
 1. **Fork & Clone** the repository.
-2. Follow the detailed setup instructions in **[SETUP.md](SETUP.md)** to configure your environment variables, database, and local servers.
+2. Follow the detailed setup instructions in **[docs/SETUP.md](docs/SETUP.md)** to configure your environment variables, database, and local servers.
 3. Make sure all local services run successfully before making changes.
 
 ---
@@ -52,20 +52,20 @@ To maintain consistency, we enforce formatting and linting rules.
 
 - We use **Ruff** for fast Python linting and formatting.
 - If you are using **`uv`**, you can run Ruff directly on-demand (it will auto-install if not present):
-  - To check code:
-    ```bash
-    uv run ruff check .
-    ```
-  - To format code:
-    ```bash
-    uv run ruff format .
-    ```
+    - To check code:
+        ```bash
+        uv run ruff check .
+        ```
+    - To format code:
+        ```bash
+        uv run ruff format .
+        ```
 - Alternatively, if you have activated your virtual environment and installed ruff:
-  - To check code:
-    ```bash
-    ruff check .
-    ```
-  - To format code:
-    ```bash
-    ruff format .
-    ```
+    - To check code:
+        ```bash
+        ruff check .
+        ```
+    - To format code:
+        ```bash
+        ruff format .
+        ```
