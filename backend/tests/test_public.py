@@ -231,10 +231,10 @@ class TestTop20Endpoint:
                 {"name": "Thomas Williams", "cp": 380},
             ],
         )
-        resp = client.get("/api/players/top20?season=2026-2027")
+        resp = client.get("/api/players/top20?season=2027")
         assert resp.status_code == 200
         body = resp.json()
-        assert body["season"] == "2026-2027"
+        assert body["season"] == "2027"
         assert body["players"]["1"]["name"] == "Luke Enness"
         assert body["players"]["1"]["cp"] == 520
         assert body["players"]["2"]["name"] == "Thomas Williams"

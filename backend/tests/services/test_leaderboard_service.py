@@ -17,9 +17,9 @@ class TestGetTop20:
             ],
         )
 
-        result = asyncio.run(get_top20(mock_supabase, season="2026-2027"))
-        assert result["season"] == "2026-2027"
-        assert "2026-2027" in result["availableSeasons"]
+        result = asyncio.run(get_top20(mock_supabase, season="2027"))
+        assert result["season"] == "2027"
+        assert "2027" in result["availableSeasons"]
         assert result["players"]["1"] == {"name": "Luke Enness", "cp": 520}
         assert result["players"]["2"] == {"name": "Thomas Williams", "cp": 380}
 

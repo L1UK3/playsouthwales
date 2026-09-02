@@ -44,10 +44,10 @@ async def update_leaderboard(
 async def get_top20(db: Client, season: str | None = None) -> dict:
     """Retrieve the top 20 Welsh players by Championship Points (CP)."""
     now = datetime.now(UTC)
-    start_year = now.year if now.month >= 7 else now.year - 1
-    current_season = f"{start_year}-{start_year + 1}"
+    season_year = now.year + 1 if now.month >= 7 else now.year
+    current_season = str(season_year)
     selected_season = season or current_season
-    available_seasons = [f"{start_year - 1}-{start_year}", current_season]
+    available_seasons = [str(season_year - 1), str(season_year)]
 
     res = (
         db.table("welsh_players")
