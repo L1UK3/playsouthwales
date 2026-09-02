@@ -102,7 +102,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                         <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                             {event.game === 'ALL' ? 'TCG, VGC, GO' : event.game}
                         </span>
-                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider bg-white/20 text-white border-white/30">
+                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                             Official
                         </span>
                     </div>
@@ -156,17 +156,15 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                         style={TAG_STYLE_PROPERTIES as React.CSSProperties}
                     >
                         {isOfficial
-                            ? `${types[event.eventType]}` + ` ${event.eventType}`
-                            :
-                            event.eventType}
-
-
+                            ? `${types[event.eventType]}` +
+                              ` ${event.eventType}`
+                            : event.eventType}
                     </span>
                     <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                         {event.game === 'ALL' ? 'TCG, VGC, GO' : event.game}
                     </span>
                     {isOfficial && (
-                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider bg-white/20 text-white border-white/30">
+                        <span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
                             Official
                         </span>
                     )}

@@ -23,39 +23,54 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 
         const logo = league?.logo ?? null;
         const isReleaseEvent = stateFlags.isReleaseCard;
+        const displayName =
+            isReleaseEvent && event.name ? event.name : leagueName;
+        const rawType = types[event.eventType] ?? event.eventType;
+        const shortType =
+            rawType === 'Legality'
+                ? 'LEG'
+                : rawType === 'Release'
+                  ? 'REL'
+                  : rawType;
 
         return (
             <div
                 className={`
                     ${cardClasses}
-                    flex justify-between
-                    items-center gap-1.5 py-1 px-2
+                    flex justify-between items-center
+                    gap-0.5 @min-[700px]:gap-1.5
+                    py-[1.5px] px-1 @min-[700px]:py-1 @min-[700px]:px-2
                     calendar-card
-                    text-text-main text-[10px]
+                    text-text-main
                     font-semibold
                     cursor-pointer
                     min-w-0 w-full
-                    max-sm:text-[8.5px]
-                    max-sm:py-0.5 max-sm:px-1.5
-                    max-sm:gap-1
+                    rounded-[3px] @min-[700px]:rounded-sm
                     type-${event.eventType}
                     ${isOtherMonth ? 'opacity-35! grayscale! pointer-events-none!' : ''}
                 `}
                 style={{ '--store-color': storeColor } as React.CSSProperties}
             >
-                <span className="truncate min-w-0">
-                    {logo && (
-                        <img
-                            src={logo}
-                            className="rounded-full object-cover text-align-left w-4 h-4 max-sm:w-3.5 max-sm:h-3.5"
-                        />
-                    )}
+                {logo ? (
+                    <img
+                        src={logo}
+                        alt=""
+                        className="rounded-full object-cover shrink-0 size-3 @min-[700px]:size-4"
+                    />
+                ) : (
+                    <span
+                        className="size-1.5 @min-[700px]:size-2 rounded-full shrink-0"
+                        style={{ backgroundColor: storeColor }}
+                    />
+                )}
+                <span className="truncate min-w-0 flex-1 text-left text-[7.5px] @min-[700px]:text-[10px] leading-tight">
+                    {displayName}
                 </span>
-                <span className="truncate min-w-0 text-align-left">
-                    {(isReleaseEvent && event.name) || leagueName}
-                </span>
-                <span className="shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0 text-right type-${event.eventType} bg-white text-black dark:bg-white dark:text-black">
-                    {types[event.eventType] ?? event.eventType}
+                <span className="shrink-0 text-[7px] @min-[700px]:text-[8.5px] rounded-xs px-0.5 @min-[700px]:px-1 py-0 text-center font-extrabold leading-none border border-(--type-border)/30 text-(--type-border) bg-(--type-bg)">
+                    <span className="@min-[700px]:hidden">{shortType}</span>
+                    <span className="hidden @min-[700px]:inline">
+                        {rawType}
+                    </span>
                 </span>
             </div>
         );
