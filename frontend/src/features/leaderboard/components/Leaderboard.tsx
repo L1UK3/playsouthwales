@@ -1,20 +1,29 @@
 import React from 'react';
 import { RankBadge } from './RankBadge';
 import { useLeaderboard } from '../hooks/useLeaderboard';
+import type { LeaderboardPosition } from '../types/LeaderboardPosition';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { SkeletonRow } from './SkeletonRow';
 
 export interface LeaderboardProps {
     leagueId?: number | string;
     season?: string;
+    players?: LeaderboardPosition[];
+    isLoading?: boolean;
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
     leagueId = 'global',
     season,
+    players: propPlayers,
+    isLoading: propIsLoading,
 }) => {
-    const { data: players = [], isLoading } = useLeaderboard(leagueId, season);
     const isGlobal = leagueId === 'global';
+    const { data: fetchedPlayers = [], isLoading: queryIsLoading } =
+        useLeaderboard(propPlayers !== undefined ? '' : leagueId, season);
+
+    const players = propPlayers ?? fetchedPlayers;
+    const isLoading = propIsLoading ?? queryIsLoading;
 
     if (isLoading) {
         return <SuspenseLoader message="Loading leaderboard…" />;

@@ -2,8 +2,9 @@
 import React from 'react';
 import { Trophy } from 'lucide-react';
 import SuspenseLoader from '@/components/SuspenseLoader';
-import { useLeagues, useDocumentMetadata } from '@/hooks';
+import { useLeagues, useDocumentMetadata, useTop20Players } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
+import type { LeaderboardPosition } from '@/features/leaderboard/types/LeaderboardPosition';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 
 function getTop20SeasonLabel(date = new Date()) {
@@ -33,7 +34,28 @@ const RankingsPage: React.FC = () => {
         'national'
     );
     const { data: leagues = [], isLoading } = useLeagues();
-    const seasonOptions = React.useMemo(() => getSeasonOptions(), []);
+    const { data: top20Data, isLoading: isTop20Loading } =
+        useTop20Players(selectedSeason);
+
+    const seasonOptions = React.useMemo(() => {
+        if (
+            top20Data?.availableSeasons &&
+            top20Data.availableSeasons.length > 0
+        ) {
+            return top20Data.availableSeasons;
+        }
+        return getSeasonOptions();
+    }, [top20Data]);
+
+    const nationalPlayers = React.useMemo<LeaderboardPosition[]>(() => {
+        if (!top20Data?.players) return [];
+        return Object.entries(top20Data.players).map(([pos, player]) => ({
+            position: parseInt(pos, 10),
+            name: player.name,
+            cp: player.cp ?? 0,
+            userId: player.userId,
+        }));
+    }, [top20Data]);
 
     const handleTabChange = (tab: 'national' | 'local') => {
         if (document.startViewTransition) {
@@ -44,34 +66,11 @@ const RankingsPage: React.FC = () => {
     };
 
     const leaguesWithStandings = React.useMemo(() => {
-        return leagues
-            .filter((league) => !league.isChampionshipSeries)
-            .map((league) => {
-                return {
-                    ...league,
-                    hasStandings: {
-                        ...((typeof league.hasStandings === 'object'
-                            ? league.hasStandings
-                            : {}) as any),
-                        [selectedSeason]: [1, 2, 3],
-                    },
-                } as any;
-            })
-            .filter((league) => {
-                if (!league.hasStandings) {
-                    return false;
-                }
-
-                if (typeof league.hasStandings !== 'object') {
-                    return false;
-                }
-
-                const leagueStandings = (
-                    league.hasStandings as Record<string, unknown[]>
-                )[selectedSeason];
-                return leagueStandings && leagueStandings.length > 0;
-            });
-    }, [leagues, selectedSeason]);
+        return leagues.filter(
+            (league) =>
+                !league.isChampionshipSeries && Boolean(league.hasStandings)
+        );
+    }, [leagues]);
 
     const activeLeagueId =
         (selectedLeagueId !== null &&
@@ -166,7 +165,12 @@ const RankingsPage: React.FC = () => {
                     </select>
                 </div>
                 <div className="flex-1 min-h-0">
-                    <Leaderboard leagueId="global" season={selectedSeason} />
+                    <Leaderboard
+                        leagueId="global"
+                        season={selectedSeason}
+                        players={nationalPlayers}
+                        isLoading={isTop20Loading}
+                    />
                 </div>
             </div>
 
