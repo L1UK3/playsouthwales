@@ -10,7 +10,10 @@ import type { EventCardAdditionalProps } from '../types/EventCard.types';
  * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
  * @returns {{ league: League | null, leagueName: string }} - An object containing the league and its name.
  */
-export function getLeagueInfo(event: Event, leagueMap: Record<number, League>): { league: League | null; leagueName: string; } {
+export function getLeagueInfo(
+    event: Event,
+    leagueMap: Record<number, League>
+): { league: League | null; leagueName: string } {
     const league =
         event.leagueId && event.leagueId !== -1
             ? leagueMap[event.leagueId]
@@ -31,7 +34,7 @@ export function getStoreColor(event: Event, league: League | null): string {
         event.eventType === 'REGULATION'
         ? 'var(--color-secondary)'
         : (league?.brandColor ??
-            `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
+              `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 }
 
 /**
@@ -55,7 +58,7 @@ export function getStateFlags(
         isReleaseCard:
             event.eventType === 'RELEASE' ||
             event.eventType === 'LEGALITY' ||
-            event.eventType === 'REGULATION'
+            event.eventType === 'REGULATION',
     };
     return stateFlags;
 }

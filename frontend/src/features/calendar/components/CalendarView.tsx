@@ -126,7 +126,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                         isSpecialDay={
                             events[cell.dateKey]?.some(
                                 (event) =>
-                                    event.eventType === 'RELEASE' ||
                                     event.eventType === 'LEGALITY' ||
                                     event.eventType === 'REGULATION'
                             ) ?? false

@@ -91,9 +91,10 @@ class BackgroundScheduler:
         """Run the hourly background sync and send today's events update."""
         try:
             logger.info("[Scheduler] Running daily background sync...")
-            from app.web.pokedata import sync_pokedata
+            from app.web.pokedata import get_cp, sync_pokedata
 
-            res = await sync_pokedata()
+            res = await sync_pokedata() + await get_cp()
+
             logger.info(f"[Scheduler] Daily pokedata sync completed: {res}")
 
         except Exception as e:

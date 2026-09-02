@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Any
 
 import httpx
@@ -236,3 +237,31 @@ async def sync_pokedata() -> dict[str, Any]:
         "skipped_existing": skipped_existing_count,
         "skipped_no_league": skipped_no_league_count,
     }
+
+
+async def get_cp(year: int = 2027) -> None:
+    """Fetch Welsh player CP from Pokédata and update Supabase."""
+    players = (
+        supabase.table("welsh_players").select("name").execute().data or []
+    )
+    if not players:
+        return
+
+    payload = {
+        "APIKEY": os.getenv("POKEDATA_KEY"),
+        "players": [
+            {"name": p["name"], "game": "tcg", "division": "master"}
+            for p in players
+        ],
+    }
+
+    async with httpx.AsyncClient() as client:
+        res = await client.post(
+            f"https://pokedata.ovh/{year}/api/", json=payload, timeout=20.0
+        )
+        data = res.json()
+
+    for item in data:
+        supabase.table("welsh_players").update(
+            {"cp": item.get("points", 0)}
+        ).eq("name", item["name"]).execute()

@@ -205,3 +205,23 @@ async def get_regs():
                 "message": "Failed to fetch regulation data",
             },
         )
+
+
+@router.get("/api/players/top20")
+async def get_top20(
+    season: str | None = None,
+    db: Client = Depends(get_supabase),
+):
+    """Retrieve the top 20 players from the Supabase database."""
+    try:
+        data = await leaderboard.get_top20(db, season=season)
+        return data
+    except Exception as e:
+        logger.error(f"Failed to fetch top 20 players from Supabase: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to fetch top 20 players",
+            },
+        )

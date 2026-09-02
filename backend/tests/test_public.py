@@ -217,3 +217,31 @@ class TestLeaderboardEndpoint:
         body = client.get("/api/leaderboard/999").json()
         assert body["detail"]["code"] == "not_found"
         assert "message" in body["detail"]
+
+
+# — /api/players/top20 —
+
+
+class TestTop20Endpoint:
+    def test_returns_200_and_top20(self, client, supabase_table):
+        supabase_table(
+            "welsh_players",
+            [
+                {"name": "Luke Enness", "cp": 520},
+                {"name": "Thomas Williams", "cp": 380},
+            ],
+        )
+        resp = client.get("/api/players/top20?season=2027")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["season"] == "2027"
+        assert body["players"]["1"]["name"] == "Luke Enness"
+        assert body["players"]["1"]["cp"] == 520
+        assert body["players"]["2"]["name"] == "Thomas Williams"
+
+    def test_returns_200_empty_players(self, client, supabase_table):
+        supabase_table("welsh_players", [])
+        resp = client.get("/api/players/top20")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["players"] == {}

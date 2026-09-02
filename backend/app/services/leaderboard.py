@@ -1,4 +1,5 @@
 import logging
+from datetime import UTC, datetime
 
 from supabase import Client
 
@@ -38,3 +39,35 @@ async def update_leaderboard(
         ).execute()
 
     return {"success": True, "message": "Leaderboard updated successfully"}
+
+
+async def get_top20(db: Client, season: str | None = None) -> dict:
+    """Retrieve the top 20 Welsh players by Championship Points (CP)."""
+    now = datetime.now(UTC)
+    season_year = now.year + 1 if now.month >= 7 else now.year
+    current_season = str(season_year)
+    selected_season = season or current_season
+    available_seasons = [current_season]
+
+    res = (
+        db.table("welsh_players")
+        .select("name, cp")
+        .order("cp", desc=True)
+        .limit(20)
+        .execute()
+    )
+    players_data = res.data or []
+
+    players = {
+        str(i + 1): {
+            "name": p["name"],
+            "cp": p.get("cp", 0) if p.get("cp") is not None else 0,
+        }
+        for i, p in enumerate(players_data)
+    }
+
+    return {
+        "season": selected_season,
+        "availableSeasons": available_seasons,
+        "players": players,
+    }
