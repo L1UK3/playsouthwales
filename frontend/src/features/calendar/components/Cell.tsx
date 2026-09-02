@@ -29,6 +29,8 @@ export interface CellProps {
     types: EventTypeMap;
     selectedDateKey: string | null;
     todayKey: string;
+    isReleaseDay: boolean;
+    isLegalityDay: boolean;
     onSelectDay: (dateKey: string) => void;
 }
 
@@ -48,6 +50,8 @@ const Cell: React.FC<CellProps> = React.memo(
         types,
         selectedDateKey,
         todayKey,
+        isReleaseDay,
+        isLegalityDay,
         onSelectDay,
     }) => {
         const isSelected = dateKey === selectedDateKey;
@@ -57,7 +61,12 @@ const Cell: React.FC<CellProps> = React.memo(
 
         return (
             <div
-                className={`min-h-12 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full p-1.5 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
+                className={`min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px]
+                ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''}
+                ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''}
+                ${isToday ? 'border-2! border-today-border!' : ''}
+                ${isReleaseDay ? 'border-2! outline-release-day!' : ''}
+                ${isLegalityDay ? 'border-2! outline-legality-day!' : ''}`}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >
