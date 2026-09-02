@@ -137,3 +137,37 @@ def test_sync_pokedata_processes_and_inserts_new_events(
     assert inserted_event["eventType"] == "CHALLENGE"
     assert inserted_event["game"] == "TCG"
     assert inserted_event["entryFee"] == "£5.00"
+
+
+def test_get_cp(monkeypatch):
+    """Verify get_cp fetches Welsh players, queries Pokédata, and updates Supabase."""
+    mock_table = MagicMock()
+    mock_select = MagicMock()
+    mock_select.execute.return_value = MagicMock(data=[{"name": "Luke Enness"}])
+    mock_table.select.return_value = mock_select
+
+    mock_update = MagicMock()
+    mock_eq = MagicMock()
+    mock_eq.execute.return_value = MagicMock()
+    mock_update.eq.return_value = mock_eq
+    mock_table.update.return_value = mock_update
+
+    mock_supabase = MagicMock()
+    mock_supabase.table.return_value = mock_table
+    monkeypatch.setattr(pokedata, "supabase", mock_supabase)
+
+    mock_post = AsyncMock()
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"name": "Luke Enness", "points": 82}]
+    mock_post.return_value = mock_response
+    monkeypatch.setattr(httpx.AsyncClient, "post", mock_post)
+
+    asyncio.run(pokedata.get_cp())
+
+    assert mock_table.select.called
+    assert mock_post.call_count == 1
+    mock_table.update.assert_called_with({"cp": 82})
+    mock_update.eq.assert_called_with("name", "Luke Enness")
+
+
+

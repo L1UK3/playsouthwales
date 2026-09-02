@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     allowed_origins: Annotated[list[str], NoDecode] = []
     discord_bot_url: str | None = None
     discord_announcements_channel_id: str | None = None
+    pokedata_key: str | None = None
 
     @field_validator(
         "clerk_authorized_parties", "allowed_origins", mode="before"
