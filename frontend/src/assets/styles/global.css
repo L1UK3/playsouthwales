@@ -43,7 +43,9 @@
     --color-event-more-bg: rgba(0, 0, 0, 0.05);
     --color-event-more-text: var(--color-secondary);
     --color-today-border: var(--color-accent);
-    --color-selected-border: var(--color-secondary);
+    --color-selected-border: var(--color-primary);
+    --color-special-day: var(--color-accent);
+    --color-special-day-border: oklch(0.75 0.18 80);
     --color-type-bg: rgba(49, 104, 177, 0.15);
     --color-type-text: var(--color-text-main);
     --color-type-border: var(--color-secondary-hover);
@@ -310,7 +312,11 @@
 
     color: var(--color-text-main) !important;
     border-radius: var(--radius-sm) !important;
-    transition: all var(--dur-short) var(--ease-out) !important;
+    transition:
+        background-color var(--dur-short) var(--ease-out),
+        border-color var(--dur-short) var(--ease-out),
+        transform var(--dur-short) var(--ease-out),
+        box-shadow var(--dur-short) var(--ease-out) !important;
 
     &:hover {
         background-color: var(--color-bg-card-hover) !important;
@@ -347,6 +353,7 @@ html.dark {
 
     --color-event-bg: rgba(255, 77, 77, 0.2);
     --color-event-more-bg: rgba(255, 255, 255, 0.1);
+    --color-special-day-border: oklch(0.78 0.18 80);
 
     .type-LEGALITY {
         --type-bg: oklch(0.88 0.005 28 / 0.12);

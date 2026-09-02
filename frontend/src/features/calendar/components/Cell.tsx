@@ -29,6 +29,7 @@ export interface CellProps {
     types: EventTypeMap;
     selectedDateKey: string | null;
     todayKey: string;
+    isSpecialDay: boolean;
     onSelectDay: (dateKey: string) => void;
 }
 
@@ -48,6 +49,7 @@ const Cell: React.FC<CellProps> = React.memo(
         types,
         selectedDateKey,
         todayKey,
+        isSpecialDay,
         onSelectDay,
     }) => {
         const isSelected = dateKey === selectedDateKey;
@@ -57,64 +59,34 @@ const Cell: React.FC<CellProps> = React.memo(
 
         return (
             <div
-                className={`min-h-12 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full p-1.5 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px] ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''} ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''} ${isToday ? 'border-2! border-today-border!' : ''}`}
+                className={`min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px]
+                ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''}
+                ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''}
+                ${isToday ? 'border-2! border-today-border!' : ''}
+                ${isSpecialDay ? 'border-2! border-special-day-border!' : ''}`}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >
-                <div className="text-xs font-bold text-text-main mb-1 @min-[700px]:mb-1.5">
+                <div className="text-[10px] @min-[700px]:text-xs font-bold text-text-main mb-0.5 @min-[700px]:mb-1.5 leading-none px-0.5">
                     {day}
                 </div>
                 {eventsForDay.length > 0 ? (
-                    <>
-                        {/* Desktop/Tablet view: show full card list */}
-                        <div className="hidden @min-[700px]:grid gap-1 min-w-0">
-                            {sortedEvents.slice(0, 3).map((event) => (
-                                <CalendarCard
-                                    key={event.id}
-                                    event={event}
-                                    leagueMap={leagueMap}
-                                    types={types}
-                                    isOtherMonth={isOtherMonth}
-                                />
-                            ))}
-                            {sortedEvents.length > 3 ? (
-                                <div className="py-1 px-1.5 rounded-md bg-event-more-bg text-event-more-text text-[11px] text-center">
-                                    {sortedEvents.length - 3} more
-                                </div>
-                            ) : null}
-                        </div>
-                        {/* Mobile view: show small dots representing events */}
-                        <div className="flex @min-[700px]:hidden justify-center gap-1 mt-1 flex-wrap">
-                            {sortedEvents.slice(0, 3).map((event) => {
-                                const league = event.leagueId
-                                    ? leagueMap[event.leagueId]
-                                    : null;
-                                const storeColor =
-                                    league?.brandColor ??
-                                    `hsl(${((event.leagueId ?? 0) * 137) % 360}, 70%, 50%)`;
-                                return (
-                                    <span
-                                        key={event.id}
-                                        className={`size-1.5 rounded-full shrink-0 ${isOtherMonth ? 'opacity-40 bg-gray-400' : ''}`}
-                                        style={
-                                            isOtherMonth
-                                                ? {}
-                                                : {
-                                                      backgroundColor:
-                                                          storeColor,
-                                                  }
-                                        }
-                                        title={league?.name ?? event.leagueName}
-                                    />
-                                );
-                            })}
-                            {sortedEvents.length > 3 ? (
-                                <span className="text-[9px] leading-none text-text-muted font-bold select-none">
-                                    +
-                                </span>
-                            ) : null}
-                        </div>
-                    </>
+                    <div className="grid gap-0.5 @min-[700px]:gap-1 min-w-0 w-full">
+                        {sortedEvents.slice(0, 3).map((event) => (
+                            <CalendarCard
+                                key={event.id}
+                                event={event}
+                                leagueMap={leagueMap}
+                                types={types}
+                                isOtherMonth={isOtherMonth}
+                            />
+                        ))}
+                        {sortedEvents.length > 3 ? (
+                            <div className="py-0.5 px-1 @min-[700px]:py-1 @min-[700px]:px-1.5 rounded-xs @min-[700px]:rounded-md bg-event-more-bg text-event-more-text text-[8px] @min-[700px]:text-[11px] text-center font-bold leading-none">
+                                +{sortedEvents.length - 3} more
+                            </div>
+                        ) : null}
+                    </div>
                 ) : null}
             </div>
         );
