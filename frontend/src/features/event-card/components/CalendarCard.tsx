@@ -25,13 +25,6 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
         const isReleaseEvent = stateFlags.isReleaseCard;
         const displayName =
             isReleaseEvent && event.name ? event.name : leagueName;
-        const rawType = types[event.eventType] ?? event.eventType;
-        const shortType =
-            rawType === 'Legality'
-                ? 'LEG'
-                : rawType === 'Release'
-                  ? 'REL'
-                  : rawType;
 
         return (
             <div
