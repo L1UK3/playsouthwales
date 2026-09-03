@@ -58,7 +58,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
             <div
                 className={
                     isScroll
-                        ? 'flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border-color/70 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb:hover]:bg-text-muted'
+                        ? 'flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth'
                         : `grid ${gridColsClass} gap-4`
                 }
             >
