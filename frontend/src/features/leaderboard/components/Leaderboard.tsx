@@ -32,7 +32,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
     return (
         <div className="flex flex-col gap-4 w-full h-full min-h-0">
             {/* Leaderboard Table Container */}
-            <div className="flex-1 min-h-0 overflow-auto rounded-lg border border-border-color bg-bg-card shadow-xs [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border-color/70 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb:hover]:bg-text-muted">
+            <div className="flex-1 min-h-0 overflow-auto rounded-lg border border-border-color bg-bg-card shadow-xs">
                 <table className="w-full border-collapse text-left">
                     <thead className="sticky top-0 bg-bg-card border-b border-border-color z-10">
                         <tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md">
