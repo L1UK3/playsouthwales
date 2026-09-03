@@ -32,6 +32,9 @@ def require_auth(
         reason_str = "unauthorized"
         if state.reason:
             reason_str = getattr(state.reason, "value", str(state.reason))
+        logger.warning(
+            f"Authentication failed for {request.method} {request.url.path}: {reason_str}"
+        )
         raise HTTPException(
             status_code=401,
             detail=reason_str,
