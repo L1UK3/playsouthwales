@@ -7,6 +7,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.config import Settings, get_settings
 
+logger = logging.getLogger(__name__)
+
 http_bearer = HTTPBearer(auto_error=False)
 
 
