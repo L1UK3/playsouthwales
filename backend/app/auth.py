@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from clerk_backend_api import AuthenticateRequestOptions, authenticate_request
@@ -6,6 +7,8 @@ from fastapi import Depends, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.config import Settings, get_settings
+
+logger = logging.getLogger(__name__)
 
 http_bearer = HTTPBearer(auto_error=False)
 
@@ -22,7 +25,7 @@ def require_auth(
         AuthenticateRequestOptions(
             secret_key=settings.clerk_secret_key,
             jwt_key=settings.clerk_jwt_key,
-            authorized_parties=settings.clerk_authorized_parties,
+            authorized_parties=settings.clerk_authorized_parties or None,
             accepts_token=["session_token"],
         ),
     )
@@ -30,6 +33,9 @@ def require_auth(
         reason_str = "unauthorized"
         if state.reason:
             reason_str = getattr(state.reason, "value", str(state.reason))
+        logger.warning(
+            f"Authentication failed for {request.method} {request.url.path}: {reason_str}"
+        )
         raise HTTPException(
             status_code=401,
             detail=reason_str,

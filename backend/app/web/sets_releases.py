@@ -191,7 +191,7 @@ async def run_sets_sync() -> dict:
     params = {
         "action": "query",
         "prop": "revisions",
-        "titles": "List of Trading Card Game expansions",
+        "titles": "List of Pokémon Trading Card Game expansions",
         "rvslots": "*",
         "rvprop": "content",
         "format": "json",
@@ -210,7 +210,7 @@ async def run_sets_sync() -> dict:
 
         pages = data.get("query", {}).get("pages", {})
         wikitext = ""
-        for page_data in pages.items():
+        for page_data in pages.values():
             revisions = page_data.get("revisions", [])
             if revisions:
                 wikitext = (
