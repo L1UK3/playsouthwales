@@ -110,6 +110,12 @@
 }
 
 @layer base {
+<<<<<<< Updated upstream
+=======
+    html {
+        scrollbar-gutter: stable both-edges;
+    }
+
     * {
         scrollbar-width: thin;
         scrollbar-color: color-mix(
@@ -142,6 +148,7 @@
         background-color: var(--color-text-muted);
     }
 
+>>>>>>> Stashed changes
     body {
         background-color: var(--color-bg-main);
         color: var(--color-text-main);
