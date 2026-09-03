@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from clerk_backend_api import AuthenticateRequestOptions, authenticate_request
@@ -24,7 +25,7 @@ def require_auth(
         AuthenticateRequestOptions(
             secret_key=settings.clerk_secret_key,
             jwt_key=settings.clerk_jwt_key,
-            authorized_parties=settings.clerk_authorized_parties,
+            authorized_parties=settings.clerk_authorized_parties or None,
             accepts_token=["session_token"],
         ),
     )
