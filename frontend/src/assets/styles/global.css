@@ -252,7 +252,7 @@
 }
 
 .type-CUP {
-    --type-bg: oklch(0.68 0.28 20 / 0.15);
+    --type-bg: oklch(0.88 0.25 95 / 0.15);
     --type-border: oklch(0.68 0.28 20);
 }
 
