@@ -110,6 +110,38 @@
 }
 
 @layer base {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(
+                in oklch,
+                var(--color-border-color) 70%,
+                transparent
+            )
+            transparent;
+    }
+
+    *::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: color-mix(
+            in oklch,
+            var(--color-border-color) 70%,
+            transparent
+        );
+        border-radius: 10px;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-text-muted);
+    }
+
     body {
         background-color: var(--color-bg-main);
         color: var(--color-text-main);
