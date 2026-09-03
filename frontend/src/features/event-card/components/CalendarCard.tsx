@@ -50,11 +50,10 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
                         alt=""
                         className="rounded-full object-cover shrink-0 size-3 @min-[700px]:size-4"
                     />
+                ) : isReleaseEvent ? (
+                    null
                 ) : (
-                    <span
-                        className="size-1.5 @min-[700px]:size-2 rounded-full shrink-0"
-                        style={{ backgroundColor: storeColor }}
-                    />
+                    <div className="rounded-full bg-bg-card shrink-0 size-3 @min-[700px]:size-4" />
                 )}
                 <span className="hidden @min-[700px]:block truncate min-w-0 flex-1 text-left text-[10px] leading-tight">
                     {displayName}
