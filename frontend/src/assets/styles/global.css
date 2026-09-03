@@ -110,8 +110,6 @@
 }
 
 @layer base {
-<<<<<<< Updated upstream
-=======
     html {
         scrollbar-gutter: stable both-edges;
     }
@@ -148,7 +146,6 @@
         background-color: var(--color-text-muted);
     }
 
->>>>>>> Stashed changes
     body {
         background-color: var(--color-bg-main);
         color: var(--color-text-main);
