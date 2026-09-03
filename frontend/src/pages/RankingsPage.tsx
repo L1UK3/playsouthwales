@@ -130,10 +130,11 @@ const RankingsPage: React.FC = () => {
                 <p className="text-xs text-text-muted mb-3 flex-none leading-relaxed">
                     The South Wales Top 20 shows the players with the highest CP
                     (Championship Points) across South Wales. Top players are
-                    eligible to compete in the South Wales South Wales World's event
-                    , held annually with a large cash prize pool. Players earn CP by
-                    participating in official TCG and VGC events. To register,
-                    message an admin on Discord to sign-up for the event.
+                    eligible to compete in the South Wales South Wales World's
+                    event , held annually with a large cash prize pool. Players
+                    earn CP by participating in official TCG and VGC events. To
+                    register, message an admin on Discord to sign-up for the
+                    event.
                 </p>
                 <div className="flex items-center gap-3 flex-wrap mb-2 flex-none">
                     <label
