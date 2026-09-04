@@ -16,7 +16,6 @@ from app.models import (
 from app.services import event, leaderboard, league
 from app.web.championship_series import sync_championship_data
 from app.web.pokedata import sync_pokedata
-from app.web.sets_releases import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
@@ -131,37 +130,6 @@ async def trigger_pokedata_sync(auth: dict = Depends(require_auth)):
             detail={
                 "code": "internal_error",
                 "message": "Failed to manually run pokedata sync",
-            },
-        )
-
-
-@router.post("/api/events/sync-sets")
-async def trigger_sets_sync(auth: dict = Depends(require_auth)):
-    """Trigger a manual synchronization of TCG sets from Bulbapedia."""
-    try:
-        result = await run_sets_sync()
-        if not result.get("success"):
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={
-                    "code": "internal_error",
-                    "message": result.get("error", "Failed to sync sets"),
-                },
-            )
-        return {
-            "success": True,
-            "message": "TCG sets sync completed",
-            "metrics": result,
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Failed to manually run sets sync: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={
-                "code": "internal_error",
-                "message": "Failed to manually run sets sync",
             },
         )
 

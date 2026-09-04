@@ -113,10 +113,6 @@ class BackgroundScheduler:
             from app.web.championship_series import (
                 sync_championship_data,
             )
-            from app.web.sets_releases import run_sets_sync
-
-            res_sets = await run_sets_sync()
-            logger.info(f"[Scheduler] Daily sets sync completed: {res_sets}")
 
             res_champ = await sync_championship_data()
             logger.info(
