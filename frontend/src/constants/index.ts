@@ -48,7 +48,7 @@ export const EVENT_TYPE_MAP: EventTypeMap = {
     REGIONAL: '📍',
     INTERNATIONAL: 'INT',
     WORLDS: '🌍',
-    LEGALITY: 'Legality',
-    RELEASE: 'Release',
-    REGULATION: 'REG',
+    LEGALITY: 'Set Legal',
+    RELEASE: 'Set Release',
+    REGULATION: 'Reg Legal',
 };

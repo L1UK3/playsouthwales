@@ -8,4 +8,3 @@ export function useTop20Players(season?: string) {
         queryFn: () => loadTop20Players(season),
     });
 }
-

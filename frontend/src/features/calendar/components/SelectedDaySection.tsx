@@ -59,14 +59,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
             <div className="text-base font-bold p-3.5 bg-bg-day-header text-text-main @6xl:shrink-0 @6xl:h-11 @6xl:flex @6xl:items-center @6xl:px-4 @6xl:py-0 flex items-center justify-between border-b border-border-color">
                 <span>{title}</span>
             </div>
-            <div
-                className="flex flex-col gap-2.5 p-3.5 @6xl:flex-1 @6xl:min-h-0 @6xl:overflow-y-auto
-                            [&::-webkit-scrollbar]:w-1.5
-                            [&::-webkit-scrollbar-track]:bg-transparent
-                            [&::-webkit-scrollbar-thumb]:bg-border-color/70
-                            [&::-webkit-scrollbar-thumb]:rounded-[10px]
-                            [&::-webkit-scrollbar-thumb:hover]:bg-text-muted"
-            >
+            <div className="flex flex-col gap-2.5 p-3.5 @6xl:flex-1 @6xl:min-h-0 @6xl:overflow-y-auto">
                 {!isDateSelected ? (
                     <div className="flex flex-col items-center justify-center h-full text-center p-6 text-text-muted gap-2">
                         <Calendar className="size-12 text-border-color stroke-[1.5]" />

@@ -78,9 +78,9 @@ export function getCardStyles(
     const isPrerelease = eventType === 'PRE-RELEASE';
 
     let theme: 'gold' | 'silver' | 'purple' | 'default' = 'default';
-    if (isChampionship) {
+    if (isChampionship || isCup) {
         theme = 'gold';
-    } else if (isChallenge || isCup) {
+    } else if (isChallenge) {
         theme = 'silver';
     } else if (isPrerelease) {
         theme = 'purple';
