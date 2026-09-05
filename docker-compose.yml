@@ -2,7 +2,7 @@ services:
     backend:
         build:
             context: ./backend
-            dockerfile: Dockerfile
+            dockerfile: ../docker/Dockerfile.backend
         ports:
             - '5000:5000'
         volumes:
@@ -18,7 +18,7 @@ services:
     frontend:
         build:
             context: ./frontend
-            dockerfile: Dockerfile
+            dockerfile: ../docker/Dockerfile.frontend
         ports:
             - '5173:5173'
         volumes:
@@ -36,7 +36,7 @@ services:
     bot:
         build:
             context: ./bot
-            dockerfile: Dockerfile
+            dockerfile: ../docker/Dockerfile.bot
         ports:
             - '5001:5001'
         env_file:
