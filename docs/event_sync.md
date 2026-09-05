@@ -2,53 +2,67 @@
 meta.contentType: How-to
 ---
 
-# How do I synchronize events and update database schemas?
+# How to synchronize events and update database schemas
 
-This guide covers running manual scraper syncs, excluding recurring event dates, and applying database migrations.
+This guide explains how to trigger manual tournament synchronizations, exclude holiday dates from recurring schedules, and execute Supabase database migrations.
 
 ## Trigger manual synchronizations
 
-Send an authorized `POST` request with your Clerk JWT token:
+The backend scheduler runs automated syncs periodically. You can also trigger immediate updates by sending authenticated `POST` requests with your Clerk JWT token.
 
-### 1. Sync TCG expansions from Bulbapedia
+### Trigger a Pokédata tournament sync
 
-```bash
-curl -X POST http://localhost:5000/api/events/sync-sets \
-  -H "Authorization: Bearer <clerk_token>"
-```
-
-### 2. Sync local tournaments from Pokédata
+Run this command to pull the latest local tournament schedules from Pokédata:
 
 ```bash
 curl -X POST http://localhost:5000/api/events/sync-pokedata \
   -H "Authorization: Bearer <clerk_token>"
 ```
 
-### 3. Sync Championship Series events
+The endpoint returns metrics detailing how many events the scraper imported, updated, or skipped.
+
+### Trigger a Championship Series sync
+
+Run this command to refresh global Championship Series tournaments and standings:
 
 ```bash
 curl -X POST http://localhost:5000/api/events/sync-championship \
   -H "Authorization: Bearer <clerk_token>"
 ```
 
+The endpoint imports regional, international, and special events into the database.
+
 ## Exclude a recurring event date
 
-To cancel an occurrence on a holiday without deleting the entire series:
+When a weekly tournament falls on a bank holiday, cancel that specific occurrence without deleting the recurring series.
 
-- **Via UI**: In `/admin`, open the event and click **Delete Occurrence**.
-- **Via API**:
-    ```bash
-    curl -X DELETE "http://localhost:5000/api/events/10000000?excludeDate=2026-12-25" \
-      -H "Authorization: Bearer <clerk_token>"
-    ```
+### Option 1: Use the administrative interface
 
-This appends the date to `excluded_dates` in the `weekly_events` table.
+1. Navigate to `/admin` in your browser and sign in with administrative credentials.
+2. Open the recurring tournament entry in the calendar view.
+3. Select **Delete Occurrence** and confirm the date to exclude.
 
-## Update database schema
+### Option 2: Use the REST API
 
-1. Add a raw SQL file in [supabase/migrations/](../supabase/migrations/):
+Calculate the virtual event ID or copy it from the frontend URL. Send an authenticated `DELETE` request with the `excludeDate` query parameter:
+
+```bash
+curl -X DELETE "http://localhost:5000/api/events/10000000?excludeDate=2026-12-25" \
+  -H "Authorization: Bearer <clerk_token>"
+```
+
+The backend parses the virtual ID, locates the weekly template record, and appends `2026-12-25` to `excluded_dates`.
+
+## Apply database migrations
+
+Supabase stores schema definitions and table constraints. Follow these steps to apply database updates:
+
+1. Create a new SQL migration file in [supabase/migrations/](file:///d:/Projects/playsouthwales/supabase/migrations/):
     ```sql
-    alter table events add column note text;
+    -- Example: supabase/migrations/20260905120000_add_event_notes.sql
+    ALTER TABLE events ADD COLUMN note text;
     ```
-2. Run the SQL script in your Supabase Dashboard SQL editor.
-3. Update [backend/app/models.py](../backend/app/models.py) and [frontend/src/types/](../frontend/src/types/) to match.
+2. Open your Supabase Dashboard and navigate to the **SQL Editor**.
+3. Paste the contents of your migration script and click **Run**.
+4. Update the corresponding Pydantic models in [backend/app/models.py](file:///d:/Projects/playsouthwales/backend/app/models.py).
+5. Update matching TypeScript interfaces in [frontend/src/types/](file:///d:/Projects/playsouthwales/frontend/src/types/).

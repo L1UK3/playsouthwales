@@ -99,6 +99,7 @@ playsouthwales/
 │   ├── Dockerfile.bot
 │   └── Dockerfile.frontend
 ├── docs/               # In-depth Diátaxis documentation
+│   ├── README.md       # Overview: Diátaxis framework matrix and navigation
 │   ├── SETUP.md        # Tutorial: Local setup walkthrough
 │   ├── architecture.md # Explanation: System topology and virtual IDs
 │   ├── api.md          # Reference: REST API endpoints and schemas
