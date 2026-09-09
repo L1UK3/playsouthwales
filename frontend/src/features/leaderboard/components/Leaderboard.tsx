@@ -17,6 +17,12 @@ const COLUMN_COUNT: Record<LeaderboardMode, number> = {
     local: 7,
 };
 
+const PODIUM_STYLES: Record<number, string> = {
+    1: 'border-l-4 border-t-1 border-amber-400 bg-amber-400/5',
+    2: 'border-l-4 border-slate-400 bg-slate-400/5',
+    3: 'border-l-4 border-amber-700 bg-amber-700/5',
+};
+
 export interface LeaderboardProps {
     leagueId?: number | string;
     season?: string;
@@ -175,7 +181,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                             </tr>
                                         ) : null}
                                         <tr
-                                            className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${mode === 'national' && rank > TOP_CUTOFF_THRESHOLD ? 'opacity-75' : ''}`}
+                                            className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${
+                                                mode === 'national' &&
+                                                PODIUM_STYLES[rank]
+                                                    ? PODIUM_STYLES[rank]
+                                                    : ''
+                                            }`}
                                         >
                                             <td className="py-1.5 px-3 flex justify-center items-center">
                                                 <RankBadge position={rank} />
