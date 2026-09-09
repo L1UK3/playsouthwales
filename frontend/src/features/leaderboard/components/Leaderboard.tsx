@@ -2,8 +2,20 @@ import React from 'react';
 import { RankBadge } from './RankBadge';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import type { LeaderboardPosition } from '../types/LeaderboardPosition';
-import SuspenseLoader from '@/components/SuspenseLoader';
 import { SkeletonRow } from './SkeletonRow';
+
+export const GLOBAL_LEAGUE_ID = 'global';
+export const TOP_CUTOFF_THRESHOLD = 20;
+export const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
+const SKELETON_ROW_COUNT = 8;
+const EMPTY_PLAYERS: LeaderboardPosition[] = [];
+
+export type LeaderboardMode = 'national' | 'local';
+
+const COLUMN_COUNT: Record<LeaderboardMode, number> = {
+    national: 3,
+    local: 7,
+};
 
 export interface LeaderboardProps {
     leagueId?: number | string;
@@ -12,22 +24,94 @@ export interface LeaderboardProps {
     isLoading?: boolean;
 }
 
+const LeaderboardHeader: React.FC<{ mode: LeaderboardMode }> = ({ mode }) => {
+    if (mode === 'national') {
+        return (
+            <th className="py-2 px-3 text-right pr-4">Championship Points</th>
+        );
+    }
+
+    return (
+        <>
+            <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
+                W
+            </th>
+            <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
+                L
+            </th>
+            <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
+                D
+            </th>
+            <th className="py-2 px-3 text-center w-24 hidden sm:table-cell">
+                Attendance
+            </th>
+            <th className="py-2 px-3 text-right pr-4 w-20">Points</th>
+        </>
+    );
+};
+
+const LeaderboardMetrics: React.FC<{
+    player: LeaderboardPosition;
+    mode: LeaderboardMode;
+}> = ({ player, mode }) => {
+    if (mode === 'national') {
+        return (
+            <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10">
+                    {player.cp}
+                </span>
+            </td>
+        );
+    }
+
+    return (
+        <>
+            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
+                {player.wins ?? 0}
+            </td>
+            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
+                {player.losses ?? 0}
+            </td>
+            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
+                {player.draws ?? 0}
+            </td>
+            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell">
+                {player.attendance ?? 0}
+            </td>
+            <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10">
+                    {player.points}
+                </span>
+            </td>
+        </>
+    );
+};
+
 const Leaderboard: React.FC<LeaderboardProps> = ({
-    leagueId = 'global',
+    leagueId = GLOBAL_LEAGUE_ID,
     season,
     players: propPlayers,
     isLoading: propIsLoading,
 }) => {
-    const isGlobal = leagueId === 'global';
-    const { data: fetchedPlayers = [], isLoading: queryIsLoading } =
+    const mode: LeaderboardMode =
+        leagueId === GLOBAL_LEAGUE_ID ? 'national' : 'local';
+    const isGlobal = mode === 'national';
+
+    const { data: fetchedPlayers = EMPTY_PLAYERS, isLoading: queryIsLoading } =
         useLeaderboard(propPlayers !== undefined ? '' : leagueId, season);
 
-    const players = propPlayers ?? fetchedPlayers;
-    const isLoading = propIsLoading ?? queryIsLoading;
+    const rawPlayers = propPlayers ?? fetchedPlayers;
 
-    if (isLoading) {
-        return <SuspenseLoader message="Loading leaderboard…" />;
-    }
+    const sortedPlayers: LeaderboardPosition[] = React.useMemo(() => {
+        return [...rawPlayers].sort((a, b) => {
+            if (mode === 'national') {
+                return (b.cp ?? 0) - (a.cp ?? 0);
+            }
+            return (b.points ?? 0) - (a.points ?? 0);
+        });
+    }, [rawPlayers, mode]);
+
+    const isLoading = propIsLoading ?? queryIsLoading;
 
     return (
         <div className="flex flex-col gap-4 w-full h-full min-h-0">
@@ -38,104 +122,66 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                         <tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md">
                             <th className="py-2 px-3 w-16 text-center">Rank</th>
                             <th className="py-2 px-3">Player</th>
-                            {isGlobal ? (
-                                <th className="py-2 px-3 text-right pr-4">
-                                    Championship Points
-                                </th>
-                            ) : (
-                                <>
-                                    <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
-                                        W
-                                    </th>
-                                    <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
-                                        L
-                                    </th>
-                                    <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
-                                        D
-                                    </th>
-                                    <th className="py-2 px-3 text-center w-24 hidden sm:table-cell">
-                                        Attendance
-                                    </th>
-                                    <th className="py-2 px-3 text-right pr-4 w-20">
-                                        Points
-                                    </th>
-                                </>
-                            )}
+                            <LeaderboardHeader mode={mode} />
                         </tr>
                     </thead>
 
                     <tbody className="divide-y divide-border-color/50">
                         {isLoading ? (
-                            [1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
-                                <SkeletonRow key={id} isGlobal={isGlobal} />
-                            ))
-                        ) : players.length === 0 ? (
+                            Array.from(
+                                { length: SKELETON_ROW_COUNT },
+                                (_, index) => (
+                                    <SkeletonRow
+                                        key={index}
+                                        isGlobal={isGlobal}
+                                    />
+                                )
+                            )
+                        ) : sortedPlayers.length === 0 ? (
                             <tr>
                                 <td
-                                    colSpan={isGlobal ? 3 : 7}
+                                    colSpan={COLUMN_COUNT[mode]}
                                     className="text-center py-12 text-sm text-text-muted"
                                 >
                                     No players found.
                                 </td>
                             </tr>
                         ) : (
-                            players.map((player) => {
+                            sortedPlayers.map((player) => {
                                 const renderCutoff =
-                                    isGlobal && player.position === 21;
+                                    mode === 'national' &&
+                                    player.position === TOP_CUTOFF_POSITION;
 
                                 return (
                                     <React.Fragment key={player.position}>
-                                        {renderCutoff && (
+                                        {renderCutoff ? (
                                             <tr className="bg-bg-main/30">
                                                 <td
-                                                    colSpan={3}
+                                                    colSpan={COLUMN_COUNT[mode]}
                                                     className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none"
                                                 >
                                                     Top 20 Cutoff
                                                 </td>
                                             </tr>
-                                        )}
+                                        ) : null}
                                         <tr
                                             key={player.position}
-                                            className={`hover:bg-bg-card-hover/60 transition-colors duration-150 group cursor-pointer ${isGlobal && player.position > 20 ? 'opacity-75' : ''}`}
+                                            className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${mode === 'national' && player.position > TOP_CUTOFF_THRESHOLD ? 'opacity-75' : ''}`}
                                         >
                                             <td className="py-1.5 px-3 flex justify-center items-center">
                                                 <RankBadge
                                                     position={player.position}
                                                 />
                                             </td>
-                                            <td className="py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-colors duration-150">
+                                            <td className="py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-[color] duration-150">
                                                 <div className="flex items-center gap-2">
                                                     <span>{player.name}</span>
                                                 </div>
                                             </td>
-                                            {isGlobal ? (
-                                                <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary">
-                                                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10">
-                                                        {player.cp}
-                                                    </span>
-                                                </td>
-                                            ) : (
-                                                <>
-                                                    <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
-                                                        {player.wins ?? 0}
-                                                    </td>
-                                                    <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
-                                                        {player.losses ?? 0}
-                                                    </td>
-                                                    <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
-                                                        {player.draws ?? 0}
-                                                    </td>
-                                                    <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell">
-                                                        {player.attendance ?? 0}
-                                                    </td>
-                                                    <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary">
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10">
-                                                            {player.points}
-                                                        </span>
-                                                    </td>
-                                                </>
-                                            )}
+                                            <LeaderboardMetrics
+                                                player={player}
+                                                mode={mode}
+                                            />
                                         </tr>
                                     </React.Fragment>
                                 );
