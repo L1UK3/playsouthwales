@@ -47,6 +47,17 @@ class Settings(BaseSettings):
             v = v.replace("\\n", "\n")
         return v
 
+    @field_validator("supabase_secret_key", "clerk_secret_key", mode="before")
+    @classmethod
+    def _clean_secret_key(cls, v: str | None) -> str | None:
+        if isinstance(v, str):
+            v = v.split("#")[0].strip()
+            if (v.startswith('"') and v.endswith('"')) or (
+                v.startswith("'") and v.endswith("'")
+            ):
+                v = v[1:-1].strip()
+        return v
+
     model_config = SettingsConfigDict(
         env_file=env_file_path,
         case_sensitive=False,
