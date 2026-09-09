@@ -62,8 +62,8 @@ const LeaderboardMetrics: React.FC<{
 }> = ({ player, mode }) => {
     if (mode === 'national') {
         return (
-            <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10">
+            <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">
+                <span className="py-1.5 px-3 text-center text-sm text-text-main font-bold">
                     {player.cp}
                 </span>
             </td>
@@ -84,10 +84,8 @@ const LeaderboardMetrics: React.FC<{
             <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell">
                 {player.attendance ?? 0}
             </td>
-            <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold text-primary">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-primary/5 text-primary border border-primary/10">
-                    {player.points}
-                </span>
+            <td className="py-1.5 px-3 text-center text-sm font-bold text-text-main hidden md:table-cell">
+                {player.points}
             </td>
         </>
     );
