@@ -105,9 +105,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
     const sortedPlayers: LeaderboardPosition[] = React.useMemo(() => {
         return [...rawPlayers].sort((a, b) => {
             if (mode === 'national') {
-                return (b.cp ?? 0) - (a.cp ?? 0);
+                const cpDiff = (b.cp ?? 0) - (a.cp ?? 0);
+                if (cpDiff !== 0) return cpDiff;
+                return a.name.localeCompare(b.name);
             }
-            return (b.points ?? 0) - (a.points ?? 0);
+            const pointsDiff = (b.points ?? 0) - (a.points ?? 0);
+            if (pointsDiff !== 0) return pointsDiff;
+            return a.name.localeCompare(b.name);
         });
     }, [rawPlayers, mode]);
 
@@ -147,13 +151,19 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                 </td>
                             </tr>
                         ) : (
-                            sortedPlayers.map((player) => {
+                            sortedPlayers.map((player, index) => {
+                                const rank = index + 1;
                                 const renderCutoff =
                                     mode === 'national' &&
-                                    player.position === TOP_CUTOFF_POSITION;
+                                    rank === TOP_CUTOFF_POSITION;
 
                                 return (
-                                    <React.Fragment key={player.position}>
+                                    <React.Fragment
+                                        key={
+                                            player.userId ??
+                                            `${rank}-${player.name}`
+                                        }
+                                    >
                                         {renderCutoff ? (
                                             <tr className="bg-bg-main/30">
                                                 <td
@@ -165,13 +175,10 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                             </tr>
                                         ) : null}
                                         <tr
-                                            key={player.position}
-                                            className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${mode === 'national' && player.position > TOP_CUTOFF_THRESHOLD ? 'opacity-75' : ''}`}
+                                            className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${mode === 'national' && rank > TOP_CUTOFF_THRESHOLD ? 'opacity-75' : ''}`}
                                         >
                                             <td className="py-1.5 px-3 flex justify-center items-center">
-                                                <RankBadge
-                                                    position={player.position}
-                                                />
+                                                <RankBadge position={rank} />
                                             </td>
                                             <td className="py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-[color] duration-150">
                                                 <div className="flex items-center gap-2">

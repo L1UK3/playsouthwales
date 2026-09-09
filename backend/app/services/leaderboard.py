@@ -52,7 +52,8 @@ async def get_top20(db: Client, season: str | None = None) -> dict:
     res = (
         db.table("welsh_players")
         .select("name, cp")
-        .order("cp", desc=True)
+        .order("cp", desc=True, nullsfirst=False)
+        .order("name")
         .execute()
     )
     players_data = res.data or []
