@@ -35,6 +35,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             isOfficial,
         } = useEventCard(event, leagueMap, state, 'schedule');
         const { isLoading, isError, isReleaseCard } = stateFlags;
+        const link = event?.ticketLink ?? league?.website ?? null;
 
         // Loading state (Skeleton layout)
         if (isLoading) {
@@ -202,14 +203,14 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 )}
 
                 {/* Action Button */}
-                {event.ticketLink && (
+                {link && (
                     <a
-                        href={event.ticketLink}
+                        href={link}
                         className="btn btn-primary w-full justify-center mt-2.5"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        Tickets & Info
+                        Tickets / Info
                     </a>
                 )}
             </div>
