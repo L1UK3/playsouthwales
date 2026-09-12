@@ -2,7 +2,7 @@
 
 import asyncio
 
-from app.services.leaderboard import get_top20, update_leaderboard
+from app.services.leaderboard import get_top20, update_leaderboard, update_top20
 
 
 class TestGetTop20:
@@ -75,3 +75,36 @@ class TestUpdateLeaderboard:
             "success": True,
             "message": "Leaderboard updated successfully",
         }
+
+
+class TestUpdateTop20:
+    """Cover declarative sync in update_top20."""
+
+    def test_reconciles_players_insert_update_delete(
+        self, mock_supabase, supabase_table
+    ):
+        supabase_table(
+            "welsh_players",
+            [
+                {"id": 1, "name": "Existing Kept", "cp": 100},
+                {"id": 2, "name": "Existing Removed", "cp": 50},
+            ],
+        )
+
+        incoming = [
+            {"name": "Existing Kept", "cp": 150},
+            {"name": "New Player", "cp": 200},
+        ]
+
+        result = asyncio.run(update_top20(mock_supabase, incoming))
+        assert result["success"] is True
+
+        table = mock_supabase.table("welsh_players")
+        # Check delete called for Existing Removed
+        table.delete.assert_called_once()
+        # Check update called for Existing Kept with new CP
+        table.update.assert_called_once_with({"cp": 150})
+        # Check insert called for New Player
+        table.insert.assert_called_once_with(
+            {"name": "New Player", "cp": 200, "playerId": 0}
+        )

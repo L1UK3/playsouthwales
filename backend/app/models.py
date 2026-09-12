@@ -109,3 +109,17 @@ class LeaderboardUpdate(BaseModel):
     """Schema for updating league standings leaderboards."""
 
     data: list[dict]
+
+
+class Top20PlayerEntry(BaseModel):
+    """Schema for a single player entry in the national Top 20."""
+
+    name: str
+    cp: int = 0
+    playerId: int | None = 0
+
+
+class Top20Update(BaseModel):
+    """Schema for updating the national rankings player list."""
+
+    players: list[Top20PlayerEntry]
