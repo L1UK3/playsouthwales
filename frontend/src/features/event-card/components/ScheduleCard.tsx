@@ -35,7 +35,11 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             isOfficial,
         } = useEventCard(event, leagueMap, state, 'schedule');
         const { isLoading, isError, isReleaseCard } = stateFlags;
-        const link = event?.ticketLink ?? league?.website ?? null;
+        const links = [event?.ticketLink, league?.website]
+            .map((value) => value?.trim())
+            .filter((value): value is string => Boolean(value));
+
+        const link = links[0] ?? null;
         const prizeValue = event?.prizes?.trim();
         const prizes = prizeValue?.length ? prizeValue : 'not specified';
 
