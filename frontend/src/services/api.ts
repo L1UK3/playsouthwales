@@ -5,7 +5,10 @@ import { API_BASE_URL } from '@/constants';
 export interface Top20Response {
     season: string;
     availableSeasons: string[];
-    players: Record<string, { name: string; cp?: number; userId?: number }>;
+    players: Record<
+        string,
+        { name: string; cp?: number; playerId?: number; userId?: number }
+    >;
 }
 
 /**

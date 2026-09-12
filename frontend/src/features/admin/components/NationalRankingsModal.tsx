@@ -75,7 +75,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 
     const handleFieldChange = (
         index: number,
-        field: 'name' | 'cp',
+        field: 'name' | 'cp' | 'playerId',
         value: string | number
     ) => {
         const updated = [...rows];
@@ -88,7 +88,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
         } else {
             updated[index] = {
                 ...updated[index],
-                name: String(value),
+                [field]: String(value),
             };
         }
         setRows(updated);
@@ -229,8 +229,11 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                         <th className="py-2.5 px-3 w-16 text-center">
                                             Rank
                                         </th>
-                                        <th className="py-2.5 px-3 min-w-48">
+                                        <th className="py-2.5 px-3 min-w-44">
                                             Player Name
+                                        </th>
+                                        <th className="py-2.5 px-3 w-32 text-center">
+                                            Player ID
                                         </th>
                                         <th className="py-2.5 px-3 w-32 text-right pr-6">
                                             Championship Points (CP)
@@ -279,8 +282,24 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                                                 e.target.value
                                                             )
                                                         }
-                                                        className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
-                                                        required
+                                                        className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary"
+                                                    />
+                                                </td>
+                                                <td className="py-2 px-3 text-center">
+                                                    <input
+                                                        type="number"
+                                                        min={0}
+                                                        placeholder="POP ID"
+                                                        value={row.playerId ?? ''}
+                                                        aria-label={`Player ${row.position} ID`}
+                                                        onChange={(e) =>
+                                                            handleFieldChange(
+                                                                index,
+                                                                'playerId',
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-28 text-center focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
                                                 <td className="py-2 px-3 text-right pr-4">
@@ -296,7 +315,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                                                 e.target.value
                                                             )
                                                         }
-                                                        className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-24 text-right focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]"
+                                                        className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-24 text-right focus:outline-none focus:border-secondary"
                                                     />
                                                 </td>
                                                 <td className="py-2 px-3 text-center">

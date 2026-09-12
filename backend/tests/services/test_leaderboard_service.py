@@ -20,8 +20,16 @@ class TestGetTop20:
         result = asyncio.run(get_top20(mock_supabase, season="2027"))
         assert result["season"] == "2027"
         assert "2027" in result["availableSeasons"]
-        assert result["players"]["1"] == {"name": "Luke Enness", "cp": 520}
-        assert result["players"]["2"] == {"name": "Thomas Williams", "cp": 380}
+        assert result["players"]["1"] == {
+            "name": "Luke Enness",
+            "cp": 520,
+            "playerId": 0,
+        }
+        assert result["players"]["2"] == {
+            "name": "Thomas Williams",
+            "cp": 380,
+            "playerId": 0,
+        }
 
     def test_handles_empty_players(self, mock_supabase, supabase_table):
         supabase_table("welsh_players", [])
@@ -103,7 +111,7 @@ class TestUpdateTop20:
         # Check delete called for Existing Removed
         table.delete.assert_called_once()
         # Check update called for Existing Kept with new CP
-        table.update.assert_called_once_with({"cp": 150})
+        table.update.assert_called_once_with({"cp": 150, "playerId": 0})
         # Check insert called for New Player
         table.insert.assert_called_once_with(
             {"name": "New Player", "cp": 200, "playerId": 0}

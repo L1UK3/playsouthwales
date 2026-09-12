@@ -349,7 +349,7 @@ const AdminPage: React.FC = () => {
                     ? Object.values(res.players).map((p) => ({
                           name: p.name,
                           cp: p.cp ?? 0,
-                          playerId: p.userId,
+                          playerId: p.playerId ?? p.userId ?? undefined,
                       }))
                     : [];
                 setNationalRankingsDraft(playersList);

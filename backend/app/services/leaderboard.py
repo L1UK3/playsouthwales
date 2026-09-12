@@ -51,7 +51,7 @@ async def get_top20(db: Client, season: str | None = None) -> dict:
 
     res = (
         db.table("welsh_players")
-        .select("name, cp")
+        .select('name, cp, "playerId"')
         .order("cp", desc=True, nullsfirst=False)
         .order("name")
         .execute()
@@ -62,6 +62,7 @@ async def get_top20(db: Client, season: str | None = None) -> dict:
         str(i + 1): {
             "name": p["name"],
             "cp": p.get("cp", 0) if p.get("cp") is not None else 0,
+            "playerId": p.get("playerId", 0),
         }
         for i, p in enumerate(players_data)
     }
@@ -89,13 +90,18 @@ async def update_top20(db: Client, players_data: list[dict]) -> dict:
             cp = int(cp_val) if cp_val is not None else 0
         except (ValueError, TypeError):
             cp = 0
+        player_id_val = p.get("playerId", 0)
+        try:
+            player_id = int(player_id_val) if player_id_val is not None else 0
+        except (ValueError, TypeError):
+            player_id = 0
         cleaned_incoming[name] = {
             "name": name,
             "cp": cp,
-            "playerId": p.get("playerId") or 0,
+            "playerId": player_id,
         }
 
-    existing_res = db.table("welsh_players").select("id, name, cp").execute()
+    existing_res = db.table("welsh_players").select('id, name, cp, "playerId"').execute()
     existing_players = {
         row["name"]: row for row in (existing_res.data or []) if row.get("name")
     }
@@ -110,10 +116,11 @@ async def update_top20(db: Client, players_data: list[dict]) -> dict:
     # Update existing or insert new players
     for name, item in cleaned_incoming.items():
         if name in existing_players:
-            if existing_players[name].get("cp") != item["cp"]:
-                db.table("welsh_players").update({"cp": item["cp"]}).eq(
-                    "name", name
-                ).execute()
+            existing_p = existing_players[name]
+            if existing_p.get("cp") != item["cp"] or existing_p.get("playerId") != item["playerId"]:
+                db.table("welsh_players").update(
+                    {"cp": item["cp"], "playerId": item["playerId"]}
+                ).eq("name", name).execute()
         else:
             db.table("welsh_players").insert(
                 {
