@@ -36,7 +36,8 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
         } = useEventCard(event, leagueMap, state, 'schedule');
         const { isLoading, isError, isReleaseCard } = stateFlags;
         const link = event?.ticketLink ?? league?.website ?? null;
-        const prizes = event?.prizes ?? 'not specified';
+        const prizeValue = event?.prizes?.trim();
+        const prizes = prizeValue?.length ? prizeValue : 'not specified';
 
         // Loading state (Skeleton layout)
         if (isLoading) {
@@ -195,7 +196,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                     </div>
                 )}
 
-                {prizes && league?.isChampionshipSeries === false && (
+                {prizes && !league?.isChampionshipSeries && (
                     <div className="text-xs leading-relaxed text-text-muted pl-3 border-l-2 border-amber-500/40 mt-1 flex gap-1.5 items-start">
                         <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">
                             Prizes:
