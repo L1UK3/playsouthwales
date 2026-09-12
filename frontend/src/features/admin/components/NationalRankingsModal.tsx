@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Plus, Trash2, Clipboard, HelpCircle } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import type { Top20PlayerInput } from '@/services/api';
 
 export interface NationalRankingsEntry extends Top20PlayerInput {
@@ -30,8 +30,6 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
             playerId: p.playerId ?? 0,
         }));
     });
-    const [pasteValue, setPasteValue] = useState('');
-    const [showPasteArea, setShowPasteArea] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -48,8 +46,6 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                 playerId: p.playerId ?? 0,
             }))
         );
-        setPasteValue('');
-        setShowPasteArea(false);
         setErrorMsg('');
     }
 
@@ -134,53 +130,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
         setRows(sorted);
     };
 
-    const handleParsePaste = () => {
-        if (!pasteValue.trim()) return;
 
-        const lines = pasteValue.split(/\r?\n/).filter((line) => line.trim());
-        const newEntries: { name: string; cp: number }[] = [];
-
-        lines.forEach((line) => {
-            const parts = line.split(/\t|,/).map((p) => p.trim());
-            if (parts.length === 0 || !parts[0]) return;
-
-            let name = parts[0];
-            let cp = 0;
-
-            if (parts.length >= 3 && /^\d+$/.test(parts[0])) {
-                // Format: Rank, Name, CP
-                name = parts[1];
-                cp = parseInt(parts[2], 10) || 0;
-            } else if (parts.length >= 2) {
-                // Format: Name, CP
-                cp = parseInt(parts[1], 10) || 0;
-            }
-
-            if (name) {
-                newEntries.push({ name, cp: Math.max(0, cp) });
-            }
-        });
-
-        if (newEntries.length > 0) {
-            const merged = [...rows, ...newEntries]
-                .sort((a, b) => {
-                    if (b.cp !== a.cp) return b.cp - a.cp;
-                    return a.name.localeCompare(b.name);
-                })
-                .map((entry, idx) => ({
-                    tempId:
-                        (entry as any).tempId ??
-                        `player-${Date.now()}-${idx}-${Math.random()}`,
-                    position: idx + 1,
-                    name: entry.name,
-                    cp: entry.cp,
-                    playerId: (entry as any).playerId ?? 0,
-                }));
-            setRows(merged);
-            setPasteValue('');
-            setShowPasteArea(false);
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -261,18 +211,6 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        setShowPasteArea(!showPasteArea)
-                                    }
-                                    className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
-                                >
-                                    <Clipboard className="w-4 h-4" />{' '}
-                                    {showPasteArea
-                                        ? 'Hide Paste Area'
-                                        : 'Import CSV / Paste'}
-                                </button>
-                                <button
-                                    type="button"
                                     onClick={handleSortLeaderboard}
                                     className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
                                 >
@@ -283,47 +221,6 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                 Total Players: <strong>{rows.length}</strong>
                             </span>
                         </div>
-
-                        {showPasteArea && (
-                            <div className="flex flex-col gap-2 p-4 bg-bg-main/50 rounded-lg border border-border-color border-dashed shrink-0">
-                                <label
-                                    htmlFor="nationalPasteTextarea"
-                                    className="text-xs font-bold text-text-main flex items-center gap-1"
-                                >
-                                    Paste Player Standings Data
-                                    <span className="group relative cursor-pointer text-text-muted hover:text-text-main">
-                                        <HelpCircle className="w-3.5 h-3.5 inline" />
-                                        <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-64 bg-text-darker text-white p-2 rounded text-[11px] font-normal leading-normal shadow-lg z-50">
-                                            Supported formats:
-                                            <br />
-                                            1. Name, CP (e.g. Luke Enness, 520)
-                                            <br />
-                                            2. Rank, Name, CP (e.g. 1, Luke
-                                            Enness, 520)
-                                        </span>
-                                    </span>
-                                </label>
-                                <textarea
-                                    id="nationalPasteTextarea"
-                                    rows={4}
-                                    placeholder="e.g. Luke Enness, 520"
-                                    value={pasteValue}
-                                    onChange={(e) =>
-                                        setPasteValue(e.target.value)
-                                    }
-                                    className="py-2.5 px-3 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] font-mono resize-y"
-                                />
-                                <div className="flex justify-end gap-2 mt-1">
-                                    <button
-                                        type="button"
-                                        onClick={handleParsePaste}
-                                        className="btn btn-primary text-xs py-1.5 px-3.5 min-h-9 cursor-pointer"
-                                    >
-                                        Parse & Import
-                                    </button>
-                                </div>
-                            </div>
-                        )}
 
                         <div className="grow overflow-auto rounded-lg border border-border-color bg-bg-card">
                             <table className="w-full border-collapse text-left">
@@ -347,12 +244,11 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                     {rows.length === 0 ? (
                                         <tr>
                                             <td
-                                                colSpan={4}
+                                                colSpan={5}
                                                 className="text-center py-12 text-sm text-text-muted"
                                             >
                                                 No players in national rankings
-                                                yet. Click "Add Player Row" or
-                                                paste data to begin.
+                                                yet. Click "Add Player Row" to begin.
                                             </td>
                                         </tr>
                                     ) : (
@@ -411,7 +307,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
                                                                 index
                                                             )
                                                         }
-                                                        className="p-1.5 text-text-muted hover:text-red-500 bg-transparent border-none rounded cursor-pointer transition-colors"
+                                                        className="p-1.5 text-text-muted hover:text-accent bg-transparent border-none rounded cursor-pointer transition-colors"
                                                         title="Delete player"
                                                         aria-label={`Delete ${row.name || 'player'}`}
                                                     >
