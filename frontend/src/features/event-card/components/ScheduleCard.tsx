@@ -27,6 +27,7 @@ import {
 const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
     React.memo(({ event, leagueMap, types, state }) => {
         const {
+            description,
             league,
             leagueName,
             storeColor,
@@ -114,7 +115,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
                     {/* Description */}
                     <div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
-                        {event.description}
+                        {description}
                     </div>
                 </div>
             );
@@ -192,9 +193,9 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 </div>
 
                 {/* Description & Prizes (No nested card structures) */}
-                {event.description && (
+                {description && (
                     <div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
-                        {event.description}
+                        {description}
                     </div>
                 )}
 
