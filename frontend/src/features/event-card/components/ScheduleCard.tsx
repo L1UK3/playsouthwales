@@ -40,8 +40,6 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             .filter((value): value is string => Boolean(value));
 
         const link = links[0] ?? null;
-        const prizeValue = event?.prizes?.trim();
-        const prizes = prizeValue?.length ? prizeValue : 'not specified';
 
         // Loading state (Skeleton layout)
         if (isLoading) {
@@ -200,18 +198,12 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                     </div>
                 )}
 
-                {prizes && !league?.isChampionshipSeries && (
+                {event.prizes && (
                     <div className="text-xs leading-relaxed text-text-muted pl-3 border-l-2 border-amber-500/40 mt-1 flex gap-1.5 items-start">
                         <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">
                             Prizes:
                         </span>
-                        {prizes === 'not specified' ? (
-                            <span className="font-bold text-red-600">
-                                {prizes}
-                            </span>
-                        ) : (
-                            <span>{prizes}</span>
-                        )}
+                        <span>{event.prizes}</span>
                     </div>
                 )}
 
