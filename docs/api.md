@@ -47,6 +47,7 @@ Protected routes enforce authorization via the [require_auth](file:///d:/Project
 | `PUT`    | `/api/leagues/{id}`             | Update a gaming league                    | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
 | `DELETE` | `/api/leagues/{id}`             | Delete an existing league                 | None                                                                                    |
 | `PUT`    | `/api/leaderboard/{id}`         | Upsert league standings leaderboard       | [`LeaderboardUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload |
+| `PUT`    | `/api/players/top20`            | Declaratively update national rankings    | [`Top20Update`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload        |
 
 ## Discord bot HTTP notifier endpoints
 

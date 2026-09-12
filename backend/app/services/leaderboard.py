@@ -71,3 +71,56 @@ async def get_top20(db: Client, season: str | None = None) -> dict:
         "availableSeasons": available_seasons,
         "players": players,
     }
+
+
+async def update_top20(db: Client, players_data: list[dict]) -> dict:
+    """Declaratively reconcile the Welsh players table with the provided list.
+
+    Inserts new players, updates CP for existing players, and deletes players
+    omitted from the incoming list.
+    """
+    cleaned_incoming: dict[str, dict] = {}
+    for p in players_data:
+        name = (p.get("name") or "").strip()
+        if not name:
+            continue
+        cp_val = p.get("cp", 0)
+        try:
+            cp = int(cp_val) if cp_val is not None else 0
+        except (ValueError, TypeError):
+            cp = 0
+        cleaned_incoming[name] = {
+            "name": name,
+            "cp": cp,
+            "playerId": p.get("playerId") or 0,
+        }
+
+    existing_res = db.table("welsh_players").select("id, name, cp").execute()
+    existing_players = {
+        row["name"]: row for row in (existing_res.data or []) if row.get("name")
+    }
+
+    # Delete players omitted from the incoming list
+    names_to_delete = [
+        name for name in existing_players if name not in cleaned_incoming
+    ]
+    for name in names_to_delete:
+        db.table("welsh_players").delete().eq("name", name).execute()
+
+    # Update existing or insert new players
+    for name, item in cleaned_incoming.items():
+        if name in existing_players:
+            if existing_players[name].get("cp") != item["cp"]:
+                db.table("welsh_players").update({"cp": item["cp"]}).eq(
+                    "name", name
+                ).execute()
+        else:
+            db.table("welsh_players").insert(
+                {
+                    "name": item["name"],
+                    "cp": item["cp"],
+                    "playerId": item["playerId"],
+                }
+            ).execute()
+
+    return {"success": True, "message": "National rankings updated successfully"}

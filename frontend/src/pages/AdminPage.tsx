@@ -3,6 +3,7 @@ import {
     EventFormModal,
     LeagueFormModal,
     LeaderboardFormModal,
+    NationalRankingsModal,
 } from '@/features/admin';
 import {
     useLeagues,
@@ -26,10 +27,13 @@ import {
     deleteEvent,
     deleteLeague,
     loadLocalLeaderboard,
+    loadTop20Players,
     updateEvent,
     updateLeague,
     updateLeaderboard,
+    updateTop20Players,
 } from '@/services/api';
+import type { Top20PlayerInput } from '@/services/api';
 import type { League } from '@/types/League';
 import type { Event } from '@/types/Event';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -51,11 +55,16 @@ const AdminPage: React.FC = () => {
     const [isEditingEvent, setIsEditingEvent] = useState<boolean>(false);
     const [isEditingLeaderboard, setIsEditingLeaderboard] =
         useState<boolean>(false);
+    const [isEditingNationalRankings, setIsEditingNationalRankings] =
+        useState<boolean>(false);
     const [editingLeague, setEditingLeague] = useState<League | null>(null);
     const [editingEvent, setEditingEvent] = useState<Event | null>(null);
     const [leaderboardDraft, setLeaderboardDraft] = useState<{
         data?: LeaderboardEntry[];
     } | null>(null);
+    const [nationalRankingsDraft, setNationalRankingsDraft] = useState<
+        { name: string; cp: number; playerId?: number }[]
+    >([]);
 
     const { data: events = [], isLoading: isEventsLoading } = useEvents(
         currentDate,
@@ -207,6 +216,20 @@ const AdminPage: React.FC = () => {
         },
     });
 
+    const updateNationalRankingsMutation = useMutation({
+        mutationFn: async (players: Top20PlayerInput[]) => {
+            const token = await getToken();
+            if (!token) throw new Error('No Login Token');
+            return updateTop20Players(players, token);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['top20'] });
+        },
+        onError: (error: Error) => {
+            console.error('National Rankings Update Failed', error);
+        },
+    });
+
     const deleteEventMutation = useMutation({
         mutationFn: async (data: {
             id: number | string;
@@ -315,9 +338,29 @@ const AdminPage: React.FC = () => {
         [updateEventMutation]
     );
 
-    // opens leaderboard management modal
+    // opens standings / national rankings management modal
     const handleManageStandingsTrigger = useCallback(async () => {
         if (!activeLeague) return;
+
+        if (activeLeague.isChampionshipSeries) {
+            try {
+                const res = await loadTop20Players();
+                const playersList = res?.players
+                    ? Object.values(res.players).map((p) => ({
+                          name: p.name,
+                          cp: p.cp ?? 0,
+                          playerId: p.userId,
+                      }))
+                    : [];
+                setNationalRankingsDraft(playersList);
+            } catch (error) {
+                console.error('Failed to load national rankings data', error);
+                setNationalRankingsDraft([]);
+            }
+            setIsEditingNationalRankings(true);
+            return;
+        }
+
         try {
             const existing = await loadLocalLeaderboard(activeLeague.leagueId);
             setLeaderboardDraft(existing ?? { data: [] });
@@ -327,6 +370,14 @@ const AdminPage: React.FC = () => {
         }
         setIsEditingLeaderboard(true);
     }, [activeLeague]);
+
+    // handles national rankings submission
+    const handleNationalRankingsSubmit = useCallback(
+        async (players: Top20PlayerInput[]) => {
+            await updateNationalRankingsMutation.mutateAsync(players);
+        },
+        [updateNationalRankingsMutation]
+    );
 
     // handles league submission, creating or updating
     const handleLeagueSubmit = useCallback(
@@ -430,7 +481,9 @@ const AdminPage: React.FC = () => {
                                 className="btn btn-secondary min-h-11 cursor-pointer w-full"
                                 onClick={handleManageStandingsTrigger}
                             >
-                                Edit Standings
+                                {activeLeague.isChampionshipSeries
+                                    ? 'Edit National Rankings'
+                                    : 'Edit Standings'}
                             </button>
                             <button
                                 type="button"
@@ -529,6 +582,17 @@ const AdminPage: React.FC = () => {
                 onSubmit={handleLeaderboardSubmit}
                 leagueId={activeLeague?.leagueId ?? 0}
                 initialData={leaderboardDraft}
+            />
+            <NationalRankingsModal
+                key={
+                    isEditingNationalRankings
+                        ? 'open-national-rankings'
+                        : 'closed-national-rankings'
+                }
+                isOpen={isEditingNationalRankings}
+                onClose={() => setIsEditingNationalRankings(false)}
+                onSubmit={handleNationalRankingsSubmit}
+                initialPlayers={nationalRankingsDraft}
             />
         </div>
     );

@@ -12,6 +12,7 @@ from app.models import (
     LeaderboardUpdate,
     LeagueCreate,
     LeagueUpdate,
+    Top20Update,
 )
 from app.services import event, leaderboard, league
 from app.web.championship_series import sync_championship_data
@@ -282,3 +283,26 @@ async def update_leaderboard(
                 "message": "Failed to update leaderboard",
             },
         )
+
+@router.put("/api/players/top20")
+@router.post("/api/players/top20")
+async def update_top_20_players(
+    payload: Top20Update,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
+):
+    """Declaratively update the national top 20 rankings."""
+    try:
+        players_data = [p.model_dump() for p in payload.players]
+        result = await leaderboard.update_top20(db, players_data)
+        return result
+    except Exception as e:
+        logger.error(f"Failed to update top 20 players: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to update top 20 players",
+            },
+        )
+
