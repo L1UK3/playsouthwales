@@ -1,0 +1,34 @@
+```javascript
+import axios from 'axios';
+
+const BASE_URL = 'https://api.pokedata.com/v2';
+
+export async function getPokemonData(pokemonId) {
+  try {
+    const response = await axios.get(`${BASE_URL}/pokemon/${pokemonId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching pokemon data:', error);
+    throw error;
+  }
+}
+
+export async function getAbilityData(abilityId) {
+  try {
+    const response = await axios.get(`${BASE_URL}/ability/${abilityId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching ability data:', error);
+    throw error;
+  }
+}
+
+export async function getSpeciesData(speciesId) {
+  try {
+    const response = await axios.get(`${BASE_URL}/species/${speciesId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching species data:', error);
+    throw error;
+  }
+}
