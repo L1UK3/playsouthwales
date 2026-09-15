@@ -48,7 +48,12 @@ async def fetch_pokedata_events(url: str) -> list[dict[str, Any]]:
                 )
                 response = await client.get(url, timeout=15.0)
                 response.raise_for_status()
-                return response.json()
+                data = response.json()
+                if isinstance(data, dict):
+                    return data.get("events", [])
+                elif isinstance(data, list):
+                    return data
+                return []
             except Exception as e:
                 logger.warning(
                     "Attempt %d/%d failed for %s: %r",
@@ -88,9 +93,9 @@ def clean_text(text: str | None, max_length: int | None = None) -> str:
 async def sync_pokedata() -> dict[str, Any]:
     """Synchronize event data from Pokédata with the Supabase database."""
     urls = [
-        "https://pokedata.ovh/events/api/_tcg/cups/challenges/pre/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
-        "https://pokedata.ovh/events/api/_vg/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
-        "https://pokedata.ovh/events/api/_go/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
+        "https://pokedata.ovh/events/apiv2/_tcg/cups/challenges/pre/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
+        "https://pokedata.ovh/events/apiv2/_vg/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
+        "https://pokedata.ovh/events/apiv2/_go/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
     ]
 
     event_type_map = {
