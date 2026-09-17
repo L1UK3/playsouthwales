@@ -339,6 +339,30 @@
     --card-hover-shadow-mix: 30%;
     --cal-card-bg-mix: 8%;
     --cal-card-hover-mix: 18%;
+    --bg-challenge-day: color-mix(in oklch, oklch(0.75 0.25 45) 8%, var(--color-bg-card));
+    --bg-challenge-day-hover: color-mix(in oklch, oklch(0.75 0.25 45) 13%, var(--color-bg-card));
+    --shadow-challenge-day-inset: inset 0 0 12px color-mix(in oklch, oklch(0.75 0.25 45) 12%, transparent);
+    --bg-championship-day: color-mix(in oklch, oklch(0.82 0.22 85) 10%, var(--color-bg-card));
+    --bg-championship-day-hover: color-mix(in oklch, oklch(0.82 0.22 85) 16%, var(--color-bg-card));
+    --shadow-championship-day-inset: inset 0 0 14px color-mix(in oklch, oklch(0.82 0.22 85) 16%, transparent);
+}
+
+@utility bg-challenge-day {
+    background-color: var(--bg-challenge-day) !important;
+    box-shadow: var(--shadow-challenge-day-inset);
+
+    &:hover {
+        background-color: var(--bg-challenge-day-hover) !important;
+    }
+}
+
+@utility bg-championship-day {
+    background-color: var(--bg-championship-day) !important;
+    box-shadow: var(--shadow-championship-day-inset);
+
+    &:hover {
+        background-color: var(--bg-championship-day-hover) !important;
+    }
 }
 
 @utility calendar-card {
@@ -390,6 +414,12 @@ html.dark {
     --color-event-bg: rgba(255, 77, 77, 0.2);
     --color-event-more-bg: rgba(255, 255, 255, 0.1);
     --color-special-day-border: oklch(0.78 0.18 80);
+    --bg-challenge-day: color-mix(in oklch, oklch(0.75 0.25 45) 14%, var(--color-bg-card));
+    --bg-challenge-day-hover: color-mix(in oklch, oklch(0.75 0.25 45) 20%, var(--color-bg-card));
+    --shadow-challenge-day-inset: inset 0 0 14px color-mix(in oklch, oklch(0.75 0.25 45) 20%, transparent);
+    --bg-championship-day: color-mix(in oklch, oklch(0.82 0.22 85) 15%, var(--color-bg-card));
+    --bg-championship-day-hover: color-mix(in oklch, oklch(0.82 0.22 85) 22%, var(--color-bg-card));
+    --shadow-championship-day-inset: inset 0 0 16px color-mix(in oklch, oklch(0.82 0.22 85) 22%, transparent);
 
     .type-LEGALITY {
         --type-bg: oklch(0.88 0.005 28 / 0.12);
