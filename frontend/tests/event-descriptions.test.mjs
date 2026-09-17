@@ -33,6 +33,67 @@ const event = {
     game: 'TCG',
 };
 
+test('schedule card defaults missing fees to GBP zero with two decimals', () => {
+    for (const entryFee of [undefined, null, '', '  ', '0', '5', '£5', '5.5']) {
+        const markup = renderToStaticMarkup(
+            createElement(ScheduleCard, {
+                event: { ...event, entryFee },
+                leagueMap: {},
+                types: EVENT_TYPE_MAP,
+            })
+        );
+        const expected =
+            entryFee === '5.5'
+                ? '£5.50'
+                : entryFee === '5' || entryFee === '£5'
+                  ? '£5.00'
+                  : '£0.00';
+        assert.ok(
+            markup.includes(`>${expected}</span>`),
+            `entryFee=${entryFee}`
+        );
+    }
+});
+
+test('list card also displays the default and formatted fees', () => {
+    for (const [entryFee, expected] of [
+        [undefined, '£0.00'],
+        ['5.5', '£5.50'],
+    ]) {
+        const markup = renderToStaticMarkup(
+            createElement(ListCard, {
+                event: { ...event, entryFee },
+                leagueMap: {},
+                types: EVENT_TYPE_MAP,
+                isExpanded: true,
+            })
+        );
+        assert.ok(
+            markup.includes(`${expected}</span>`),
+            `entryFee=${entryFee}`
+        );
+    }
+});
+
+test('schedule card preserves descriptive fees rather than inventing a price', () => {
+    for (const entryFee of [
+        'Free',
+        'TBC',
+        '£5 / £10',
+        '2 tickets for £10',
+        '£1,000.00',
+    ]) {
+        const markup = renderToStaticMarkup(
+            createElement(ScheduleCard, {
+                event: { ...event, entryFee },
+                leagueMap: {},
+                types: EVENT_TYPE_MAP,
+            })
+        );
+        assert.ok(markup.includes(`>${entryFee}</span>`), entryFee);
+    }
+});
+
 test('every displayed event type has a default description', () => {
     for (const eventType of Object.keys(EVENT_TYPE_MAP)) {
         assert.ok(getEventDescription({ eventType }).trim(), eventType);
