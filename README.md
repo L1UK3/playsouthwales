@@ -87,17 +87,19 @@ playsouthwales/
 ├── backend/            # FastAPI REST API service
 │   ├── app/            # Routers, models, services, lifespan, and scrapers
 │   ├── tests/          # Pytest backend test suite
-│   ├── Dockerfile      # Backend container configuration
 │   └── pyproject.toml  # Python dependencies and tool settings
 ├── bot/                # Discord bot client and notifier service
 │   ├── src/            # Slash commands and Express HTTP endpoints
-│   ├── Dockerfile      # Bot container configuration
 │   └── package.json    # Bot dependencies and scripts
 ├── frontend/           # Vite Single Page Application
 │   ├── src/            # React components, routes, layouts, and hooks
-│   ├── Dockerfile      # Frontend container configuration
 │   └── package.json    # Frontend dependencies and scripts
+├── docker/             # Container configuration files
+│   ├── Dockerfile.backend
+│   ├── Dockerfile.bot
+│   └── Dockerfile.frontend
 ├── docs/               # In-depth Diátaxis documentation
+│   ├── README.md       # Overview: Diátaxis framework matrix and navigation
 │   ├── SETUP.md        # Tutorial: Local setup walkthrough
 │   ├── architecture.md # Explanation: System topology and virtual IDs
 │   ├── api.md          # Reference: REST API endpoints and schemas

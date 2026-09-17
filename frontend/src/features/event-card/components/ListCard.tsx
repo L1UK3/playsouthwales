@@ -64,6 +64,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
         state,
     }) => {
         const {
+            description,
             league,
             leagueName,
             storeColor,
@@ -213,9 +214,9 @@ const ListCard: React.FC<ListCardProps> = React.memo(
                         </div>
 
                         {/* Details (Clean text with left border indicators instead of cards-in-card) */}
-                        {event.description && (
+                        {description && (
                             <div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3">
-                                {event.description}
+                                {description}
                             </div>
                         )}
 

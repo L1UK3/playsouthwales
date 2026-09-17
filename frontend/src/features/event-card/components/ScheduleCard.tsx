@@ -27,6 +27,7 @@ import {
 const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
     React.memo(({ event, leagueMap, types, state }) => {
         const {
+            description,
             league,
             leagueName,
             storeColor,
@@ -35,6 +36,11 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             isOfficial,
         } = useEventCard(event, leagueMap, state, 'schedule');
         const { isLoading, isError, isReleaseCard } = stateFlags;
+        const links = [event?.ticketLink, league?.website]
+            .map((value) => value?.trim())
+            .filter((value): value is string => Boolean(value));
+
+        const link = links[0] ?? null;
 
         // Loading state (Skeleton layout)
         if (isLoading) {
@@ -109,7 +115,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
                     {/* Description */}
                     <div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
-                        {event.description}
+                        {description}
                     </div>
                 </div>
             );
@@ -187,11 +193,12 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 </div>
 
                 {/* Description & Prizes (No nested card structures) */}
-                {event.description && (
+                {description && (
                     <div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
-                        {event.description}
+                        {description}
                     </div>
                 )}
+
                 {event.prizes && (
                     <div className="text-xs leading-relaxed text-text-muted pl-3 border-l-2 border-amber-500/40 mt-1 flex gap-1.5 items-start">
                         <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">
@@ -202,14 +209,14 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 )}
 
                 {/* Action Button */}
-                {event.ticketLink && (
+                {link && (
                     <a
-                        href={event.ticketLink}
+                        href={link}
                         className="btn btn-primary w-full justify-center mt-2.5"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        Tickets & Info
+                        Tickets / Info
                     </a>
                 )}
             </div>

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { getEventDescription } from '../utils/getEventDescription';
 import type { Event } from '@/types/Event';
 import type { League } from '@/types/League';
 import {
@@ -96,6 +97,7 @@ export function useEventCard(
         }
 
         return {
+            description: getEventDescription(event),
             league,
             leagueName,
             storeColor,

@@ -5,7 +5,10 @@ import { API_BASE_URL } from '@/constants';
 export interface Top20Response {
     season: string;
     availableSeasons: string[];
-    players: Record<string, { name: string; cp?: number; userId?: number }>;
+    players: Record<
+        string,
+        { name: string; cp?: number; playerId?: number; userId?: number }
+    >;
 }
 
 /**
@@ -337,6 +340,41 @@ export async function updateLeaderboard(
             errData.error?.message ??
                 errData.error ??
                 'Failed to update leaderboard: ' + response.statusText
+        );
+    }
+    return await response.json();
+}
+
+export interface Top20PlayerInput {
+    name: string;
+    cp: number;
+    playerId?: number;
+}
+
+/**
+ * Updates the national rankings / Top 20 Welsh players list.
+ * @param {Top20PlayerInput[]} players - The player entries to persist.
+ * @param {string} token - The auth token.
+ * @returns {Promise<any>} A promise resolving to the API response.
+ */
+export async function updateTop20Players(
+    players: Top20PlayerInput[],
+    token: string
+): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/players/top20`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ players }),
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(
+            errData.error?.message ??
+                errData.error ??
+                'Failed to update national rankings: ' + response.statusText
         );
     }
     return await response.json();

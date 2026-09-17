@@ -9,6 +9,7 @@
     "main": "eslint.config.js",
     "scripts": {
         "dev": "vite",
+        "test": "node --test tests/event-descriptions.test.mjs",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "format": "prettier --write .",

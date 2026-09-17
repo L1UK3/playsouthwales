@@ -2,7 +2,7 @@
 
 import asyncio
 
-from app.services.leaderboard import get_top20, update_leaderboard
+from app.services.leaderboard import get_top20, update_leaderboard, update_top20
 
 
 class TestGetTop20:
@@ -20,8 +20,16 @@ class TestGetTop20:
         result = asyncio.run(get_top20(mock_supabase, season="2027"))
         assert result["season"] == "2027"
         assert "2027" in result["availableSeasons"]
-        assert result["players"]["1"] == {"name": "Luke Enness", "cp": 520}
-        assert result["players"]["2"] == {"name": "Thomas Williams", "cp": 380}
+        assert result["players"]["1"] == {
+            "name": "Luke Enness",
+            "cp": 520,
+            "playerId": 0,
+        }
+        assert result["players"]["2"] == {
+            "name": "Thomas Williams",
+            "cp": 380,
+            "playerId": 0,
+        }
 
     def test_handles_empty_players(self, mock_supabase, supabase_table):
         supabase_table("welsh_players", [])
@@ -75,3 +83,36 @@ class TestUpdateLeaderboard:
             "success": True,
             "message": "Leaderboard updated successfully",
         }
+
+
+class TestUpdateTop20:
+    """Cover declarative sync in update_top20."""
+
+    def test_reconciles_players_insert_update_delete(
+        self, mock_supabase, supabase_table
+    ):
+        supabase_table(
+            "welsh_players",
+            [
+                {"id": 1, "name": "Existing Kept", "cp": 100},
+                {"id": 2, "name": "Existing Removed", "cp": 50},
+            ],
+        )
+
+        incoming = [
+            {"name": "Existing Kept", "cp": 150},
+            {"name": "New Player", "cp": 200},
+        ]
+
+        result = asyncio.run(update_top20(mock_supabase, incoming))
+        assert result["success"] is True
+
+        table = mock_supabase.table("welsh_players")
+        # Check delete called for Existing Removed
+        table.delete.assert_called_once()
+        # Check update called for Existing Kept with new CP
+        table.update.assert_called_once_with({"cp": 150, "playerId": 0})
+        # Check insert called for New Player
+        table.insert.assert_called_once_with(
+            {"name": "New Player", "cp": 200, "playerId": 0}
+        )

@@ -12,11 +12,11 @@ from app.models import (
     LeaderboardUpdate,
     LeagueCreate,
     LeagueUpdate,
+    Top20Update,
 )
 from app.services import event, leaderboard, league
 from app.web.championship_series import sync_championship_data
 from app.web.pokedata import sync_pokedata
-from app.web.sets_releases import run_sets_sync
 
 logger = logging.getLogger(__name__)
 
@@ -131,37 +131,6 @@ async def trigger_pokedata_sync(auth: dict = Depends(require_auth)):
             detail={
                 "code": "internal_error",
                 "message": "Failed to manually run pokedata sync",
-            },
-        )
-
-
-@router.post("/api/events/sync-sets")
-async def trigger_sets_sync(auth: dict = Depends(require_auth)):
-    """Trigger a manual synchronization of TCG sets from Bulbapedia."""
-    try:
-        result = await run_sets_sync()
-        if not result.get("success"):
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={
-                    "code": "internal_error",
-                    "message": result.get("error", "Failed to sync sets"),
-                },
-            )
-        return {
-            "success": True,
-            "message": "TCG sets sync completed",
-            "metrics": result,
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Failed to manually run sets sync: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={
-                "code": "internal_error",
-                "message": "Failed to manually run sets sync",
             },
         )
 
@@ -314,3 +283,26 @@ async def update_leaderboard(
                 "message": "Failed to update leaderboard",
             },
         )
+
+@router.put("/api/players/top20")
+@router.post("/api/players/top20")
+async def update_top_20_players(
+    payload: Top20Update,
+    auth: dict = Depends(require_auth),
+    db: Client = Depends(get_supabase),
+):
+    """Declaratively update the national top 20 rankings."""
+    try:
+        players_data = [p.model_dump() for p in payload.players]
+        result = await leaderboard.update_top20(db, players_data)
+        return result
+    except Exception as e:
+        logger.error(f"Failed to update top 20 players: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "code": "internal_error",
+                "message": "Failed to update top 20 players",
+            },
+        )
+
