@@ -32,7 +32,7 @@ export function getStoreColor(event: Event, league: League | null): string {
     return event.eventType === 'LEGALITY' ||
         event.eventType === 'RELEASE' ||
         event.eventType === 'REGULATION'
-        ? 'var(--color-secondary)'
+        ? 'border-special-day-border'
         : (league?.brandColor ??
               `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 }
