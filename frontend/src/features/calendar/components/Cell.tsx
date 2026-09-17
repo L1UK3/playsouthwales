@@ -28,9 +28,9 @@ const CHAMPIONSHIP_TYPES = new Set([
 ]);
 
 const THEME_STYLES = {
-    gold: 'bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5',
-    silver: 'bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white',
-    purple: 'bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white',
+    gold: 'border border-gold-border bg-linear-to-br from-gold-500/[0.5] to-transparent shadow-md shadow-gold-400/5 text-white',
+    silver: 'border border-silver-border bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white',
+    purple: 'border border-purple-border bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white',
 } as const;
 
 function getCellStyles(events: Event[]): string {
