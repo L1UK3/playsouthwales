@@ -19,33 +19,6 @@ export interface CellProps {
     onSelectDay: (dateKey: string) => void;
 }
 
-const CHAMPIONSHIP_TYPES = new Set([
-    'CUP',
-    'SPECIAL',
-    'REGIONAL',
-    'INTERNATIONAL',
-    'WORLDS',
-]);
-
-const THEME_STYLES = {
-    gold: 'border border-gold-border bg-linear-to-br from-gold-500/[0.5] to-transparent shadow-md shadow-gold-400/5 text-white',
-    silver: 'border border-silver-border bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white',
-    purple: 'border border-purple-border bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white',
-} as const;
-
-function getCellStyles(events: Event[]): string {
-    if (!events.length) return '';
-    let hasChallenge = false;
-    let hasPrerelease = false;
-    for (const event of events) {
-        if (CHAMPIONSHIP_TYPES.has(event.eventType)) return THEME_STYLES.gold;
-        if (event.eventType === 'PRE-RELEASE') hasPrerelease = true;
-        else if (event.eventType === 'CHALLENGE') hasChallenge = true;
-    }
-    if (hasPrerelease) return THEME_STYLES.purple;
-    if (hasChallenge) return THEME_STYLES.silver;
-    return '';
-}
 
 /**
  * Cell component represents an individual day in the calendar grid.
@@ -67,7 +40,6 @@ const Cell: React.FC<CellProps> = React.memo(
         const isToday = dateKey === todayKey;
 
         const sortedEvents = useSortEvents(eventsForDay);
-        const backgroundStyle = isOtherMonth ? '' : getCellStyles(sortedEvents);
         const visibleEvents = sortedEvents.slice(0, 3);
         const extraCount = sortedEvents.length - 3;
 
@@ -78,7 +50,7 @@ const Cell: React.FC<CellProps> = React.memo(
                 ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''}
                 ${isToday ? 'border-2! border-today-border!' : ''}
                 ${isSpecialDay ? 'border-2! border-special-day-border!' : ''}
-                ${backgroundStyle}`}
+                `}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >
