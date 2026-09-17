@@ -56,6 +56,15 @@ const Cell: React.FC<CellProps> = React.memo(
         const isToday = dateKey === todayKey;
 
         const sortedEvents = useSortEvents(eventsForDay);
+        const hasChallenge = sortedEvents.some((event) =>
+            ['CHALLENGE'].includes(event.eventType)
+        );
+
+        const hasOtherSanctionedEvent = sortedEvents.some((event) =>
+            ['CUP', 'SPECIAL', 'REGIONAL', 'INTERNATIONAL', 'WORLDS'].includes(event.eventType)
+        );
+
+        const backgroundStyle = hasChallenge ? 'bg-challenge-day' : hasOtherSanctionedEvent ? 'bg-championship-day' : '';
 
         return (
             <div
@@ -63,7 +72,8 @@ const Cell: React.FC<CellProps> = React.memo(
                 ${isOtherMonth ? 'bg-bg-cell-empty! cursor-default!' : ''}
                 ${isSelected ? 'outline! outline-selected-border! -outline-offset-3!' : ''}
                 ${isToday ? 'border-2! border-today-border!' : ''}
-                ${isSpecialDay ? 'border-2! border-special-day-border!' : ''}`}
+                ${isSpecialDay ? 'border-2! border-special-day-border!' : ''}
+                ${backgroundStyle}`}
                 onClick={() => !isOtherMonth && onSelectDay(dateKey)}
                 data-date-key={dateKey}
             >
