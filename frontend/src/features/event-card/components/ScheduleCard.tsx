@@ -6,6 +6,7 @@
 import React from 'react';
 
 import { useEventCard } from '../hooks/useEventCard';
+import { getEntryFeeLabel } from '../utils/EventCard.utils';
 import type {
     EventCardProps,
     EventCardAdditionalProps,
@@ -184,12 +185,10 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                             <span>{event.startTime}</span>
                         </div>
                     )}
-                    {event.entryFee && (
-                        <div className="flex items-center gap-1.5">
-                            <span className="opacity-75"></span>
-                            <span>{event.entryFee}</span>
-                        </div>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                        <span className="opacity-75"></span>
+                        <span>{getEntryFeeLabel(event.entryFee)}</span>
+                    </div>
                 </div>
 
                 {/* Description & Prizes (No nested card structures) */}
