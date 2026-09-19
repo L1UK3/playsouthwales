@@ -63,6 +63,21 @@ export function getStateFlags(
     return stateFlags;
 }
 
+/** Format plain GBP amounts while preserving descriptive entry fees. */
+export function getEntryFeeLabel(entryFee?: string | null): string {
+    const raw = entryFee?.trim();
+    if (!raw) return '£0.00';
+
+    // Fees are free text: do not reinterpret ranges, other currencies or notes.
+    const match = /^(?:£\s*)?(\d+(?:\.\d{1,2})?)$/.exec(raw);
+    if (!match) return entryFee!;
+
+    const amount = Number(match[1]);
+    return Number.isFinite(amount) && amount < 1e21
+        ? `£${amount.toFixed(2)}`
+        : entryFee!;
+}
+
 /**
  * Resolves Tailwind styling classes for a card based on event characteristics.
  * @param eventType {string} - The type of the event.

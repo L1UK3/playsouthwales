@@ -11,6 +11,7 @@ import type {
     EventCardAdditionalProps,
 } from '../types/EventCard.types';
 import { useEventCard } from '../hooks/useEventCard';
+import { getEntryFeeLabel } from '../utils/EventCard.utils';
 import {
     TAG_BASE_CLASSES,
     TAG_STYLE_PROPERTIES,
@@ -203,14 +204,12 @@ const ListCard: React.FC<ListCardProps> = React.memo(
                                 </strong>{' '}
                                 {event.eventType}
                             </span>
-                            {event.entryFee && (
-                                <span>
-                                    <strong className="text-text-main font-bold">
-                                        Entry:
-                                    </strong>{' '}
-                                    {event.entryFee}
-                                </span>
-                            )}
+                            <span>
+                                <strong className="text-text-main font-bold">
+                                    Entry:
+                                </strong>{' '}
+                                {getEntryFeeLabel(event.entryFee)}
+                            </span>
                         </div>
 
                         {/* Details (Clean text with left border indicators instead of cards-in-card) */}
