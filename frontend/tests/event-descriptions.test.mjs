@@ -124,7 +124,10 @@ test('visible fee helper hides championship prices and keeps ordinary formatting
     assert.equal(getVisibleEntryFeeLabel(undefined, true), null);
     assert.equal(getVisibleEntryFeeLabel('5', false), '£5.00');
     assert.equal(getVisibleEntryFeeLabel('', false), '£0.00');
-    assert.equal(getVisibleEntryFeeLabel('5'), getVisibleEntryFeeLabel('5', false));
+    assert.equal(
+        getVisibleEntryFeeLabel('5'),
+        getVisibleEntryFeeLabel('5', false)
+    );
 });
 
 test('ordinary league events still show formatted entry fees', () => {

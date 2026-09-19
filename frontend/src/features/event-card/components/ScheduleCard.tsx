@@ -41,6 +41,8 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             event.entryFee,
             isChampionship
         );
+        const showEntryFee = entryFeeLabel !== null;
+        const showTimeCost = Boolean(event.startTime) || showEntryFee;
         const { isLoading, isError, isReleaseCard } = stateFlags;
         const links = [event?.ticketLink, league?.website]
             .map((value) => value?.trim())
@@ -183,7 +185,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 </div>
 
                 {/* Time & Cost Info */}
-                {(event.startTime || entryFeeLabel !== null) && (
+                {showTimeCost && (
                     <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none">
                         {event.startTime && (
                             <div className="flex items-center gap-1.5">
@@ -191,7 +193,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                                 <span>{event.startTime}</span>
                             </div>
                         )}
-                        {entryFeeLabel !== null && (
+                        {showEntryFee && (
                             <div className="flex items-center gap-1.5">
                                 <span className="opacity-75"></span>
                                 <span>{entryFeeLabel}</span>
