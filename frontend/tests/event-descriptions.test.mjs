@@ -75,6 +75,59 @@ test('list card also displays the default and formatted fees', () => {
     }
 });
 
+test('championship series cards hide entry fees in schedule and expanded list views', () => {
+    const championshipEvent = { ...event, leagueId: 1, entryFee: '50' };
+    const leagueMap = {
+        1: { id: 1, name: 'Championship Series', isChampionshipSeries: true },
+    };
+
+    const scheduleMarkup = renderToStaticMarkup(
+        createElement(ScheduleCard, {
+            event: championshipEvent,
+            leagueMap,
+            types: EVENT_TYPE_MAP,
+        })
+    );
+    const listMarkup = renderToStaticMarkup(
+        createElement(ListCard, {
+            event: championshipEvent,
+            leagueMap,
+            types: EVENT_TYPE_MAP,
+            isExpanded: true,
+        })
+    );
+
+    assert.ok(!scheduleMarkup.includes('£50.00'));
+    assert.ok(!listMarkup.includes('£50.00'));
+    assert.ok(!listMarkup.includes('Entry:'));
+});
+
+test('non-championship cards continue to display entry fees', () => {
+    const feeEvent = { ...event, leagueId: 1, entryFee: '50' };
+    const leagueMap = {
+        1: { id: 1, name: 'Local League', isChampionshipSeries: false },
+    };
+
+    const scheduleMarkup = renderToStaticMarkup(
+        createElement(ScheduleCard, {
+            event: feeEvent,
+            leagueMap,
+            types: EVENT_TYPE_MAP,
+        })
+    );
+    const listMarkup = renderToStaticMarkup(
+        createElement(ListCard, {
+            event: feeEvent,
+            leagueMap,
+            types: EVENT_TYPE_MAP,
+            isExpanded: true,
+        })
+    );
+
+    assert.ok(scheduleMarkup.includes('£50.00'));
+    assert.ok(listMarkup.includes('£50.00'));
+});
+
 test('schedule card preserves descriptive fees rather than inventing a price', () => {
     for (const entryFee of [
         'Free',
