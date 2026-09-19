@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /_/
 Disallow: /api/
 
-Sitemap: https://playwales.vercel.app/sitemap.xml
+Sitemap: https://playsouthwales.uk/sitemap.xml

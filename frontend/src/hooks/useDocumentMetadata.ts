@@ -7,9 +7,10 @@ export interface DocumentMetadata {
 
 export function useDocumentMetadata({ title, description }: DocumentMetadata) {
     useEffect(() => {
-        document.title = `${title} | Play! South Wales`;
+        const fullTitle = `${title} | Play! South Wales`;
+        document.title = fullTitle;
 
-        let metaDescription = document.querySelector(
+        let metaDescription = document.querySelector<HTMLMetaElement>(
             'meta[name="description"]'
         );
         if (!metaDescription) {
@@ -19,7 +20,18 @@ export function useDocumentMetadata({ title, description }: DocumentMetadata) {
         }
 
         const defaultDesc =
-            'Play! South Wales - Event schedules, league map, and championships rankings for Welsh players.';
-        metaDescription.setAttribute('content', description ?? defaultDesc);
+            'Discover Pokémon TCG, VGC, and GO tournament schedules, local leagues, and championship rankings across South Wales.';
+        const resolvedDesc = description ?? defaultDesc;
+        metaDescription.setAttribute('content', resolvedDesc);
+
+        const canonicalLink = document.querySelector<HTMLLinkElement>(
+            'link[rel="canonical"]'
+        );
+        if (canonicalLink && typeof window !== 'undefined') {
+            canonicalLink.setAttribute(
+                'href',
+                `${window.location.origin}${window.location.pathname}`
+            );
+        }
     }, [title, description]);
 }
