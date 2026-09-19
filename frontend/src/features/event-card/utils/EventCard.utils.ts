@@ -79,6 +79,21 @@ export function getEntryFeeLabel(entryFee?: string | null): string {
 }
 
 /**
+ * Return the formatted fee label, or null for championship series events.
+ * Championship cards omit the price tag instead of showing a formatted fee.
+ * @param entryFee {string | null | undefined} - Raw entry fee from the event.
+ * @param isChampionship {boolean} - Whether the event belongs to a championship series.
+ * @returns {string | null} - The fee text to render, or null to hide the tag.
+ */
+export function getVisibleEntryFeeLabel(
+    entryFee?: string | null,
+    isChampionship = false
+): string | null {
+    if (isChampionship) return null;
+    return getEntryFeeLabel(entryFee);
+}
+
+/**
  * Resolves Tailwind styling classes for a card based on event characteristics.
  * @param eventType {string} - The type of the event.
  * @param isChampionship {boolean} - Whether the event is a championship.
