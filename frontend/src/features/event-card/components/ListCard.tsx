@@ -11,7 +11,7 @@ import type {
     EventCardAdditionalProps,
 } from '../types/EventCard.types';
 import { useEventCard } from '../hooks/useEventCard';
-import { getEntryFeeLabel } from '../utils/EventCard.utils';
+import { getVisibleEntryFeeLabel } from '../utils/EventCard.utils';
 import {
     TAG_BASE_CLASSES,
     TAG_STYLE_PROPERTIES,
@@ -76,6 +76,10 @@ const ListCard: React.FC<ListCardProps> = React.memo(
         } = useEventCard(event, leagueMap, state, 'list');
         const { isLoading, isError, isDisabled: isStateDisabled } = stateFlags;
         const isDisabled = isStateDisabled || event.isExcluded;
+        const entryFeeLabel = getVisibleEntryFeeLabel(
+            event.entryFee,
+            isChampionship
+        );
 
         // Keyboard press handler for toggle
         const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -204,12 +208,14 @@ const ListCard: React.FC<ListCardProps> = React.memo(
                                 </strong>{' '}
                                 {event.eventType}
                             </span>
-                            <span>
-                                <strong className="text-text-main font-bold">
-                                    Entry:
-                                </strong>{' '}
-                                {getEntryFeeLabel(event.entryFee)}
-                            </span>
+                            {entryFeeLabel !== null && (
+                                <span>
+                                    <strong className="text-text-main font-bold">
+                                        Entry:
+                                    </strong>{' '}
+                                    {entryFeeLabel}
+                                </span>
+                            )}
                         </div>
 
                         {/* Details (Clean text with left border indicators instead of cards-in-card) */}

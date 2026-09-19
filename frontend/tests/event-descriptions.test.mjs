@@ -14,6 +14,9 @@ after(() => server.close());
 const { getEventDescription } = await server.ssrLoadModule(
     '/src/features/event-card/utils/getEventDescription.ts'
 );
+const { getVisibleEntryFeeLabel } = await server.ssrLoadModule(
+    '/src/features/event-card/utils/EventCard.utils.ts'
+);
 const { EVENT_TYPE_MAP } = await server.ssrLoadModule(
     '/src/constants/index.ts'
 );
@@ -31,6 +34,27 @@ const event = {
     leagueId: 0,
     eventType: 'CHALLENGE',
     game: 'TCG',
+};
+
+const localLeague = {
+    leagueId: 1,
+    name: 'Card Kingdom',
+    isChampionshipSeries: false,
+};
+
+const championshipLeague = {
+    leagueId: 99,
+    name: 'Pokémon Championship Series',
+    isChampionshipSeries: true,
+};
+
+const championshipEvent = {
+    ...event,
+    id: 2,
+    name: 'South West Regional Championships',
+    leagueId: 99,
+    eventType: 'REGIONAL',
+    description: 'Compete at a Regional Championship.',
 };
 
 test('schedule card defaults missing fees to GBP zero with two decimals', () => {
@@ -93,6 +117,60 @@ test('schedule card preserves descriptive fees rather than inventing a price', (
         assert.ok(markup.includes(`>${entryFee}</span>`), entryFee);
     }
 });
+
+test('visible fee helper hides championship prices and keeps ordinary formatting', () => {
+    assert.equal(getVisibleEntryFeeLabel('5', true), null);
+    assert.equal(getVisibleEntryFeeLabel('', true), null);
+    assert.equal(getVisibleEntryFeeLabel(undefined, true), null);
+    assert.equal(getVisibleEntryFeeLabel('5', false), '£5.00');
+    assert.equal(getVisibleEntryFeeLabel('', false), '£0.00');
+    assert.equal(getVisibleEntryFeeLabel('5'), getVisibleEntryFeeLabel('5', false));
+});
+
+test('ordinary league events still show formatted entry fees', () => {
+    const leagueMap = { 1: localLeague };
+    const scheduleMarkup = renderToStaticMarkup(
+        createElement(ScheduleCard, {
+            event: { ...event, leagueId: 1, entryFee: '5.5' },
+            leagueMap,
+            types: EVENT_TYPE_MAP,
+        })
+    );
+    const listMarkup = renderToStaticMarkup(
+        createElement(ListCard, {
+            event: { ...event, leagueId: 1, entryFee: '5.5' },
+            leagueMap,
+            types: EVENT_TYPE_MAP,
+            isExpanded: true,
+        })
+    );
+    assert.ok(scheduleMarkup.includes('>£5.50</span>'));
+    assert.ok(listMarkup.includes('£5.50</span>'));
+    assert.ok(listMarkup.includes('Entry:'));
+});
+
+for (const [name, Card] of [
+    ['list', ListCard],
+    ['schedule', ScheduleCard],
+]) {
+    test(`${name} championship card omits the entry-fee tag entirely`, () => {
+        for (const entryFee of [undefined, '', '0', '5', '£10']) {
+            const markup = renderToStaticMarkup(
+                createElement(Card, {
+                    event: { ...championshipEvent, entryFee },
+                    leagueMap: { 99: championshipLeague },
+                    types: EVENT_TYPE_MAP,
+                    isExpanded: true,
+                })
+            );
+            assert.ok(!markup.includes('£0.00'), `entryFee=${entryFee}`);
+            assert.ok(!markup.includes('£5.00'), `entryFee=${entryFee}`);
+            assert.ok(!markup.includes('£10.00'), `entryFee=${entryFee}`);
+            assert.ok(!markup.includes('>£10</span>'), `entryFee=${entryFee}`);
+            assert.ok(!markup.includes('Entry:'), `entryFee=${entryFee}`);
+        }
+    });
+}
 
 test('every displayed event type has a default description', () => {
     for (const eventType of Object.keys(EVENT_TYPE_MAP)) {

@@ -6,7 +6,7 @@
 import React from 'react';
 
 import { useEventCard } from '../hooks/useEventCard';
-import { getEntryFeeLabel } from '../utils/EventCard.utils';
+import { getVisibleEntryFeeLabel } from '../utils/EventCard.utils';
 import type {
     EventCardProps,
     EventCardAdditionalProps,
@@ -32,10 +32,15 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             league,
             leagueName,
             storeColor,
+            isChampionship,
             stateFlags,
             cardClasses,
             isOfficial,
         } = useEventCard(event, leagueMap, state, 'schedule');
+        const entryFeeLabel = getVisibleEntryFeeLabel(
+            event.entryFee,
+            isChampionship
+        );
         const { isLoading, isError, isReleaseCard } = stateFlags;
         const links = [event?.ticketLink, league?.website]
             .map((value) => value?.trim())
@@ -178,18 +183,22 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 </div>
 
                 {/* Time & Cost Info */}
-                <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none">
-                    {event.startTime && (
-                        <div className="flex items-center gap-1.5">
-                            <span className="opacity-75"></span>
-                            <span>{event.startTime}</span>
-                        </div>
-                    )}
-                    <div className="flex items-center gap-1.5">
-                        <span className="opacity-75"></span>
-                        <span>{getEntryFeeLabel(event.entryFee)}</span>
+                {(event.startTime || entryFeeLabel !== null) && (
+                    <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none">
+                        {event.startTime && (
+                            <div className="flex items-center gap-1.5">
+                                <span className="opacity-75"></span>
+                                <span>{event.startTime}</span>
+                            </div>
+                        )}
+                        {entryFeeLabel !== null && (
+                            <div className="flex items-center gap-1.5">
+                                <span className="opacity-75"></span>
+                                <span>{entryFeeLabel}</span>
+                            </div>
+                        )}
                     </div>
-                </div>
+                )}
 
                 {/* Description & Prizes (No nested card structures) */}
                 {description && (
