@@ -32,6 +32,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
             league,
             leagueName,
             storeColor,
+            isChampionship,
             stateFlags,
             cardClasses,
             isOfficial,
@@ -178,18 +179,22 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
                 </div>
 
                 {/* Time & Cost Info */}
-                <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none">
-                    {event.startTime && (
-                        <div className="flex items-center gap-1.5">
-                            <span className="opacity-75"></span>
-                            <span>{event.startTime}</span>
-                        </div>
-                    )}
-                    <div className="flex items-center gap-1.5">
-                        <span className="opacity-75"></span>
-                        <span>{getEntryFeeLabel(event.entryFee)}</span>
+                {(event.startTime != null || !isChampionship) && (
+                    <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none">
+                        {event.startTime && (
+                            <div className="flex items-center gap-1.5">
+                                <span className="opacity-75"></span>
+                                <span>{event.startTime}</span>
+                            </div>
+                        )}
+                        {!isChampionship && (
+                            <div className="flex items-center gap-1.5">
+                                <span className="opacity-75"></span>
+                                <span>{getEntryFeeLabel(event.entryFee)}</span>
+                            </div>
+                        )}
                     </div>
-                </div>
+                )}
 
                 {/* Description & Prizes (No nested card structures) */}
                 {description && (

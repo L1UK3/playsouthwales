@@ -204,12 +204,14 @@ const ListCard: React.FC<ListCardProps> = React.memo(
                                 </strong>{' '}
                                 {event.eventType}
                             </span>
-                            <span>
-                                <strong className="text-text-main font-bold">
-                                    Entry:
-                                </strong>{' '}
-                                {getEntryFeeLabel(event.entryFee)}
-                            </span>
+                            {!isChampionship && (
+                                <span>
+                                    <strong className="text-text-main font-bold">
+                                        Entry:
+                                    </strong>{' '}
+                                    {getEntryFeeLabel(event.entryFee)}
+                                </span>
+                            )}
                         </div>
 
                         {/* Details (Clean text with left border indicators instead of cards-in-card) */}
