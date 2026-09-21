@@ -159,6 +159,20 @@ You can manage and inspect MCP connections using your agent client. For example,
 - **Reload configurations**: Apply updates made to `.agents/mcp_config.json` without restarting
 - **Inspect logs**: Debug server startup errors or execution parameters
 
+## Agent skills
+
+### Issue tracker
+
+GitHub issues via `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Custom mapping (`needs-triage`, `question`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context (`CONTEXT.md` + `docs/adr/`). See `docs/agents/domain.md`.
+
 ## Agent skills reference
 
 Manage and execute agent skills using the Skills Command Line Interface (CLI) (`npx skills`). All skills are installed locally within the gitignored `.agents` directory and do not commit to the repository.
