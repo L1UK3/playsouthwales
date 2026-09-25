@@ -284,6 +284,7 @@ async def update_leaderboard(
             },
         )
 
+
 @router.put("/api/players/top20")
 @router.post("/api/players/top20")
 async def update_top_20_players(
@@ -305,4 +306,3 @@ async def update_top_20_players(
                 "message": "Failed to update top 20 players",
             },
         )
-

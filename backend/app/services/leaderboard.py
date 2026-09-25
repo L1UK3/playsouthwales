@@ -101,7 +101,9 @@ async def update_top20(db: Client, players_data: list[dict]) -> dict:
             "playerId": player_id,
         }
 
-    existing_res = db.table("welsh_players").select('id, name, cp, "playerId"').execute()
+    existing_res = (
+        db.table("welsh_players").select('id, name, cp, "playerId"').execute()
+    )
     existing_players = {
         row["name"]: row for row in (existing_res.data or []) if row.get("name")
     }
@@ -117,7 +119,10 @@ async def update_top20(db: Client, players_data: list[dict]) -> dict:
     for name, item in cleaned_incoming.items():
         if name in existing_players:
             existing_p = existing_players[name]
-            if existing_p.get("cp") != item["cp"] or existing_p.get("playerId") != item["playerId"]:
+            if (
+                existing_p.get("cp") != item["cp"]
+                or existing_p.get("playerId") != item["playerId"]
+            ):
                 db.table("welsh_players").update(
                     {"cp": item["cp"], "playerId": item["playerId"]}
                 ).eq("name", name).execute()
@@ -130,4 +135,7 @@ async def update_top20(db: Client, players_data: list[dict]) -> dict:
                 }
             ).execute()
 
-    return {"success": True, "message": "National rankings updated successfully"}
+    return {
+        "success": True,
+        "message": "National rankings updated successfully",
+    }
