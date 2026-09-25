@@ -9,7 +9,7 @@ from app.dependencies import supabase
 
 logger = logging.getLogger(__name__)
 
-API_URL: str = "https://pokedata.ovh/events/apiv2/"
+API_URL: str = "https://pokedata.ovh/events/api/"
 COORDS: dict[str, float] = {
     "latitude": 51.7576404113981,
     "longitude": -3.5224914550781254,
@@ -67,7 +67,25 @@ async def fetch_pokedata_events(
                 )
                 response = await client.get(url, timeout=15.0)
                 response.raise_for_status()
-                return response.json()
+                payload = response.json()
+                if isinstance(payload, dict):
+                    events = payload.get("events", [])
+                    if isinstance(events, list):
+                        return events
+                    logger.warning(
+                        "Unexpected pokedata events payload for %s: %s",
+                        url,
+                        type(events).__name__,
+                    )
+                    return []
+                if isinstance(payload, list):
+                    return payload
+                logger.warning(
+                    "Unexpected pokedata response for %s: %s",
+                    url,
+                    type(payload).__name__,
+                )
+                return []
             except Exception as exc:
                 logger.warning(
                     "Attempt %d/%d failed for %s: %r",
