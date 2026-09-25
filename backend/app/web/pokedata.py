@@ -1,10 +1,10 @@
 import logging
-import os
 from typing import Any
 
 import httpx
 from pydantic import BaseModel, Field
 
+from app.config import get_settings
 from app.dependencies import supabase
 
 logger = logging.getLogger(__name__)
@@ -245,6 +245,8 @@ async def sync_pokedata() -> dict[str, Any]:
 
 async def get_cp(year: int = 2027) -> None:
     """Fetch Welsh player CP from Pokédata and update Supabase."""
+    settings = get_settings()
+
     players = (
         supabase.table("welsh_players").select("name").execute().data or []
     )
@@ -252,9 +254,15 @@ async def get_cp(year: int = 2027) -> None:
         return
 
     payload = {
-        "APIKEY": os.getenv("POKEDATA_KEY"),
+        "APIKEY": settings.pokedata_key,
         "players": [
-            {"name": player["name"], "game": "tcg", "division": "master"}
+            {
+                "name": player["name"],
+                "game": "tcg",
+                "division": "master",
+                "product": "tcg",
+                "country": "GBR",
+            }
             for player in players
         ],
     }
@@ -266,6 +274,11 @@ async def get_cp(year: int = 2027) -> None:
         data = response.json()
 
     for item in data:
-        supabase.table("welsh_players").update(
-            {"cp": item.get("points", 0)}
-        ).eq("name", item["name"]).execute()
+        try:
+            supabase.table("welsh_players").update(
+                {"cp": item.get("points")}
+            ).eq("name", item["name"]).execute()
+        except Exception as e:
+            logger.error(
+                "Failed to update CP for player %s: %s", item["name"], e
+            )
