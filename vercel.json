@@ -1,7 +1,7 @@
 {
     "services": {
         "frontend": {
-            "root": ".",
+            "root": "frontend",
             "framework": "vite"
         },
         "backend": {
