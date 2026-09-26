@@ -22,8 +22,7 @@ class Settings(BaseSettings):
     supabase_url: str
     supabase_secret_key: str
     allowed_origins: Annotated[list[str], NoDecode] = []
-    discord_bot_url: str | None = None
-    discord_announcements_channel_id: str | None = None
+    discord_bot_token: str | None = None
     pokedata_key: str | None = None
 
     @field_validator(
