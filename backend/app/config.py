@@ -21,7 +21,11 @@ class Settings(BaseSettings):
     clerk_webhook_signing_secret: str | None = None
     supabase_url: str
     supabase_secret_key: str
-    allowed_origins: Annotated[list[str], NoDecode] = []
+    allowed_origins: Annotated[list[str], NoDecode] = [
+        "https://www.playsouthwales.uk",
+        "https://playsouthwales.uk",
+        "http://localhost:5173",
+    ]
     discord_bot_url: str | None = None
     discord_announcements_channel_id: str | None = None
     pokedata_key: str | None = None
