@@ -4,6 +4,7 @@ import { Trophy } from 'lucide-react';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useLeagues, useDocumentMetadata, useTop20Players } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
+import { LeaderboardCard } from '@/components/ui/leaderboard-card';
 import type { LeaderboardPosition } from '@/features/leaderboard/types/LeaderboardPosition';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 
@@ -56,6 +57,17 @@ const RankingsPage: React.FC = () => {
             userId: player.userId,
         }));
     }, [top20Data]);
+
+    const nationalRankings = React.useMemo(
+        () =>
+            nationalPlayers.map((player, index) => ({
+                userId: String(player.userId ?? `${player.name}-${index}`),
+                userName: player.name,
+                rank: index + 1,
+                value: player.cp ?? 0,
+            })),
+        [nationalPlayers]
+    );
 
     const handleTabChange = (tab: 'national' | 'local') => {
         if (document.startViewTransition) {
@@ -159,12 +171,22 @@ const RankingsPage: React.FC = () => {
                     </select>
                 </div>
                 <div className="flex-1 min-h-0">
-                    <Leaderboard
-                        leagueId="global"
-                        season={selectedSeason}
-                        players={nationalPlayers}
-                        isLoading={isTop20Loading}
-                    />
+                    {isTop20Loading ? (
+                        <Leaderboard
+                            leagueId="global"
+                            season={selectedSeason}
+                            players={nationalPlayers}
+                            isLoading
+                        />
+                    ) : (
+                        <LeaderboardCard
+                            title={`South Wales ${selectedSeason} Rankings`}
+                            fromDate={`${Number(selectedSeason) - 1}-07-01`}
+                            toDate={`${selectedSeason}-06-30`}
+                            podiumRankings={nationalRankings}
+                            rankings={nationalRankings}
+                        />
+                    )}
                 </div>
             </div>
 
