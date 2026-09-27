@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     allowed_origins: Annotated[list[str], NoDecode] = []
     discord_bot_token: str | None = None
     discord_channel_id: str | None = None
+    allowed_origins: Annotated[list[str], NoDecode] = [
+        "https://www.playsouthwales.uk",
+        "https://playsouthwales.uk",
+        "http://localhost:5173",
+    ]
     pokedata_key: str | None = None
 
     @field_validator(
