@@ -16,6 +16,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@base-ui/react": "^1.8.0",
         "@clerk/react": "^6.9.1",
         "@clerk/tanstack-react-start": "^1.4.2",
         "@clerk/themes": "^2.4.57",
@@ -25,6 +26,8 @@
         "@tanstack/react-router": "^1.95.5",
         "@vercel/analytics": "^2.0.1",
         "@vis.gl/react-google-maps": "^1.8.3",
+        "class-variance-authority": "^0.7.1",
+        "cn": "^0.4.0",
         "image-size": "2.0.4",
         "jayson": "5.0.0",
         "lucide-react": "^1.18.0",
@@ -33,6 +36,7 @@
         "react-router": "8.4.0",
         "react-router-dom": "^7.18.4",
         "stream-json": "3.7.0",
+        "tailwind-merge": "^3.7.0",
         "tailwindcss": "^4.3.1",
         "three": "^0.184.0"
     },
