@@ -81,8 +81,7 @@ async def fetch_pokedata_events(
                 if isinstance(payload, list):
                     return payload
                 logger.warning(
-                    "Unexpected pokedata response for %s: %s",
-                    url,
+                    "Unexpected pokedata response payload type: %s",
                     type(payload).__name__,
                 )
                 return []
