@@ -49,18 +49,20 @@ def test_fetch_pokedata_events_retries_on_error_then_succeeds(monkeypatch):
     assert mock_get.call_count == 2
 
 
-def test_fetch_pokedata_events_fails_after_max_retries(monkeypatch):
+def test_fetch_pokedata_events_fails_after_max_retries(monkeypatch, caplog):
     """Verify fetch_pokedata_events returns an empty list after max retries exceed."""
     mock_get = AsyncMock()
     mock_get.side_effect = httpx.RequestError("Persistent connection failure")
 
     monkeypatch.setattr(httpx.AsyncClient, "get", mock_get)
     monkeypatch.setattr(asyncio, "sleep", AsyncMock())
+    caplog.set_level("INFO", logger="app.web.pokedata")
 
     result = asyncio.run(fetch_pokedata_events("https://example.com/api"))
 
     assert result == []
     assert mock_get.call_count == 3
+    assert "https://example.com/api" not in caplog.text
 
 
 def test_sync_pokedata_processes_and_inserts_new_events(

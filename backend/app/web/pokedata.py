@@ -60,8 +60,7 @@ async def fetch_pokedata_events(
         for attempt in range(1, max_retries + 1):
             try:
                 logger.info(
-                    "Fetching pokedata from %s (attempt %d/%d)",
-                    url,
+                    "Fetching pokedata events (attempt %d/%d)",
                     attempt,
                     max_retries,
                 )
@@ -73,33 +72,29 @@ async def fetch_pokedata_events(
                     if isinstance(events, list):
                         return events
                     logger.warning(
-                        "Unexpected pokedata events payload for %s: %s",
-                        url,
+                        "Unexpected pokedata events payload type: %s",
                         type(events).__name__,
                     )
                     return []
                 if isinstance(payload, list):
                     return payload
                 logger.warning(
-                    "Unexpected pokedata response for %s: %s",
-                    url,
+                    "Unexpected pokedata response payload type: %s",
                     type(payload).__name__,
                 )
                 return []
             except Exception as exc:
                 logger.warning(
-                    "Attempt %d/%d failed for %s: %r",
+                    "Attempt %d/%d failed while fetching pokedata events: %s",
                     attempt,
                     max_retries,
-                    url,
-                    exc,
+                    type(exc).__name__,
                 )
                 if attempt == max_retries:
                     logger.error(
-                        "Error fetching from pokedata URL %s after %d attempts: %r",
-                        url,
+                        "Error fetching pokedata events after %d attempts: %s",
                         max_retries,
-                        exc,
+                        type(exc).__name__,
                     )
                     break
                 await asyncio.sleep(retry_delay)
