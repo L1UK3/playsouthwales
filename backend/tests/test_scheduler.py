@@ -25,17 +25,55 @@ async def test_run_hourly_awaits_sync_and_get_cp():
 
 @pytest.mark.anyio
 async def test_run_daily_awaits_sets_and_championship():
-    """Verify _run_daily calls run_sets_sync and sync_championship_data."""
+    """Verify _run_daily calls sync_championship_data."""
     scheduler = BackgroundScheduler()
 
-    mock_sets = AsyncMock(return_value=5)
     mock_champ = AsyncMock(return_value={"status": "ok"})
 
-    with (
-        patch("app.web.sets_releases.run_sets_sync", mock_sets),
-        patch("app.web.championship_series.sync_championship_data", mock_champ),
+    with patch(
+        "app.web.championship_series.sync_championship_data", mock_champ
     ):
         await scheduler._run_daily()
 
-    mock_sets.assert_awaited_once()
     mock_champ.assert_awaited_once()
+
+
+@pytest.mark.anyio
+async def test_run_daily_sends_discord_update_after_sync():
+    broadcaster = AsyncMock()
+    scheduler = BackgroundScheduler(broadcaster=broadcaster)
+    mock_champ = AsyncMock(return_value={"status": "ok"})
+
+    with patch(
+        "app.web.championship_series.sync_championship_data", mock_champ
+    ):
+        await scheduler._run_daily()
+
+    broadcaster.send_daily_update.assert_awaited_once()
+
+
+@pytest.mark.anyio
+async def test_run_daily_isolates_discord_failure():
+    broadcaster = AsyncMock()
+    broadcaster.send_daily_update.side_effect = RuntimeError(
+        "Discord unavailable"
+    )
+    scheduler = BackgroundScheduler(broadcaster=broadcaster)
+    mock_champ = AsyncMock(return_value={"status": "ok"})
+
+    with patch(
+        "app.web.championship_series.sync_championship_data", mock_champ
+    ):
+        await scheduler._run_daily()
+
+    mock_champ.assert_awaited_once()
+
+
+@pytest.mark.anyio
+async def test_run_weekly_sends_discord_update():
+    broadcaster = AsyncMock()
+    scheduler = BackgroundScheduler(broadcaster=broadcaster)
+
+    await scheduler._run_weekly()
+
+    broadcaster.send_weekly_update.assert_awaited_once()

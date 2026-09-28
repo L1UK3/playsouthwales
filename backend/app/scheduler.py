@@ -1,15 +1,22 @@
+from __future__ import annotations
+
 import asyncio
 import datetime
 import logging
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.integrations.discord_bot import DiscordBroadcaster
 
 logger = logging.getLogger(__name__)
 
 
 class BackgroundScheduler:
-    def __init__(self):
+    def __init__(self, broadcaster: DiscordBroadcaster | None = None):
         self._task: asyncio.Task | None = None
         self._running: bool = False
         self._first_run: bool = True
+        self._broadcaster = broadcaster
 
     async def start(self) -> None:
         """Start the background task scheduler."""
@@ -42,6 +49,7 @@ class BackgroundScheduler:
 
         last_hourly_run = None
         last_daily_run = None
+        last_weekly_run = None
 
         while self._running:
             now = datetime.datetime.now(datetime.UTC)
@@ -54,11 +62,17 @@ class BackgroundScheduler:
                 await self._run_hourly()
                 last_hourly_run = current_hour
 
-            # Daily Update: Runs in the early afternoon (>= 13:00 UTC) once per day
-            if now.hour >= 13:
+            # Daily Update: Runs mid-morning (>= 10:00 UTC) once per day
+            if now.hour >= 10:
                 if last_daily_run is None or current_date > last_daily_run:
                     await self._run_daily()
                     last_daily_run = current_date
+
+                if now.weekday() == 6 and (
+                    last_weekly_run is None or current_date > last_weekly_run
+                ):
+                    await self._run_weekly()
+                    last_weekly_run = current_date
 
             await asyncio.sleep(3600)
 
@@ -121,3 +135,23 @@ class BackgroundScheduler:
 
         except Exception as e:
             logger.error(f"[Scheduler] Error in daily background sync: {e}")
+
+        if self._broadcaster:
+            try:
+                await self._broadcaster.send_daily_update()
+            except Exception as e:
+                logger.error(
+                    f"[Scheduler] Error sending daily Discord update: {e}"
+                )
+
+    async def _run_weekly(self) -> None:
+        """Send the weekly event digest."""
+        if not self._broadcaster:
+            return
+
+        try:
+            await self._broadcaster.send_weekly_update()
+        except Exception as e:
+            logger.error(
+                f"[Scheduler] Error sending weekly Discord update: {e}"
+            )
