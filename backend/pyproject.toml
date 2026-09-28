@@ -10,6 +10,7 @@ dependencies = [
     "discord-py>=2.7.1",
     "fastapi>=0.138.1",
     "pydantic-settings>=2.14.2",
+    "pytest-cov>=7.1.0",
     "python-dotenv>=1.2.2",
     "requests>=2.34.2",
     "supabase>=2.31.0",
