@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     supabase_secret_key: str
     allowed_origins: Annotated[list[str], NoDecode] = []
     discord_bot_token: str | None = None
-    discord_channel_id: str | None = None
+    discord_channel_id: int | None = None
     allowed_origins: Annotated[list[str], NoDecode] = [
         "https://www.playsouthwales.uk",
         "https://playsouthwales.uk",
