@@ -193,6 +193,17 @@ async def sync_championship_data() -> dict:
                 f"Created championship series league with ID {league_id}"
             )
 
+        existing_events = (
+            supabase.table("events")
+            .select("id")
+            .like("id", "champ-%")
+            .execute()
+        )
+        existing_event_ids: set[str] = set()
+        for event in existing_events.data or []:
+            if isinstance(event, dict) and isinstance(event.get("id"), str):
+                existing_event_ids.add(str(event["id"]))
+
     except Exception as e:
         logger.error(
             f"Database error during championship sync preparation: {e}"
@@ -242,18 +253,13 @@ async def sync_championship_data() -> dict:
         )
         slug = re.sub(r"[^a-z0-9]+", "-", clean_name.lower()).strip("-")
 
-        # Map event type
         raw_type = championship_event.type_s.lower()
-        if raw_type == "world":
-            event_type = "WORLDS"
-        elif raw_type == "regional":
-            event_type = "REGIONAL"
-        elif raw_type == "special":
-            event_type = "SPECIAL"
-        elif raw_type == "international":
-            event_type = "INTERNATIONAL"
-        else:
-            event_type = raw_type.upper()
+        event_type = {
+            "world": "WORLDS",
+            "regional": "REGIONAL",
+            "special": "SPECIAL",
+            "international": "INTERNATIONAL",
+        }.get(raw_type, raw_type.upper())
 
         base_event_id = f"champ-{slug}"
 
@@ -296,7 +302,12 @@ async def sync_championship_data() -> dict:
                 "excludedDates": None,
             }
 
+            if event_dict["id"] in existing_event_ids:
+                skipped_count += 1
+                continue
+
             events_to_insert.append(event_dict)
+            existing_event_ids.add(event_dict["id"])
             inserted_count += 1
 
     if events_to_insert:
