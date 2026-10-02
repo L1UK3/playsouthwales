@@ -193,8 +193,6 @@ async def sync_championship_data() -> dict:
                 f"Created championship series league with ID {league_id}"
             )
 
-        existing_event_ids = set()
-
     except Exception as e:
         logger.error(
             f"Database error during championship sync preparation: {e}"
@@ -257,11 +255,7 @@ async def sync_championship_data() -> dict:
         else:
             event_type = raw_type.upper()
 
-        event_id = f"champ-{slug}"
-
-        if event_id in existing_event_ids:
-            skipped_count += 1
-            continue
+        base_event_id = f"champ-{slug}"
 
         location_str = championship_event.eventLocation_s or "TBD"
         description = (
@@ -289,7 +283,7 @@ async def sync_championship_data() -> dict:
         for day_offset in range(days_to_insert):
             evt_date = start_date_obj + datetime.timedelta(days=day_offset)
             event_dict = {
-                "id": f"{event_id}-{day_offset + 1}",
+                "id": f"{base_event_id}-{day_offset + 1}",
                 "name": championship_event.eventName_s,
                 "date": evt_date.isoformat(),
                 "startTime": None,
@@ -303,7 +297,6 @@ async def sync_championship_data() -> dict:
             }
 
             events_to_insert.append(event_dict)
-            existing_event_ids.add(event_dict["id"])
             inserted_count += 1
 
     if events_to_insert:
