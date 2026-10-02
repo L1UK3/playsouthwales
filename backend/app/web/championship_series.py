@@ -193,15 +193,6 @@ async def sync_championship_data() -> dict:
                 f"Created championship series league with ID {league_id}"
             )
 
-        # Clean up all existing scraper-generated championship events to ensure stale or non-Europe events are removed.
-        try:
-            supabase.table("events").delete().like("id", "champ-%").execute()
-            logger.info("Successfully cleaned up existing championship events.")
-        except Exception as cleanup_err:
-            logger.warning(
-                f"Failed to clean up championship events: {cleanup_err}"
-            )
-
         existing_event_ids = set()
 
     except Exception as e:
