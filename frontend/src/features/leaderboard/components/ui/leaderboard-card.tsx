@@ -56,8 +56,6 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
         },
         ref
     ) => {
-        const fromLabel = formatRangeDate(fromDate);
-        const toLabel = formatRangeDate(toDate);
         const resolvedRunId = selectedRunId ?? runOptions?.[0]?.id ?? '';
         const isControlled = Boolean(onRunChange);
         const [localRunId, setLocalRunId] = React.useState(resolvedRunId);
@@ -80,9 +78,6 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
                 <div className="mb-6 flex items-start justify-between gap-4">
                     <div className="space-y-1">
                         <h3 className="text-xl font-semibold">{title}</h3>
-                        <p className="text-muted-foreground text-sm">
-                            {fromLabel} - {toLabel}
-                        </p>
                     </div>
 
                     {runOptions && runOptions.length > 0 ? (

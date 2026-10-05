@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {
-    ChevronLeft,
-    ChevronRight,
     Crown,
     EllipsisIcon,
     TrendingDown,
@@ -9,7 +7,6 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@leaderboard/components/ui/button';
 
 interface LeaderboardRankingItem {
     userId: string;
@@ -36,8 +33,6 @@ const crownColorMap = {
     3: 'text-rank-3',
 } as const;
 
-const pageSizeOptions = [10, 25, 50, 100] as const;
-
 type LeaderboardRow =
     | { type: 'ranking'; ranking: LeaderboardRankingItem }
     | { type: 'ellipsis'; key: string };
@@ -59,7 +54,7 @@ const LeaderboardRankings = React.forwardRef<
             onUserClick,
             currentUserId,
             showPagination = false,
-            defaultPageSize = 10,
+            defaultPageSize = 100,
             ...props
         },
         ref
@@ -251,68 +246,6 @@ const LeaderboardRankings = React.forwardRef<
                         );
                     })}
                 </div>
-
-                {showPagination ? (
-                    <div className="flex items-center justify-between gap-3 border-t px-4 py-2">
-                        <div className="flex items-center gap-2">
-                            <label
-                                htmlFor="leaderboard-page-size"
-                                className="text-muted-foreground text-sm"
-                            >
-                                Show
-                            </label>
-                            <select
-                                id="leaderboard-page-size"
-                                value={pageSize}
-                                onChange={(e) =>
-                                    setPageSize(
-                                        Number(e.target.value) as
-                                            10 | 25 | 50 | 100
-                                    )
-                                }
-                                className="bg-background text-muted-foreground rounded-md border px-2 py-1 text-sm"
-                            >
-                                {pageSizeOptions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() =>
-                                    setCurrentPage((p) => Math.max(1, p - 1))
-                                }
-                                disabled={currentPage === 1}
-                                className="hover:bg-muted rounded-md border p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                <ChevronLeft className="h-4 w-4" />
-                            </Button>
-
-                            <span className="text-muted-foreground text-sm">
-                                Page {currentPage} of {totalPages}
-                            </span>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                aria-label="Next page"
-                                onClick={() =>
-                                    setCurrentPage((p) =>
-                                        Math.min(totalPages, p + 1)
-                                    )
-                                }
-                                disabled={currentPage === totalPages}
-                                className="hover:bg-muted rounded-md border p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                <ChevronRight className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    </div>
-                ) : null}
             </div>
         );
     }
