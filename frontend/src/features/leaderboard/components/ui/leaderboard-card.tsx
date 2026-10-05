@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import {
     LeaderboardPodium,
     type LeaderboardRanking as LeaderboardPodiumRanking,
@@ -72,10 +71,10 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
         return (
             <div
                 ref={ref}
-                className={cn(
-                    'bg-card rounded-2xl border p-6 shadow-sm',
+                className={
+                    'bg-card rounded-2xl border p-6 shadow-sm' +
                     className
-                )}
+                }
                 {...props}
             >
                 <div className="mb-6 flex items-start justify-between gap-4">
