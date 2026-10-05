@@ -59,7 +59,7 @@ const LeaderboardRankings = React.forwardRef<
         },
         ref
     ) => {
-        const [pageSize, setPageSize] = React.useState<10 | 25 | 50 | 100>(
+        const [pageSize] = React.useState<10 | 25 | 50 | 100>(
             defaultPageSize
         );
         const [currentPage, setCurrentPage] = React.useState(1);

@@ -28,16 +28,6 @@ interface LeaderboardCardProps extends React.HTMLAttributes<HTMLDivElement> {
     onRunChange?: (runId: string) => void;
 }
 
-function formatRangeDate(date: string | Date) {
-    const parsed = date instanceof Date ? date : new Date(date);
-    if (Number.isNaN(parsed.getTime())) return '';
-
-    return parsed.toLocaleDateString(undefined, {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-    });
-}
 
 const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
     (
@@ -106,7 +96,7 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
                 <LeaderboardRankings
                     rankings={rankings}
                     currentUserId={currentUserId}
-                    showPagination
+                    showPagination={false}
                     defaultPageSize={10}
                 />
             </div>
