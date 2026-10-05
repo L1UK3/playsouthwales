@@ -193,16 +193,16 @@ async def sync_championship_data() -> dict:
                 f"Created championship series league with ID {league_id}"
             )
 
-        # Clean up all existing scraper-generated championship events to ensure stale or non-Europe events are removed.
-        try:
-            supabase.table("events").delete().like("id", "champ-%").execute()
-            logger.info("Successfully cleaned up existing championship events.")
-        except Exception as cleanup_err:
-            logger.warning(
-                f"Failed to clean up championship events: {cleanup_err}"
-            )
-
-        existing_event_ids = set()
+        existing_events = (
+            supabase.table("events")
+            .select("id")
+            .like("id", "champ-%")
+            .execute()
+        )
+        existing_event_ids: set[str] = set()
+        for event in existing_events.data or []:
+            if isinstance(event, dict) and isinstance(event.get("id"), str):
+                existing_event_ids.add(str(event["id"]))
 
     except Exception as e:
         logger.error(
@@ -253,24 +253,15 @@ async def sync_championship_data() -> dict:
         )
         slug = re.sub(r"[^a-z0-9]+", "-", clean_name.lower()).strip("-")
 
-        # Map event type
         raw_type = championship_event.type_s.lower()
-        if raw_type == "world":
-            event_type = "WORLDS"
-        elif raw_type == "regional":
-            event_type = "REGIONAL"
-        elif raw_type == "special":
-            event_type = "SPECIAL"
-        elif raw_type == "international":
-            event_type = "INTERNATIONAL"
-        else:
-            event_type = raw_type.upper()
+        event_type = {
+            "world": "WORLDS",
+            "regional": "REGIONAL",
+            "special": "SPECIAL",
+            "international": "INTERNATIONAL",
+        }.get(raw_type, raw_type.upper())
 
-        event_id = f"champ-{slug}"
-
-        if event_id in existing_event_ids:
-            skipped_count += 1
-            continue
+        base_event_id = f"champ-{slug}"
 
         location_str = championship_event.eventLocation_s or "TBD"
         description = (
@@ -298,7 +289,7 @@ async def sync_championship_data() -> dict:
         for day_offset in range(days_to_insert):
             evt_date = start_date_obj + datetime.timedelta(days=day_offset)
             event_dict = {
-                "id": f"{event_id}-{day_offset + 1}",
+                "id": f"{base_event_id}-{day_offset + 1}",
                 "name": championship_event.eventName_s,
                 "date": evt_date.isoformat(),
                 "startTime": None,
@@ -310,6 +301,10 @@ async def sync_championship_data() -> dict:
                 "entryFee": None,
                 "excludedDates": None,
             }
+
+            if event_dict["id"] in existing_event_ids:
+                skipped_count += 1
+                continue
 
             events_to_insert.append(event_dict)
             existing_event_ids.add(event_dict["id"])

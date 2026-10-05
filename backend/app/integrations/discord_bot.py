@@ -36,7 +36,9 @@ class DiscordBroadcaster:
         self,
         settings: Settings | None = None,
         discord_client: discord.Client | None = None,
-        event_loader: Callable[..., Awaitable[list[EventRecord]]] = get_events_from_db,
+        event_loader: Callable[
+            ..., Awaitable[list[EventRecord]]
+        ] = get_events_from_db,
     ):
         self.settings = settings or get_settings()
         self.client = discord_client or discord.Client(intents=intents)
@@ -86,11 +88,17 @@ class DiscordBroadcaster:
     async def _get_channel(self) -> MessageableChannel:
         try:
             if not self.client.is_ready():
-                await asyncio.wait_for(self.client.wait_until_ready(), timeout=10)
+                await asyncio.wait_for(
+                    self.client.wait_until_ready(), timeout=10
+                )
             channel = self.client.get_channel(self.channel_id)
             if channel is None:
                 channel = await self.client.fetch_channel(self.channel_id)
-        except (discord.Forbidden, discord.HTTPException, discord.NotFound) as error:
+        except (
+            discord.Forbidden,
+            discord.HTTPException,
+            discord.NotFound,
+        ) as error:
             raise DiscordBroadcastError(
                 f"Unable to access Discord channel {self.channel_id}: {error}"
             ) from error
@@ -101,7 +109,11 @@ class DiscordBroadcaster:
         return channel
 
     async def _send_events(
-        self, message_title: str, *, day: datetime.date | None = None, weekly=False
+        self,
+        message_title: str,
+        *,
+        day: datetime.date | None = None,
+        weekly=False,
     ) -> None:
         channel = await self._get_channel()
         events = await self._event_loader(db=supabase, day=day, weekly=weekly)
