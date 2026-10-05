@@ -4,7 +4,7 @@ import { Trophy } from 'lucide-react';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useLeagues, useDocumentMetadata, useTop20Players } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
-import { LeaderboardCard } from '@/components/ui/leaderboard-card';
+import { LeaderboardCard } from '@leaderboard/components/ui/leaderboard-card';
 import type { LeaderboardPosition } from '@/features/leaderboard/types/LeaderboardPosition';
 import LeagueSelector from '@/features/league-selector/components/LeagueSelector';
 
