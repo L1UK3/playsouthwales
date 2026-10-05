@@ -66,9 +66,6 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
                 {...props}
             >
                 <div className="mb-6 flex items-start justify-between gap-4">
-                    <div className="space-y-1">
-                        <h3 className="text-xl font-semibold">{title}</h3>
-                    </div>
 
                     {runOptions && runOptions.length > 0 ? (
                         <select

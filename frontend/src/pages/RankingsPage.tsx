@@ -62,42 +62,47 @@ const RankingsPage: React.FC = () => {
     );
 
     return (
-        <div className="relative flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:h-[calc(100vh-140px)] h-[calc(100vh-200px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main animate-swipe-up max-[576px]:rounded-md max-[576px]:border-2">
-            <div className="flex justify-between items-center pb-2 border-b border-border-color mb-3 flex-none">
-                <h1 className="text-lg font-bold text-text-main flex items-center gap-2 m-0">
-                    <Trophy className="w-5 h-5 text-amber-500" />
-                    South Wales Rankings
-                </h1>
+        <div className="relative flex flex-col lg:h-[calc(100vh-140px)] h-[calc(100vh-200px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main animate-swipe-up max-[576px]:rounded-md max-[576px]:border-2">
+            <div className="padding-6 flex flex-col max-h-[calc(100vh-200px)] overflow-hidden">
+                <div className="flex justify-between items-center pb-2 border-b border-border-color mb-3 flex-none">
+                    <h1 className="text-lg font-bold text-text-main flex items-center gap-2 m-0">
+                        <Trophy className="w-5 h-5 text-amber-500" />
+                        South Wales Rankings
+                    </h1>
+                </div>
+                <p className="text-xs text-text-muted mb-3 flex-none leading-relaxed">
+                    The South Wales Top 20 shows the players with the highest CP
+                    (Championship Points) across South Wales. Top players are
+                    eligible to compete in the South Wales South Wales World's
+                    event , held annually with a large cash prize pool. Players
+                    earn CP by participating in official TCG and VGC events. To
+                    register, message an admin on Discord to sign-up for the
+                    event.
+                </p>
+                <div className="flex items-center gap-3 flex-wrap mb-2 flex-none">
+                    <label
+                        className="text-sm font-bold text-text-main"
+                        htmlFor="top20-season-select"
+                    >
+                        Season
+                    </label>
+                    <select
+                        id="top20-season-select"
+                        value={selectedSeason}
+                        onChange={(event) =>
+                            setSelectedSeason(event.target.value)
+                        }
+                        className="border-2 border-border-color rounded-md bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:outline-none focus:border-secondary"
+                    >
+                        {seasonOptions.map((season) => (
+                            <option key={season} value={season}>
+                                {season}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
-            <p className="text-xs text-text-muted mb-3 flex-none leading-relaxed">
-                The South Wales Top 20 shows the players with the highest CP
-                (Championship Points) across South Wales. Top players are
-                eligible to compete in the South Wales South Wales World's event
-                , held annually with a large cash prize pool. Players earn CP by
-                participating in official TCG and VGC events. To register,
-                message an admin on Discord to sign-up for the event.
-            </p>
-            <div className="flex items-center gap-3 flex-wrap mb-2 flex-none">
-                <label
-                    className="text-sm font-bold text-text-main"
-                    htmlFor="top20-season-select"
-                >
-                    Season
-                </label>
-                <select
-                    id="top20-season-select"
-                    value={selectedSeason}
-                    onChange={(event) => setSelectedSeason(event.target.value)}
-                    className="border-2 border-border-color rounded-md bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:outline-none focus:border-secondary"
-                >
-                    {seasonOptions.map((season) => (
-                        <option key={season} value={season}>
-                            {season}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-0 overflow-auto">
                 {isTop20Loading ? (
                     <Leaderboard
                         leagueId="global"
