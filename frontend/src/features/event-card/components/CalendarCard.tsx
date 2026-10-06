@@ -48,8 +48,8 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
                     <img
                         src={logo}
                         alt=""
-                        className="rounded-full object-cover shrink-0 size-3 @min-[700px]:size-4"
-                    />
+                        className="rounded-full object-containt bg-white rounded-lg border border-border-color shrink-0 size-3 @min-[700px]:size-4"
+                   />
                 ) : isReleaseEvent ? null : (
                     <div className="rounded-full bg-bg-card shrink-0 size-3 @min-[700px]:size-4" />
                 )}
