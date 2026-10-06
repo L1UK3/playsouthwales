@@ -3,37 +3,18 @@ import { useLocation, Link } from '@tanstack/react-router';
 import { SignInButton, UserButton, useAuth } from '@clerk/react';
 import TabToggle from '@/components/TabToggle';
 import { neobrutalism } from '@clerk/themes';
-
-import SettingsBox from '@/components/SettingsBox';
-
-/**
- * Properties for the Header component, managing top-level navigation between different sections of the application.
- *
- * @property {string} activeTab - The currently selected navigation tab ('schedule' or 'leagues').
- * @property {() => void} onTabChange - Callback function to handle switching between navigation tabs.
- * @property {() => void} onSettingsBox - Callback function to handle opening the settings dropdown.
- * @property {boolean} isSettingsOpen - Whether the settings dropdown is currently open.
- * @property {() => void} onCloseSettings - Callback function to close the settings dropdown.
- */
-export interface HeaderProps {
-    onSettingsBox?: () => void;
-    isSettingsOpen?: boolean;
-    onCloseSettings?: () => void;
-}
+import { Moon, Sun } from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
 
 /**
  * Wrapper for the header component
- * @param {HeaderProps} props - The properties passed to the component including activeTab and onTabChange.
  * @returns {JSX.Element} The header element.
  */
-const Header: React.FC<HeaderProps> = ({
-    onSettingsBox,
-    isSettingsOpen = false,
-    onCloseSettings = () => undefined,
-}) => {
+const Header: React.FC = () => {
     const location = useLocation();
     const path = location.pathname;
     const { isLoaded, isSignedIn } = useAuth();
+    const { settings, toggleSetting } = useSettings();
     const title = path.includes('leagues')
         ? 'Leagues'
         : path.includes('rankings')
@@ -41,26 +22,6 @@ const Header: React.FC<HeaderProps> = ({
           : path.includes('schedule')
             ? 'Schedule'
             : 'Admin';
-
-    const settingsRef = React.useRef<HTMLDivElement>(null);
-
-    React.useEffect(() => {
-        if (!isSettingsOpen) return;
-
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                settingsRef.current &&
-                !settingsRef.current.contains(event.target as Node)
-            ) {
-                onCloseSettings();
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isSettingsOpen, onCloseSettings]);
 
     return (
         <header className="top-0 z-30 px-4 pt-4">
@@ -117,19 +78,28 @@ const Header: React.FC<HeaderProps> = ({
                             </button>
                         </SignInButton>
                     )}
-                    <div className="relative" ref={settingsRef}>
-                        <button
-                            className={`inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-colors duration-150 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${isSettingsOpen ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
-                            onClick={onSettingsBox}
-                        >
-                            &#9881;
-                        </button>
-                        {isSettingsOpen ? (
-                            <div className="absolute top-[calc(100%+8px)] right-0 z-10 min-w-55 animate-[dropFadeDown_0.15s_ease_forwards]">
-                                <SettingsBox onClose={onCloseSettings} />
-                            </div>
-                        ) : null}
-                    </div>
+                    <button
+                        type="button"
+                        className="inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-colors duration-150 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted"
+                        onClick={() => toggleSetting('darkMode')}
+                        aria-label={
+                            settings.darkMode
+                                ? 'Switch to light mode'
+                                : 'Switch to dark mode'
+                        }
+                        aria-pressed={settings.darkMode}
+                        title={
+                            settings.darkMode
+                                ? 'Switch to light mode'
+                                : 'Switch to dark mode'
+                        }
+                    >
+                        {settings.darkMode ? (
+                            <Sun aria-hidden="true" className="h-5 w-5" />
+                        ) : (
+                            <Moon aria-hidden="true" className="h-5 w-5" />
+                        )}
+                    </button>
                 </div>
             </div>
         </header>
