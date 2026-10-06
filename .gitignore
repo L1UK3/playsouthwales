@@ -606,3 +606,4 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,reactnative,react,visualstudiocode
 
 artifacts/
+test-results/
