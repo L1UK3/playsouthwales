@@ -1,21 +1,19 @@
 import React from 'react';
 import { RankBadge } from './RankBadge';
+import {
+    LeaderboardPodium,
+    type LeaderboardRanking as LeaderboardPodiumRanking,
+} from './leaderboard-podium';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import type { LeaderboardPosition } from '../types/LeaderboardPosition';
 import { SkeletonRow } from './SkeletonRow';
 
-export const GLOBAL_LEAGUE_ID = 'global';
 export const TOP_CUTOFF_THRESHOLD = 20;
 export const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
 const SKELETON_ROW_COUNT = 8;
 const EMPTY_PLAYERS: LeaderboardPosition[] = [];
 
-export type LeaderboardMode = 'national' | 'local';
-
-const COLUMN_COUNT: Record<LeaderboardMode, number> = {
-    national: 3,
-    local: 7,
-};
+const COLUMN_COUNT = 3;
 
 const PODIUM_STYLES: Record<number, string> = {
     1: 'border-l-4 border-t-1 border-amber-400 bg-amber-400/5',
@@ -24,113 +22,71 @@ const PODIUM_STYLES: Record<number, string> = {
 };
 
 export interface LeaderboardProps {
-    leagueId?: number | string;
     season?: string;
     players?: LeaderboardPosition[];
     isLoading?: boolean;
 }
 
-const LeaderboardHeader: React.FC<{ mode: LeaderboardMode }> = ({ mode }) => {
-    if (mode === 'national') {
-        return (
-            <th className="py-2 px-3 text-right pr-4">Championship Points</th>
-        );
-    }
+const LeaderboardHeader = () => (
+    <th className="py-2 px-3 text-right pr-4">Championship Points</th>
+);
 
-    return (
-        <>
-            <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
-                W
-            </th>
-            <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
-                L
-            </th>
-            <th className="py-2 px-3 text-center w-12 hidden md:table-cell">
-                D
-            </th>
-            <th className="py-2 px-3 text-center w-24 hidden sm:table-cell">
-                Attendance
-            </th>
-            <th className="py-2 px-3 text-right pr-4 w-20">Points</th>
-        </>
-    );
-};
-
-const LeaderboardMetrics: React.FC<{
-    player: LeaderboardPosition;
-    mode: LeaderboardMode;
-}> = ({ player, mode }) => {
-    if (mode === 'national') {
-        return (
-            <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">
-                <span className="py-1.5 px-3 text-center text-sm text-text-main font-bold">
-                    {player.cp}
-                </span>
-            </td>
-        );
-    }
-
-    return (
-        <>
-            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
-                {player.wins ?? 0}
-            </td>
-            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
-                {player.losses ?? 0}
-            </td>
-            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden md:table-cell">
-                {player.draws ?? 0}
-            </td>
-            <td className="py-1.5 px-3 text-center text-sm font-medium text-text-main hidden sm:table-cell">
-                {player.attendance ?? 0}
-            </td>
-            <td className="py-1.5 px-3 text-center text-sm font-bold text-text-main hidden md:table-cell">
-                {player.points}
-            </td>
-        </>
-    );
-};
+const LeaderboardMetrics: React.FC<{ player: LeaderboardPosition }> = ({
+    player,
+}) => (
+    <td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">
+        {player.cp ?? 0}
+    </td>
+);
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
-    leagueId = GLOBAL_LEAGUE_ID,
     season,
     players: propPlayers,
     isLoading: propIsLoading,
 }) => {
-    const mode: LeaderboardMode =
-        leagueId === GLOBAL_LEAGUE_ID ? 'national' : 'local';
-    const isGlobal = mode === 'national';
-
     const { data: fetchedPlayers = EMPTY_PLAYERS, isLoading: queryIsLoading } =
-        useLeaderboard(propPlayers !== undefined ? '' : leagueId, season);
+        useLeaderboard(season, propPlayers !== undefined);
 
     const rawPlayers = propPlayers ?? fetchedPlayers;
 
     const sortedPlayers: LeaderboardPosition[] = React.useMemo(() => {
         return [...rawPlayers].sort((a, b) => {
-            if (mode === 'national') {
-                const cpDiff = (b.cp ?? 0) - (a.cp ?? 0);
-                if (cpDiff !== 0) return cpDiff;
-                return a.name.localeCompare(b.name);
-            }
-            const pointsDiff = (b.points ?? 0) - (a.points ?? 0);
-            if (pointsDiff !== 0) return pointsDiff;
+            const cpDiff = (b.cp ?? 0) - (a.cp ?? 0);
+            if (cpDiff !== 0) return cpDiff;
             return a.name.localeCompare(b.name);
         });
-    }, [rawPlayers, mode]);
+    }, [rawPlayers]);
 
     const isLoading = propIsLoading ?? queryIsLoading;
+    const podiumRankings = React.useMemo<LeaderboardPodiumRanking[]>(
+        () =>
+            sortedPlayers.slice(0, 3).map((player, index) => ({
+                userId: String(player.userId ?? `${player.name}-${index}`),
+                userName: player.name,
+                rank: index + 1,
+                value: player.cp ?? 0,
+            })),
+        [sortedPlayers]
+    );
 
     return (
-        <div className="flex flex-col gap-4 w-full h-full min-h-0">
-            {/* Leaderboard Table Container */}
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
+            {!isLoading && podiumRankings.length > 0 ? (
+                <LeaderboardPodium
+                    rankings={podiumRankings}
+                    className="shrink-0 border-b border-border-color pb-4"
+                    showAvatar={false}
+                    medalStyle="modern"
+                />
+            ) : null}
+
             <div className="flex-1 min-h-0 overflow-auto rounded-lg border border-border-color bg-bg-card shadow-xs">
                 <table className="w-full border-collapse text-left">
                     <thead className="sticky top-0 bg-bg-card border-b border-border-color z-10">
                         <tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md">
                             <th className="py-2 px-3 w-16 text-center">Rank</th>
                             <th className="py-2 px-3">Player</th>
-                            <LeaderboardHeader mode={mode} />
+                            <LeaderboardHeader />
                         </tr>
                     </thead>
 
@@ -139,16 +95,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                             Array.from(
                                 { length: SKELETON_ROW_COUNT },
                                 (_, index) => (
-                                    <SkeletonRow
-                                        key={index}
-                                        isGlobal={isGlobal}
-                                    />
+                                    <SkeletonRow key={index} isGlobal />
                                 )
                             )
                         ) : sortedPlayers.length === 0 ? (
                             <tr>
                                 <td
-                                    colSpan={COLUMN_COUNT[mode]}
+                                    colSpan={COLUMN_COUNT}
                                     className="text-center py-12 text-sm text-text-muted"
                                 >
                                     No players found.
@@ -158,7 +111,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                             sortedPlayers.map((player, index) => {
                                 const rank = index + 1;
                                 const renderCutoff =
-                                    mode === 'national' &&
                                     rank === TOP_CUTOFF_POSITION;
 
                                 return (
@@ -171,7 +123,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                         {renderCutoff ? (
                                             <tr className="bg-bg-main/30">
                                                 <td
-                                                    colSpan={COLUMN_COUNT[mode]}
+                                                    colSpan={COLUMN_COUNT}
                                                     className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none"
                                                 >
                                                     Top 20 Cutoff
@@ -180,7 +132,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                         ) : null}
                                         <tr
                                             className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${
-                                                mode === 'national' &&
                                                 PODIUM_STYLES[rank]
                                                     ? PODIUM_STYLES[rank]
                                                     : ''
@@ -196,7 +147,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                                             </td>
                                             <LeaderboardMetrics
                                                 player={player}
-                                                mode={mode}
                                             />
                                         </tr>
                                     </React.Fragment>

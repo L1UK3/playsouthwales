@@ -3,7 +3,6 @@ import React from 'react';
 import { Trophy } from 'lucide-react';
 import { useDocumentMetadata, useTop20Players } from '@/hooks';
 import Leaderboard from '@leaderboard/components/Leaderboard';
-import { LeaderboardCard } from '@leaderboard/components/ui/leaderboard-card';
 import type { LeaderboardPosition } from '@/features/leaderboard/types/LeaderboardPosition';
 
 function getTop20SeasonLabel(date = new Date()) {
@@ -20,7 +19,7 @@ const RankingsPage: React.FC = () => {
     useDocumentMetadata({
         title: 'South Wales Championship Rankings',
         description:
-            'Track the South Wales Top 20 championship points leaderboard and local league rankings for TCG and VGC players.',
+            'View the South Wales National Rankings by official Championship Points for TCG and VGC players.',
     });
 
     const [selectedSeason, setSelectedSeason] = React.useState(() =>
@@ -50,22 +49,11 @@ const RankingsPage: React.FC = () => {
         }));
     }, [top20Data]);
 
-    const nationalRankings = React.useMemo(
-        () =>
-            nationalPlayers.map((player, index) => ({
-                userId: String(player.userId ?? `${player.name}-${index}`),
-                userName: player.name,
-                rank: index + 1,
-                value: player.cp ?? 0,
-            })),
-        [nationalPlayers]
-    );
-
     return (
-        <div className="relative flex flex-col lg:h-[calc(100vh-140px)] h-[calc(100vh-200px)] overflow-hidden bg-bg-card border-2 border-border-color rounded-lg shadow-main animate-swipe-up max-[576px]:rounded-md max-[576px]:border-2">
-            <div className="padding-6 flex flex-col max-h-[calc(100vh-200px)] overflow-hidden">
-                <div className="flex justify-between items-center pb-2 border-b border-border-color mb-3 flex-none">
-                    <h1 className="text-lg font-bold text-text-main flex items-center gap-2 m-0">
+        <div className="relative flex min-h-0 flex-1 flex-col rounded-md border border-border-color bg-bg-card">
+            <div className="flex shrink-0 flex-col p-6 max-[576px]:p-4">
+                <div className="mb-4 flex items-center justify-between gap-4 border-b border-border-color pb-3">
+                    <h1 className="m-0 flex items-center gap-2 text-lg font-bold text-text-main">
                         <Trophy className="w-5 h-5 text-amber-500" />
                         South Wales Rankings
                     </h1>
@@ -79,7 +67,7 @@ const RankingsPage: React.FC = () => {
                     register, message an admin on Discord to sign-up for the
                     event.
                 </p>
-                <div className="flex items-center gap-3 flex-wrap mb-2 flex-none">
+                <div className="mb-0 flex flex-wrap items-center gap-3">
                     <label
                         className="text-sm font-bold text-text-main"
                         htmlFor="top20-season-select"
@@ -92,7 +80,7 @@ const RankingsPage: React.FC = () => {
                         onChange={(event) =>
                             setSelectedSeason(event.target.value)
                         }
-                        className="border-2 border-border-color rounded-md bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:outline-none focus:border-secondary"
+                        className="rounded-md border border-border-color bg-bg-card px-3 py-2 text-sm font-semibold text-text-main focus:border-secondary focus:outline-none"
                     >
                         {seasonOptions.map((season) => (
                             <option key={season} value={season}>
@@ -102,23 +90,12 @@ const RankingsPage: React.FC = () => {
                     </select>
                 </div>
             </div>
-            <div className="flex-1 min-h-0 overflow-auto">
-                {isTop20Loading ? (
-                    <Leaderboard
-                        leagueId="global"
-                        season={selectedSeason}
-                        players={nationalPlayers}
-                        isLoading
-                    />
-                ) : (
-                    <LeaderboardCard
-                        title={`South Wales ${selectedSeason} Rankings`}
-                        fromDate={`${Number(selectedSeason) - 1}-07-01`}
-                        toDate={`${selectedSeason}-06-30`}
-                        podiumRankings={nationalRankings}
-                        rankings={nationalRankings}
-                    />
-                )}
+            <div className="min-h-0 flex-1 overflow-auto">
+                <Leaderboard
+                    season={selectedSeason}
+                    players={isTop20Loading ? undefined : nationalPlayers}
+                    isLoading={isTop20Loading}
+                />
             </div>
         </div>
     );

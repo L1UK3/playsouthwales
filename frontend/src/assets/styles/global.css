@@ -159,24 +159,19 @@
         width: 100%;
         max-width: 1920px;
         margin: 0 auto;
-
-        @media (min-width: 640px) {
-            display: flex;
-            flex-direction: column;
-        }
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
     }
 
     .appContainer {
         padding: 16px;
         width: 100%;
         max-width: 100%;
-
-        @media (min-width: 640px) {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
     }
 
     .btn {
@@ -469,3 +464,4 @@ html.disable-animations *::after {
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
 }
+
