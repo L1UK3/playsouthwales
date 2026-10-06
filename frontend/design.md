@@ -22,11 +22,11 @@ modern-minimal
 
 ## Typography
 
-- Display: Outfit, weight 700, style normal
-- Body: Geist, weight 400
+- Display and body: Manrope, weights 400–800, style normal
 - Mono: Geist Mono, weight 400
 - Display tracking: -0.02em
 - Type scale anchor: --text-md = 1.125rem
+- Use weight 600 for navigation and controls, and weight 800 for page titles.
 - Emoji Policy: Don't use emojis apart from event types.
 
 ## Spacing

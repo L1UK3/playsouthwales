@@ -1,4 +1,9 @@
 {
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
     "files": [],
     "references": [
         {
@@ -6,6 +11,9 @@
         },
         {
             "path": "./tsconfig.node.json"
+        },
+        {
+            "path": "./tsconfig.playwright.json"
         }
     ]
 }
