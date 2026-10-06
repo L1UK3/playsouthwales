@@ -72,7 +72,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 
     return (
         <div
-            className={`grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] ${showPodium ? 'min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)] min-[993px]:grid-rows-1' : ''}`}
+            className={`grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] animate-swipe-up ${showPodium ? 'min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)] min-[993px]:grid-rows-1' : ''}`}
         >
             {showPodium ? (
                 <LeaderboardPodium

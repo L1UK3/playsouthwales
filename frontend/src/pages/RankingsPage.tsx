@@ -50,7 +50,7 @@ const RankingsPage: React.FC = () => {
     }, [top20Data]);
 
     return (
-        <div className="relative flex min-h-0 w-full flex-1 flex-col rounded-lg border border-border-color bg-bg-card shadow-main min-[993px]:h-[min(800px,calc(100dvh-102px))] min-[993px]:flex-none">
+        <div className="relative flex min-h-0 w-full flex-1 flex-col rounded-lg border border-border-color bg-bg-card shadow-main min-[993px]:h-[min(800px,calc(100dvh-102px))] min-[993px]:flex-none animate-swipe-up">
             <div className="flex shrink-0 flex-col gap-6 border-b border-border-color p-8 max-[576px]:gap-4 max-[576px]:p-4">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="min-w-0">
