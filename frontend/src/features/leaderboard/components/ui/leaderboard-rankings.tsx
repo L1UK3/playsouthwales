@@ -188,20 +188,6 @@ const LeaderboardRankings = React.forwardRef<
                                     ) : null}
                                 </div>
 
-                                {ranking.avatarUrl ? (
-                                    <img
-                                        src={ranking.avatarUrl}
-                                        alt={`${displayName} avatar`}
-                                        className="h-10 w-10 rounded-full object-cover"
-                                    />
-                                ) : (
-                                    <div className="bg-muted text-muted-foreground flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium">
-                                        {(ranking.userName ?? ranking.userId)
-                                            .charAt(0)
-                                            .toUpperCase()}
-                                    </div>
-                                )}
-
                                 <div className="min-w-0 flex-1">
                                     <p className="text-foreground truncate font-medium">
                                         {displayName}

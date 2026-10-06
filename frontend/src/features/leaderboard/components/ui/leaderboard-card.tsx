@@ -28,7 +28,6 @@ interface LeaderboardCardProps extends React.HTMLAttributes<HTMLDivElement> {
     onRunChange?: (runId: string) => void;
 }
 
-
 const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
     (
         {
@@ -60,13 +59,11 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
             <div
                 ref={ref}
                 className={
-                    'bg-card rounded-2xl border p-6 shadow-sm' +
-                    className
+                    'bg-card rounded-2xl border p-6 shadow-sm' + className
                 }
                 {...props}
             >
                 <div className="mb-6 flex items-start justify-between gap-4">
-
                     {runOptions && runOptions.length > 0 ? (
                         <select
                             aria-label="Select leaderboard run"
@@ -89,7 +86,13 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
                     ) : null}
                 </div>
 
-                <LeaderboardPodium rankings={podiumRankings} className="mb-6" />
+                <LeaderboardPodium
+                    rankings={podiumRankings}
+                    className="mb-6"
+                    showAvatar={false}
+                    medalStyle="modern"
+                    showValue={true}
+                />
                 <LeaderboardRankings
                     rankings={rankings}
                     currentUserId={currentUserId}
