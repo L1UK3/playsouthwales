@@ -160,9 +160,9 @@ def _build_event_record(event: PokedataEvent, league_id: int) -> dict[str, Any]:
 async def sync_pokedata() -> dict[str, Any]:
     """Synchronize event data from Pokédata with the Supabase database."""
     urls = [
-        f"{API_URL}_tcg/cups/challenges/pre{COORDS_TO_STRING}",
-        f"{API_URL}_vg/cups/challenges{COORDS_TO_STRING}",
-        f"{API_URL}_go/cups/challenges{COORDS_TO_STRING}",
+        f"{API_URL}_tcg/cups/challenges/pre/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
+        f"{API_URL}_vg/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
+        f"{API_URL}_go/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
     ]
 
     all_raw_events = []
