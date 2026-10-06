@@ -68,19 +68,23 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
             })),
         [sortedPlayers]
     );
+    const showPodium = !isLoading && podiumRankings.length > 0;
 
     return (
-        <div className="flex min-h-0 w-full flex-1 flex-col">
-            {!isLoading && podiumRankings.length > 0 ? (
+        <div
+            className={`grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] ${showPodium ? 'min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)] min-[993px]:grid-rows-1' : ''}`}
+        >
+            {showPodium ? (
                 <LeaderboardPodium
                     rankings={podiumRankings}
-                    className="shrink-0 border-border-color pb-4"
+                    className="min-h-full shrink-0 border-border-color pb-4 pt-6 min-[993px]:flex min-[993px]:items-center min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0"
+                    size="lg"
                     showAvatar={false}
                     medalStyle="modern"
                 />
             ) : null}
 
-            <div className="flex-1 min-h-0 overflow-auto rounded-b-lg border-b border-t border-border-color bg-bg-card shadow-xs">
+            <div className={`min-h-0 min-w-0 overflow-auto border-border-color bg-bg-card shadow-xs ${showPodium ? 'rounded-b-lg border-t min-[993px]:rounded-bl-none' : 'rounded-b-lg'}`}>
                 <table className="w-full border-collapse text-left">
                     <thead className="sticky top-0 bg-bg-card  z-10">
                         <tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md">

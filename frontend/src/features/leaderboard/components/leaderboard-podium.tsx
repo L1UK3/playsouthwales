@@ -20,7 +20,11 @@ interface LeaderboardRanking {
 const podiumVariants = ({ size = 'default' }: { size?: PodiumSize } = {}) =>
     classNames(
         'flex items-end justify-center',
-        size === 'sm' ? 'gap-2' : size === 'lg' ? 'gap-6' : 'gap-4'
+        size === 'sm'
+            ? 'gap-2'
+            : size === 'lg'
+              ? 'gap-4 min-[993px]:gap-10'
+              : 'gap-4'
     );
 
 // Podium styles for each position
@@ -31,7 +35,7 @@ const PODIUM_CONFIG = {
         bar: 'bg-amber-400',
         height: 'h-32',
         heightSm: 'h-24',
-        heightLg: 'h-40',
+        heightLg: 'h-36 min-[993px]:h-64',
     },
     2: {
         color: 'text-slate-500',
@@ -39,7 +43,7 @@ const PODIUM_CONFIG = {
         bar: 'bg-slate-400',
         height: 'h-24',
         heightSm: 'h-20',
-        heightLg: 'h-32',
+        heightLg: 'h-32 min-[993px]:h-56',
     },
     3: {
         color: 'text-amber-700',
@@ -47,7 +51,7 @@ const PODIUM_CONFIG = {
         bar: 'bg-amber-700',
         height: 'h-20',
         heightSm: 'h-16',
-        heightLg: 'h-28',
+        heightLg: 'h-28 min-[993px]:h-48',
     },
 } as const;
 
@@ -86,7 +90,7 @@ const LeaderboardPodium = ({
     const avatarSize = {
         sm: 'h-10 w-10 text-sm',
         default: 'h-14 w-14 text-lg',
-        lg: 'h-20 w-20 text-2xl',
+        lg: 'h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24 min-[993px]:text-3xl',
     }[size ?? 'default'];
 
     const textSize = {
@@ -121,7 +125,7 @@ const LeaderboardPodium = ({
                         key={ranking.userId}
                         role="listitem"
                         aria-label={itemLabel}
-                        className="flex flex-col items-center"
+                        className="flex flex-col items-center min-[993px]:h-full min-[993px]:justify-end"
                     >
                         {/* Rank badge */}
                         <div className="relative mb-2" aria-hidden="true">
@@ -150,7 +154,7 @@ const LeaderboardPodium = ({
                         {/* Name */}
                         <span
                             className={classNames(
-                                'max-w-20 truncate text-center font-medium',
+                                'max-w-28 truncate text-center font-medium',
                                 textSize
                             )}
                             title={displayName}
@@ -160,7 +164,7 @@ const LeaderboardPodium = ({
 
                         <span
                             className={classNames(
-                                'mt-1 h-1 w-14 rounded-full',
+                                'mt-2 h-1.5 w-20 rounded-full',
                                 config.bar
                             )}
                             aria-hidden="true"
@@ -182,9 +186,8 @@ const LeaderboardPodium = ({
                         <div
                             aria-hidden="true"
                             className={classNames(
-                                'mt-2 w-22 rounded-t-lg',
+                                'mt-3 w-20 rounded-t-lg min-[993px]:w-28',
                                 size === 'sm' && 'w-20',
-                                size === 'lg' && 'w-24',
                                 podiumHeight,
                                 config.bg,
                                 medalStyle === 'modern' && 'rounded-t-xl'
