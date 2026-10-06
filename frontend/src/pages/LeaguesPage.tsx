@@ -46,7 +46,7 @@ const LeaguesPage: React.FC = () => {
     return (
         <>
             <h1 className="sr-only">TCG and VGC Leagues in South Wales</h1>
-            <div className="grid min-h-0 flex-1 grid-cols-[minmax(340px,400px)_1fr] overflow-hidden rounded-md border border-border-color bg-bg-card max-[992px]:grid-cols-1 max-[992px]:grid-rows-[40vh_1fr] max-[576px]:grid-rows-[35vh_1fr]">
+            <div className="grid h-[calc(100dvh-8rem)] min-h-150 grid-cols-[minmax(340px,400px)_1fr] overflow-hidden rounded-md border border-border-color bg-bg-card max-[992px]:h-[70vh] max-[992px]:min-h-0 max-[992px]:grid-cols-1 max-[992px]:grid-rows-[40vh_1fr] max-[576px]:h-[65vh] max-[576px]:grid-rows-[35vh_1fr]">
                 <div className="flex flex-col p-4 h-full min-h-0 overflow-y-auto gap-3.5 border-r-2 border-border-color max-[992px]:border-r-0 max-[992px]:border-t-2 max-[992px]:border-border-color max-[992px]:p-4 max-[576px]:p-3">
                     <LeagueSelector
                         leagues={leagues}
