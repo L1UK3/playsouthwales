@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from 'react';
-import { Crown } from 'lucide-react';
+import { RankBadge } from './RankBadge';
 
 type PodiumSize = 'sm' | 'default' | 'lg';
 
@@ -26,25 +26,25 @@ const podiumVariants = ({ size = 'default' }: { size?: PodiumSize } = {}) =>
 // Podium styles for each position
 const PODIUM_CONFIG = {
     1: {
-        icon: Crown,
-        color: 'text-rank-1',
-        bg: 'bg-rank-1/60',
+        color: 'text-amber-500',
+        bg: 'bg-amber-400/20',
+        bar: 'bg-amber-400',
         height: 'h-32',
         heightSm: 'h-24',
         heightLg: 'h-40',
     },
     2: {
-        icon: Crown,
-        color: 'text-rank-2',
-        bg: 'bg-rank-2/30',
+        color: 'text-slate-500',
+        bg: 'bg-slate-400/20',
+        bar: 'bg-slate-400',
         height: 'h-24',
         heightSm: 'h-20',
         heightLg: 'h-32',
     },
     3: {
-        icon: Crown,
-        color: 'text-rank-3',
-        bg: 'bg-rank-3/50',
+        color: 'text-amber-700',
+        bg: 'bg-amber-700/20',
+        bar: 'bg-amber-700',
         height: 'h-20',
         heightSm: 'h-16',
         heightLg: 'h-28',
@@ -89,12 +89,6 @@ const LeaderboardPodium = ({
         lg: 'h-20 w-20 text-2xl',
     }[size ?? 'default'];
 
-    const iconSize = {
-        sm: 'h-4 w-4',
-        default: 'h-5 w-5',
-        lg: 'h-6 w-6',
-    }[size ?? 'default'];
-
     const textSize = {
         sm: 'text-xs',
         default: 'text-sm',
@@ -129,7 +123,7 @@ const LeaderboardPodium = ({
                         aria-label={itemLabel}
                         className="flex flex-col items-center"
                     >
-                        {/* Avatar with crown */}
+                        {/* Rank badge */}
                         <div className="relative mb-2" aria-hidden="true">
                             {showAvatar && ranking.avatarUrl ? (
                                 <img
@@ -148,37 +142,7 @@ const LeaderboardPodium = ({
                                         config.bg
                                     )}
                                 >
-                                    <config.icon
-                                        className={classNames(
-                                            iconSize,
-                                            config.color
-                                        )}
-                                    />
-                                </div>
-                            )}
-
-                            {/* Crown badge */}
-                            {medalStyle !== 'minimal' && (
-                                <div
-                                    className={classNames(
-                                        'bg-background absolute -right-1 -bottom-1 flex items-center justify-center rounded-full shadow-sm',
-                                        size === 'sm'
-                                            ? 'h-5 w-5'
-                                            : size === 'lg'
-                                              ? 'h-8 w-8'
-                                              : 'h-6 w-6'
-                                    )}
-                                >
-                                    <config.icon
-                                        className={classNames(
-                                            config.color,
-                                            size === 'sm'
-                                                ? 'h-3 w-3'
-                                                : size === 'lg'
-                                                  ? 'h-5 w-5'
-                                                  : 'h-4 w-4'
-                                        )}
-                                    />
+                                    <RankBadge position={ranking.rank} />
                                 </div>
                             )}
                         </div>
@@ -193,6 +157,14 @@ const LeaderboardPodium = ({
                         >
                             {displayName}
                         </span>
+
+                        <span
+                            className={classNames(
+                                'mt-1 h-1 w-14 rounded-full',
+                                config.bar
+                            )}
+                            aria-hidden="true"
+                        />
 
                         {/* Value */}
                         {showValue && (

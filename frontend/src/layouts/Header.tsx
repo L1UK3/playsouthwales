@@ -25,8 +25,8 @@ const Header: React.FC = () => {
 
     return (
         <header className="top-0 z-30 px-4 pt-4">
-            <div className="flex gap-4 justify-between py-2.5 px-4 items-center bg-bg-card rounded-lg shadow-main relative border-2 border-border-color">
-                <div className="text-sm sm:text-base md:text-xl text-text-main font-bold flex-1">
+            <div className="flex gap-4 justify-between py-3 px-4 items-center bg-bg-card rounded-lg shadow-main relative border border-border-color">
+                <div className="text-sm sm:text-base md:text-lg text-text-main font-extrabold tracking-[-0.02em] flex-1">
                     Play! South Wales{' '}
                     <span className="hidden sm:inline">|</span>{' '}
                     <span
@@ -54,7 +54,7 @@ const Header: React.FC = () => {
                             <UserButton />
                             <Link
                                 to="/admin"
-                                className={`hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-colors duration-150 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? 'bg-primary! text-white! border-primary-hover! shadow-[0_4px_12px_rgba(227,53,13,0.3)]' : ''}`}
+                                className={`hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 border border-border-color rounded-md bg-bg-main text-text-main text-sm font-semibold cursor-pointer transition-colors duration-150 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted ${path.startsWith('/admin') ? 'bg-primary! text-white! border-primary-hover!' : ''}`}
                             >
                                 Admin
                             </Link>
@@ -72,7 +72,7 @@ const Header: React.FC = () => {
                         >
                             <button
                                 type="button"
-                                className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-colors duration-150 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted"
+                                className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 border border-border-color rounded-md bg-bg-main text-text-main text-sm font-semibold cursor-pointer transition-colors duration-150 no-underline hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted"
                             >
                                 Sign In
                             </button>
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
                     )}
                     <button
                         type="button"
-                        className="inline-flex items-center gap-1.5 py-1.5 px-3 border-2 border-border-color rounded-md bg-bg-main text-text-main text-sm font-bold cursor-pointer transition-colors duration-150 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted"
+                        className="inline-flex items-center gap-1.5 py-1.5 px-3 border border-border-color rounded-md bg-bg-main text-text-main text-sm font-semibold cursor-pointer transition-colors duration-150 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted"
                         onClick={() => toggleSetting('darkMode')}
                         aria-label={
                             settings.darkMode
