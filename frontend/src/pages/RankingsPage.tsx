@@ -50,9 +50,9 @@ const RankingsPage: React.FC = () => {
     }, [top20Data]);
 
     return (
-        <div className="relative flex min-h-0 flex-1 flex-col rounded-md border border-border-color bg-bg-card">
+        <div className="relative flex min-h-0 flex-1 flex-col rounded-lg border border-border-color bg-bg-card">
             <div className="flex shrink-0 flex-col p-6 max-[576px]:p-4">
-                <div className="mb-4 flex items-center justify-between gap-4 border-b border-border-color pb-3">
+                <div className="mb-4 flex items-center justify-between border-b border-border-color pb-3">
                     <h1 className="m-0 flex items-center gap-2 text-lg font-bold text-text-main">
                         <Trophy className="w-5 h-5 text-amber-500" />
                         South Wales Rankings
@@ -90,13 +90,11 @@ const RankingsPage: React.FC = () => {
                     </select>
                 </div>
             </div>
-            <div className="min-h-0 flex-1 overflow-auto">
-                <Leaderboard
-                    season={selectedSeason}
-                    players={isTop20Loading ? undefined : nationalPlayers}
-                    isLoading={isTop20Loading}
-                />
-            </div>
+            <Leaderboard
+                season={selectedSeason}
+                players={isTop20Loading ? undefined : nationalPlayers}
+                isLoading={isTop20Loading}
+            />
         </div>
     );
 };

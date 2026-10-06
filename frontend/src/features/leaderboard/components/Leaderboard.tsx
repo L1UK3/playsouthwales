@@ -70,19 +70,19 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
     );
 
     return (
-        <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
+        <div className="flex min-h-0 w-full flex-1 flex-col">
             {!isLoading && podiumRankings.length > 0 ? (
                 <LeaderboardPodium
                     rankings={podiumRankings}
-                    className="shrink-0 border-b border-border-color pb-4"
+                    className="shrink-0 border-border-color pb-4"
                     showAvatar={false}
                     medalStyle="modern"
                 />
             ) : null}
 
-            <div className="flex-1 min-h-0 overflow-auto rounded-lg border border-border-color bg-bg-card shadow-xs">
+            <div className="flex-1 min-h-0 overflow-auto rounded-b-lg border-b border-t border-border-color bg-bg-card shadow-xs">
                 <table className="w-full border-collapse text-left">
-                    <thead className="sticky top-0 bg-bg-card border-b border-border-color z-10">
+                    <thead className="sticky top-0 bg-bg-card  z-10">
                         <tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md">
                             <th className="py-2 px-3 w-16 text-center">Rank</th>
                             <th className="py-2 px-3">Player</th>
