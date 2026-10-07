@@ -17,8 +17,8 @@ COORDS: dict[str, Any] = {
     "unit": "km",
 }
 COORDS_TO_STRING: str = (
-    f"_latitude={COORDS['latitude']}/_longitude={COORDS['longitude']}"
-    f"/_radius={COORDS['radius']}/_unit={COORDS['unit']}"
+    f"_latitude_{COORDS['latitude']}/_longitude_{COORDS['longitude']}"
+    f"/_radius_{COORDS['radius']}/_unit_{COORDS['unit']}"
 )
 EVENT_TYPE_MAP: dict[str, str] = {
     "League Challenge": "CHALLENGE",
