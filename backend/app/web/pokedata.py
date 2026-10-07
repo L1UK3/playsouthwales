@@ -10,24 +10,27 @@ from app.dependencies import supabase
 logger = logging.getLogger(__name__)
 
 API_URL: str = "https://pokedata.ovh/events/api/"
-COORDS: dict[str, float] = {
+COORDS: dict[str, Any] = {
     "latitude": 51.7576404113981,
     "longitude": -3.5224914550781254,
     "radius": 50,
     "unit": "km",
 }
 COORDS_TO_STRING: str = (
-    f"_latitude/{COORDS['latitude']}/"
-    + f"_longitude/{COORDS['longitude']}/"
-    + f"_radius/{COORDS['radius']}/"
-    + f"_unit/{COORDS['unit']}"
+    f"_latitude={COORDS['latitude']}/_longitude={COORDS['longitude']}"
+    f"/_radius={COORDS['radius']}/_unit={COORDS['unit']}"
 )
 EVENT_TYPE_MAP: dict[str, str] = {
     "League Challenge": "CHALLENGE",
     "League Cup": "CUP",
     "Pre Release": "PRE-RELEASE",
 }
-GAME_MAP: dict[str, str] = {"tcg": "TCG", "vgc": "VGC", "go": "GO"}
+GAME_MAP: dict[str, str] = {"tcg": "TCG", "vg": "VGC", "go": "GO"}
+URLS: list[str] = [
+    f"{API_URL}_tcg/cups/challenges/pre/{COORDS_TO_STRING}",
+    f"{API_URL}_vg/cups/challenges/{COORDS_TO_STRING}",
+    f"{API_URL}_go/cups/challenges/{COORDS_TO_STRING}",
+]
 
 
 class PokedataEvent(BaseModel):
@@ -159,14 +162,9 @@ def _build_event_record(event: PokedataEvent, league_id: int) -> dict[str, Any]:
 
 async def sync_pokedata() -> dict[str, Any]:
     """Synchronize event data from Pokédata with the Supabase database."""
-    urls = [
-        f"{API_URL}_tcg/cups/challenges/pre/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
-        f"{API_URL}_vg/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
-        f"{API_URL}_go/cups/challenges/_latitude/51.7576404113981/_longitude/-3.5224914550781254/_radius/50/_unit/km",
-    ]
 
     all_raw_events = []
-    for url in urls:
+    for url in URLS:
         raw_events = await fetch_pokedata_events(url)
         all_raw_events.extend(raw_events)
 
