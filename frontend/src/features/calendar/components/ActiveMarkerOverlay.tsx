@@ -202,7 +202,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
                         base = target;
                         jumping = true;
                         jumpStart = now;
-                        playMarkerPop();
+                        //playMarkerPop();
                     }
                 }
             }
@@ -235,7 +235,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
                         queued = null;
                         jumping = true;
                         jumpStart = now;
-                        playMarkerPop();
+                        //playMarkerPop();
                     }
                 }
             } else {
