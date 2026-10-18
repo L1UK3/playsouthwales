@@ -1,7 +1,4 @@
 User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /_/
-Disallow: /api/
+Disallow: /
 
 Sitemap: https://playsouthwales.uk/sitemap.xml
