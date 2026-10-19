@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.lifespan import lifespan
-from app.routers import protected, public
+from app.routers import api_index, protected, public
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +40,7 @@ def create_app() -> FastAPI:
         ],
     )
 
+    app.include_router(api_index.router)
     app.include_router(public.router)
     app.include_router(protected.router)
 
