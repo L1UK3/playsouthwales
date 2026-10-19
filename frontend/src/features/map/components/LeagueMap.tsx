@@ -70,6 +70,9 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                     className="w-full h-full"
                     mapId="DEMO_MAP_ID"
                     onClick={handleMapClick}
+                    streetViewControl={false}
+                    mapTypeControl={false}
+                    fullscreenControl={false}
                 >
                     {markers.map((marker) => {
                         const isSelected = marker.id === selectedLeagueId;
