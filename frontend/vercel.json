@@ -4,6 +4,10 @@
             "source": "/api(.*)",
             "destination": "https://playsouthwales.onrender.com/api/$1"
         },
+"source": "/docs(.*)",
+"destination": "https://playsouthwales.onrender.com/docs/"
+},
+
         {
             "source": "/(.*)",
             "destination": "/index.html"
