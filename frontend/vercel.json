@@ -1,7 +1,7 @@
 {
     "rewrites": [
         {
-            "source": "/api/(.*)",
+            "source": "/api(.*)",
             "destination": "https://playsouthwales.onrender.com/api/$1"
         },
         {
