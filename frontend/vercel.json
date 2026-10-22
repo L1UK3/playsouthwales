@@ -1,12 +1,12 @@
 {
-    "rewrites": [
-        {
-            "source": "/api(.*)",
-            "destination": "https://playsouthwales.onrender.com/api/$1"
-        },
-        {
-            "source": "(.*)",
-            "destination": "/index.html"
-        }
-    ]
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://playsouthwales.onrender.com/api/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ]
 }
