@@ -5,6 +5,7 @@ import type { League } from '@/types/League';
 import type { EventTypeMap } from '@/types/EventTypeMap';
 import { getLocalDateString } from '@calendar/utils/getLocalDateString';
 import { ListCard } from '@/features/event-card';
+import { useSortEvents } from '@/hooks/useSortEvents';
 
 /**
  * Properties for the ListEventGroup component.
@@ -56,6 +57,8 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
         }
     );
 
+    const sortedEvents = useSortEvents(eventsForDay);
+
     const isToday = useMemo(
         () => dateKey === getLocalDateString(new Date()),
         [dateKey]
@@ -72,7 +75,7 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
                 {dateText}
             </div>
             <div className="flex flex-col gap-3">
-                {eventsForDay.map((event) => (
+                {sortedEvents.map((event) => (
                     <ListCard
                         key={event.id}
                         event={event}
