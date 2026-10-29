@@ -1,22 +1,16 @@
-from __future__ import annotations
-
 import asyncio
 import datetime
 import logging
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from app.integrations.discord_bot import DiscordBroadcaster
+from typing import Literal
 
 logger = logging.getLogger(__name__)
 
 
 class BackgroundScheduler:
-    def __init__(self, broadcaster: DiscordBroadcaster | None = None):
+    def __init__(self, discord_enabled: bool = False):
         self._task: asyncio.Task | None = None
         self._running: bool = False
-        self._first_run: bool = True
-        self._broadcaster = broadcaster
+        self._discord_enabled = discord_enabled
 
     async def start(self) -> None:
         """Start the background task scheduler."""
@@ -71,37 +65,32 @@ class BackgroundScheduler:
                 if now.weekday() == 6 and (
                     last_weekly_run is None or current_date > last_weekly_run
                 ):
-                    await self._run_weekly()
+                    await self._send_digest("weekly")
                     last_weekly_run = current_date
 
             await asyncio.sleep(3600)
 
-    async def _get_events_for_date_range(
-        self, start_date: datetime.date, end_date: datetime.date
-    ) -> list[dict]:
-        """Retrieve standard and expanded weekly events within a date range."""
+    def _claim_run(self, job: str) -> bool:
+        """Atomically mark a job as run today; False if it already ran.
+
+        Claiming before the work means a failed run is skipped rather than
+        repeated, so restarts and multiple workers never double-post.
+        """
         from app.dependencies import supabase
-        from app.services.event import get_events_from_db
 
-        return await get_events_from_db(
-            db=supabase,
-            start_date=start_date,
-            end_date=end_date,
-            expand_recurring=True,
-        )
-
-    def _get_leagues_map(self, db) -> dict[int, str]:
-        """Retrieve the leagues map from the database."""
+        today = datetime.datetime.now(datetime.UTC).date().isoformat()
         try:
-            res = db.table("leagues").select("id, name").execute()
-            return (
-                {league["id"]: league["name"] for league in res.data}
-                if res.data
-                else {}
+            res = (
+                supabase.table("scheduler_runs")
+                .update({"last_run_on": today})
+                .eq("job", job)
+                .lt("last_run_on", today)
+                .execute()
             )
         except Exception as e:
-            logger.error(f"[Scheduler] Failed to fetch leagues map: {e}")
-            return {}
+            logger.error(f"[Scheduler] Failed to claim {job}: {e}")
+            return False
+        return bool(res.data)
 
     async def _run_hourly(self) -> None:
         """Run the hourly background sync."""
@@ -136,22 +125,20 @@ class BackgroundScheduler:
         except Exception as e:
             logger.error(f"[Scheduler] Error in daily background sync: {e}")
 
-        if self._broadcaster:
-            try:
-                await self._broadcaster.send_daily_update()
-            except Exception as e:
-                logger.error(
-                    f"[Scheduler] Error sending daily Discord update: {e}"
-                )
+        await self._send_digest("daily")
 
-    async def _run_weekly(self) -> None:
-        """Send the weekly event digest."""
-        if not self._broadcaster:
+    async def _send_digest(self, kind: Literal["daily", "weekly"]) -> None:
+        """Send an event digest to Discord at most once per day."""
+        if not (self._discord_enabled and self._claim_run(f"{kind}_digest")):
             return
 
+        from app.integrations import discord_bot
+
         try:
-            await self._broadcaster.send_weekly_update()
+            await discord_bot.send_discord_message(
+                await discord_bot.construct_message(kind)
+            )
         except Exception as e:
             logger.error(
-                f"[Scheduler] Error sending weekly Discord update: {e}"
+                f"[Scheduler] Error sending {kind} Discord update: {e}"
             )
