@@ -43,18 +43,18 @@ https://www.playsouthwales.uk - :wales:
 
 
 EVENT_TYPE_ICONS: dict[str, str] = {
-    "CASUAL": "C",
-    "STANDARD": "S",
-    "CHALLENGE": "🏅",
-    "CUP": "🏆",
-    "PRE-RELEASE": "PR",
+    "CASUAL": "Casual",
+    "STANDARD": "Standard",
+    "CHALLENGE": "🏅 · Challenge",
+    "CUP": "🏆 · Cup",
+    "PRE-RELEASE": "Pre-release",
     "SPECIAL": "📍",
     "REGIONAL": "📍",
     "INTERNATIONAL": "INT",
     "WORLDS": "🌍",
-    "LEGALITY": "Set Legal",
-    "RELEASE": "Set Release",
-    "REGULATION": "Reg Legal",
+    "LEGALITY": "New TCG set legal",
+    "RELEASE": "TCG set release day",
+    "REGULATION": "New VGC regulation legal",
 }
 
 UNSANCTIONED_TYPES = {"CASUAL", "STANDARD"}
