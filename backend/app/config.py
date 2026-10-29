@@ -63,6 +63,13 @@ class Settings(BaseSettings):
                 v = v[1:-1].strip()
         return v
 
+    @field_validator("discord_bot_token", "discord_channel_id", mode="before")
+    @classmethod
+    def _empty_to_none(cls, v: str | int | None) -> str | int | None:
+        if isinstance(v, str) and not v.strip():
+            return None
+        return v
+
     model_config = SettingsConfigDict(
         env_file=env_file_path,
         case_sensitive=False,

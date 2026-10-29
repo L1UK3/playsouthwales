@@ -1,113 +1,84 @@
-import asyncio
-from types import SimpleNamespace
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, patch
 
-import discord
+import httpx
 import pytest
 
-from app.integrations.discord_bot import (
-    DiscordBroadcaster,
-    DiscordBroadcastError,
+from app.config import Settings
+from app.integrations.discord_bot import DiscordBroadcaster
+
+
+def make_settings(token, channel_id):
+    return Settings.model_construct(
+        discord_bot_token=token, discord_channel_id=channel_id
+    )
+
+
+@pytest.mark.parametrize(
+    ("token", "channel_id"), [(None, 123), ("token", None), (None, None)]
 )
+def test_from_settings_returns_none_when_unconfigured(token, channel_id):
+    assert (
+        DiscordBroadcaster.from_settings(make_settings(token, channel_id))
+        is None
+    )
 
 
-@pytest.fixture
-def settings():
-    return SimpleNamespace(
-        discord_bot_token="token",
-        discord_channel_id=123,
+def test_from_settings_builds_broadcaster():
+    broadcaster = DiscordBroadcaster.from_settings(make_settings("token", 123))
+
+    assert broadcaster._url.endswith("/channels/123/messages")
+    assert broadcaster._headers == {"Authorization": "Bot token"}
+
+
+@pytest.mark.anyio
+async def test_send_daily_update_posts_events():
+    broadcaster = DiscordBroadcaster("token", 123)
+    events = [{"name": "League Challenge", "date": "2026-10-29"}]
+
+    with (
+        patch(
+            "app.integrations.discord_bot.get_events_from_db",
+            AsyncMock(return_value=events),
+        ) as load_events,
+        patch.object(broadcaster, "_send", AsyncMock()) as send,
+    ):
+        await broadcaster.send_daily_update()
+
+    assert "day" in load_events.await_args.kwargs
+    send.assert_awaited_once_with(
+        "Daily Events Breakdown:\n\n- League Challenge on 2026-10-29"
     )
 
 
 @pytest.mark.anyio
-async def test_send_daily_update_sends_events_to_cached_channel(settings):
-    channel = MagicMock()
-    channel.send = AsyncMock()
-    discord_client = MagicMock()
-    discord_client.get_channel.return_value = channel
-    load_events = AsyncMock(
-        return_value=[{"name": "Cardiff Challenge", "date": "2026-09-28"}]
-    )
-    broadcaster = DiscordBroadcaster(settings, discord_client, load_events)
+async def test_send_weekly_update_handles_no_events():
+    broadcaster = DiscordBroadcaster("token", 123)
 
-    await broadcaster.send_daily_update()
+    with (
+        patch(
+            "app.integrations.discord_bot.get_events_from_db",
+            AsyncMock(return_value=[]),
+        ) as load_events,
+        patch.object(broadcaster, "_send", AsyncMock()) as send,
+    ):
+        await broadcaster.send_weekly_update()
 
-    load_events.assert_awaited_once()
-    channel.send.assert_called_once_with(
-        "Daily Events Breakdown:\n\n- Cardiff Challenge on 2026-09-28"
-    )
-    discord_client.fetch_channel.assert_not_called()
-
-
-@pytest.mark.anyio
-async def test_send_weekly_update_fetches_uncached_channel(settings):
-    channel = MagicMock()
-    channel.send = AsyncMock()
-    discord_client = MagicMock()
-    discord_client.is_ready.return_value = True
-    discord_client.get_channel.return_value = None
-    discord_client.fetch_channel = AsyncMock(return_value=channel)
-    load_events = AsyncMock(return_value=[])
-    broadcaster = DiscordBroadcaster(settings, discord_client, load_events)
-
-    await broadcaster.send_weekly_update()
-
-    discord_client.fetch_channel.assert_awaited_once_with(123)
-    channel.send.assert_called_once_with(
+    assert load_events.await_args.kwargs["weekly"] is True
+    send.assert_awaited_once_with(
         "Upcoming Weekly Events:\n\nNo events scheduled."
     )
-    load_events.assert_awaited_once()
-    assert load_events.call_args.kwargs["weekly"] is True
-    assert load_events.call_args.kwargs["db"] is not None
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize(
-    ("token", "channel_id", "message"),
-    [
-        (None, 123, "DISCORD_BOT_TOKEN must be configured"),
-        ("token", None, "DISCORD_CHANNEL_ID must be configured"),
-        ("token", "not-an-id", "DISCORD_CHANNEL_ID must be an integer"),
-    ],
-)
-async def test_start_rejects_invalid_configuration(token, channel_id, message):
-    settings = SimpleNamespace(
-        discord_bot_token=token,
-        discord_channel_id=channel_id,
-    )
-    broadcaster = DiscordBroadcaster(settings, MagicMock())
+async def test_send_raises_on_discord_error():
+    broadcaster = DiscordBroadcaster("token", 123)
+    request = httpx.Request("POST", broadcaster._url)
+    response = httpx.Response(403, request=request)
 
-    with pytest.raises(RuntimeError, match=message):
-        await broadcaster.start()
+    with patch(
+        "httpx.AsyncClient.post", AsyncMock(return_value=response)
+    ) as post:
+        with pytest.raises(httpx.HTTPStatusError):
+            await broadcaster._send("hello")
 
-
-@pytest.mark.anyio
-async def test_start_and_stop_manage_discord_client(settings):
-    discord_client = MagicMock()
-    discord_client.start = AsyncMock()
-    discord_client.wait_until_ready = AsyncMock()
-    discord_client.is_closed.return_value = False
-    discord_client.close = AsyncMock()
-    broadcaster = DiscordBroadcaster(settings, discord_client)
-
-    await broadcaster.start()
-    await asyncio.sleep(0)
-    await broadcaster.stop()
-
-    discord_client.start.assert_awaited_once_with("token")
-    discord_client.wait_until_ready.assert_not_awaited()
-    discord_client.close.assert_awaited_once()
-
-
-@pytest.mark.anyio
-async def test_fetch_channel_errors_are_controlled(settings):
-    discord_client = MagicMock()
-    discord_client.is_ready.return_value = True
-    discord_client.get_channel.return_value = None
-    discord_client.fetch_channel = AsyncMock(
-        side_effect=discord.Forbidden(MagicMock(), "forbidden")
-    )
-    broadcaster = DiscordBroadcaster(settings, discord_client)
-
-    with pytest.raises(DiscordBroadcastError, match="Unable to access Discord"):
-        await broadcaster.send_weekly_update()
+    assert post.await_args.kwargs["json"] == {"content": "hello"}
