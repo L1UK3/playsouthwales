@@ -25,7 +25,7 @@
 	},
 
 	"onCreateCommand": "cp frontend/.env.example frontend/.env && cp backend/.env.example backend/.env",
-	"postCreateCommand": "supabase start && docker compose up -d --build",
+	"postCreateCommand": "npx supabase start && docker compose up -d --build",
 	"forwardPorts": [
 		5173,
 		5000,
