@@ -56,10 +56,10 @@ async def test_daily_message():
     assert load_events.await_args.kwargs["day"] == day
     assert message == "\n".join(
         [
-            "**Daily events breakdown**\n(Thu 29 Oct)\n",
-            "🏅 · TCG · Cardiff Dragon Guild",
-            "S · TCG · Mana Haven Cardiff",
-            "C · VGC · Mana Haven Cardiff",
+            "## 📅 Today's events\n-# Thu 29 Oct\n",
+            "**🏅 Challenge** · TCG · Cardiff Dragon Guild",
+            "**⚔️ Standard league** · TCG · Mana Haven Cardiff",
+            "**🎲 Casual league** · VGC · Mana Haven Cardiff",
             FOOTER,
         ]
     )
@@ -76,7 +76,7 @@ async def test_daily_message_without_events():
 
     assert message == "\n".join(
         [
-            "**Daily events breakdown**\n(Thu 29 Oct)\n",
+            "## 📅 Today's events\n-# Thu 29 Oct\n",
             "No events today.",
             FOOTER,
         ]
@@ -84,16 +84,15 @@ async def test_daily_message_without_events():
 
 
 @pytest.mark.anyio
-async def test_weekly_message_lists_majors_first_and_skips_league_play():
-    regional = "Gdansk Regional Championships"
+async def test_weekly_message_groups_by_day_and_skips_league_play():
     load_events, (events_patch, leagues_patch) = mock_db(
         [
             make_event("CASUAL", "2026-11-02", 1, "Monday League"),
             make_event("CUP", "2026-11-03", 2, "League Cup"),
             make_event("SPECIAL", "2026-11-04", 1, "Go Fest", "GO"),
             make_event("CHALLENGE", "2026-11-05", 1, "Challenge", "VGC"),
-            make_event("REGIONAL", "2026-11-07", 1, regional, "ALL"),
-            make_event("REGIONAL", "2026-11-08", 1, regional, "ALL"),
+            make_event("REGIONAL", "2026-11-07", 1, "Regionals", "ALL"),
+            make_event("REGIONAL", "2026-11-08", 1, "Regionals", "ALL"),
         ]
     )
 
@@ -103,11 +102,21 @@ async def test_weekly_message_lists_majors_first_and_skips_league_play():
     assert load_events.await_args.kwargs["weekly"] is True
     assert message == "\n".join(
         [
-            "**Weekly sanctioned events breakdown**\n",
-            "📍 · Go Fest · Wed 4 Nov",
-            f"📍 · {regional} · Sat 7 Nov - Sun 8 Nov",
-            "🏆 · TCG · Mana Haven Cardiff · Tue 3 Nov",
-            "🏅 · VGC · Cardiff Dragon Guild · Thu 5 Nov",
+            "## 📆 Next week's sanctioned events\n",
+            "__Tue 3 Nov__",
+            "**🏆 Cup** · TCG · Mana Haven Cardiff",
+            "",
+            "__Wed 4 Nov__",
+            "**📍 Special event** · GO · Cardiff Dragon Guild",
+            "",
+            "__Thu 5 Nov__",
+            "**🏅 Challenge** · VGC · Cardiff Dragon Guild",
+            "",
+            "__Sat 7 Nov__",
+            "**📍 Regional** · Cardiff Dragon Guild",
+            "",
+            "__Sun 8 Nov__",
+            "**📍 Regional** · Cardiff Dragon Guild",
             FOOTER,
         ]
     )
@@ -124,7 +133,7 @@ async def test_weekly_message_without_sanctioned_events():
 
     assert message == "\n".join(
         [
-            "**Weekly sanctioned events breakdown**\n",
+            "## 📆 Next week's sanctioned events\n",
             "No sanctioned events this week.",
             FOOTER,
         ]
@@ -145,8 +154,8 @@ async def test_daily_message_tolerates_unknown_event_types():
             "daily", datetime.date(2026, 10, 29)
         )
 
-    assert "NEW TYPE · TCG · Cardiff Dragon Guild" in message
-    assert "\n · TCG · Cardiff Dragon Guild" in message
+    assert "**New Type** · TCG · Cardiff Dragon Guild" in message
+    assert "**Event** · TCG · Cardiff Dragon Guild" in message
 
 
 @pytest.mark.anyio

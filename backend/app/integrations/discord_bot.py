@@ -10,66 +10,58 @@ from app.services.event import get_events_from_db
 
 logger = logging.getLogger(__name__)
 
-"""
-Message examples:
-
-**Weekly sanctioned events breakdown**
-
-:round_pushpin: · Gdansk Regional Championships · {Dates} 
-:trophy: · {league_name} · {game} · {date}
-:medal:  · {league_name} · {game} · {date}
-:medal: · {league_name} · {game} · {date}
-:trophy:  · {league_name} · {game} · {date}
-:medal: · {league_name} · {game} · {date}
-
-https://www.playsouthwales.uk - :wales: 
-
-
-
-
-**Daily events breakdown:** 
-({date})
-
-:medal: · {league_name} · {event_name} · {game}
-S · {league_name} · {event_name} · {game} 
-S · {league_name} · {event_name} · {game} 
-S · {league_name} · {event_name} · {game} 
-C · {league_name} · {event_name} · {game} 
-
-https://www.playsouthwales.uk - :wales: 
-
-
-"""
-
-
-EVENT_TYPE_ICONS: dict[str, str] = {
-    "CASUAL": "Casual",
-    "STANDARD": "Standard",
-    "CHALLENGE": "🏅 · Challenge",
-    "CUP": "🏆 · Cup",
-    "PRE-RELEASE": "Pre-release",
-    "SPECIAL": "📍",
-    "REGIONAL": "📍",
-    "INTERNATIONAL": "INT",
-    "WORLDS": "🌍",
-    "LEGALITY": "New TCG set legal",
-    "RELEASE": "TCG set release day",
-    "REGULATION": "New VGC regulation legal",
+EVENT_TYPE_LABELS: dict[str, str] = {
+    "CHALLENGE": "🏅 Challenge",
+    "CUP": "🏆 Cup",
+    "PRE-RELEASE": "🎁 Pre-release",
+    "SPECIAL": "📍 Special event",
+    "REGIONAL": "📍 Regional",
+    "INTERNATIONAL": "🌍 International",
+    "WORLDS": "🌍 Worlds",
+    "STANDARD": "⚔️ Standard league",
+    "CASUAL": "🎲 Casual league",
+    "LEGALITY": "✅ New TCG set legal",
+    "RELEASE": "📦 TCG set release day",
+    "REGULATION": "📜 New VGC regulation legal",
 }
 
 UNSANCTIONED_TYPES = {"CASUAL", "STANDARD"}
-MAJOR_EVENT_TYPES = {"SPECIAL", "REGIONAL", "INTERNATIONAL", "WORLDS"}
-FOOTER = "\n<https://www.playsouthwales.uk>"
+FOOTER = "\n:wales: <https://www.playsouthwales.uk>"
 
 
-def _get_icon(event: dict) -> str:
-    event_type = event["eventType"] or ""
-    return EVENT_TYPE_ICONS.get(event_type, event_type)
-
-
-def _format_date(date: str) -> str:
-    day = datetime.date.fromisoformat(date[:10])
+def _format_date(date: datetime.date | str) -> str:
+    day = datetime.date.fromisoformat(date) if isinstance(date, str) else date
     return f"{day:%a} {day.day} {day:%b}"
+
+
+def _event_line(event: dict, leagues: dict[int, str]) -> str:
+    event_type = event["eventType"] or ""
+    label = EVENT_TYPE_LABELS.get(event_type, event_type.title() or "Event")
+    game = event.get("game")
+    parts = [
+        f"**{label}**",
+        None if game == "ALL" else game,
+        leagues.get(event["leagueId"]),
+    ]
+    return " · ".join(part for part in parts if part)
+
+
+def _weekly_body(events: list[dict], leagues: dict[int, str]) -> str:
+    by_day: dict[str, list[str]] = {}
+    for e in sorted(
+        events, key=lambda e: (e["date"], e.get("startTime") or "")
+    ):
+        if e["eventType"] not in UNSANCTIONED_TYPES:
+            by_day.setdefault(e["date"][:10], []).append(
+                _event_line(e, leagues)
+            )
+    return (
+        "\n\n".join(
+            f"__{_format_date(day)}__\n" + "\n".join(lines)
+            for day, lines in by_day.items()
+        )
+        or "No sanctioned events this week."
+    )
 
 
 async def construct_message(
@@ -81,35 +73,18 @@ async def construct_message(
 
     if kind == "daily":
         events = await get_events_from_db(db=supabase, day=day)
-        title = f"**Daily events breakdown**\n({_format_date(str(day))})\n"
-        lines = [
-            f"{_get_icon(e)} · {e['game']} · {leagues.get(e['leagueId'])}"
-            for e in events
-        ] or ["No events today."]
+        title = f"## 📅 Today's events\n-# {_format_date(day)}\n"
+        events.sort(key=lambda e: e["eventType"] in UNSANCTIONED_TYPES)
+        body = (
+            "\n".join(_event_line(e, leagues) for e in events)
+            or "No events today."
+        )
     else:
         events = await get_events_from_db(db=supabase, weekly=True)
-        title = "**Weekly sanctioned events breakdown**\n"
-        majors: dict[str, list[dict]] = {}
-        lines = []
-        for e in events:
-            if e["eventType"] in MAJOR_EVENT_TYPES:
-                majors.setdefault(e["name"].strip(), []).append(e)
-            elif e["eventType"] not in UNSANCTIONED_TYPES:
-                lines.append(
-                    f"{_get_icon(e)} · {e['game']} · "
-                    f"{leagues.get(e['leagueId'])} · {_format_date(e['date'])}"
-                )
-        major_lines = []
-        for name, days in majors.items():
-            first, last = (
-                _format_date(days[0]["date"]),
-                _format_date(days[-1]["date"]),
-            )
-            dates = first if first == last else f"{first} - {last}"
-            major_lines.append(f"{_get_icon(days[0])} · {name} · {dates}")
-        lines = major_lines + lines or ["No sanctioned events this week."]
+        title = "## 📆 Next week's sanctioned events\n"
+        body = _weekly_body(events, leagues)
 
-    return "\n".join([title, *lines, FOOTER])
+    return "\n".join([title, body, FOOTER])
 
 
 async def send_discord_message(
@@ -125,5 +100,6 @@ async def send_discord_message(
 
     async with discord.Client(intents=discord.Intents.none()) as client:
         await client.login(token)
-        await client.get_partial_messageable(channel_id).send(content)
+        channel = client.get_partial_messageable(channel_id)
+        await channel.send(content)
     return True
