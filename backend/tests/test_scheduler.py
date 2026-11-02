@@ -1,8 +1,75 @@
+import asyncio
+import logging
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
 from app.scheduler import BackgroundScheduler
+
+
+async def start_scheduler_with(coroutine) -> BackgroundScheduler:
+    scheduler = BackgroundScheduler()
+    scheduler._running = True
+    scheduler._task = asyncio.create_task(coroutine)
+    await asyncio.sleep(0)
+    return scheduler
+
+
+@pytest.mark.anyio
+async def test_stop_cancels_running_task():
+    scheduler = await start_scheduler_with(asyncio.sleep(3600))
+    task = scheduler._task
+
+    await scheduler.stop()
+
+    assert task.cancelled()
+    assert scheduler._task is None
+
+
+@pytest.mark.anyio
+async def test_stop_retries_when_first_cancel_is_lost():
+    async def lose_first_cancel():
+        try:
+            await asyncio.sleep(3600)
+        except asyncio.CancelledError:
+            pass
+        await asyncio.sleep(3600)
+
+    scheduler = await start_scheduler_with(lose_first_cancel())
+    task = scheduler._task
+
+    with patch("app.scheduler.STOP_RETRY_SECONDS", 0.01):
+        await scheduler.stop()
+
+    assert task.cancelled()
+
+
+@pytest.mark.anyio
+async def test_stop_gives_up_when_task_ignores_cancellation(caplog):
+    release = asyncio.Event()
+
+    async def ignore_cancels():
+        while not release.is_set():
+            try:
+                await release.wait()
+            except asyncio.CancelledError:
+                pass
+
+    scheduler = await start_scheduler_with(ignore_cancels())
+    task = scheduler._task
+
+    with (
+        patch("app.scheduler.STOP_RETRY_SECONDS", 0.01),
+        caplog.at_level(logging.WARNING, logger="app.scheduler"),
+    ):
+        await scheduler.stop()
+
+    assert not task.done()
+    assert scheduler._task is None
+    assert "ignored cancellation" in caplog.text
+
+    release.set()
+    await task
 
 
 @pytest.mark.anyio

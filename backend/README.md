@@ -71,7 +71,7 @@ The server relies on the following environment variables defined in your `.env` 
 
 To run the Uvicorn development server with live reload enabled:
 ```bash
-uvicorn app:create_app --factory --host 127.0.0.1 --port 5000 --reload
+uvicorn app:create_app --factory --host 127.0.0.1 --port 5000 --reload --reload-dir app
 ```
 
 The API server runs at `http://127.0.0.1:5000`. You can view the interactive documentation at `http://127.0.0.1:5000/docs`.

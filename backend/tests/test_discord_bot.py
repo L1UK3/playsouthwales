@@ -56,13 +56,33 @@ async def test_daily_message():
     assert load_events.await_args.kwargs["day"] == day
     assert message == "\n".join(
         [
-            "## 📅 Today's events\n-# Thu 29 Oct\n",
+            "## 📅 Tomorrow's events\n-# Thu 29 Oct\n",
             "**🏅 Challenge** · TCG · Cardiff Dragon Guild",
             "**⚔️ Standard league** · TCG · Mana Haven Cardiff",
             "**🎲 Casual league** · VGC · Mana Haven Cardiff",
             FOOTER,
         ]
     )
+
+
+@pytest.mark.anyio
+async def test_daily_message_defaults_to_tomorrow():
+    load_events, (events_patch, leagues_patch) = mock_db([])
+
+    with (
+        events_patch,
+        leagues_patch,
+        patch(
+            "app.integrations.discord_bot.datetime", wraps=datetime
+        ) as mock_datetime,
+    ):
+        mock_datetime.datetime.now.return_value = datetime.datetime(
+            2026, 10, 31, 18, tzinfo=datetime.UTC
+        )
+        message = await discord_bot.construct_message("daily")
+
+    assert load_events.await_args.kwargs["day"] == datetime.date(2026, 11, 1)
+    assert "-# Sun 1 Nov\n" in message
 
 
 @pytest.mark.anyio
@@ -76,21 +96,55 @@ async def test_daily_message_without_events():
 
     assert message == "\n".join(
         [
-            "## 📅 Today's events\n-# Thu 29 Oct\n",
-            "No events today.",
+            "## 📅 Tomorrow's events\n-# Thu 29 Oct\n",
+            "No events tomorrow.",
             FOOTER,
         ]
     )
 
 
 @pytest.mark.anyio
-async def test_weekly_message_groups_by_day_and_skips_league_play():
+async def test_daily_message_orders_by_hierarchy_with_championships_first():
+    _, (events_patch, leagues_patch) = mock_db(
+        [
+            make_event("CASUAL", "2026-10-29", 2, "VGC Practice", "VGC"),
+            make_event("STANDARD", "2026-10-29", 2, "Thursday League"),
+            make_event("CUP", "2026-10-29", 1, "League Cup"),
+            make_event("CHALLENGE", "2026-10-29", 1, "League Challenge"),
+            make_event("WORLDS", "2026-10-29", 1, "World Championships"),
+            make_event("REGIONAL", "2026-10-29", 1, "Cardiff Regional"),
+        ]
+    )
+
+    with events_patch, leagues_patch:
+        message = await discord_bot.construct_message(
+            "daily", datetime.date(2026, 10, 29)
+        )
+
+    assert message == "\n".join(
+        [
+            "## 📅 Tomorrow's events\n-# Thu 29 Oct\n",
+            "**📍 Cardiff Regional**",
+            "**🌍 World Championships**",
+            "",
+            "**🏅 Challenge** · TCG · Cardiff Dragon Guild",
+            "**🏆 Cup** · TCG · Cardiff Dragon Guild",
+            "**⚔️ Standard league** · TCG · Mana Haven Cardiff",
+            "**🎲 Casual league** · VGC · Mana Haven Cardiff",
+            FOOTER,
+        ]
+    )
+
+
+@pytest.mark.anyio
+async def test_weekly_message_orders_by_hierarchy_and_skips_league_play():
     load_events, (events_patch, leagues_patch) = mock_db(
         [
             make_event("CASUAL", "2026-11-02", 1, "Monday League"),
             make_event("CUP", "2026-11-03", 2, "League Cup"),
             make_event("SPECIAL", "2026-11-04", 1, "Go Fest", "GO"),
-            make_event("CHALLENGE", "2026-11-05", 1, "Challenge", "VGC"),
+            make_event("CHALLENGE", "2026-11-06", 1, "Challenge", "VGC"),
+            make_event("CHALLENGE", "2026-11-05", 2, "Challenge", "TCG"),
             make_event("REGIONAL", "2026-11-07", 1, "Regionals", "ALL"),
             make_event("REGIONAL", "2026-11-08", 1, "Regionals", "ALL"),
         ]
@@ -103,20 +157,30 @@ async def test_weekly_message_groups_by_day_and_skips_league_play():
     assert message == "\n".join(
         [
             "## 📆 Next week's sanctioned events\n",
-            "__Tue 3 Nov__",
-            "**🏆 Cup** · TCG · Mana Haven Cardiff",
+            "**📍 Go Fest**",
+            "**📍 Regionals**",
             "",
-            "__Wed 4 Nov__",
-            "**📍 Special event** · GO · Cardiff Dragon Guild",
-            "",
-            "__Thu 5 Nov__",
-            "**🏅 Challenge** · VGC · Cardiff Dragon Guild",
-            "",
-            "__Sat 7 Nov__",
-            "**📍 Regional** · Cardiff Dragon Guild",
-            "",
-            "__Sun 8 Nov__",
-            "**📍 Regional** · Cardiff Dragon Guild",
+            "**🏅 Challenge** · TCG · Mana Haven Cardiff · Thu 5 Nov",
+            "**🏅 Challenge** · VGC · Cardiff Dragon Guild · Fri 6 Nov",
+            "**🏆 Cup** · TCG · Mana Haven Cardiff · Tue 3 Nov",
+            FOOTER,
+        ]
+    )
+
+
+@pytest.mark.anyio
+async def test_weekly_message_with_only_championships():
+    _, (events_patch, leagues_patch) = mock_db(
+        [make_event("INTERNATIONAL", "2026-11-07", 1, "EUIC", "ALL")]
+    )
+
+    with events_patch, leagues_patch:
+        message = await discord_bot.construct_message("weekly")
+
+    assert message == "\n".join(
+        [
+            "## 📆 Next week's sanctioned events\n",
+            "**🌍 EUIC**",
             FOOTER,
         ]
     )

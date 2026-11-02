@@ -5,6 +5,9 @@ from typing import Literal
 
 logger = logging.getLogger(__name__)
 
+STOP_CANCEL_ATTEMPTS = 5
+STOP_RETRY_SECONDS = 1.0
+
 
 class BackgroundScheduler:
     def __init__(self, discord_enabled: bool = False):
@@ -29,13 +32,24 @@ class BackgroundScheduler:
 
         self._running = False
         if self._task:
-            self._task.cancel()
-            try:
-                await self._task
-            except asyncio.CancelledError:
-                pass
+            await self._cancel_task(self._task)
             self._task = None
         logger.info("[Scheduler] Stopped background tasks.")
+
+    async def _cancel_task(self, task: asyncio.Task) -> None:
+        """Cancel a task without ever blocking shutdown indefinitely.
+
+        A cancel that lands as an HTTP response arrives can get lost, which
+        would leave the loop running, so keep retrying for a bounded time.
+        """
+        for _ in range(STOP_CANCEL_ATTEMPTS):
+            task.cancel()
+            done, _pending = await asyncio.wait(
+                {task}, timeout=STOP_RETRY_SECONDS
+            )
+            if done:
+                return
+        logger.warning("[Scheduler] Background task ignored cancellation.")
 
     async def _run_loop(self) -> None:
         """Run the main loop for the background scheduler."""
@@ -56,8 +70,8 @@ class BackgroundScheduler:
                 await self._run_hourly()
                 last_hourly_run = current_hour
 
-            # Daily Update: Runs mid-morning (>= 10:00 UTC) once per day
-            if now.hour >= 10:
+            # Daily Update: Runs mid-evening (>= 19:00 UTC) once per day
+            if now.hour >= 19:
                 if last_daily_run is None or current_date > last_daily_run:
                     await self._run_daily()
                     last_daily_run = current_date

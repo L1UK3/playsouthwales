@@ -49,7 +49,7 @@ Open a terminal window and navigate to the backend directory. Use `uv` to synchr
 ```bash
 cd backend
 uv sync
-uv run uvicorn app:create_app --factory --host 127.0.0.1 --port 5000 --reload
+uv run uvicorn app:create_app --factory --host 127.0.0.1 --port 5000 --reload --reload-dir app
 ```
 
 The Uvicorn server starts at `http://127.0.0.1:5000` with hot code reloading enabled.

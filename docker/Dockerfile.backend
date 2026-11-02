@@ -31,4 +31,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 COPY . .
 
 EXPOSE 5000
-CMD ["uvicorn", "app:create_app", "--factory", "--host", "0.0.0.0", "--port", "5000", "--reload"]
+CMD ["uvicorn", "app:create_app", "--factory", "--host", "0.0.0.0", "--port", "5000", "--reload", "--reload-dir", "app"]
