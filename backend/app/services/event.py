@@ -5,6 +5,7 @@ import logging
 from supabase import Client
 
 from app.exceptions import NotFoundError
+from app.services.event_hierarchy import sort_events_for_schedule
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +61,7 @@ async def get_events_from_db(
         one_off_events = []
 
     if not expand_recurring:
-        one_off_events.sort(key=lambda x: (x["date"], x.get("startTime") or ""))
-        return one_off_events
+        return sort_events_for_schedule(one_off_events)
 
     weekly_query = db.table("weekly_events").select("*")
     if league_id is not None:
@@ -115,8 +115,7 @@ async def get_events_from_db(
         curr += datetime.timedelta(days=1)
 
     all_events = one_off_events + expanded
-    all_events.sort(key=lambda x: (x["date"], x.get("startTime") or ""))
-    return all_events
+    return sort_events_for_schedule(all_events)
 
 
 async def get_weekly_events(db: Client) -> list[dict]:

@@ -1,11 +1,8 @@
 import type { Event } from '@/types/Event';
 import React from 'react';
 
-/**
- * Display rank for each event type. Lower ranks render higher in the stack.
- * Types that share a rank keep their chronological order.
- */
-export const EVENT_TYPE_PRIORITY: Record<string, number> = {
+/** Matches backend `app/services/event_hierarchy.py` schedule ordering. */
+const EVENT_TYPE_PRIORITY: Record<string, number> = {
     LEGALITY: 0,
     RELEASE: 0,
     REGULATION: 0,
@@ -20,27 +17,53 @@ export const EVENT_TYPE_PRIORITY: Record<string, number> = {
     CASUAL: 6,
 };
 
-const UNKNOWN_PRIORITY = Object.keys(EVENT_TYPE_PRIORITY).length;
+const UNKNOWN_SCHEDULE_PRIORITY =
+    Math.max(...Object.values(EVENT_TYPE_PRIORITY), -1) + 1;
+
+function getEventTypePriority(eventType: string | undefined): number {
+    if (!eventType) {
+        return UNKNOWN_SCHEDULE_PRIORITY;
+    }
+    const normalized = eventType.trim().toUpperCase();
+    return EVENT_TYPE_PRIORITY[normalized] ?? UNKNOWN_SCHEDULE_PRIORITY;
+}
+
+function scheduleSortKey(event: Event): [string, number, string] {
+    const date = event.date.slice(0, 10);
+    const start = event.startTime ?? '';
+    return [date, getEventTypePriority(event.eventType), start];
+}
+
+function compareScheduleKeys(
+    a: [string, number, string],
+    b: [string, number, string]
+): number {
+    if (a[0] !== b[0]) {
+        return a[0] < b[0] ? -1 : 1;
+    }
+    if (a[1] !== b[1]) {
+        return a[1] - b[1];
+    }
+    if (a[2] !== b[2]) {
+        return a[2] < b[2] ? -1 : 1;
+    }
+    return 0;
+}
 
 /**
- * Returns the display rank of an event type. Unknown types sort last.
- * @param eventType {string} - The type of the event.
- * @returns {number} The display rank.
+ * Re-applies public schedule order (date, event type rank, start time) after
+ * client-side merges (weekly expansion, virtual markers). Pure API slices that
+ * are already ordered stay in the same relative order (stable sort).
  */
-export const getEventTypePriority = (eventType: string): number =>
-    EVENT_TYPE_PRIORITY[eventType.trim().toUpperCase()] ?? UNKNOWN_PRIORITY;
-
-/**
- * Orders events by date, then event type hierarchy, then start time.
- * @param a {Event} - The first event.
- * @param b {Event} - The second event.
- * @returns {number} A negative, zero, or positive sort value.
- */
-export const compareEvents = (a: Event, b: Event): number =>
-    a.date.slice(0, 10).localeCompare(b.date.slice(0, 10)) ||
-    getEventTypePriority(a.eventType) - getEventTypePriority(b.eventType) ||
-    (a.startTime ?? '').localeCompare(b.startTime ?? '');
+export function eventsInScheduleOrder(events: Event[]): Event[] {
+    if (events.length <= 1) {
+        return events;
+    }
+    return [...events].sort((left, right) =>
+        compareScheduleKeys(scheduleSortKey(left), scheduleSortKey(right))
+    );
+}
 
 export function useSortEvents(events: Event[]) {
-    return React.useMemo(() => [...events].sort(compareEvents), [events]);
+    return React.useMemo(() => eventsInScheduleOrder(events), [events]);
 }
