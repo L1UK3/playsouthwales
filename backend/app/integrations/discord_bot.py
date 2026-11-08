@@ -7,6 +7,7 @@ import discord
 from app.config import get_settings
 from app.dependencies import supabase
 from app.services.event import get_events_from_db
+from app.services.event_hierarchy import sort_events_for_digest
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +25,6 @@ EVENT_TYPE_LABELS: dict[str, str] = {
     "RELEASE": "📦 TCG set release day",
     "REGULATION": "📜 New VGC regulation legal",
 }
-
-EVENT_TYPE_RANK = {key: rank for rank, key in enumerate(EVENT_TYPE_LABELS)}
 
 UNSANCTIONED_TYPE = {"CASUAL", "STANDARD"}
 CHAMPIONSHIP_TYPE = {"SPECIAL", "REGIONAL", "INTERNATIONAL", "WORLDS"}
@@ -51,12 +50,6 @@ def _is_sanctioned(event: dict) -> bool:
 def _get_league_names() -> dict[int, str]:
     res = supabase.table("leagues").select("id, name").execute()
     return {row["id"]: row["name"] for row in cast(list[dict], res.data)}
-
-
-def _hierarchy_key(event: dict) -> tuple[int, str, str]:
-    """Sort by EVENT_TYPE_LABELS order, with unknown types last."""
-    rank = EVENT_TYPE_RANK.get(event["eventType"], len(EVENT_TYPE_RANK))
-    return rank, event["date"], event.get("startTime") or ""
 
 
 def _championship_line(event: dict) -> str:
@@ -85,7 +78,7 @@ def _digest_body(
     events: list[dict], leagues: dict[int, str], show_date: bool = False
 ) -> str:
     """List championships above the other events, most important first."""
-    ordered = sorted(events, key=_hierarchy_key)
+    ordered = sort_events_for_digest(events)
     # Multi-day championships have one row per day but share a single line.
     championships = dict.fromkeys(
         _championship_line(event)

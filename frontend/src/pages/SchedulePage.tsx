@@ -253,12 +253,7 @@ const SchedulePage: React.FC = () => {
                 )
                     return false;
                 return true;
-            })
-            .sort(
-                (a, b) =>
-                    a.date.localeCompare(b.date) ??
-                    (a.startTime ?? '').localeCompare(b.startTime ?? '')
-            );
+            });
     }, [allEvents, currentDate, filters]);
 
     const eventsToDisplay = selectedDateKey
