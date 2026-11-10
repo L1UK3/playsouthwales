@@ -58,6 +58,17 @@
     --animate-swipe-down: swipeDown 0.5s ease forwards;
     --animate-slide-in-down: slideInDown 0.4s ease forwards;
     --animate-slide-in-right: slideInRight 0.4s ease forwards;
+    --animate-sheet-up: sheetUp 0.25s var(--ease-out) both;
+
+    @keyframes sheetUp {
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
+    }
 
     @keyframes swipeUp {
         from {

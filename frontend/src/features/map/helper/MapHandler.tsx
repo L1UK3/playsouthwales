@@ -6,6 +6,23 @@ import type { League } from '@/types/League';
 const SELECTED_ZOOM = 13;
 
 /**
+ * Moves a latitude south by a number of screen pixels at a zoom level, using
+ * Web Mercator maths. Centring the camera there shows the point that many
+ * pixels above the middle of the map.
+ */
+function offsetLatitude(lat: number, offsetPx: number, zoom: number): number {
+    if (offsetPx === 0) return lat;
+
+    const worldSize = 256 * 2 ** zoom;
+    const sinLat = Math.sin((lat * Math.PI) / 180);
+    const y =
+        (0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) *
+        worldSize;
+    const n = Math.PI - (2 * Math.PI * (y + offsetPx)) / worldSize;
+    return (180 / Math.PI) * Math.atan(Math.sinh(n));
+}
+
+/**
  * A saved camera position. The parent keeps it so it survives a map rebuild.
  */
 export interface CameraSnapshot {
@@ -20,6 +37,8 @@ interface MapHandlerProps {
     defaultZoom: number;
     /** Holds the last camera position. The parent owns it, so it outlives this component. */
     cameraRef: React.RefObject<CameraSnapshot | null>;
+    /** Pixels to show a selected league above the map's centre, for example above a bottom sheet. */
+    focusOffsetY?: number;
 }
 
 /**
@@ -34,6 +53,7 @@ export const MapHandler: React.FC<MapHandlerProps> = ({
     defaultCenter,
     defaultZoom,
     cameraRef,
+    focusOffsetY = 0,
 }) => {
     const map = useMap();
     const selectedLeagueId = selectedLeague?.leagueId ?? null;
@@ -55,7 +75,11 @@ export const MapHandler: React.FC<MapHandlerProps> = ({
             selectedLeague?.longitude !== undefined
         ) {
             map.panTo({
-                lat: selectedLeague.latitude,
+                lat: offsetLatitude(
+                    selectedLeague.latitude,
+                    focusOffsetY,
+                    SELECTED_ZOOM
+                ),
                 lng: selectedLeague.longitude,
             });
             map.setZoom(SELECTED_ZOOM);
@@ -70,6 +94,7 @@ export const MapHandler: React.FC<MapHandlerProps> = ({
         defaultCenter,
         defaultZoom,
         cameraRef,
+        focusOffsetY,
     ]);
 
     // Save the camera each time the map settles after a pan or zoom.

@@ -36,6 +36,17 @@ export const DEFAULT_CENTER = {
  */
 export const DEFAULT_ZOOM = 9;
 
+/**
+ * Below this width the leagues page shows a full-screen map with a bottom sheet.
+ * It matches the max-[992px] breakpoint the page used before.
+ */
+export const MOBILE_MAP_QUERY = '(max-width: 991px)';
+
+/**
+ * How many upcoming events the league sheet lists.
+ */
+export const LEAGUE_SHEET_EVENT_LIMIT = 3;
+
 export const API_BASE_URL = '/api';
 
 export const EVENT_TYPE_MAP: EventTypeMap = {
