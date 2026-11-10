@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     APIProvider,
     Map,
     AdvancedMarker,
-    Pin,
+    CollisionBehavior,
+    ColorScheme,
 } from '@vis.gl/react-google-maps';
 import type { League } from '@/types/League';
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@constants';
-import MapHandler from '../helper/MapHandler';
+import { useSettings } from '@/context/SettingsContext';
+import MapHandler, { type CameraSnapshot } from '../helper/MapHandler';
 import InfoBox from './InfoBox';
+import LeagueMarker from './LeagueMarker';
 import useMarker from '../hooks/useMarker';
+
+/**
+ * Google's demo Map ID, which shows Google's default map style. Set
+ * VITE_GOOGLE_MAPS_MAP_ID to use the templates in docs/map-styles instead.
+ */
+const FALLBACK_MAP_ID = 'DEMO_MAP_ID';
 
 /**
  * Properties for the LeagueMap component, displaying leagues on an interactive map.
@@ -25,6 +34,7 @@ export interface LeagueMapProps {
 
 /**
  * LeagueMap component displays a Google Map with markers for each league.
+ * The map's colour scheme follows the site's dark-mode setting.
  * @param {LeagueMapProps} props - The properties for the LeagueMap component.
  * @returns {JSX.Element} The rendered league map.
  */
@@ -34,6 +44,16 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
     onLeagueSelect,
 }) => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- an empty value must fall back too
+    const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || FALLBACK_MAP_ID;
+    const { settings } = useSettings();
+    const colorScheme = settings.darkMode
+        ? ColorScheme.DARK
+        : ColorScheme.LIGHT;
+
+    // Google rebuilds the map when the colour scheme changes. This ref keeps
+    // the camera across that rebuild, so the view stays put.
+    const cameraRef = useRef<CameraSnapshot | null>(null);
 
     const {
         markers,
@@ -68,7 +88,8 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                     defaultCenter={DEFAULT_CENTER}
                     defaultZoom={DEFAULT_ZOOM}
                     className="w-full h-full"
-                    mapId="DEMO_MAP_ID"
+                    mapId={mapId}
+                    colorScheme={colorScheme}
                     onClick={handleMapClick}
                     streetViewControl={false}
                     mapTypeControl={false}
@@ -81,15 +102,18 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                             <AdvancedMarker
                                 key={marker.id}
                                 position={marker.position}
+                                title={marker.name}
+                                zIndex={isSelected ? 1000 : undefined}
+                                collisionBehavior={
+                                    CollisionBehavior.REQUIRED_AND_HIDES_OPTIONAL
+                                }
                                 onClick={(e) =>
                                     handleMarkerClick(marker.id, e.domEvent)
                                 }
                             >
-                                <Pin
-                                    background={marker.brandColor}
-                                    borderColor="#111111"
-                                    glyphColor="#FFFFFF"
-                                    scale={isSelected ? 1.2 : 0.9}
+                                <LeagueMarker
+                                    marker={marker}
+                                    isSelected={isSelected}
                                 />
                             </AdvancedMarker>
                         );
@@ -106,6 +130,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                         selectedLeague={selectedLeague}
                         defaultCenter={DEFAULT_CENTER}
                         defaultZoom={DEFAULT_ZOOM}
+                        cameraRef={cameraRef}
                     />
                 </Map>
             </div>

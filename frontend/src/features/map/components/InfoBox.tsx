@@ -1,6 +1,7 @@
 import React from 'react';
 import { InfoWindow } from '@vis.gl/react-google-maps';
 import type { League } from '@/types/League';
+import { SELECTED_MARKER_HEIGHT } from './LeagueMarker';
 
 interface InfoBoxProps {
     selectedLeague: League;
@@ -32,6 +33,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
                 lat: selectedLeague.latitude,
                 lng: selectedLeague.longitude,
             }}
+            pixelOffset={[0, -SELECTED_MARKER_HEIGHT]}
             onCloseClick={onCloseClick}
         >
             <div
