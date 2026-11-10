@@ -39,7 +39,7 @@ cp bot/.env.example bot/.env
 Open each `.env` file in your editor and configure your secrets:
 
 - [backend/.env](file:///d:/Projects/playsouthwales/backend/.env): Set `CLERK_SECRET_KEY`, `SUPABASE_URL`, and `SUPABASE_SECRET_KEY` (use the `SERVICE_ROLE_KEY` starting with `eyJ...` from `npx supabase status`, not the opaque `sb_secret_...` key).
-- [frontend/.env](file:///d:/Projects/playsouthwales/frontend/.env): Set `VITE_CLERK_PUBLISHABLE_KEY` and `VITE_GOOGLE_MAPS_API_KEY`.
+- [frontend/.env](file:///d:/Projects/playsouthwales/frontend/.env): Set `VITE_CLERK_PUBLISHABLE_KEY` and `VITE_GOOGLE_MAPS_API_KEY`. For the custom light and dark map styles, also set `VITE_GOOGLE_MAPS_MAP_ID` (see [map styles](map-styles/README.md)).
 - [bot/.env](file:///d:/Projects/playsouthwales/bot/.env): Set `BOT_TOKEN`, `CLIENT_ID`, and `GUILD_ID`. Leave `BOT_TOKEN` blank to run in offline mock mode.
 
 ## Step 3: Start the backend service
