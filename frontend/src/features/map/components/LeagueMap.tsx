@@ -25,11 +25,17 @@ const FALLBACK_MAP_ID = 'DEMO_MAP_ID';
  * @property leagues - Array of League objects to be plotted on the map.
  * @property selectedLeagueId - The ID of the currently focused league.
  * @property onLeagueSelect - Callback function triggered when a marker is clicked.
+ * @property showInfoWindow - Whether to show the info window for the selected league.
+ * @property focusOffsetY - Pixels to show a selected league above the map's centre.
  */
 export interface LeagueMapProps {
     leagues: League[];
     selectedLeagueId: number | null;
     onLeagueSelect: (id: number | null) => void;
+    /** Show Google's info window for the selected league. Mobile turns it off and uses a sheet. */
+    showInfoWindow?: boolean;
+    /** Pixels to show a selected league above the map's centre. */
+    focusOffsetY?: number;
 }
 
 /**
@@ -42,6 +48,8 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
     leagues,
     selectedLeagueId,
     onLeagueSelect,
+    showInfoWindow = true,
+    focusOffsetY = 0,
 }) => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- an empty value must fall back too
@@ -119,7 +127,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                         );
                     })}
 
-                    {selectedLeague && (
+                    {showInfoWindow && selectedLeague && (
                         <InfoBox
                             selectedLeague={selectedLeague}
                             onCloseClick={handleCloseInfoWindow}
@@ -131,6 +139,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
                         defaultCenter={DEFAULT_CENTER}
                         defaultZoom={DEFAULT_ZOOM}
                         cameraRef={cameraRef}
+                        focusOffsetY={focusOffsetY}
                     />
                 </Map>
             </div>
