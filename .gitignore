@@ -1,13 +1,9 @@
 node_modules
 .DS_Store
 dist
-dist-ssr
 *.local
 .env
-.nitro
+.dev.vars*
 .tanstack
 .wrangler
-.output
-.vinxi
-__unconfig*
-todos.json
+worker-configuration.d.ts

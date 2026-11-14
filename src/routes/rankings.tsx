@@ -1,10 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
+import backgroundImage from "#/assets/worlds-banner.png";
+import { getRankings } from "#/features/rankings/rankings.functions";
+import { currentSeason } from "#/features/rankings/season";
+import { optionalString } from "#/lib/search";
+import { pageMeta } from "#/lib/seo";
 
 export const Route = createFileRoute("/rankings")({
+	validateSearch: (search): { season?: string } => ({
+		season: optionalString(search.season),
+	}),
+	loaderDeps: ({ search }) => ({ season: search.season ?? currentSeason() }),
+	loader: ({ deps }) => getRankings({ data: deps }),
+	head: () =>
+		pageMeta("South Wales Championship Rankings", {
+			description:
+				"South Wales National Rankings by official Championship Points for TCG and VGC players.",
+		}),
 	component: RankingsPage,
 });
 
 function RankingsPage() {
+	const { season } = Route.useLoaderDeps();
+	const { seasons, players } = Route.useLoaderData();
+	const navigate = Route.useNavigate();
+
 	return (
 		<div className="flex flex-col gap-2 sm:gap-4">
 			<img
@@ -37,7 +56,9 @@ function RankingsPage() {
 							id="season-select"
 							value={season}
 							onChange={(event) =>
-								navigate({ search: { season: event.target.value } })
+								navigate({
+									search: (prev) => ({ ...prev, season: event.target.value }),
+								})
 							}
 							className="rounded-md border border-border-color bg-bg-card px-3 py-2 text-sm font-bold text-text-main shadow-xs outline-none transition-[border-color,box-shadow] duration-150 focus:border-secondary focus:ring-2 focus:ring-secondary/20"
 						>
