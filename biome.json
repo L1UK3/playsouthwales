@@ -12,6 +12,7 @@
 			"**/.vscode/**/*",
 			"**/index.html",
 			"**/vite.config.ts",
+			"!deprecated",
 			"!**/src/routeTree.gen.ts",
 			"!**/src/styles.css"
 		]
