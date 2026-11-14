@@ -56,7 +56,9 @@ function RankingsPage() {
 							id="season-select"
 							value={season}
 							onChange={(event) =>
-								navigate({ search: { season: event.target.value } })
+								navigate({
+									search: (prev) => ({ ...prev, season: event.target.value }),
+								})
 							}
 							className="rounded-md border border-border-color bg-bg-card px-3 py-2 text-sm font-bold text-text-main shadow-xs outline-none transition-[border-color,box-shadow] duration-150 focus:border-secondary focus:ring-2 focus:ring-secondary/20"
 						>

@@ -28,7 +28,10 @@ function LeaguesPage() {
 	);
 
 	const selectLeague = (id: number | null) => {
-		navigate({ search: { league: id ?? undefined }, replace: true });
+		navigate({
+			search: (prev) => ({ ...prev, league: id ?? undefined }),
+			replace: true,
+		});
 		if (id !== null) {
 			document
 				.getElementById(`league-card-${id}`)
