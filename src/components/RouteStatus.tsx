@@ -3,6 +3,7 @@ import {
 	Link,
 	useRouter,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 import Card from "./Card";
 
 export function RoutePending() {
@@ -15,13 +16,20 @@ export function RoutePending() {
 
 export function RouteError({ error }: ErrorComponentProps) {
 	const router = useRouter();
+
+	// Error messages can carry internal detail (database errors, stack hints),
+	// so log them for debugging and show visitors a generic message.
+	useEffect(() => {
+		console.error(error);
+	}, [error]);
+
 	return (
 		<Card className="text-center">
 			<h1 className="text-base font-bold text-text-darker">
 				Something went wrong
 			</h1>
 			<p className="mt-2 text-sm text-text-muted">
-				{error instanceof Error ? error.message : "Please try again."}
+				We couldn&apos;t load this page. Please try again.
 			</p>
 			<button
 				type="button"
