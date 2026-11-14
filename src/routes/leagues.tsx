@@ -1,10 +1,44 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { getLeagues } from "#/features/leagues/leagues.functions";
+import { optionalId } from "#/lib/search";
+import { pageMeta } from "#/lib/seo";
 
 export const Route = createFileRoute("/leagues")({
+	validateSearch: (search): { league?: number } => ({
+		league: optionalId(search.league),
+	}),
+	loader: () => getLeagues(),
+	head: () =>
+		pageMeta("South Wales League Map & Stores", {
+			description:
+				"Find local TCG, VGC and GO leagues and stores across South Wales.",
+		}),
 	component: LeaguesPage,
 });
 
 function LeaguesPage() {
+	const allLeagues = Route.useLoaderData();
+	const { league: selectedLeagueId } = Route.useSearch();
+	const navigate = Route.useNavigate();
+
+	const leagues = useMemo(
+		() => allLeagues.filter((league) => !league.isChampionshipSeries),
+		[allLeagues],
+	);
+
+	const selectLeague = (id: number | null) => {
+		navigate({
+			search: (prev) => ({ ...prev, league: id ?? undefined }),
+			replace: true,
+		});
+		if (id !== null) {
+			document
+				.getElementById(`league-card-${id}`)
+				?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+		}
+	};
+
 	return (
 		<div className="grid animate-swipe-up overflow-hidden rounded-md border border-border-color bg-bg-card lg:h-[calc(100dvh-8rem)] lg:min-h-150 lg:grid-cols-[minmax(340px,400px)_1fr]">
 			<div className="flex min-h-0 flex-col gap-3.5 overflow-y-auto border-b-2 border-border-color p-4 delay-75 animate-swipe-up lg:h-full lg:border-r-2 lg:border-b-0">
@@ -24,11 +58,13 @@ function LeaguesPage() {
 			</div>
 
 			<div className="relative h-[60dvh] min-h-0 bg-bg-main lg:h-full">
-				<LeagueMap
-					leagues={leagues}
-					selectedLeagueId={selectedLeagueId ?? null}
-					onLeagueSelect={selectLeague}
-				/>
+				<ClientOnly>
+					<LeagueMap
+						leagues={leagues}
+						selectedLeagueId={selectedLeagueId ?? null}
+						onLeagueSelect={selectLeague}
+					/>
+				</ClientOnly>
 			</div>
 		</div>
 	);

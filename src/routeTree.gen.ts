@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as LeaguesRouteImport } from './routes/leagues'
 import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as AuthedAdminRouteImport } from './routes/_authed/admin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeaguesRoute = LeaguesRouteImport.update({
@@ -28,33 +34,44 @@ const RankingsRoute = RankingsRouteImport.update({
   path: '/rankings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedAdminRoute = AuthedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/leagues': typeof LeaguesRoute
   '/rankings': typeof RankingsRoute
+  '/admin': typeof AuthedAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/leagues': typeof LeaguesRoute
   '/rankings': typeof RankingsRoute
+  '/admin': typeof AuthedAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authed': typeof AuthedRouteWithChildren
   '/leagues': typeof LeaguesRoute
   '/rankings': typeof RankingsRoute
+  '/_authed/admin': typeof AuthedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leagues' | '/rankings'
+  fullPaths: '/' | '/leagues' | '/rankings' | '/admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leagues' | '/rankings'
-  id: '__root__' | '/' | '/leagues' | '/rankings'
+  to: '/' | '/leagues' | '/rankings' | '/admin'
+  id:
+    '__root__' | '/' | '/_authed' | '/leagues' | '/rankings' | '/_authed/admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
   LeaguesRoute: typeof LeaguesRoute
   RankingsRoute: typeof RankingsRoute
 }
@@ -66,6 +83,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leagues': {
@@ -82,11 +106,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/admin': {
+      id: '/_authed/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthedAdminRouteImport
+      parentRoute: typeof AuthedRoute
+    }
   }
 }
 
+interface AuthedRouteChildren {
+  AuthedAdminRoute: typeof AuthedAdminRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedAdminRoute: AuthedAdminRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthedRoute: AuthedRouteWithChildren,
   LeaguesRoute: LeaguesRoute,
   RankingsRoute: RankingsRoute,
 }

@@ -15,3 +15,486 @@ body {
   margin: 0;
 }
 
+@theme {
+    /* Colors */
+    --color-primary: oklch(0.55 0.22 25);
+    --color-primary-hover: oklch(0.48 0.2 25);
+    --color-secondary: oklch(0.48 0.15 250);
+    --color-secondary-hover: oklch(0.4 0.13 250);
+    --color-accent: oklch(0.82 0.18 85);
+
+    /* Backgrounds */
+    --color-bg-main: oklch(0.975 0.006 75);
+    --color-bg-card: oklch(0.995 0.003 75);
+    --color-bg-card-hover: oklch(0.965 0.008 75);
+    --color-bg-cell-empty: rgba(0, 0, 0, 0.02);
+    --color-bg-day-header: rgba(246, 248, 250, 0.85);
+
+    /* Text */
+    --color-text-main: oklch(0.23 0.015 65);
+    --color-text-muted: oklch(0.5 0.015 65);
+    --color-text-darker: oklch(0.15 0.015 65);
+
+    /* Borders */
+    --color-border-color: oklch(0.88 0.012 75);
+
+    /* Shadows */
+    --shadow-main: 0 1px 3px rgba(41, 37, 36, 0.06), 0 8px 24px rgba(41, 37, 36, 0.04);
+
+    /* Radii */
+    --radius-sm: 5px;
+    --radius-md: 7px;
+    --radius-lg: 10px;
+
+    /* Fonts */
+    --font-sans:
+        'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Event Colors */
+    --color-event-bg: rgba(227, 53, 13, 0.15);
+    --color-event-text: var(--color-primary);
+    --color-event-more-bg: rgba(0, 0, 0, 0.05);
+    --color-event-more-text: var(--color-secondary);
+    --color-today-border: var(--color-secondary);
+    --color-selected-border: var(--color-primary);
+    --color-special-day: var(--color-accent);
+    --color-special-day-border: oklch(0.75 0.18 80);
+    --color-type-bg: rgba(49, 104, 177, 0.15);
+    --color-type-text: var(--color-text-main);
+    --color-type-border: var(--color-secondary-hover);
+
+    /* Motion & Animations */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-short: 150ms;
+    --animate-swipe-up: swipeUp 0.5s ease forwards;
+    --animate-swipe-left: swipeLeft 0.5s ease forwards;
+    --animate-swipe-right: swipeRight 0.5s ease forwards;
+    --animate-swipe-down: swipeDown 0.5s ease forwards;
+    --animate-slide-in-down: slideInDown 0.4s ease forwards;
+    --animate-slide-in-right: slideInRight 0.4s ease forwards;
+    --animate-sheet-up: sheetUp 0.25s var(--ease-out) both;
+
+    @keyframes sheetUp {
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes swipeUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes swipeLeft {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes swipeRight {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes swipeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+@layer base {
+    html {
+        scrollbar-gutter: stable both-edges;
+    }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(
+                in oklch,
+                var(--color-border-color) 70%,
+                transparent
+            )
+            transparent;
+    }
+
+    *::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: color-mix(
+            in oklch,
+            var(--color-border-color) 70%,
+            transparent
+        );
+        border-radius: 10px;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-text-muted);
+    }
+
+    body {
+        background-color: var(--color-bg-main);
+        color: var(--color-text-main);
+        min-height: 100vh;
+        font-family: var(--font-sans);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+}
+
+@layer components {
+    .appRoot {
+        width: 100%;
+        max-width: 1920px;
+        margin: 0 auto;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .appContainer {
+        padding: 16px;
+        width: 100%;
+        max-width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+            background-color var(--dur-short) var(--ease-out),
+            border-color var(--dur-short) var(--ease-out),
+            color var(--dur-short) var(--ease-out),
+            transform var(--dur-short) var(--ease-out);
+        border: 1px solid transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        line-height: 1.2;
+        box-shadow: 0 1px 2px rgba(41, 37, 36, 0.04);
+    }
+
+    .btn-primary {
+        background-color: var(--color-primary) !important;
+        color: white !important;
+        font-weight: 700;
+        border: none !important;
+        padding: 8px 16px;
+        border-radius: var(--radius-md);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-primary-hover) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px
+            color-mix(in oklch, var(--color-primary) 15%, transparent);
+    }
+
+    .btn-secondary {
+        padding: 8px 16px;
+        border: 1px solid var(--color-border-color);
+        border-radius: var(--radius-md);
+        background: var(--color-bg-card);
+        color: var(--color-text-main);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .btn-secondary:hover {
+        background: var(--color-bg-card-hover);
+        border-color: var(--color-text-muted);
+    }
+
+    .not-yet-implemented {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 480px;
+        max-width: 900px;
+        width: 100%;
+        margin: auto;
+        padding: 32px;
+        color: var(--color-text-muted);
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border-color);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        gap: 16px;
+        animation: swipeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .not-yet-implemented:hover {
+        transform: translateY(-4px);
+    }
+
+    .not-yet-implemented p {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--color-text-darker);
+        letter-spacing: -0.5px;
+        margin: 0;
+    }
+
+    .not-yet-implemented-subtext {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--color-text-muted);
+        max-width: 500px;
+        line-height: 1.6;
+        margin-top: 4px;
+    }
+}
+
+/* Event Type Color Schemes */
+.type-CASUAL {
+    --type-bg: oklch(0.78 0.25 150 / 0.15);
+    --type-border: oklch(0.78 0.25 150);
+}
+
+.type-STANDARD {
+    --type-bg: oklch(0.72 0.28 250 / 0.15);
+    --type-border: oklch(0.72 0.28 250);
+}
+
+.type-CHALLENGE {
+    --type-bg: oklch(0.75 0.25 45 / 0.15);
+    --type-border: oklch(0.75 0.25 45);
+}
+
+.type-CUP {
+    --type-bg: oklch(0.88 0.25 95 / 0.15);
+    --type-border: oklch(0.68 0.28 20);
+}
+
+.type-PRE-RELEASE {
+    --type-bg: oklch(0.7 0.3 300 / 0.15);
+    --type-border: oklch(0.7 0.3 300);
+}
+
+.type-SPECIAL {
+    --type-bg: oklch(0.72 0.3 340 / 0.15);
+    --type-border: oklch(0.72 0.3 340);
+}
+
+.type-REGIONAL {
+    --type-bg: oklch(0.7 0.25 35 / 0.15);
+    --type-border: oklch(0.7 0.25 35);
+}
+
+.type-INTERNATIONAL {
+    --type-bg: oklch(0.8 0.2 200 / 0.15);
+    --type-border: oklch(0.8 0.2 200);
+}
+
+.type-WORLDS {
+    --type-bg: oklch(0.88 0.25 95 / 0.15);
+    --type-border: oklch(0.88 0.25 95);
+}
+
+.type-LEGALITY {
+    --type-bg: oklch(0.2 0.01 28 / 0.08);
+    --type-border: oklch(0.2 0.01 28);
+}
+
+.type-RELEASE {
+    --type-bg: oklch(0.2 0.01 28 / 0.08);
+    --type-border: oklch(0.2 0.01 28);
+}
+
+.type-REGULATION {
+    --type-bg: oklch(0.2 0.01 28 / 0.08);
+    --type-border: oklch(0.2 0.01 28);
+}
+
+:root {
+    --card-bg-mix: 6%;
+    --card-border-mix: 100%;
+    --card-shadow-mix: 18%;
+    --card-hover-shadow-mix: 30%;
+    --cal-card-bg-mix: 8%;
+    --cal-card-hover-mix: 18%;
+    --bg-challenge-day: color-mix(in oklch, oklch(0.75 0.25 45) 8%, var(--color-bg-card));
+    --bg-challenge-day-hover: color-mix(in oklch, oklch(0.75 0.25 45) 13%, var(--color-bg-card));
+    --shadow-challenge-day-inset: inset 0 0 12px color-mix(in oklch, oklch(0.75 0.25 45) 12%, transparent);
+    --bg-championship-day: color-mix(in oklch, oklch(0.82 0.22 85) 10%, var(--color-bg-card));
+    --bg-championship-day-hover: color-mix(in oklch, oklch(0.82 0.22 85) 16%, var(--color-bg-card));
+    --shadow-championship-day-inset: inset 0 0 14px color-mix(in oklch, oklch(0.82 0.22 85) 16%, transparent);
+}
+
+@utility bg-challenge-day {
+    background-color: var(--bg-challenge-day) !important;
+    box-shadow: var(--shadow-challenge-day-inset);
+
+    &:hover {
+        background-color: var(--bg-challenge-day-hover) !important;
+    }
+}
+
+@utility bg-championship-day {
+    background-color: var(--bg-championship-day) !important;
+    box-shadow: var(--shadow-championship-day-inset);
+
+    &:hover {
+        background-color: var(--bg-championship-day-hover) !important;
+    }
+}
+
+@utility calendar-card {
+    --card-color: var(--store-color, var(--color-primary));
+    background-color: var(--color-bg-card) !important;
+    border: 1.5px solid var(--card-color) !important;
+
+    color: var(--color-text-main) !important;
+    border-radius: var(--radius-sm) !important;
+    transition:
+        background-color var(--dur-short) var(--ease-out),
+        border-color var(--dur-short) var(--ease-out),
+        transform var(--dur-short) var(--ease-out),
+        box-shadow var(--dur-short) var(--ease-out) !important;
+
+    &:hover {
+        background-color: var(--color-bg-card-hover) !important;
+        transform: translateY(-0.5px) !important;
+        box-shadow: 0 0 10px
+            color-mix(in oklch, var(--card-color) 25%, transparent) !important;
+    }
+}
+
+/* --- Dark Mode Variables --- */
+html.dark {
+    --card-bg-mix: 25%;
+    --card-border-mix: 65%;
+    --card-shadow-mix: 25%;
+    --card-hover-shadow-mix: 45%;
+    --cal-card-bg-mix: 20%;
+    --cal-card-hover-mix: 35%;
+
+    --color-bg-main: oklch(0.18 0.01 240);
+    --color-bg-card: oklch(0.24 0.01 240);
+    --color-bg-card-hover: oklch(0.28 0.01 240);
+    --color-bg-cell-empty: rgba(255, 255, 255, 0.02);
+    --color-bg-day-header: rgba(39, 39, 42, 0.9);
+
+    --color-text-main: oklch(0.88 0.005 240);
+    --color-text-muted: oklch(0.65 0.005 240);
+    --color-text-darker: oklch(0.95 0.005 240);
+
+    --color-border-color: oklch(0.3 0.01 240);
+    --color-primary: oklch(0.62 0.2 25);
+    --color-primary-hover: oklch(0.55 0.2 25);
+    --color-secondary: oklch(0.55 0.15 250);
+    --color-secondary-hover: oklch(0.48 0.13 250);
+
+    --color-event-bg: rgba(255, 77, 77, 0.2);
+    --color-event-more-bg: rgba(255, 255, 255, 0.1);
+    --color-special-day-border: oklch(0.78 0.18 80);
+    --bg-challenge-day: color-mix(in oklch, oklch(0.75 0.25 45) 14%, var(--color-bg-card));
+    --bg-challenge-day-hover: color-mix(in oklch, oklch(0.75 0.25 45) 20%, var(--color-bg-card));
+    --shadow-challenge-day-inset: inset 0 0 14px color-mix(in oklch, oklch(0.75 0.25 45) 20%, transparent);
+    --bg-championship-day: color-mix(in oklch, oklch(0.82 0.22 85) 15%, var(--color-bg-card));
+    --bg-championship-day-hover: color-mix(in oklch, oklch(0.82 0.22 85) 22%, var(--color-bg-card));
+    --shadow-championship-day-inset: inset 0 0 16px color-mix(in oklch, oklch(0.82 0.22 85) 22%, transparent);
+
+    .type-LEGALITY {
+        --type-bg: oklch(0.88 0.005 28 / 0.12);
+        --type-border: oklch(0.88 0.005 28);
+    }
+    .type-RELEASE {
+        --type-bg: oklch(0.88 0.005 28 / 0.12);
+        --type-border: oklch(0.88 0.005 28);
+    }
+    .type-REGULATION {
+        --type-bg: oklch(0.88 0.005 28 / 0.12);
+        --type-border: oklch(0.88 0.005 28);
+    }
+}
+
+html.dark body {
+    background-color: var(--color-bg-main);
+    background-image: none !important;
+}
+
+/* --- Large Text Scale --- */
+html.large-text {
+    font-size: 115%;
+}
+
+html.large-text .btn {
+    font-size: 15px;
+    padding: 8px 16px;
+}
+
+html.large-text p,
+html.large-text span,
+html.large-text h1,
+html.large-text h2,
+html.large-text h3 {
+    line-height: 1.6;
+}
+
+/* --- Disable Animations (CSS Overrides) --- */
+html.disable-animations *,
+html.disable-animations *::before,
+html.disable-animations *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+}

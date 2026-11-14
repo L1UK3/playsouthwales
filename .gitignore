@@ -3,6 +3,7 @@ node_modules
 dist
 *.local
 .env
+.dev.vars*
 .tanstack
 .wrangler
 worker-configuration.d.ts
