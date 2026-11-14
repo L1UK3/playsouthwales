@@ -24,11 +24,11 @@ function LeaguesPage() {
 			</div>
 
 			<div className="relative h-[60dvh] min-h-0 bg-bg-main lg:h-full">
-					<LeagueMap
-						leagues={leagues}
-						selectedLeagueId={selectedLeagueId ?? null}
-						onLeagueSelect={selectLeague}
-					/>
+				<LeagueMap
+					leagues={leagues}
+					selectedLeagueId={selectedLeagueId ?? null}
+					onLeagueSelect={selectLeague}
+				/>
 			</div>
 		</div>
 	);

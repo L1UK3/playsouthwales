@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LeaguesRouteImport } from './routes/leagues'
+import { Route as RankingsRouteImport } from './routes/rankings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LeaguesRoute = LeaguesRouteImport.update({
+  id: '/leagues',
+  path: '/leagues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankingsRoute = RankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/leagues': typeof LeaguesRoute
+  '/rankings': typeof RankingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/leagues': typeof LeaguesRoute
+  '/rankings': typeof RankingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/leagues': typeof LeaguesRoute
+  '/rankings': typeof RankingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/leagues' | '/rankings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/leagues' | '/rankings'
+  id: '__root__' | '/' | '/leagues' | '/rankings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LeaguesRoute: typeof LeaguesRoute
+  RankingsRoute: typeof RankingsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/leagues': {
+      id: '/leagues'
+      path: '/leagues'
+      fullPath: '/leagues'
+      preLoaderRoute: typeof LeaguesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rankings': {
+      id: '/rankings'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof RankingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LeaguesRoute: LeaguesRoute,
+  RankingsRoute: RankingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
