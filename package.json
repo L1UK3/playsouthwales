@@ -1,5 +1,5 @@
 {
-  "name": "migration",
+  "name": "playsouthwales",
   "private": true,
   "type": "module",
   "imports": {
@@ -13,6 +13,7 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
+    "typecheck": "tsc --noEmit",
     "deploy": "npm run build && wrangler deploy",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply playsouthwales --local",
