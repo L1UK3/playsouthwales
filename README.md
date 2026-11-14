@@ -1,183 +1,259 @@
-<p align="center">
-  <a href="https://playsouthwales.uk/">
-    <img src="frontend/src/assets/icons/favicon.jpg" alt="Play! South Wales Logo" width="96" height="96" style="border-radius: 12px;" />
-  </a>
-</p>
+Welcome to your new TanStack Start app!
 
-# Play! South Wales
+# Getting Started
 
-[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![React 19](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-<p align="center"><a href="https://playsouthwales.uk/" >https://playsouthwales.uk/</a></p>
-
-Play! South Wales manages league schedules, player standings, and venue directories across South Wales. The platform provides event calendars, Championship Point leaderboards, and administrative tools for tournament organizers.
-
-## Documentation directory
-
-The project organizes all documentation according to the **Diátaxis Framework**. Choose the quadrant matching your current goal:
-
-| Quadrant          | Document                                                             | Description                                                                            | Target audience           |
-| :---------------- | :------------------------------------------------------------------- | :------------------------------------------------------------------------------------- | :------------------------ |
-| **Tutorials**     | [docs/SETUP.md](docs/SETUP.md)                                       | Step-by-step walkthrough to configure and run the full stack locally.                  | New contributors          |
-| **How-to guides** | [docs/backend_developer_guide.md](docs/backend_developer_guide.md)   | Instructions to create endpoints, declare models, and write tests.                     | Backend engineers         |
-| **How-to guides** | [docs/frontend_developer_guide.md](docs/frontend_developer_guide.md) | Instructions for TanStack Router routes, TanStack Query, and design tokens.            | Frontend engineers        |
-| **How-to guides** | [docs/bot_guide.md](docs/bot_guide.md)                               | Instructions for Discord bot setup, Express HTTP notifier, and slash commands.         | Bot maintainers           |
-| **How-to guides** | [docs/event_sync.md](docs/event_sync.md)                             | Instructions to trigger scraper runs, exclude recurring dates, and run SQL migrations. | Maintainers and admins    |
-| **How-to guides** | [CONTRIBUTING.md](CONTRIBUTING.md)                                   | Branching policies, conventional commit standards, and pull request rules.             | All contributors          |
-| **Reference**     | [docs/api.md](docs/api.md)                                           | REST API endpoints, query parameters, request bodies, and error schemas.               | Frontend & API developers |
-| **Reference**     | [backend/README.md](backend/README.md)                               | Backend settings, environment variables, dependencies, and test commands.              | Backend engineers         |
-| **Reference**     | [bot/README.md](bot/README.md)                                       | Discord bot token configuration, Express HTTP endpoints, and slash commands.           | Bot maintainers           |
-| **Reference**     | [frontend/design.md](frontend/design.md)                             | Design tokens, OKLCH palette values, typography rules, and CTA conventions.            | UI designers & engineers  |
-| **Reference**     | [AGENTS.md](AGENTS.md)                                               | Architecture rules, agent skills mapping, and prose style standards.                   | AI coding assistants      |
-| **Reference**     | [SECURITY.md](SECURITY.md)                                           | Supported release versions and vulnerability disclosure policies.                      | Security researchers      |
-| **Explanation**   | [docs/architecture.md](docs/architecture.md)                         | Architectural discussions on system topology, virtual event IDs, and auth lifecycles.  | Core architects           |
-
-## Services and ports
-
-You can run each service independently or together using Docker Compose:
-
-| Service          | Directory   | Local port | Health check URL                                                     | Environment template    |
-| :--------------- | :---------- | :--------- | :------------------------------------------------------------------- | :---------------------- |
-| **Frontend**     | `frontend/` | `5173`     | [http://localhost:5173](http://localhost:5173)                       | `frontend/.env.example` |
-| **Backend API**  | `backend/`  | `5000`     | [http://localhost:5000/api/health](http://localhost:5000/api/health) | `backend/.env.example`  |
-| **Swagger Docs** | `backend/`  | `5000`     | [http://localhost:5000/docs](http://localhost:5000/docs)             | N/A                     |
-| **Discord Bot**  | `bot/`      | `5001`     | [http://localhost:5001/health](http://localhost:5001/health)         | `bot/.env.example`      |
-
-## Tech stack
-
-### Frontend
-
-- **Framework**: React 19 with TypeScript and Vite
-- **Routing**: TanStack Router with file-based routing
-- **State management**: TanStack Query (React Query)
-- **Styling**: Tailwind CSS v4 and OKLCH color design tokens
-- **Auth and maps**: Clerk React SDK and Google Maps Platform (`@vis.gl/react-google-maps`)
-- **Graphics and icons**: Three.js and Lucide React
-
-### Backend
-
-- **Framework**: FastAPI running on Python 3.14+
-- **Validation**: Pydantic v2 and Pydantic Settings
-- **Database**: Supabase Python SDK with PostgreSQL
-- **Authentication**: Clerk backend API with local JWT verification
-- **Scheduler**: Asyncio lifespan background task runner
-- **Testing and linting**: Pytest and Ruff
-
-### Discord bot
-
-- **Framework**: Discord.js v14 with DiscordX on Node.js
-- **Notifier server**: Express HTTP server on port 5001
-- **Commands**: Slash commands including `/ping` and `/help`
-
-### Database and infrastructure
-
-- **Database**: Supabase PostgreSQL for events, leagues, and standings
-- **Identity provider**: Clerk authentication and session tokens
-- **Asset storage**: Supabase Storage
-
-## Repository structure
-
-```text
-playsouthwales/
-├── backend/            # FastAPI REST API service
-│   ├── app/            # Routers, models, services, lifespan, and scrapers
-│   ├── tests/          # Pytest backend test suite
-│   └── pyproject.toml  # Python dependencies and tool settings
-├── bot/                # Discord bot client and notifier service
-│   ├── src/            # Slash commands and Express HTTP endpoints
-│   └── package.json    # Bot dependencies and scripts
-├── frontend/           # Vite Single Page Application
-│   ├── src/            # React components, routes, layouts, and hooks
-│   └── package.json    # Frontend dependencies and scripts
-├── docker/             # Container configuration files
-│   ├── Dockerfile.backend
-│   ├── Dockerfile.bot
-│   └── Dockerfile.frontend
-├── docs/               # In-depth Diátaxis documentation
-│   ├── README.md       # Overview: Diátaxis framework matrix and navigation
-│   ├── SETUP.md        # Tutorial: Local setup walkthrough
-│   ├── architecture.md # Explanation: System topology and virtual IDs
-│   ├── api.md          # Reference: REST API endpoints and schemas
-│   ├── event_sync.md   # How-to: Scraper jobs and database migrations
-│   ├── backend_developer_guide.md  # How-to: Extending backend routers and models
-│   ├── frontend_developer_guide.md # How-to: TanStack Router and Query workflows
-│   └── bot_guide.md    # How-to: Discord bot setup and slash commands
-├── supabase/           # Supabase migrations, seeds, and configurations
-│   ├── migrations/     # PostgreSQL migration scripts
-│   └── seed.sql        # Mock database fixtures for local development
-├── docker-compose.yml  # Multi-service container definitions
-└── AGENTS.md           # AI assistant development guidelines
-```
-
-## Getting started
-
-You can run the application using Docker Compose or configure each service locally.
-
-### Option 1: Run with Docker Compose
-
-1. Clone the repository to your workstation:
-
-    ```bash
-    git clone https://github.com/L1UK3/playsouthwales.git
-    cd playsouthwales
-    ```
-
-2. Copy the template environment files:
-
-    ```bash
-    cp backend/.env.example backend/.env
-    cp bot/.env.example bot/.env
-    cp frontend/.env.example frontend/.env
-    ```
-
-3. Populate your credentials in the created `.env` files.
-
-4. Start all containers:
-    ```bash
-    docker compose up --build
-    ```
-
-### Option 2: Run natively on your machine
-
-You can run Python and Node services directly on your operating system. Follow the detailed steps in [docs/SETUP.md](docs/SETUP.md) to initialize your virtual environment, install dependencies, and launch dev servers.
-
-## Quality checks and testing
-
-You must run validation commands before submitting code changes:
-
-### Backend validation
+To run this application:
 
 ```bash
-cd backend
-pytest
-ruff check .
-ruff format . --check
+npm install
+npm run dev
 ```
 
-### Frontend validation
+# Building For Production
+
+To build this application for production:
 
 ```bash
-cd frontend
-npm run lint
-npm run format
-```
-
-### Discord bot validation
-
-```bash
-cd bot
 npm run build
 ```
 
-## Contributing
+## Styling
 
-We welcome community contributions. Read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for branching conventions, conventional commit standards, and pull request procedures. Please review our [CODEOFCONDUCT.md](CODEOFCONDUCT.md) before participating.
+This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-## License
+### Removing Tailwind CSS
 
-This project is licensed under the terms of the [MIT License](LICENSE).
+If you prefer not to use Tailwind CSS:
+
+1. Remove the demo pages in `src/routes/demo/`
+2. Replace the Tailwind import in `src/styles.css` with your own styles
+3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
+4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
+
+## Linting & Formatting
+
+This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
+
+
+```bash
+npm run lint
+npm run format
+npm run check
+```
+
+
+## Deploy to Cloudflare Workers
+
+This project uses the Cloudflare Vite plugin (configured in `vite.config.ts`) and `wrangler.jsonc`:
+
+1. Install Wrangler: `npm install -g wrangler`
+2. Authenticate: `wrangler login`
+3. Deploy: `npx wrangler deploy`
+
+For production env vars, run `wrangler secret put MY_VAR` for each secret listed in `.env.example`. Public (non-secret) vars go in `wrangler.jsonc` under `vars`.
+
+KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see https://developers.cloudflare.com/workers/wrangler/configuration/.
+
+
+## Setting up Clerk
+
+1. Create an application in the [Clerk dashboard](https://dashboard.clerk.com).
+2. Copy its publishable and secret keys into `.env.local`:
+
+   ```bash
+   VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
+   CLERK_SECRET_KEY=sk_test_...
+   ```
+
+3. Start the app and visit `/demo/clerk`.
+
+### What's wired up
+
+- `clerkMiddleware()` authenticates each server request from `src/start.ts`.
+- `<ClerkProvider>` supplies auth state throughout the app.
+- `<SignInButton>` and `<UserButton>` in the header respond to the session.
+- `/demo/clerk` shows Clerk's prebuilt sign-in UI and signed-in user data.
+
+### Protecting a route
+
+Use `auth()` in a loader or server function when authorization must happen on the
+server:
+
+```tsx
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { auth } from '@clerk/tanstack-react-start/server'
+
+const getAuth = createServerFn({ method: 'GET' }).handler(async () => {
+  const { userId } = await auth()
+  return { userId }
+})
+
+export const Route = createFileRoute('/dashboard')({
+  beforeLoad: async () => {
+    const { userId } = await getAuth()
+    if (!userId) throw redirect({ to: '/' })
+  },
+})
+```
+
+`<Show when="signed-in">` remains useful for presentation, but server-side checks
+are the security boundary. See Clerk's [TanStack Start docs](https://clerk.com/docs/tanstack-react-start/getting-started/quickstart).
+
+### Production checklist
+
+- Set both keys in the production environment; never expose `CLERK_SECRET_KEY`.
+- Use production keys from a dedicated production Clerk instance.
+- Configure the production domain and any social connections in the Clerk dashboard.
+
+
+
+## Routing
+
+This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+
+### Adding A Route
+
+To add a new route to your application just add a new file in the `./src/routes` directory.
+
+TanStack will automatically generate the content of the route file for you.
+
+Now that you have two routes you can use a `Link` component to navigate between them.
+
+### Adding Links
+
+To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
+
+```tsx
+import { Link } from "@tanstack/react-router";
+```
+
+Then anywhere in your JSX you can use it like so:
+
+```tsx
+<Link to="/about">About</Link>
+```
+
+This will create a link that will navigate to the `/about` route.
+
+More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+
+### Using A Layout
+
+In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
+
+Here is an example layout that includes a header:
+
+```tsx
+import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'My App' },
+    ],
+  }),
+  shellComponent: ({ children }) => (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <header>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+          </nav>
+        </header>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  ),
+})
+```
+
+More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+
+## Server Functions
+
+TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
+
+```tsx
+import { createServerFn } from '@tanstack/react-start'
+
+const getServerTime = createServerFn({
+  method: 'GET',
+}).handler(async () => {
+  return new Date().toISOString()
+})
+
+// Use in a component
+function MyComponent() {
+  const [time, setTime] = useState('')
+  
+  useEffect(() => {
+    getServerTime().then(setTime)
+  }, [])
+  
+  return <div>Server time: {time}</div>
+}
+```
+
+## API Routes
+
+You can create API routes by using the `server` property in your route definitions:
+
+```tsx
+import { createFileRoute } from '@tanstack/react-router'
+import { json } from '@tanstack/react-start'
+
+export const Route = createFileRoute('/api/hello')({
+  server: {
+    handlers: {
+      GET: () => json({ message: 'Hello, World!' }),
+    },
+  },
+})
+```
+
+## Data Fetching
+
+There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+
+For example:
+
+```tsx
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/people')({
+  loader: async () => {
+    const response = await fetch('https://swapi.dev/api/people')
+    return response.json()
+  },
+  component: PeopleComponent,
+})
+
+function PeopleComponent() {
+  const data = Route.useLoaderData()
+  return (
+    <ul>
+      {data.results.map((person) => (
+        <li key={person.name}>{person.name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+
+
+
+# Learn More
+
+You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+
+For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
