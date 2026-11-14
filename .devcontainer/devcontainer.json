@@ -8,7 +8,7 @@
     "source=playsouthwales-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   ],
   "postCreateCommand": "sudo chown node node_modules && npm ci && ([ -f .env.local ] || cp .env.example .env.local) && npx wrangler d1 migrations apply playsouthwales --local",
-  "forwardPorts": [3000, 8976],
+  "forwardPorts": [3000, 8976, 4983],
   "portsAttributes": {
     "3000": { "label": "Vite dev", "onAutoForward": "openBrowser" },
     "8976": { "label": "wrangler login callback", "onAutoForward": "silent" }
