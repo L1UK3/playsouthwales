@@ -2,6 +2,7 @@ import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import LeagueSelector from "#/features/league-selector/components/LeagueSelector";
 import { getLeagues } from "#/features/leagues/leagues.functions";
+import LeagueMap from "#/features/map/components/LeagueMap";
 import { optionalId } from "#/lib/search";
 import { pageMeta } from "#/lib/seo";
 
