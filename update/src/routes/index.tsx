@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import CalendarView from "#/features/calendar/components/CalendarView";
+import Filters from "#/features/calendar/components/Filters";
+import ListView from "#/features/calendar/components/ListView";
+import NavBar from "#/features/calendar/components/NavBar";
+import SelectedDaySection from "#/features/calendar/components/SelectedDaySection";
 import { getSchedule } from "#/features/schedule/schedule.functions";
 import { selectSchedule } from "#/features/schedule/select";
 import { createLeagueMap } from "#/lib/events";
