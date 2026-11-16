@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Suspense, type ReactNode } from "react";
+import { SettingsProvider } from "#/context/SettingsContext";
 import { SITE_NAME } from "#/lib/seo";
 import appCss from "#/styles.css?url";
 import { MobileNavBar } from "#/components/MobileNavBar";
@@ -59,16 +60,18 @@ function RootDocument({ children }: { children: ReactNode }) {
 
 function RootLayout() {
 	return (
-		<div className="appRoot">
-			<Header />
+		<SettingsProvider>
+			<div className="appRoot">
+				<Header />
 
-			<main className="appContainer pb-20 sm:pb-4">
-				<Suspense fallback={<SuspenseLoader />}>
-					<Outlet />
-				</Suspense>
-			</main>
+				<main className="appContainer pb-20 sm:pb-4">
+					<Suspense fallback={<SuspenseLoader />}>
+						<Outlet />
+					</Suspense>
+				</main>
 
-			<MobileNavBar />
-		</div>
+				<MobileNavBar />
+			</div>
+		</SettingsProvider>
 	);
 }
