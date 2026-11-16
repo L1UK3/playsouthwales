@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Trophy } from "lucide-react";
 import backgroundImage from "#/assets/worlds-banner.png";
+import Leaderboard from "#/features/leaderboard/components/Leaderboard";
 import { getRankings } from "#/features/rankings/rankings.functions";
 import { currentSeason } from "#/features/rankings/season";
 import { optionalString } from "#/lib/search";
