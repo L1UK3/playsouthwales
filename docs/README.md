@@ -1,7 +1,3 @@
----
-meta.contentType: Reference
----
-
 # Documentation suite
 
 Play! South Wales organizes technical documentation using the Diátaxis authoring framework. This framework separates content into four distinct quadrants based on user needs and goals.

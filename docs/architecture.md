@@ -1,7 +1,3 @@
----
-meta.contentType: Explanation
----
-
 # Architecture overview
 
 Play! South Wales connects Pokémon Trading Card Game and Video Game Championship communities across South Wales. The application combines a responsive web client, a high-performance REST API, automated tournament scrapers, and a Discord notification bot.

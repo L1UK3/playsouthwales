@@ -1,7 +1,3 @@
----
-meta.contentType: Tutorial
----
-
 # How to set up Play! South Wales locally
 
 This tutorial guides you through configuring and running the entire application stack on your local machine. You will start the FastAPI backend, the React Single Page Application, and the Discord bot service.

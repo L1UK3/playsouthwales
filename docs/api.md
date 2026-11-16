@@ -1,7 +1,3 @@
----
-meta.contentType: Reference
----
-
 # REST API reference
 
 The Play! South Wales backend exposes a REST API running on port `5000`. The Discord bot also provides a lightweight HTTP notification server on port `5001`.
