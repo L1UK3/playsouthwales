@@ -7,10 +7,12 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import type { ReactNode } from "react";
-import HeaderUser from "#/integrations/clerk/header-user";
+import { Suspense, type ReactNode } from "react";
 import { SITE_NAME } from "#/lib/seo";
 import appCss from "#/styles.css?url";
+import { MobileNavBar } from "#/components/MobileNavBar";
+import { SuspenseLoader } from "#/components/SuspenseLoader";
+import Header from "#/components/Header";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -57,13 +59,16 @@ function RootDocument({ children }: { children: ReactNode }) {
 
 function RootLayout() {
 	return (
-		<>
-			<header className="flex justify-end p-4">
-				<HeaderUser />
-			</header>
-			<main className="mx-auto w-full max-w-7xl px-4 pb-20 sm:pb-4">
-				<Outlet />
+		<div className="appRoot">
+			<Header />
+
+			<main className="appContainer pb-20 sm:pb-4">
+				<Suspense fallback={<SuspenseLoader />}>
+					<Outlet />
+				</Suspense>
 			</main>
-		</>
+
+			<MobileNavBar />
+		</div>
 	);
 }
