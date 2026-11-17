@@ -13,13 +13,13 @@ export function Header() {
 	const path = location.pathname;
 	const { isLoaded, isSignedIn } = useAuth();
 	const { settings, toggleSetting } = useSettings();
-	const title = path.includes("leagues")
+	const title = path.startsWith("/leagues")
 		? "Leagues"
-		: path.includes("rankings")
+		: path.startsWith("/rankings")
 			? "Rankings"
-			: path.includes("schedule")
-				? "Schedule"
-				: "Admin";
+			: path.startsWith("/admin")
+				? "Admin"
+				: "Schedule";
 
 	return (
 		<header className="top-0 z-30 px-4 pt-4">
@@ -97,5 +97,3 @@ export function Header() {
 		</header>
 	);
 }
-
-export default Header;
