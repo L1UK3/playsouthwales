@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+Sitemap: https://playsouthwales.uk/sitemap.xml

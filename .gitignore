@@ -86,7 +86,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -467,7 +466,6 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
-.vscode/
 
 # yarn v2
 .yarn/cache
@@ -568,3 +566,5 @@ dist
 .tanstack
 .wrangler
 worker-configuration.d.ts
+
+.claude/

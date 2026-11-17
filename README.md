@@ -17,37 +17,6 @@
 
 Play! South Wales manages league schedules, player standings, and venue directories across South Wales. The platform provides event calendars, Championship Point leaderboards, and administrative tools for tournament organizers.
 
-## Documentation directory
-
-The project organizes all documentation according to the **Diátaxis Framework**. Choose the quadrant matching your current goal:
-
-| Quadrant          | Document                                                             | Description                                                                            | Target audience           |
-| :---------------- | :------------------------------------------------------------------- | :------------------------------------------------------------------------------------- | :------------------------ |
-| **Tutorials**     | [docs/SETUP.md](docs/SETUP.md)                                       | Step-by-step walkthrough to configure and run the full stack locally.                  | New contributors          |
-| **How-to guides** | [docs/backend_developer_guide.md](docs/backend_developer_guide.md)   | Instructions to create endpoints, declare models, and write tests.                     | Backend engineers         |
-| **How-to guides** | [docs/frontend_developer_guide.md](docs/frontend_developer_guide.md) | Instructions for TanStack Router routes, TanStack Query, and design tokens.            | Frontend engineers        |
-| **How-to guides** | [docs/bot_guide.md](docs/bot_guide.md)                               | Instructions for Discord bot setup, Express HTTP notifier, and slash commands.         | Bot maintainers           |
-| **How-to guides** | [docs/event_sync.md](docs/event_sync.md)                             | Instructions to trigger scraper runs, exclude recurring dates, and run SQL migrations. | Maintainers and admins    |
-| **How-to guides** | [CONTRIBUTING.md](CONTRIBUTING.md)                                   | Branching policies, conventional commit standards, and pull request rules.             | All contributors          |
-| **Reference**     | [docs/api.md](docs/api.md)                                           | REST API endpoints, query parameters, request bodies, and error schemas.               | Frontend & API developers |
-| **Reference**     | [backend/README.md](backend/README.md)                               | Backend settings, environment variables, dependencies, and test commands.              | Backend engineers         |
-| **Reference**     | [bot/README.md](bot/README.md)                                       | Discord bot token configuration, Express HTTP endpoints, and slash commands.           | Bot maintainers           |
-| **Reference**     | [frontend/design.md](frontend/design.md)                             | Design tokens, OKLCH palette values, typography rules, and CTA conventions.            | UI designers & engineers  |
-| **Reference**     | [AGENTS.md](AGENTS.md)                                               | Architecture rules, agent skills mapping, and prose style standards.                   | AI coding assistants      |
-| **Reference**     | [SECURITY.md](SECURITY.md)                                           | Supported release versions and vulnerability disclosure policies.                      | Security researchers      |
-| **Explanation**   | [docs/architecture.md](docs/architecture.md)                         | Architectural discussions on system topology, virtual event IDs, and auth lifecycles.  | Core architects           |
-
-## Services and ports
-
-You can run each service independently or together using Docker Compose:
-
-| Service          | Directory   | Local port | Health check URL                                                     | Environment template    |
-| :--------------- | :---------- | :--------- | :------------------------------------------------------------------- | :---------------------- |
-| **Frontend**     | `frontend/` | `5173`     | [http://localhost:5173](http://localhost:5173)                       | `frontend/.env.example` |
-| **Backend API**  | `backend/`  | `5000`     | [http://localhost:5000/api/health](http://localhost:5000/api/health) | `backend/.env.example`  |
-| **Swagger Docs** | `backend/`  | `5000`     | [http://localhost:5000/docs](http://localhost:5000/docs)             | N/A                     |
-| **Discord Bot**  | `bot/`      | `5001`     | [http://localhost:5001/health](http://localhost:5001/health)         | `bot/.env.example`      |
-
 ## Tech stack
 
 ### Frontend
