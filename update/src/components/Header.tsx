@@ -1,5 +1,5 @@
 import { useLocation, Link } from "@tanstack/react-router";
-import { SignInButton, UserButton, useAuth } from "@clerk/react";
+import { SignInButton, UserButton, useAuth } from "@clerk/tanstack-react-start";
 import TabToggle from "./TabToggle";
 import { Moon, Sun } from "lucide-react";
 import { useSettings } from "#/context/SettingsContext";

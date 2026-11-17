@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useAuth, SignInButton } from "@clerk/react";
+import { useAuth, SignInButton } from "@clerk/tanstack-react-start";
 import { Calendar, MapPin, Trophy, ShieldAlert } from "lucide-react";
 
 const CLERK_SIGN_IN_APPEARANCE = {
