@@ -2,10 +2,6 @@ import type { ScheduleEvent } from "#/types/domain";
 
 export type RecurringEvent = ScheduleEvent & { id: number };
 
-function weekdayOf(dateKey: string): number {
-	return new Date(`${dateKey}T00:00:00Z`).getUTCDay();
-}
-
 export function expandRecurring(
 	recurring: RecurringEvent[],
 	month: string,
@@ -13,15 +9,25 @@ export function expandRecurring(
 ): ScheduleEvent[] {
 	const [year, monthNumber] = month.split("-").map(Number);
 	const daysInMonth = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate();
+	const monthStart = new Date(Date.UTC(year, monthNumber - 1, 1));
 	const occurrences: ScheduleEvent[] = [];
 
 	for (const event of recurring) {
 		const firstDate = event.date.slice(0, 10);
-		const weekday = weekdayOf(firstDate);
+		if (firstDate.slice(0, 7) > month) continue;
 
-		for (let day = 1; day <= daysInMonth; day++) {
+		// Start from the first occurrence, or the 1st if it began before this
+		// month, then move forward to the matching weekday and step by a week.
+		const first = new Date(`${firstDate}T00:00:00Z`);
+		const from = first > monthStart ? first : monthStart;
+		const daysToWeekday = (first.getUTCDay() - from.getUTCDay() + 7) % 7;
+
+		for (
+			let day = from.getUTCDate() + daysToWeekday;
+			day <= daysInMonth;
+			day += 7
+		) {
 			const date = `${month}-${String(day).padStart(2, "0")}`;
-			if (date < firstDate || weekdayOf(date) !== weekday) continue;
 
 			const isExcluded = event.excludedDates?.includes(date) ?? false;
 			if (isExcluded && !includeExcluded) continue;
