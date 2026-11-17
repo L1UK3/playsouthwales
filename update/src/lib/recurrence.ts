@@ -34,11 +34,8 @@ export function expandRecurring(
 
 			occurrences.push({
 				...event,
-				id:
-					event.id * 10_000_000 +
-					(year - 2000) * 10_000 +
-					monthNumber * 100 +
-					day,
+				// Unique per occurrence. Use recurringEventId to find the series.
+				id: `${event.id}:${date}`,
 				recurringEventId: event.id,
 				date,
 				isRecurring: true,
