@@ -294,14 +294,14 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
 								<button
 									type="button"
 									onClick={handleAddRow}
-									className="btn btn-secondary text-xs py-1.5 px-3 min-h-[38px] flex items-center gap-1.5 font-bold cursor-pointer"
+									className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
 								>
 									<Plus className="w-4 h-4" /> Add Player Row
 								</button>
 								<button
 									type="button"
 									onClick={() => setShowPasteArea(!showPasteArea)}
-									className="btn btn-secondary text-xs py-1.5 px-3 min-h-[38px] flex items-center gap-1.5 font-bold cursor-pointer"
+									className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
 								>
 									<Clipboard className="w-4 h-4" />{" "}
 									{showPasteArea ? "Hide Paste Area" : "Import CSV/Paste"}
@@ -309,7 +309,7 @@ export const LeaderboardFormModal: React.FC<LeaderboardFormModalProps> = ({
 								<button
 									type="button"
 									onClick={handleSortLeaderboard}
-									className="btn btn-secondary text-xs py-1.5 px-3 min-h-[38px] flex items-center gap-1.5 font-bold cursor-pointer"
+									className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
 								>
 									Auto-Sort
 								</button>

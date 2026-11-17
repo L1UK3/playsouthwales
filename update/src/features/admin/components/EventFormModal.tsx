@@ -287,7 +287,7 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 							{/* Recurring Event Options — hidden for championship series */}
 							{!isChampionshipLeague && (
 								<div className="sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2">
-									<label className="flex items-center gap-3 cursor-pointer min-h-[44px] select-none">
+									<label className="flex items-center gap-3 cursor-pointer min-h-11 select-none">
 										<input
 											type="checkbox"
 											id="eventIsRecurring"
@@ -349,14 +349,14 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 					<div className="border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0">
 						<button
 							type="button"
-							className="btn btn-secondary min-h-[44px] flex items-center justify-center"
+							className="btn btn-secondary min-h-11 flex items-center justify-center"
 							onClick={onClose}
 						>
 							Cancel
 						</button>
 						<button
 							type="submit"
-							className="btn btn-primary min-h-[44px] flex items-center justify-center"
+							className="btn btn-primary min-h-11 flex items-center justify-center"
 							disabled={isSubmitting}
 						>
 							{isSubmitting
