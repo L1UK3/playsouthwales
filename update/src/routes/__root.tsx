@@ -13,7 +13,7 @@ import { SITE_NAME } from "#/lib/seo";
 import appCss from "#/styles.css?url";
 import { MobileNavBar } from "#/components/MobileNavBar";
 import { SuspenseLoader } from "#/components/SuspenseLoader";
-import Header from "#/components/Header";
+import { Header } from "#/components/Header";
 
 export const Route = createRootRoute({
 	head: () => ({
