@@ -1,7 +1,10 @@
-import { asc } from "drizzle-orm";
-import type { League } from "#/types/domain";
+import { and, asc, eq, gte, lt } from "drizzle-orm";
+import { EVENT_TYPE_LABELS, sortEventsForSchedule } from "#/lib/event-types";
+import { shiftMonth } from "#/lib/month";
+import { expandRecurring } from "#/lib/recurrence";
+import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 import { getDb } from "./client.server";
-import { leaderboards, leagues } from "./schema";
+import { events, leaderboards, leagues } from "./schema";
 
 function withoutNulls<Row extends object>(
 	row: Row,
@@ -27,4 +30,51 @@ export async function queryLeagues(): Promise<League[]> {
 			hasStandings: leagueIdsWithStandings.has(id),
 		};
 	});
+}
+
+async function queryMonthEvents(
+	month: string,
+	includeExcluded: boolean,
+): Promise<ScheduleEvent[]> {
+	const db = getDb();
+	const monthStart = `${month}-01`;
+	const nextMonthStart = `${shiftMonth(month, 1)}-01`;
+
+	const oneOff = await db
+		.select()
+		.from(events)
+		.where(
+			and(
+				eq(events.isRecurring, false),
+				gte(events.date, monthStart),
+				lt(events.date, nextMonthStart),
+			),
+		);
+
+	const weekly = await db
+		.select()
+		.from(events)
+		.where(and(eq(events.isRecurring, true), lt(events.date, nextMonthStart)));
+
+	return sortEventsForSchedule([
+		...oneOff.map(withoutNulls),
+		...expandRecurring(weekly.map(withoutNulls), month, includeExcluded),
+	]);
+}
+
+export interface ScheduleData {
+	leagues: League[];
+	types: EventTypeMap;
+	events: ScheduleEvent[];
+}
+
+export async function querySchedule(
+	month: string,
+	includeExcluded: boolean,
+): Promise<ScheduleData> {
+	const [allLeagues, monthEvents] = await Promise.all([
+		queryLeagues(),
+		queryMonthEvents(month, includeExcluded),
+	]);
+	return { leagues: allLeagues, types: EVENT_TYPE_LABELS, events: monthEvents };
 }
