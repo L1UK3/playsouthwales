@@ -1,5 +1,6 @@
 import { Plus, Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 
 export interface Top20PlayerInput {

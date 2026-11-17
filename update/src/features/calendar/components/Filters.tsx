@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import type { EventFilters } from "#/lib/events";
 import type { EventTypeMap, League } from "#/types/domain";

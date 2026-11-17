@@ -5,7 +5,8 @@ import {
 	ColorScheme,
 	Map,
 } from "@vis.gl/react-google-maps";
-import React, { useRef } from "react";
+import type React from "react";
+import { useRef } from "react";
 import { useSettings } from "#/context/SettingsContext";
 import type { League } from "#/types/domain";
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "../constants";

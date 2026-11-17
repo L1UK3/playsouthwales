@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import type React from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import activeMarkerUrl from "#/assets/activeMarker.glb?url";
@@ -23,7 +24,7 @@ const IDLE_SPEED = 0.0028;
 const ROTATION_SPEED = 1.4;
 
 const easeInOutQuad = (t: number) =>
-	t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+	t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 interface Point {

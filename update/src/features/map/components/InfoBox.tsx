@@ -1,5 +1,5 @@
 import { InfoWindow } from "@vis.gl/react-google-maps";
-import React from "react";
+import type React from "react";
 import type { League } from "#/types/domain";
 import { SELECTED_MARKER_HEIGHT } from "./LeagueMarker";
 

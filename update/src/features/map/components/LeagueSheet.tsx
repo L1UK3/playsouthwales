@@ -1,7 +1,7 @@
 /* Hallmark · component: league sheet · genre: modern-minimal · theme: custom (design.md) */
 
 import { Link } from "@tanstack/react-router";
-import React from "react";
+import type React from "react";
 import { EventCard } from "#/features/event-card";
 import LeagueInfo from "#/features/league-selector/components/LeagueInfo";
 import type { League } from "#/types/domain";

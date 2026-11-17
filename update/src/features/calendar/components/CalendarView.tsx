@@ -1,4 +1,5 @@
-import React, { lazy, Suspense, useMemo, useRef } from "react";
+import type React from "react";
+import { lazy, Suspense, useMemo, useRef } from "react";
 import Cell from "#/features/calendar/components/Cell";
 import type { CellData } from "#/features/calendar/types/CellData";
 import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";

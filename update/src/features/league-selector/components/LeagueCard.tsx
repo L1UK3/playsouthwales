@@ -3,7 +3,7 @@
  * states: default · hover · focus · active · disabled · loading · error · success
  * contrast: pass (46–50)
  */
-import React from "react";
+import type React from "react";
 
 import type { League } from "#/types/domain";
 import LeagueInfo from "./LeagueInfo";

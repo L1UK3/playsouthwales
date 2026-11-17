@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState } from "react";
+import type React from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import ListEventGroup from "#/features/calendar/components/ListEventGroup";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";

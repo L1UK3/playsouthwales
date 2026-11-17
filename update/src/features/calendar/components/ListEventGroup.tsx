@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import type React from "react";
+import { useMemo } from "react";
 import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
 import { ListCard } from "#/features/event-card";

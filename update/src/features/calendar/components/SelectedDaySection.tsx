@@ -1,5 +1,5 @@
 import { Calendar } from "lucide-react";
-import React from "react";
+import type React from "react";
 import { Footer } from "#/components/Footer";
 import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { EventCard } from "#/features/event-card";

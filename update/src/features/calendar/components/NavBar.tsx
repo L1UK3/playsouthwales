@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 /**
  * Properties for the NavBar component, providing navigation controls for the calendar and list views.
