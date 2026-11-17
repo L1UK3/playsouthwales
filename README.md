@@ -1,7 +1,20 @@
+<p align="center">
+  <a href="https://playsouthwales.uk/">
+    <img src="public/favicon.jpg" alt="Play! South Wales Logo" width="96" height="96" style="border-radius: 12px;" />
+  </a>
+</p>
+
 # Play! South Wales
 
-Events, leagues and championship rankings for TCG and VGC players across South Wales.
+[![Tanstack Start](https://img.shields.io/badge/Tanstack_Start-000000?logo=tanstack&logoColor=white)](https://tanstack.com/start)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/workers/)
+[![Drizzle ORM](https://img.shields.io/badge/Drizzle_ORM-000000?logo=drizzle&logoColor=white)](https://orm.drizzle.team/)
+[![Clerk](https://img.shields.io/badge/Clerk-000000?logo=clerk&logoColor=white)](https://clerk.com/docs/tanstack-react-start/getting-started/quickstart)
+[![Biome](https://img.shields.io/badge/Biome-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 
+<p align="center"><a href="https://playsouthwales.uk/" >https://playsouthwales.uk/</a></p>
+
+Play! South Wales manages league schedules, player standings, and venue directories across South Wales. The platform provides event calendars, Championship Point leaderboards, and administrative tools for tournament organizers.
 ## Stack
 
 - [TanStack Start](https://tanstack.com/start) (React 19, file-based routing, server functions)
