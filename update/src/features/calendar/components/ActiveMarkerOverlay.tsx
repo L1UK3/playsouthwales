@@ -4,7 +4,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import activeMarkerUrl from "#/assets/activeMarker.glb?url";
 // import { playMarkerPop } from '#/features/calendar/utils/playMarkerPop';
-import { useSettings } from "#/context/SettingsContext";
 import { getParams } from "#/features/calendar/utils/getParams";
 
 /**
@@ -43,7 +42,6 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 	selectedDateKey,
 	todayKey,
 }) => {
-	const { settings } = useSettings();
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const activeKeyRef = useRef<string>(selectedDateKey ?? todayKey);
 
@@ -52,8 +50,6 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 	}, [selectedDateKey, todayKey]);
 
 	useEffect(() => {
-		if (settings.disableAnimations) return;
-
 		const canvas = canvasRef.current;
 		const container = containerRef.current;
 		if (!canvas || !container) return;
@@ -267,11 +263,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 				}
 			});
 		};
-	}, [containerRef, settings.disableAnimations]);
-
-	if (settings.disableAnimations) {
-		return null;
-	}
+	}, [containerRef]);
 
 	return (
 		<canvas

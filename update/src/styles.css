@@ -469,32 +469,3 @@ html.dark body {
     background-image: none !important;
 }
 
-/* --- Large Text Scale --- */
-html.large-text {
-    font-size: 115%;
-}
-
-html.large-text .btn {
-    font-size: 15px;
-    padding: 8px 16px;
-}
-
-html.large-text p,
-html.large-text span,
-html.large-text h1,
-html.large-text h2,
-html.large-text h3 {
-    line-height: 1.6;
-}
-
-/* --- Disable Animations (CSS Overrides) --- */
-html.disable-animations *,
-html.disable-animations *::before,
-html.disable-animations *::after {
-    animation-duration: 0s !important;
-    animation-delay: 0s !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0s !important;
-    transition-delay: 0s !important;
-    scroll-behavior: auto !important;
-}

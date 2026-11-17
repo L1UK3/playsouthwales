@@ -55,8 +55,8 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 	const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 	// An empty value must fall back too, so this uses || rather than ??.
 	const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || FALLBACK_MAP_ID;
-	const { settings } = useSettings();
-	const colorScheme = settings.darkMode ? ColorScheme.DARK : ColorScheme.LIGHT;
+	const { darkMode } = useSettings();
+	const colorScheme = darkMode ? ColorScheme.DARK : ColorScheme.LIGHT;
 
 	// Google rebuilds the map when the colour scheme changes. This ref keeps
 	// the camera across that rebuild, so the view stays put.

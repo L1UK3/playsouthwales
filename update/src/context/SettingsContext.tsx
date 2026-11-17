@@ -1,39 +1,31 @@
 import type React from "react";
 import { createContext, use, useEffect, useState } from "react";
 
-interface Settings {
-	highContrast: boolean;
-	largeText: boolean;
-	disableAnimations: boolean;
-	darkMode: boolean;
-}
-
 interface SettingsContextType {
-	settings: Settings;
-	toggleSetting: (key: keyof Settings) => void;
+	darkMode: boolean;
+	toggleDarkMode: () => void;
 }
 
 const COOKIE_NAME = "playwales-settings";
 
-function getCookie(name: string): string | null {
-	const nameEQ = name + "=";
-	const ca = document.cookie.split(";");
-	for (let c of ca) {
-		while (c.startsWith(" ")) c = c.substring(1, c.length);
-		if (c.startsWith(nameEQ)) return c.substring(nameEQ.length, c.length);
+function readDarkMode(): boolean {
+	try {
+		const entry = document.cookie
+			.split("; ")
+			.find((c) => c.startsWith(`${COOKIE_NAME}=`));
+		if (!entry) return false;
+		const parsed = JSON.parse(
+			decodeURIComponent(entry.slice(COOKIE_NAME.length + 1)),
+		);
+		return parsed.darkMode === true;
+	} catch {
+		return false;
 	}
-	return null;
 }
 
-function setCookie(name: string, value: string, days = 365) {
-	let expires = "";
-	if (days) {
-		const date = new Date();
-		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-		expires = "; expires=" + date.toUTCString();
-	}
-	document.cookie =
-		name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
+function writeDarkMode(darkMode: boolean) {
+	const value = encodeURIComponent(JSON.stringify({ darkMode }));
+	document.cookie = `${COOKIE_NAME}=${value}; max-age=31536000; path=/; SameSite=Lax`;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -43,65 +35,17 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [settings, setSettings] = useState<Settings>(() => {
-		try {
-			const saved = getCookie(COOKIE_NAME);
-			const parsed = saved ? JSON.parse(decodeURIComponent(saved)) : {};
-			return {
-				highContrast: parsed.highContrast ?? false,
-				largeText: parsed.largeText ?? false,
-				disableAnimations: parsed.disableAnimations ?? false,
-				darkMode: parsed.darkMode ?? false,
-			};
-		} catch {
-			return {
-				highContrast: false,
-				largeText: false,
-				disableAnimations: false,
-				darkMode: false,
-			};
-		}
-	});
+	const [darkMode, setDarkMode] = useState(readDarkMode);
 
 	useEffect(() => {
-		setCookie(COOKIE_NAME, encodeURIComponent(JSON.stringify(settings)));
+		writeDarkMode(darkMode);
+		document.documentElement.classList.toggle("dark", darkMode);
+	}, [darkMode]);
 
-		const root = document.documentElement;
-
-		if (settings.highContrast) {
-			root.classList.add("high-contrast");
-		} else {
-			root.classList.remove("high-contrast");
-		}
-
-		if (settings.largeText) {
-			root.classList.add("large-text");
-		} else {
-			root.classList.remove("large-text");
-		}
-
-		if (settings.disableAnimations) {
-			root.classList.add("disable-animations");
-		} else {
-			root.classList.remove("disable-animations");
-		}
-
-		if (settings.darkMode) {
-			root.classList.add("dark");
-		} else {
-			root.classList.remove("dark");
-		}
-	}, [settings]);
-
-	const toggleSetting = (key: keyof Settings) => {
-		setSettings((prev) => ({
-			...prev,
-			[key]: !prev[key],
-		}));
-	};
+	const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
 	return (
-		<SettingsContext value={{ settings, toggleSetting }}>
+		<SettingsContext value={{ darkMode, toggleDarkMode }}>
 			{children}
 		</SettingsContext>
 	);

@@ -12,7 +12,7 @@ export function Header() {
 	const location = useLocation();
 	const path = location.pathname;
 	const { isLoaded, isSignedIn } = useAuth();
-	const { settings, toggleSetting } = useSettings();
+	const { darkMode, toggleDarkMode } = useSettings();
 	const title = path.startsWith("/leagues")
 		? "Leagues"
 		: path.startsWith("/rankings")
@@ -77,16 +77,16 @@ export function Header() {
 					<button
 						type="button"
 						className="inline-flex items-center gap-1.5 py-1.5 px-3 border border-border-color rounded-md bg-bg-main text-text-main text-sm font-semibold cursor-pointer transition-colors duration-150 hover:bg-bg-card-hover hover:text-text-darker hover:border-text-muted"
-						onClick={() => toggleSetting("darkMode")}
+						onClick={() => toggleDarkMode()}
 						aria-label={
-							settings.darkMode ? "Switch to light mode" : "Switch to dark mode"
+							darkMode ? "Switch to light mode" : "Switch to dark mode"
 						}
-						aria-pressed={settings.darkMode}
+						aria-pressed={darkMode}
 						title={
-							settings.darkMode ? "Switch to light mode" : "Switch to dark mode"
+							darkMode ? "Switch to light mode" : "Switch to dark mode"
 						}
 					>
-						{settings.darkMode ? (
+						{darkMode ? (
 							<Sun aria-hidden="true" className="h-5 w-5" />
 						) : (
 							<Moon aria-hidden="true" className="h-5 w-5" />
