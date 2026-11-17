@@ -1,152 +1,75 @@
-<p align="center">
-  <a href="https://playsouthwales.uk/">
-    <img src="frontend/src/assets/icons/favicon.jpg" alt="Play! South Wales Logo" width="96" height="96" style="border-radius: 12px;" />
-  </a>
-</p>
-
 # Play! South Wales
 
-[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![React 19](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+Events, leagues and championship rankings for TCG and VGC players across South Wales.
 
-<p align="center"><a href="https://playsouthwales.uk/" >https://playsouthwales.uk/</a></p>
+## Stack
 
-Play! South Wales manages league schedules, player standings, and venue directories across South Wales. The platform provides event calendars, Championship Point leaderboards, and administrative tools for tournament organizers.
-
-## Tech stack
-
-### Frontend
-
-- **Framework**: React 19 with TypeScript and Vite
-- **Routing**: TanStack Router with file-based routing
-- **State management**: TanStack Query (React Query)
-- **Styling**: Tailwind CSS v4 and OKLCH color design tokens
-- **Auth and maps**: Clerk React SDK and Google Maps Platform (`@vis.gl/react-google-maps`)
-- **Graphics and icons**: Three.js and Lucide React
-
-### Backend
-
-- **Framework**: FastAPI running on Python 3.14+
-- **Validation**: Pydantic v2 and Pydantic Settings
-- **Database**: Supabase Python SDK with PostgreSQL
-- **Authentication**: Clerk backend API with local JWT verification
-- **Scheduler**: Asyncio lifespan background task runner
-- **Testing and linting**: Pytest and Ruff
-
-### Discord bot
-
-- **Framework**: Discord.js v14 with DiscordX on Node.js
-- **Notifier server**: Express HTTP server on port 5001
-- **Commands**: Slash commands including `/ping` and `/help`
-
-### Database and infrastructure
-
-- **Database**: Supabase PostgreSQL for events, leagues, and standings
-- **Identity provider**: Clerk authentication and session tokens
-- **Asset storage**: Supabase Storage
-
-## Repository structure
-
-```text
-playsouthwales/
-├── backend/            # FastAPI REST API service
-│   ├── app/            # Routers, models, services, lifespan, and scrapers
-│   ├── tests/          # Pytest backend test suite
-│   └── pyproject.toml  # Python dependencies and tool settings
-├── bot/                # Discord bot client and notifier service
-│   ├── src/            # Slash commands and Express HTTP endpoints
-│   └── package.json    # Bot dependencies and scripts
-├── frontend/           # Vite Single Page Application
-│   ├── src/            # React components, routes, layouts, and hooks
-│   └── package.json    # Frontend dependencies and scripts
-├── docker/             # Container configuration files
-│   ├── Dockerfile.backend
-│   ├── Dockerfile.bot
-│   └── Dockerfile.frontend
-├── docs/               # In-depth Diátaxis documentation
-│   ├── README.md       # Overview: Diátaxis framework matrix and navigation
-│   ├── SETUP.md        # Tutorial: Local setup walkthrough
-│   ├── architecture.md # Explanation: System topology and virtual IDs
-│   ├── api.md          # Reference: REST API endpoints and schemas
-│   ├── event_sync.md   # How-to: Scraper jobs and database migrations
-│   ├── backend_developer_guide.md  # How-to: Extending backend routers and models
-│   ├── frontend_developer_guide.md # How-to: TanStack Router and Query workflows
-│   └── bot_guide.md    # How-to: Discord bot setup and slash commands
-├── supabase/           # Supabase migrations, seeds, and configurations
-│   ├── migrations/     # PostgreSQL migration scripts
-│   └── seed.sql        # Mock database fixtures for local development
-├── docker-compose.yml  # Multi-service container definitions
-└── AGENTS.md           # AI assistant development guidelines
-```
+- [TanStack Start](https://tanstack.com/start) (React 19, file-based routing, server functions)
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/) with a [D1](https://developers.cloudflare.com/d1/) database
+- [Drizzle ORM](https://orm.drizzle.team/) for the schema, queries and migrations
+- [Clerk](https://clerk.com/docs/tanstack-react-start/getting-started/quickstart) for authentication
+- [Tailwind CSS](https://tailwindcss.com/) and [Biome](https://biomejs.dev/)
 
 ## Getting started
 
-You can run the application using Docker Compose or configure each service locally.
+The quickest route is the dev container (`.devcontainer/`), which installs dependencies, generates the Worker types, creates `.env.local` and applies the local database migrations.
 
-### Option 1: Run with Docker Compose
-
-1. Clone the repository to your workstation:
-
-    ```bash
-    git clone https://github.com/L1UK3/playsouthwales.git
-    cd playsouthwales
-    ```
-
-2. Copy the template environment files:
-
-    ```bash
-    cp backend/.env.example backend/.env
-    cp bot/.env.example bot/.env
-    cp frontend/.env.example frontend/.env
-    ```
-
-3. Populate your credentials in the created `.env` files.
-
-4. Start all containers:
-    ```bash
-    docker compose up --build
-    ```
-
-### Option 2: Run natively on your machine
-
-You can run Python and Node services directly on your operating system. Follow the detailed steps in [docs/SETUP.md](docs/SETUP.md) to initialize your virtual environment, install dependencies, and launch dev servers.
-
-## Quality checks and testing
-
-You must run validation commands before submitting code changes:
-
-### Backend validation
+To set up manually:
 
 ```bash
-cd backend
-pytest
-ruff check .
-ruff format . --check
+npm ci
+cp .env.example .env.local      # then add your Clerk keys
+npm run cf-typegen              # generates worker-configuration.d.ts (not committed)
+npm run db:migrate:local        # creates the local D1 database
+npm run dev                     # http://localhost:3000
 ```
 
-### Frontend validation
+`.env.local` needs `VITE_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` from the [Clerk dashboard](https://dashboard.clerk.com).
+
+## Scripts
+
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Starts the app in the local Workers runtime on port 3000 |
+| `npm run build` | Builds the client and Worker bundles |
+| `npm run preview` | Serves the production build locally |
+| `npm run check` | Biome lint and format check |
+| `npm run typecheck` | TypeScript type-check |
+| `npm run deploy` | Builds and deploys to Cloudflare |
+| `npm run db:generate` | Generates a SQL migration from `src/db/schema.ts` |
+| `npm run db:migrate:local` | Applies migrations to the local D1 database |
+| `npm run db:migrate:remote` | Applies migrations to the production D1 database |
+| `npm run db:studio` | Opens Drizzle Studio on the local database |
+| `npm run cf-typegen` | Regenerates `worker-configuration.d.ts` |
+
+## Project layout
+
+```
+src/
+  routes/        File-based routes (pages and layouts)
+  features/      Feature code; *.functions.ts files hold server functions
+  db/            Drizzle schema and the D1 client (server-only)
+  components/    Shared UI
+  lib/           Shared helpers
+migrations/      SQL migrations generated by Drizzle, applied by Wrangler
+deprecated/      The previous app, kept for reference while it is ported
+```
+
+## Database changes
+
+1. Edit `src/db/schema.ts`.
+2. Run `npm run db:generate` to create the migration in `migrations/`.
+3. Run `npm run db:migrate:local` and test.
+4. Run `npm run db:migrate:remote` when deploying.
+
+Database access goes through server functions (`createServerFn`), which import the client from `src/db/client.server.ts`. Never import that file from client code.
+
+## Deploying
 
 ```bash
-cd frontend
-npm run lint
-npm run format
+npx wrangler login
+npm run db:migrate:remote
+npm run deploy
 ```
 
-### Discord bot validation
-
-```bash
-cd bot
-npm run build
-```
-
-## Contributing
-
-We welcome community contributions. Read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for branching conventions, conventional commit standards, and pull request procedures. Please review our [CODEOFCONDUCT.md](CODEOFCONDUCT.md) before participating.
-
-## License
-
-This project is licensed under the terms of the [MIT License](LICENSE).
+Set production secrets once with `npx wrangler secret put CLERK_SECRET_KEY`. After changing `wrangler.jsonc` or the environment variables, run `npm run cf-typegen`.
