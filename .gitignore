@@ -563,3 +563,5 @@ dist
 .tanstack
 .wrangler
 worker-configuration.d.ts
+
+.claude/
