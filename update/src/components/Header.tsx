@@ -37,7 +37,7 @@ export function Header() {
 				<div className="hidden sm:block">
 					<TabToggle
 						tabs={[
-							{ to: "/schedule", label: "Schedule" },
+							{ to: "/", label: "Schedule" },
 							{ to: "/leagues", label: "Leagues" },
 							{ to: "/rankings", label: "Rankings" },
 						]}
