@@ -1,5 +1,8 @@
 import { useLocation, Link } from '@tanstack/react-router';
 import { SignInButton, UserButton, useAuth } from '@clerk/react';
+import TabToggle from './TabToggle';
+import { Moon, Sun } from 'lucide-react';
+import { useSettings } from '#/context/SettingsContext';
 
 /**
  * Wrapper for the header component
@@ -61,9 +64,8 @@ export function Header() {
                             appearance={{
                                 elements: {
                                     footerAction: { display: 'none' },
-                                },
-                                theme: neobrutalism,
-                            }}
+                                }
+                    }}
                         >
                             <button
                                 type="button"

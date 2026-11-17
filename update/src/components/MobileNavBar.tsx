@@ -1,13 +1,11 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { useAuth, SignInButton } from '@clerk/react';
-import { neobrutalism } from '@clerk/themes';
 import { Calendar, MapPin, Trophy, ShieldAlert } from 'lucide-react';
 
 const CLERK_SIGN_IN_APPEARANCE = {
     elements: {
         footerAction: { display: 'none' as const },
     },
-    theme: neobrutalism,
 };
 
 export function MobileNavBar() {
@@ -18,7 +16,7 @@ export function MobileNavBar() {
     return (
         <nav className="fixed bottom-0 left-0 right-0 z-100 bg-bg-card/95 backdrop-blur-md border-t border-border-color py-2 px-4 flex justify-around items-center sm:hidden shadow-[0_-1px_8px_rgba(41,37,36,0.06)]">
             <Link
-                to="/schedule"
+                to="/"
                 className={`flex flex-col items-center gap-1 py-1 px-3 text-text-muted no-underline transition-colors duration-150 ${
                     path.startsWith('/schedule')
                         ? 'text-primary!'

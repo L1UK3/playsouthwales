@@ -24,7 +24,7 @@ export function ComingSoon({ message }: ComingSoonProps) {
 
                 <div className="w-full pt-2 border-t border-border-color/60 mt-2">
                     <Link
-                        to="/schedule"
+                        to="/"
                         className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-lg bg-primary text-white font-bold text-sm cursor-pointer transition-[background-color,transform,box-shadow] duration-200 ease-out no-underline shadow-[0_4px_12px_rgba(227,53,13,0.2)] hover:bg-primary-hover hover:scale-[1.02] hover:shadow-[0_6px_16px_rgba(227,53,13,0.35)] active:scale-[0.98] border-none"
                     >
                         Back to Schedule
