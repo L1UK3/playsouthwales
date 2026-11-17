@@ -1,114 +1,99 @@
 # Migration status
 
-What still needs porting from `deprecated/` and wiring up before the new app is
-a minimum viable product. Written on 2026-11-14 from a read of the code; the
-app was not run.
+What still needs doing before the new app in `update/` replaces the old stack.
+Updated on 2026-11-17 from a read of the code and a `tsc` run. The app was not
+run, and the new database queries have not run against a real D1 database.
 
-The new app currently has routes, loaders, auth and a database schema, but no
-ported UI components and no real database queries, so every page loads empty
-data and then fails on missing components.
+The old FastAPI and React code now lives in `backend/`, `frontend/` and
+`supabase/`. The new TanStack Start app lives in `update/`.
 
 ## Already in place
 
-- The four routes (`/`, `/leagues`, `/rankings`, `/admin`) with URL
-  search-param handling, page titles and loaders.
+- The four routes (`/`, `/leagues`, `/rankings`, `/admin`) with search-param
+  handling, page titles and loaders.
 - Clerk sign-in, the `/admin` redirect for signed-out users, and an auth check
   for server functions.
 - The D1 schema and two migrations (leagues, events, leaderboards, players).
-- The stylesheet (`src/styles.css` is the old `global.css` ported), plus month,
-  filter and grouping helpers.
+- The ported UI: calendar, event cards, leagues selector and map, leaderboard,
+  admin modals, header, footer, mobile nav and the 3D "today" marker.
+- The settings context, the stylesheet, and the `public/` folder with the
+  favicon, `robots.txt` and `sitemap.xml`.
+- The dependencies and environment variables for icons and Google Maps.
+- Real D1 queries for the four read functions (pull request 215):
+  - `getLeagues` returns leagues with a `hasStandings` flag.
+  - `getSchedule` and `getAdminData` return one month of events, expanding
+    weekly events and honouring `excludedDates`. The admin version keeps
+    excluded occurrences, flagged.
+  - `getRankings` returns players ranked by Championship Points.
+- The event type labels, taken from the old `EVENT_TYPE_MAP` constant.
 
-## Needed for a minimum viable product
+## Needed before launch
 
-### 1. Real database queries
+### 1. Admin access rule
 
-All four server functions return empty arrays:
-
-- `getSchedule` in `src/features/schedule/schedule.functions.ts`
-- `getLeagues` in `src/features/leagues/leagues.functions.ts`
-- `getRankings` in `src/features/rankings/rankings.functions.ts`
-- `getAdminData` in `src/features/admin/admin.functions.ts`
-
-The logic to port is in `deprecated/backend/app/services/` (`event.py`,
-`league.py`, `leaderboard.py`, `event_hierarchy.py`). The main piece of real
-logic is expanding recurring weekly events into dated occurrences and honouring
-`excludedDates`.
+The server-side check only requires a signed-in user. Unless you restrict
+sign-up in the Clerk dashboard, anyone who registers could edit data once the
+write functions exist. Decide this before you build the writes.
 
 ### 2. Admin write operations
 
-None exist yet. `src/routes/_authed/admin.tsx` calls handlers that aren't
-defined:
+None exist. `update/src/routes/_authed/admin.tsx` calls eight handlers that
+don't exist, and they cause every remaining type error:
 
 - `handleLeagueSubmit`, `handleDeleteLeague`
 - `handleEventSubmit`, `handleDeleteEvent`
 - `handleExcludeEvent`, `handleUnexcludeEvent`
 - `handleLeaderboardSubmit`, `handleNationalRankingsSubmit`
 
-Each needs a server function covering what
-`deprecated/backend/app/routers/protected.py` did: create, update and delete
-for leagues and events, replace a league's standings, and replace the top-20
-list.
+Each needs a server function behind `authMiddleware`. Port the behaviour from
+`backend/app/routers/protected.py` and the services it calls:
 
-### 3. UI components
+- Create, update and delete leagues and events.
+- Exclude or restore one occurrence of a weekly event.
+- Replace a league's standings.
+- Replace the top 20 list.
 
-These account for the 24 errors from `npm run typecheck`. All live under
-`deprecated/frontend/src/features/`.
+Occurrence ids are now strings like `3:2026-11-18`. Use `recurringEventId` to
+find the series, and do not decode the id.
 
-| Page | Components to port |
-| --- | --- |
-| Schedule | `NavBar`, `Filters`, `CalendarView` (with `Cell`), `SelectedDaySection`, `ListView` (with `ListEventGroup`), and the `event-card` feature they render |
-| Leagues | `LeagueSelector` (with `LeagueCard`, `LeagueInfo`), `LeagueMap` and its markers, info box and mobile sheet |
-| Rankings | `Leaderboard` (with podium, `RankBadge`, `SkeletonRow`) |
-| Admin | `LeagueFormModal`, `EventFormModal`, `LeaderboardFormModal`, `NationalRankingsModal` |
+### 3. Data
 
-### 4. Site layout
+The D1 database is empty, and `update/migrations/seed.sql` does not work. It is
+the Postgres seed file copied unchanged, so it uses `TRUNCATE`, `::jsonb` and
+a `weekly_events` table that no longer exists.
 
-The root layout is only a sign-in button. `Header.tsx`, `Footer.tsx` and
-`MobileNavBar.tsx` aren't ported, so there is no navigation between pages.
+- **Development:** write a SQLite seed outside `migrations/`, because wrangler
+  applies every `.sql` file in that folder. Use dates relative to today so the
+  calendar always shows events.
+- **Production:** import the leagues, events, weekly events and players from
+  Supabase. Convert each weekly event into an `events` row with
+  `isRecurring = 1`.
 
-### 5. Missing dependencies and config
+### 4. Known gaps in the read queries
 
-- `lucide-react` (icons, e.g. `Trophy`) and `@vis.gl/react-google-maps` are not
-  in `package.json`.
-- `VITE_GOOGLE_MAPS_API_KEY` and `VITE_GOOGLE_MAPS_MAP_ID` are not in
-  `.env.example`.
-- There is no `public/` folder, so the favicon, `robots.txt` and `sitemap.xml`
-  are missing.
+- `getRankings` accepts a season but ignores it. Only the current season exists.
+- A weekly event with a malformed start date produces no occurrences, with no
+  warning.
+- The schedule sort compares full date strings. A date that includes a time
+  sorts before one that doesn't, so type order breaks on that day.
+- The recurrence and sort logic has no tests.
 
-### 6. Data
+## Can wait until after launch
 
-The D1 database is empty. The existing leagues, events, weekly events and
-leaderboards need moving from Supabase (`deprecated/supabase/seed.sql` shows
-the shape). The old schema had a separate `weekly_events` table; the new one
-folds it into `events.isRecurring`, so the import needs a small transform.
-
-### 7. Event type labels
-
-The pages expect a `types` map (type code to display name) from the server.
-Where the old app sourced it has not been traced, and there is no table for it
-in the new schema.
-
-### 8. Who counts as an admin
-
-The server-side check only requires a signed-in user. Unless sign-up is
-restricted in the Clerk dashboard, anyone who registers could edit data once
-the write functions exist. Decide this before starting step 2.
+- The scrapers and hourly scheduler (`backend/app/web/pokedata.py`,
+  `championship_series.py`, `scheduler.py`). They need Cloudflare Cron
+  Triggers, and `wrangler.jsonc` has none.
+- The Discord bot announcements and weekly digest.
+- Set legality and regulation markers on the calendar (`sets.json`,
+  `regs.json`).
+- Vercel analytics and the API index endpoint.
+- The old Python and Playwright tests.
+- CI. `.github/workflows/ci.yml` runs its npm scripts from the repo root. Check
+  that it covers `update/`, and expect typecheck to fail until step 2 is done.
 
 ## Suggested order
 
-1. Database queries (1).
-2. Components and layout for the three public pages (3 and 4).
-3. Data import (6), so there is something to see.
-4. Admin access rule (8), then admin writes (2).
-
-## Can wait until after the MVP
-
-- The scrapers and hourly/daily scheduler (`pokedata.py`,
-  `championship_series.py`, `scheduler.py`), which would need Cloudflare Cron
-  Triggers.
-- The Discord bot announcements and weekly digest.
-- Set legality and regulation markers on the calendar (`sets.json`,
-  `regs.json`, `useRegs`, `useSetLegality`).
-- The 3D "today" marker (`ActiveMarkerOverlay.tsx`, `three`).
-- The dark/light settings context, Vercel analytics, the API index endpoint,
-  and the old Python and Playwright tests.
+1. Admin access rule (1), then admin writes (2).
+2. Development seed (3), so you can see the pages working.
+3. Production data import (3).
+4. Fix the read query gaps (4).
