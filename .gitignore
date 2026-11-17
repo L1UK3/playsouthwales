@@ -561,6 +561,9 @@ xcuserdata/
 dist
 *.local
 .env
+.env.local
+.env.development
+.env.production
 .dev.vars*
 .tanstack
 .wrangler
