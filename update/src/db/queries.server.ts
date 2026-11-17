@@ -21,10 +21,10 @@ function withoutNulls<Row extends object>(
 
 export async function queryLeagues(): Promise<League[]> {
 	const db = getDb();
-	const rows = await db.select().from(leagues).orderBy(asc(leagues.id));
-	const standings = await db
-		.select({ leagueId: leaderboards.leagueId })
-		.from(leaderboards);
+	const [rows, standings] = await Promise.all([
+		db.select().from(leagues).orderBy(asc(leagues.id)),
+		db.select({ leagueId: leaderboards.leagueId }).from(leaderboards),
+	]);
 	const leagueIdsWithStandings = new Set(standings.map((s) => s.leagueId));
 
 	return rows.map((row) => {
@@ -45,21 +45,24 @@ async function queryMonthEvents(
 	const monthStart = `${month}-01`;
 	const nextMonthStart = `${shiftMonth(month, 1)}-01`;
 
-	const oneOff = await db
-		.select()
-		.from(events)
-		.where(
-			and(
-				eq(events.isRecurring, false),
-				gte(events.date, monthStart),
-				lt(events.date, nextMonthStart),
+	const [oneOff, weekly] = await Promise.all([
+		db
+			.select()
+			.from(events)
+			.where(
+				and(
+					eq(events.isRecurring, false),
+					gte(events.date, monthStart),
+					lt(events.date, nextMonthStart),
+				),
 			),
-		);
-
-	const weekly = await db
-		.select()
-		.from(events)
-		.where(and(eq(events.isRecurring, true), lt(events.date, nextMonthStart)));
+		db
+			.select()
+			.from(events)
+			.where(
+				and(eq(events.isRecurring, true), lt(events.date, nextMonthStart)),
+			),
+	]);
 
 	return sortEventsForSchedule([
 		...oneOff.map(withoutNulls),
