@@ -1,10 +1,15 @@
-import { and, asc, eq, gte, lt } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lt } from "drizzle-orm";
 import { EVENT_TYPE_LABELS, sortEventsForSchedule } from "#/lib/event-types";
 import { shiftMonth } from "#/lib/month";
 import { expandRecurring } from "#/lib/recurrence";
-import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
+import type {
+	EventTypeMap,
+	LeaderboardPosition,
+	League,
+	ScheduleEvent,
+} from "#/types/domain";
 import { getDb } from "./client.server";
-import { events, leaderboards, leagues } from "./schema";
+import { events, leaderboards, leagues, players } from "./schema";
 
 function withoutNulls<Row extends object>(
 	row: Row,
@@ -77,4 +82,13 @@ export async function querySchedule(
 		queryMonthEvents(month, includeExcluded),
 	]);
 	return { leagues: allLeagues, types: EVENT_TYPE_LABELS, events: monthEvents };
+}
+
+export async function queryRankings(): Promise<LeaderboardPosition[]> {
+	const rows = await getDb()
+		.select({ name: players.name, cp: players.cp })
+		.from(players)
+		.orderBy(desc(players.cp), asc(players.name));
+
+	return rows.map((row, index) => ({ ...row, position: index + 1 }));
 }
