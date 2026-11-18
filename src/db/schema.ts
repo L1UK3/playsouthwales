@@ -31,6 +31,7 @@ export const events = sqliteTable(
 		leagueId: integer()
 			.notNull()
 			.references(() => leagues.id, { onDelete: "cascade" }),
+		pokedataGuid: text().unique(),
 		name: text().notNull(),
 		date: text().notNull(),
 		startTime: text(),

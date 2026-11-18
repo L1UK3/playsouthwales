@@ -13,7 +13,9 @@
 		{
 			"binding": "playsouthwales",
 			"database_name": "playsouthwales",
-			"database_id": "2b952936-404e-4cad-b01f-842e891bcd2b"
+			"database_id": "2b952936-404e-4cad-b01f-842e891bcd2b",
+			"migrations_dir": "migrations",
+			"migrations_pattern": "migrations/*/migration.sql"
 		}
 	]
 }
