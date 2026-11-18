@@ -568,3 +568,4 @@ dist
 worker-configuration.d.ts
 
 .claude/
+.supabase-export/
