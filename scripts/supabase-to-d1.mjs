@@ -4,7 +4,7 @@
 //
 // Usage:
 //   SUPABASE_URL=https://<ref>.supabase.co \
-//   SUPABASE_SERVICE_ROLE_KEY=<service role key> \
+//   SUPABASE_SECRET_KEY=<sb_secret_... key, or the legacy service_role JWT> \
 //   node scripts/supabase-to-d1.mjs
 //
 //   # Re-convert an earlier export without contacting Supabase:
@@ -55,12 +55,20 @@ const warn = (message) => warnings.push(message);
 
 // ---------------------------------------------------------------- export ---
 
+// New sb_secret_ keys go in the apikey header only; legacy service_role keys
+// are JWTs and also go in Authorization.
+function authHeaders(key) {
+	return key.startsWith("eyJ")
+		? { apikey: key, Authorization: `Bearer ${key}` }
+		: { apikey: key };
+}
+
 async function fetchTable(baseUrl, key, table) {
 	const rows = [];
 	for (let offset = 0; ; offset += PAGE_SIZE) {
 		const url = `${baseUrl}/rest/v1/${table}?select=*&order=id.asc&offset=${offset}&limit=${PAGE_SIZE}`;
 		const res = await fetch(url, {
-			headers: { apikey: key, Authorization: `Bearer ${key}` },
+			headers: authHeaders(key),
 		});
 		if (!res.ok) {
 			throw new Error(
@@ -75,10 +83,11 @@ async function fetchTable(baseUrl, key, table) {
 
 async function exportFromSupabase(outDir) {
 	const baseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, "");
-	const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+	const key =
+		process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
 	if (!baseUrl || !key) {
 		throw new Error(
-			"Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, or pass --from <dir>.",
+			"Set SUPABASE_URL and SUPABASE_SECRET_KEY, or pass --from <dir>.",
 		);
 	}
 	const data = {};
