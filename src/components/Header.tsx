@@ -82,9 +82,7 @@ export function Header() {
 							darkMode ? "Switch to light mode" : "Switch to dark mode"
 						}
 						aria-pressed={darkMode}
-						title={
-							darkMode ? "Switch to light mode" : "Switch to dark mode"
-						}
+						title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
 					>
 						{darkMode ? (
 							<Sun aria-hidden="true" className="h-5 w-5" />
