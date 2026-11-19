@@ -7,13 +7,14 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { Suspense, type ReactNode } from "react";
-import { SettingsProvider } from "#/context/SettingsContext";
-import { SITE_NAME } from "#/lib/seo";
-import appCss from "#/styles.css?url";
+import { type ReactNode, Suspense } from "react";
+import { Header } from "#/components/Header";
 import { MobileNavBar } from "#/components/MobileNavBar";
 import { SuspenseLoader } from "#/components/SuspenseLoader";
-import { Header } from "#/components/Header";
+import { SettingsProvider } from "#/context/SettingsContext";
+import { SITE_NAME } from "#/lib/seo";
+import { cn } from "#/lib/utils";
+import appCss from "#/styles.css?url";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -61,10 +62,10 @@ function RootDocument({ children }: { children: ReactNode }) {
 function RootLayout() {
 	return (
 		<SettingsProvider>
-			<div className="appRoot">
+			<div className={cn("appRoot")}>
 				<Header />
 
-				<main className="appContainer pb-20 sm:pb-4">
+				<main className={cn("appContainer", "pb-20 sm:pb-4")}>
 					<Suspense fallback={<SuspenseLoader />}>
 						<Outlet />
 					</Suspense>
