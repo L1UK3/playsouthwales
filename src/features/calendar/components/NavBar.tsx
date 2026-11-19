@@ -43,18 +43,21 @@ const NavBar: React.FC<NavBarProps> = ({
 			</h2>
 			<div className="flex items-center gap-1.5 justify-center sm:justify-end w-full sm:w-auto">
 				<button
+					type="button"
 					className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
 					onClick={onGoToToday}
 				>
 					Today
 				</button>
 				<button
+					type="button"
 					className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
 					onClick={onPrevMonth}
 				>
 					&larr;
 				</button>
 				<button
+					type="button"
 					className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
 					onClick={onNextMonth}
 				>
@@ -62,6 +65,7 @@ const NavBar: React.FC<NavBarProps> = ({
 				</button>
 				{viewMode && onToggleViewMode && (
 					<button
+						type="button"
 						className="btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold cursor-pointer flex-1 sm:flex-initial"
 						onClick={onToggleViewMode}
 					>
