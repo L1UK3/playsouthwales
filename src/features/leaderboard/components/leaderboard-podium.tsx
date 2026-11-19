@@ -86,7 +86,10 @@ const LeaderboardPodium = ({
 	const avatarSize = {
 		sm: "h-10 w-10 text-sm",
 		default: "h-14 w-14 text-lg",
-		lg: "h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24 min-[993px]:text-3xl",
+		lg: cn(
+			"h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24",
+			"min-[993px]:text-3xl",
+		),
 	}[size ?? "default"];
 
 	const textSize = {
@@ -120,12 +123,12 @@ const LeaderboardPodium = ({
 						key={ranking.userId}
 						aria-label={itemLabel}
 						className={cn(
-							"flex flex-col items-center",
-							"min-[993px]:h-full min-[993px]:justify-end",
+							"flex flex-col items-center min-[993px]:h-full",
+							"min-[993px]:justify-end",
 						)}
 					>
 						{/* Rank badge */}
-						<div className={cn("relative mb-2")} aria-hidden="true">
+						<div className="relative mb-2" aria-hidden="true">
 							{showAvatar && ranking.avatarUrl ? (
 								<img
 									src={ranking.avatarUrl}

@@ -38,13 +38,13 @@ export interface LeaderboardProps {
 }
 
 const LeaderboardHeader = () => (
-	<th className={cn("py-2 px-3 text-right pr-4")}>Championship Points</th>
+	<th className="py-2 px-3 text-right pr-4">Championship Points</th>
 );
 
 const LeaderboardMetrics: React.FC<{ player: LeaderboardPosition }> = ({
 	player,
 }) => (
-	<td className={cn("py-1.5 px-3 text-right pr-4 text-sm font-bold")}>
+	<td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">
 		{player.cp ?? 0}
 	</td>
 );
@@ -83,16 +83,22 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 	return (
 		<div
 			className={cn(
-				"grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] animate-swipe-up",
+				"grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)]",
+				"animate-swipe-up",
 				showPodium &&
-					"min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)] min-[993px]:grid-rows-1",
+					cn(
+						"min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)]",
+						"min-[993px]:grid-rows-1",
+					),
 			)}
 		>
 			{showPodium ? (
 				<LeaderboardPodium
 					rankings={podiumRankings}
 					className={cn(
-						"min-h-full shrink-0 border-border-color pb-4 pt-6 min-[993px]:flex min-[993px]:items-center min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0",
+						"min-h-full shrink-0 border-border-color pb-4 pt-6",
+						"min-[993px]:flex min-[993px]:items-center",
+						"min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0",
 					)}
 					size="lg"
 					showAvatar={false}
@@ -102,33 +108,35 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 
 			<div
 				className={cn(
-					"min-h-0 min-w-0 overflow-auto border-border-color bg-bg-card shadow-xs",
+					"min-h-0 min-w-0 overflow-auto border-border-color bg-bg-card",
+					"shadow-xs",
 					showPodium
 						? "rounded-b-lg border-t min-[993px]:rounded-bl-none"
 						: "rounded-b-lg",
 				)}
 			>
-				<table className={cn("w-full border-collapse text-left")}>
-					<thead className={cn("sticky top-0 bg-bg-card  z-10")}>
+				<table className="w-full border-collapse text-left">
+					<thead className="sticky top-0 bg-bg-card z-10">
 						<tr
 							className={cn(
-								"text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md",
+								"text-[11px] font-bold text-text-muted uppercase",
+								"tracking-wider bg-bg-main/50 backdrop-blur-md",
 							)}
 						>
-							<th className={cn("py-2 px-3 w-16 text-center")}>Rank</th>
-							<th className={cn("py-2 px-3")}>Player</th>
+							<th className="py-2 px-3 w-16 text-center">Rank</th>
+							<th className="py-2 px-3">Player</th>
 							<LeaderboardHeader />
 						</tr>
 					</thead>
 
-					<tbody className={cn("divide-y divide-border-color/50")}>
+					<tbody className="divide-y divide-border-color/50">
 						{isLoading ? (
 							SKELETON_ROW_KEYS.map((key) => <SkeletonRow key={key} isGlobal />)
 						) : sortedPlayers.length === 0 ? (
 							<tr>
 								<td
 									colSpan={COLUMN_COUNT}
-									className={cn("text-center py-12 text-sm text-text-muted")}
+									className="text-center py-12 text-sm text-text-muted"
 								>
 									No players found.
 								</td>
@@ -143,11 +151,14 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 										key={player.userId ?? `${rank}-${player.name}`}
 									>
 										{renderCutoff ? (
-											<tr className={cn("bg-bg-main/30")}>
+											<tr className="bg-bg-main/30">
 												<td
 													colSpan={COLUMN_COUNT}
 													className={cn(
-														"py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none",
+														"py-2 px-3 text-center text-xs font-bold",
+														"text-text-muted border-t border-b",
+														"border-border-color border-dashed uppercase",
+														"tracking-wider select-none",
 													)}
 												>
 													Top 20 Cutoff
@@ -156,7 +167,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 										) : null}
 										<tr
 											className={cn(
-												"hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer",
+												"hover:bg-bg-card-hover/60",
+												"transition-[background-color] duration-150 group",
+												"cursor-pointer",
 												PODIUM_STYLES[rank],
 											)}
 										>
@@ -169,10 +182,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 											</td>
 											<td
 												className={cn(
-													"py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-[color] duration-150",
+													"py-1.5 px-3 text-sm font-semibold text-text-main",
+													"group-hover:text-text-darker transition-[color]",
+													"duration-150",
 												)}
 											>
-												<div className={cn("flex items-center gap-2")}>
+												<div className="flex items-center gap-2">
 													<span>{player.name}</span>
 												</div>
 											</td>
