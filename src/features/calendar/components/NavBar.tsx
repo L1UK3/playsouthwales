@@ -45,20 +45,23 @@ const NavBar: React.FC<NavBarProps> = ({
 		>
 			<h2
 				className={cn(
-					"text-base sm:text-lg font-bold text-text-darker m-0 shrink-0 text-center sm:text-left",
+					"text-base sm:text-lg font-bold text-text-darker m-0 shrink-0",
+					"text-center sm:text-left",
 				)}
 			>
 				{monthName} {year}
 			</h2>
 			<div
 				className={cn(
-					"flex items-center gap-1.5 justify-center sm:justify-end w-full sm:w-auto",
+					"flex items-center gap-1.5 justify-center sm:justify-end w-full",
+					"sm:w-auto",
 				)}
 			>
 				<button
 					type="button"
 					className={cn(
-						"btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial",
+						"btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer",
+						"flex-1 sm:flex-initial",
 					)}
 					onClick={onGoToToday}
 				>
@@ -67,7 +70,8 @@ const NavBar: React.FC<NavBarProps> = ({
 				<button
 					type="button"
 					className={cn(
-						"btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial",
+						"btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer",
+						"flex-1 sm:flex-initial",
 					)}
 					onClick={onPrevMonth}
 				>
@@ -76,7 +80,8 @@ const NavBar: React.FC<NavBarProps> = ({
 				<button
 					type="button"
 					className={cn(
-						"btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial",
+						"btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer",
+						"flex-1 sm:flex-initial",
 					)}
 					onClick={onNextMonth}
 				>
@@ -86,7 +91,8 @@ const NavBar: React.FC<NavBarProps> = ({
 					<button
 						type="button"
 						className={cn(
-							"btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold cursor-pointer flex-1 sm:flex-initial",
+							"btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold",
+							"cursor-pointer flex-1 sm:flex-initial",
 						)}
 						onClick={onToggleViewMode}
 					>

@@ -66,19 +66,21 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 	return (
 		<div
 			className={cn(
-				"bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0",
+				"bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3",
+				"border-border-color last:mb-0",
 			)}
 			id={`date-${dateKey}`}
 		>
 			<div
 				className={cn(
-					"bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color",
+					"bg-bg-day-header p-5 font-bold text-lg text-text-main border-b",
+					"border-border-color",
 					isToday && "border-l-4! border-l-today-border!",
 				)}
 			>
 				{dateText}
 			</div>
-			<div className={cn("flex flex-col gap-3")}>
+			<div className="flex flex-col gap-3">
 				{sortedEvents.map((event) => (
 					<ListCard
 						key={event.id}

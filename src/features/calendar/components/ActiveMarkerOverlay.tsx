@@ -5,7 +5,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import activeMarkerUrl from "#/assets/activeMarker.glb?url";
 // import { playMarkerPop } from '#/features/calendar/utils/playMarkerPop';
 import { getParams } from "#/features/calendar/utils/getParams";
-import { cn } from "#/lib/utils";
 
 /**
  * Properties for the ActiveMarkerOverlay component.
@@ -271,7 +270,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 	return (
 		<canvas
 			ref={canvasRef}
-			className={cn("absolute inset-0 size-full pointer-events-none z-5")}
+			className="absolute inset-0 size-full pointer-events-none z-5"
 		/>
 	);
 };

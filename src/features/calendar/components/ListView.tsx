@@ -2,7 +2,6 @@ import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 
 import ListEventGroup from "#/features/calendar/components/ListEventGroup";
-import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
 /**
@@ -58,14 +57,14 @@ const ListView: React.FC<ListViewProps> = ({
 
 	if (sortedDates.length === 0) {
 		return (
-			<div className={cn("py-10 px-5 text-center text-text-muted text-base")}>
+			<div className="py-10 px-5 text-center text-text-muted text-base">
 				No events found.
 			</div>
 		);
 	}
 
 	return (
-		<div id="list-view-events" className={cn("flex flex-col gap-3")}>
+		<div id="list-view-events" className="flex flex-col gap-3">
 			{sortedDates.map((dateKey) => (
 				<ListEventGroup
 					key={dateKey}
