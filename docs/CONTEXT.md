@@ -4,15 +4,11 @@ Play! South Wales connects Pokémon Trading Card Game and Video Game Championshi
 
 ## Language
 
-### Competitions & Standings
+### Competitions & Rankings
 
 **National Rankings**:
 The competitive leaderboard ranking Welsh players by official Championship Points (CP) across premier circuit events.
-_Avoid_: Local standings, store leaderboard, circuit standings
-
-**Local Standings**:
-The cumulative match results (wins, losses, draws, attendance, and league points) tracked for players within a single local game store or league, submitted manually via Admin session summaries. Never scraped.
-_Avoid_: National rankings, top 20, championship rankings
+_Avoid_: Store leaderboard, circuit standings
 
 **Championship Series**:
 The official Pokémon competitive circuit comprising Regional, International, and World Championship events, represented as a dedicated umbrella league entity.
