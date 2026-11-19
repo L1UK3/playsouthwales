@@ -95,3 +95,44 @@ export async function queryRankings(): Promise<LeaderboardPosition[]> {
 
 	return rows.map((row, index) => ({ ...row, position: index + 1 }));
 }
+
+export type LeagueValues = typeof leagues.$inferInsert;
+
+export async function findLeague(
+	id: number,
+): Promise<{ id: number; isChampionshipSeries: boolean } | undefined> {
+	const [row] = await getDb()
+		.select({
+			id: leagues.id,
+			isChampionshipSeries: leagues.isChampionshipSeries,
+		})
+		.from(leagues)
+		.where(eq(leagues.id, id));
+	return row;
+}
+
+export async function insertLeague(values: LeagueValues): Promise<void> {
+	await getDb().insert(leagues).values(values);
+}
+
+/** Returns false when no league has the given id. */
+export async function updateLeague(
+	id: number,
+	values: LeagueValues,
+): Promise<boolean> {
+	const rows = await getDb()
+		.update(leagues)
+		.set(values)
+		.where(eq(leagues.id, id))
+		.returning({ id: leagues.id });
+	return rows.length > 0;
+}
+
+/** Removes a league and its events atomically. */
+export async function deleteLeague(id: number): Promise<void> {
+	const db = getDb();
+	await db.batch([
+		db.delete(events).where(eq(events.leagueId, id)),
+		db.delete(leagues).where(eq(leagues.id, id)),
+	]);
+}

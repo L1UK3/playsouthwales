@@ -1,7 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import Card from "#/components/Card";
-import { getAdminData, handleDeleteEvent, handleDeleteLeague, handleEventSubmit, handleExcludeEvent, handleLeagueSubmit, handleNationalRankingsSubmit, handleUnexcludeEvent } from "#/features/admin/admin.functions";
+import {
+	getAdminData,
+	handleDeleteEvent,
+	handleDeleteLeague,
+	handleEventSubmit,
+	handleExcludeEvent,
+	handleLeagueSubmit,
+	handleNationalRankingsSubmit,
+	handleUnexcludeEvent,
+} from "#/features/admin/admin.functions";
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
@@ -45,6 +54,7 @@ export const Route = createFileRoute("/_authed/admin")({
 function AdminPage() {
 	const search = Route.useSearch();
 	const navigate = Route.useNavigate();
+	const router = useRouter();
 	const { leagues, types, events } = Route.useLoaderData();
 	const [modal, setModal] = useState<AdminModal>(null);
 
@@ -65,6 +75,12 @@ function AdminPage() {
 		navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
 
 	const closeModal = () => setModal(null);
+
+	const commit = async (action: () => Promise<void>) => {
+		await action();
+		setModal(null);
+		await router.invalidate();
+	};
 
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
@@ -89,7 +105,11 @@ function AdminPage() {
 					showAdminControls
 					onAdd={() => setModal({ kind: "league" })}
 					onEdit={(league: League) => setModal({ kind: "league", league })}
-					onDelete={handleDeleteLeague}
+					onDelete={(league: League) =>
+						commit(() =>
+							handleDeleteLeague({ data: { leagueId: league.leagueId } }),
+						)
+					}
 					columns={4}
 					showInfo={false}
 				/>
@@ -139,7 +159,7 @@ function AdminPage() {
 				<LeagueFormModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={handleLeagueSubmit}
+					onSubmit={(data) => commit(() => handleLeagueSubmit({ data }))}
 					initialData={modal.league ?? null}
 				/>
 			)}

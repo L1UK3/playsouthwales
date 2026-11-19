@@ -1,5 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
-import { querySchedule } from "#/db/queries.server";
+import {
+	deleteLeague,
+	findLeague,
+	insertLeague,
+	querySchedule,
+	updateLeague,
+} from "#/db/queries.server";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
 import type { Top20PlayerInput } from "./components/NationalRankingsModal";
@@ -20,7 +26,7 @@ export interface LeagueSubmitInput {
 	socialLink?: string;
 	directions?: string;
 	accessibility?: string;
-	isChampionshipSeries: boolean;
+	isChampionshipSeries?: boolean;
 }
 
 export interface EventSubmitInput {
@@ -49,16 +55,45 @@ export const getAdminData = createServerFn({ method: "GET" })
 
 export const handleLeagueSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: LeagueSubmitInput) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
+	.validator((input: LeagueSubmitInput) => {
+		if (!input.name.trim()) throw new Error("League name is required");
+		return input;
+	})
+	.handler(async ({ data }) => {
+		const values = {
+			name: data.name,
+			location: data.location ?? null,
+			latitude: data.latitude ?? null,
+			longitude: data.longitude ?? null,
+			brandColor: data.brandColor ?? null,
+			logo: data.logo ?? null,
+			website: data.website ?? null,
+			eventLink: data.eventLink ?? null,
+			socialLink: data.socialLink ?? null,
+			directions: data.directions ?? null,
+			accessibility: data.accessibility ?? null,
+			isChampionshipSeries: data.isChampionshipSeries ?? false,
+		};
+
+		if (data.leagueId === undefined) {
+			await insertLeague(values);
+			return;
+		}
+		if (!(await updateLeague(data.leagueId, values))) {
+			throw new Error("League not found");
+		}
 	});
 
 export const handleDeleteLeague = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: { leagueId: number }) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
+	.handler(async ({ data }) => {
+		const league = await findLeague(data.leagueId);
+		if (!league) throw new Error("League not found");
+		if (league.isChampionshipSeries) {
+			throw new Error("The championship series league cannot be deleted.");
+		}
+		await deleteLeague(data.leagueId);
 	});
 
 export const handleEventSubmit = createServerFn({ method: "POST" })
