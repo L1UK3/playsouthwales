@@ -50,7 +50,7 @@ const Cell: React.FC<CellProps> = React.memo(
 				role="button"
 				tabIndex={isOtherMonth ? -1 : 0}
 				className={cn(
-					"min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform,box-shadow] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px]",
+					"min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform,box-shadow] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-md nth-last-7:rounded-bl-md",
 					isOtherMonth && "bg-bg-cell-empty! cursor-default!",
 					isSelected && "outline! outline-selected-border! -outline-offset-3!",
 					isToday && "border-2! border-today-border!",
