@@ -4,6 +4,7 @@
  * contrast: pass (46–50)
  */
 import React from "react";
+import { cn } from "#/lib/utils";
 import {
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
@@ -46,21 +47,27 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 		// Loading state (Skeleton layout)
 		if (isLoading) {
 			return (
-				<div className="flex flex-col gap-3 p-4 rounded-xl border border-border-color/40 bg-bg-card shadow-sm animate-pulse w-full max-w-sm">
-					<div className="flex items-center gap-3">
-						<div className="size-9 rounded-lg bg-bg-main shrink-0" />
-						<div className="flex flex-col gap-1.5 grow">
-							<div className="h-3 w-16 bg-bg-main rounded" />
-							<div className="h-4 w-32 bg-bg-main rounded" />
+				<div
+					className={cn(
+						"flex flex-col gap-3 p-4 rounded-xl",
+						"border border-border-color/40 bg-bg-card shadow-sm",
+						"animate-pulse w-full max-w-sm",
+					)}
+				>
+					<div className={cn("flex items-center gap-3")}>
+						<div className={cn("size-9 rounded-lg bg-bg-main shrink-0")} />
+						<div className={cn("flex flex-col gap-1.5 grow")}>
+							<div className={cn("h-3 w-16 bg-bg-main rounded")} />
+							<div className={cn("h-4 w-32 bg-bg-main rounded")} />
 						</div>
 					</div>
-					<div className="flex gap-2 mt-1">
-						<div className="h-5 w-20 bg-bg-main rounded-full" />
-						<div className="h-5 w-12 bg-bg-main rounded-full" />
+					<div className={cn("flex gap-2 mt-1")}>
+						<div className={cn("h-5 w-20 bg-bg-main rounded-full")} />
+						<div className={cn("h-5 w-12 bg-bg-main rounded-full")} />
 					</div>
-					<div className="h-3 w-full bg-bg-main rounded mt-1.5" />
-					<div className="h-3 w-3/4 bg-bg-main rounded" />
-					<div className="h-9 w-full bg-bg-main rounded-md mt-3" />
+					<div className={cn("h-3 w-full bg-bg-main rounded mt-1.5")} />
+					<div className={cn("h-3 w-3/4 bg-bg-main rounded")} />
+					<div className={cn("h-9 w-full bg-bg-main rounded-md mt-3")} />
 				</div>
 			);
 		}
@@ -68,12 +75,21 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 		// Error state fallback banner inside card
 		if (isError) {
 			return (
-				<div className="flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/2 shadow-sm w-full max-w-sm">
-					<div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm">
+				<div
+					className={cn(
+						"flex flex-col gap-2 p-4 rounded-xl",
+						"border-2 border-red-500/20 bg-red-500/2 shadow-sm w-full max-w-sm",
+					)}
+				>
+					<div
+						className={cn(
+							"flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm",
+						)}
+					>
 						<span></span>
 						<span>Failed to load event details</span>
 					</div>
-					<p className="text-xs text-text-muted leading-relaxed">
+					<p className={cn("text-xs text-text-muted leading-relaxed")}>
 						Something went wrong while retrieving info for this event. Please
 						try again.
 					</p>
@@ -87,33 +103,56 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 					className={cardClasses}
 					style={{ "--store-color": storeColor } as React.CSSProperties}
 				>
-					<div className="flex items-start gap-3">
+					<div className={cn("flex items-start gap-3")}>
 						{/* Metadata & Title */}
-						<div className="flex flex-col gap-0.5 grow min-w-0">
-							<h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug truncate">
+						<div className={cn("flex flex-col gap-0.5 grow min-w-0")}>
+							<h3
+								className={cn(
+									"font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug truncate",
+								)}
+							>
 								{event.name}
 							</h3>
 						</div>
 					</div>
 
 					{/* Event Format Tags */}
-					<div className="flex flex-wrap gap-1.5 items-center">
+					<div className={cn("flex flex-wrap gap-1.5 items-center")}>
 						<span
-							className={`${TAG_BASE_CLASSES} px-2.5 py-0.5 rounded-full type-${event.eventType}`}
+							className={cn(
+								TAG_BASE_CLASSES,
+								"px-2.5 py-0.5 rounded-full",
+								`type-${event.eventType}`,
+							)}
 							style={TAG_STYLE_PROPERTIES as React.CSSProperties}
 						>
 							{event.eventType}
 						</span>
-						<span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
+						<span
+							className={cn(
+								"text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5",
+								"rounded-full border border-border-color/60 uppercase tracking-wider",
+							)}
+						>
 							{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
 						</span>
-						<span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
+						<span
+							className={cn(
+								"text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5",
+								"rounded-full border border-border-color/60 uppercase tracking-wider",
+							)}
+						>
 							Official
 						</span>
 					</div>
 
 					{/* Description */}
-					<div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
+					<div
+						className={cn(
+							"text-xs leading-relaxed text-text-muted",
+							"border-l-2 border-border-color/80 pl-3 mt-1.5",
+						)}
+					>
 						{description}
 					</div>
 				</div>
@@ -125,7 +164,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 				className={cardClasses}
 				style={{ "--store-color": storeColor } as React.CSSProperties}
 			>
-				<div className="flex items-start gap-3">
+				<div className={cn("flex items-start gap-3")}>
 					{/* League Logo */}
 					{league?.logo ? (
 						<img
@@ -135,40 +174,71 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 							height="36"
 							loading="lazy"
 							decoding="async"
-							className="size-9 rounded-lg object-contain bg-white border border-border-color shrink-0 p-1 transition-transform duration-200 group-hover:scale-105"
+							className={cn(
+								"size-9 rounded-lg object-contain bg-white border border-border-color shrink-0 p-1",
+								"transition-transform duration-200 group-hover:scale-105",
+							)}
 						/>
 					) : (
-						<div className="size-9 rounded-lg bg-bg-main border border-border-color shrink-0 flex items-center justify-center text-sm font-bold text-text-muted">
+						<div
+							className={cn(
+								"size-9 rounded-lg bg-bg-main border border-border-color shrink-0",
+								"flex items-center justify-center text-sm font-bold text-text-muted",
+							)}
+						>
 							{leagueName.charAt(0)}
 						</div>
 					)}
 
 					{/* Metadata & Title */}
-					<div className="flex flex-col gap-0.5 grow min-w-0">
-						<div className="text-[10px] font-bold uppercase tracking-wider text-text-muted flex flex-wrap items-center gap-1.5 leading-none">
-							<span className="">{leagueName}</span>
+					<div className={cn("flex flex-col gap-0.5 grow min-w-0")}>
+						<div
+							className={cn(
+								"text-[10px] font-bold uppercase tracking-wider text-text-muted",
+								"flex flex-wrap items-center gap-1.5 leading-none",
+							)}
+						>
+							<span className={cn("")}>{leagueName}</span>
 						</div>
-						<h3 className="font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug">
+						<h3
+							className={cn(
+								"font-bold text-text-darker text-[15px] font-sans tracking-tight leading-snug",
+							)}
+						>
 							{event.name}
 						</h3>
 					</div>
 				</div>
 
 				{/* Event Format Tags */}
-				<div className="flex flex-wrap gap-1.5 items-center">
+				<div className={cn("flex flex-wrap gap-1.5 items-center")}>
 					<span
-						className={`${TAG_BASE_CLASSES} px-2.5 py-0.5 rounded-full type-${event.eventType}`}
+						className={cn(
+							TAG_BASE_CLASSES,
+							"px-2.5 py-0.5 rounded-full",
+							`type-${event.eventType}`,
+						)}
 						style={TAG_STYLE_PROPERTIES as React.CSSProperties}
 					>
 						{isOfficial
 							? `${types[event.eventType]}` + ` ${event.eventType}`
 							: event.eventType}
 					</span>
-					<span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
+					<span
+						className={cn(
+							"text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5",
+							"rounded-full border border-border-color/60 uppercase tracking-wider",
+						)}
+					>
 						{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
 					</span>
 					{isOfficial && (
-						<span className="text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5 rounded-full border border-border-color/60 uppercase tracking-wider">
+						<span
+							className={cn(
+								"text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5",
+								"rounded-full border border-border-color/60 uppercase tracking-wider",
+							)}
+						>
 							Official
 						</span>
 					)}
@@ -176,16 +246,20 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 				{/* Time & Cost Info */}
 				{(event.startTime != null || !isChampionship) && (
-					<div className="flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none">
+					<div
+						className={cn(
+							"flex items-center gap-3 text-xs text-text-muted mt-0.5 leading-none",
+						)}
+					>
 						{event.startTime && (
-							<div className="flex items-center gap-1.5">
-								<span className="opacity-75"></span>
+							<div className={cn("flex items-center gap-1.5")}>
+								<span className={cn("opacity-75")}></span>
 								<span>{event.startTime}</span>
 							</div>
 						)}
 						{!isChampionship && (
-							<div className="flex items-center gap-1.5">
-								<span className="opacity-75"></span>
+							<div className={cn("flex items-center gap-1.5")}>
+								<span className={cn("opacity-75")}></span>
 								<span>{getEntryFeeLabel(event.entryFee)}</span>
 							</div>
 						)}
@@ -194,14 +268,28 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 				{/* Description & Prizes (No nested card structures) */}
 				{description && (
-					<div className="text-xs leading-relaxed text-text-muted border-l-2 border-border-color/80 pl-3 mt-1.5">
+					<div
+						className={cn(
+							"text-xs leading-relaxed text-text-muted",
+							"border-l-2 border-border-color/80 pl-3 mt-1.5",
+						)}
+					>
 						{description}
 					</div>
 				)}
 
 				{event.prizes && (
-					<div className="text-xs leading-relaxed text-text-muted pl-3 border-l-2 border-amber-500/40 mt-1 flex gap-1.5 items-start">
-						<span className="text-amber-600 dark:text-amber-400 font-bold shrink-0">
+					<div
+						className={cn(
+							"text-xs leading-relaxed text-text-muted pl-3",
+							"border-l-2 border-amber-500/40 mt-1 flex gap-1.5 items-start",
+						)}
+					>
+						<span
+							className={cn(
+								"text-amber-600 dark:text-amber-400 font-bold shrink-0",
+							)}
+						>
 							Prizes:
 						</span>
 						<span>{event.prizes}</span>
@@ -212,7 +300,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 				{link && (
 					<a
 						href={link}
-						className="btn btn-primary w-full justify-center mt-2.5"
+						className={cn("btn btn-primary w-full justify-center mt-2.5")}
 						target="_blank"
 						rel="noopener noreferrer"
 					>

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { cn } from "#/lib/utils";
 import type { League, ScheduleEvent } from "#/types/domain";
 import {
 	ACTIVE_STATE_CLASSES,
@@ -42,10 +43,6 @@ export function useEventCard(
 			? getCardStyles(event.eventType, isChampionship)
 			: "";
 
-		const successBorder = stateFlags.isSuccess
-			? "border-2 border-emerald-500/30 bg-emerald-500/[0.01]"
-			: "";
-
 		const isOfficial =
 			event.eventType === "CUP" ||
 			event.eventType === "CHALLENGE" ||
@@ -60,18 +57,23 @@ export function useEventCard(
 			const isFocus = stateFlags.isFocus;
 			const isActive = stateFlags.isActive;
 
-			cardClasses = `
-                rounded-xl overflow-hidden cursor-pointer ${CARD_BASE_CLASSES}
-                ${cardStyles}
-                ${successBorder}
-                ${isHover ? `${HOVER_TRANSITION_CLASSES} translate-x-0.5` : `${INACTIVE_HOVER_CLASSES} hover:translate-x-0.5`}
-                ${isFocus ? FOCUS_RING_CLASSES : ""}
-                ${isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES}
-                ${event.isExcluded ? "opacity-55 grayscale-[30%] border-dashed border-red-500/20" : ""}
-                ${isDisabled && state === "disabled" ? "opacity-40 pointer-events-none cursor-not-allowed" : ""}
-            `
-				.trim()
-				.replace(/\s+/g, " ");
+			cardClasses = cn(
+				"rounded-xl overflow-hidden cursor-pointer",
+				CARD_BASE_CLASSES,
+				cardStyles,
+				stateFlags.isSuccess &&
+					"border-2 border-emerald-500/30 bg-emerald-500/[0.01]",
+				isHover
+					? [HOVER_TRANSITION_CLASSES, "translate-x-0.5"]
+					: [INACTIVE_HOVER_CLASSES, "hover:translate-x-0.5"],
+				isFocus && FOCUS_RING_CLASSES,
+				isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
+				event.isExcluded &&
+					"opacity-55 grayscale-[30%] border-dashed border-red-500/20",
+				isDisabled &&
+					state === "disabled" &&
+					"opacity-40 pointer-events-none cursor-not-allowed",
+			);
 		} else if (cardType === "schedule") {
 			const isDisabled = stateFlags.isDisabled;
 			const isHover = stateFlags.isHover;
@@ -79,18 +81,19 @@ export function useEventCard(
 			const isActive = stateFlags.isActive;
 			const isReleaseCard = stateFlags.isReleaseCard;
 
-			cardClasses = `
-                flex flex-col gap-3 p-4 rounded-xl ${CARD_BASE_CLASSES}
-                ${cardStyles}
-                ${successBorder}
-                ${isHover ? HOVER_TRANSITION_CLASSES : INACTIVE_HOVER_CLASSES}
-                ${isFocus ? FOCUS_RING_CLASSES : ""}
-                ${isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES}
-                ${isDisabled ? "opacity-55 pointer-events-none cursor-not-allowed" : ""}
-                ${isReleaseCard ? "bg-bg-card-release border-2 border-black shadow-[0_0_8px_rgba(0,0,0,0.15)]" : ""}
-            `
-				.trim()
-				.replace(/\s+/g, " ");
+			cardClasses = cn(
+				"flex flex-col gap-3 p-4 rounded-xl",
+				CARD_BASE_CLASSES,
+				cardStyles,
+				stateFlags.isSuccess &&
+					"border-2 border-emerald-500/30 bg-emerald-500/[0.01]",
+				isHover ? HOVER_TRANSITION_CLASSES : INACTIVE_HOVER_CLASSES,
+				isFocus && FOCUS_RING_CLASSES,
+				isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
+				isDisabled && "opacity-55 pointer-events-none cursor-not-allowed",
+				isReleaseCard &&
+					"bg-bg-card-release border-2 border-black shadow-[0_0_8px_rgba(0,0,0,0.15)]",
+			);
 		} else if (cardType === "calendar") {
 			cardClasses = cardStyles;
 		}
