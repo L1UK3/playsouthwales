@@ -13,7 +13,6 @@ import { MobileNavBar } from "#/components/MobileNavBar";
 import { SuspenseLoader } from "#/components/SuspenseLoader";
 import { SettingsProvider } from "#/context/SettingsContext";
 import { SITE_NAME } from "#/lib/seo";
-import { cn } from "#/lib/utils";
 import appCss from "#/styles.css?url";
 
 export const Route = createRootRoute({
@@ -62,10 +61,10 @@ function RootDocument({ children }: { children: ReactNode }) {
 function RootLayout() {
 	return (
 		<SettingsProvider>
-			<div className={cn("appRoot")}>
+			<div className="appRoot">
 				<Header />
 
-				<main className={cn("appContainer", "pb-20 sm:pb-4")}>
+				<main className="appContainer pb-20 sm:pb-4">
 					<Suspense fallback={<SuspenseLoader />}>
 						<Outlet />
 					</Suspense>

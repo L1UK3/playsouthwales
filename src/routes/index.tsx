@@ -124,12 +124,12 @@ function SchedulePage() {
 	const swipeClass = direction ? SWIPE_CLASS[direction] : "";
 
 	return (
-		<div className={cn("flex flex-col animate-swipe-up")}>
-			<h1 className={cn("sr-only")}>Events Schedule South Wales</h1>
+		<div className="flex flex-col animate-swipe-up">
+			<h1 className="sr-only">Events Schedule South Wales</h1>
 			<div
 				className={cn(
-					"z-10 mb-4 flex shrink-0 flex-col gap-3",
-					"rounded-lg border-2 border-border-color bg-bg-main p-3.5",
+					"z-10 mb-4 flex shrink-0 flex-col gap-3 rounded-lg border-2",
+					"border-border-color bg-bg-main p-3.5",
 				)}
 			>
 				<NavBar
@@ -155,8 +155,8 @@ function SchedulePage() {
 				className={cn("@container flex-1", swipeClass)}
 			>
 				{view === "calendar" ? (
-					<div className={cn("flex flex-col gap-4 @6xl:flex-row")}>
-						<div className={cn("min-w-0 flex-1 @6xl:flex @6xl:flex-col")}>
+					<div className="flex flex-col gap-4 @6xl:flex-row">
+						<div className="min-w-0 flex-1 @6xl:flex @6xl:flex-col">
 							<CalendarView
 								month={month}
 								events={schedule.calendar}
@@ -168,8 +168,8 @@ function SchedulePage() {
 						</div>
 						<div
 							className={cn(
-								"w-full @6xl:relative @6xl:w-auto",
-								"@6xl:max-w-100 @6xl:flex-[0_0_400px]",
+								"w-full @6xl:relative @6xl:w-auto @6xl:max-w-100",
+								"@6xl:flex-[0_0_400px]",
 							)}
 						>
 							<SelectedDaySection
