@@ -89,7 +89,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 			const num = parseInt(String(value), 10);
 			updated[index] = {
 				...updated[index],
-				cp: isNaN(num) ? 0 : Math.max(0, num),
+				cp: Number.isNaN(num) ? 0 : Math.max(0, num),
 			};
 		} else {
 			updated[index] = {
