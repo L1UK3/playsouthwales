@@ -141,6 +141,15 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 		// date is not the series start, so it is not written: doing so would move
 		// the series template and drop its earlier occurrences.
 		const { rowId, occurrenceDate } = parseEventId(data.id);
+		if (data.isRecurring !== undefined) {
+			const stored = await findEvent(rowId);
+			if (!stored) throw new Error("Event not found");
+			if (stored.isRecurring !== data.isRecurring) {
+				throw new Error(
+					"Changing an event between one-off and recurring is not supported",
+				);
+			}
+		}
 		const { date: _date, ...seriesValues } = values;
 		const fields = occurrenceDate === undefined ? values : seriesValues;
 		if (!(await updateEvent(rowId, fields))) {
