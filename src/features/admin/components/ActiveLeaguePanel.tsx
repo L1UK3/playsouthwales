@@ -31,7 +31,7 @@ export default function ActiveLeaguePanel({
 						{league.name})
 					</h3>
 					<p className="text-[12px] text-text-muted">
-						Edit the schedule, standings, or individual entries for this league.
+						Edit the schedule or individual events for this league.
 					</p>
 				</div>
 				<div className="grid gap-2 sm:grid-cols-2 sm:justify-end">

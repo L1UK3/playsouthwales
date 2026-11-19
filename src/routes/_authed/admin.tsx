@@ -165,7 +165,7 @@ function AdminPage() {
 						Select a league to continue
 					</h3>
 					<p className="mt-2 text-[14px]">
-						Use the league cards above to open event tools and standings for
+						Use the league cards above to open event tools for
 						that league.
 					</p>
 				</Card>
