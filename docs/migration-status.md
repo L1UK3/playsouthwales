@@ -1,99 +1,122 @@
 # Migration status
 
-What still needs doing before the new app in `update/` replaces the old stack.
-Updated on 2026-11-17 from a read of the code and a `tsc` run. The app was not
-run, and the new database queries have not run against a real D1 database.
+What still needs doing before the new app replaces the old stack.
+Updated on 2026-11-19 from a read of the code. The app was not run, and the
+queries have not yet run against the migrated D1 data.
 
-The old FastAPI and React code now lives in `backend/`, `frontend/` and
-`supabase/`. The new TanStack Start app lives in `update/`.
+The new TanStack Start app is at the repo root (`src/`, `migrations/`). The old
+FastAPI backend and React frontend are in `deprecated/backend/` and
+`deprecated/frontend/`, kept for reference while they are ported.
 
 ## Already in place
 
 - The four routes (`/`, `/leagues`, `/rankings`, `/admin`) with search-param
   handling, page titles and loaders.
-- Clerk sign-in, the `/admin` redirect for signed-out users, and an auth check
-  for server functions.
-- The D1 schema and two migrations (leagues, events, leaderboards, players).
+- Clerk sign-in, the `/admin` redirect for signed-out users, and
+  `authMiddleware` for server functions.
+- The D1 schema (`src/db/schema.ts`) with four tables: `leagues`, `events`,
+  `leaderboards` and `players`. The migrations are in `migrations/`, and
+  `events` has a `pokedataGuid` column.
 - The ported UI: calendar, event cards, leagues selector and map, leaderboard,
   admin modals, header, footer, mobile nav and the 3D "today" marker.
 - The settings context, the stylesheet, and the `public/` folder with the
   favicon, `robots.txt` and `sitemap.xml`.
-- The dependencies and environment variables for icons and Google Maps.
-- Real D1 queries for the four read functions (pull request 215):
+- Real D1 queries for the four read functions:
   - `getLeagues` returns leagues with a `hasStandings` flag.
   - `getSchedule` and `getAdminData` return one month of events, expanding
     weekly events and honouring `excludedDates`. The admin version keeps
     excluded occurrences, flagged.
   - `getRankings` returns players ranked by Championship Points.
-- The event type labels, taken from the old `EVENT_TYPE_MAP` constant.
+- **Production data.** `scripts/supabase-to-d1.mjs` exports Supabase and writes
+  `.supabase-export/import.sql` (gitignored). It turns each weekly event into
+  an `events` row with `isRecurring = 1` and keeps the pokedata GUID in
+  `pokedataGuid`. The import is a full replace, so it is safe to run again.
+- The Cloudflare environment variables, and CI (lint, typecheck and build from
+  the repo root).
 
-## Needed before launch
+## Needed for the MVP
 
 ### 1. Admin access rule
 
-The server-side check only requires a signed-in user. Unless you restrict
-sign-up in the Clerk dashboard, anyone who registers could edit data once the
-write functions exist. Decide this before you build the writes.
+`src/features/auth/auth.middleware.ts` only checks that someone is signed in.
+`docs/CONTEXT.md` says admin access is for organisers only and there are no
+public accounts. Pick one:
+
+- Turn off sign-ups in the Clerk dashboard and invite admins by hand.
+- Check a Clerk role or allowlist in the middleware.
+
+Settle this before step 2. Once the write functions exist, anyone who can sign
+in can change data.
 
 ### 2. Admin write operations
 
-None exist. `update/src/routes/_authed/admin.tsx` calls eight handlers that
-don't exist, and they cause every remaining type error:
+`src/features/admin/admin.functions.ts` only has `getAdminData`.
+`src/routes/_authed/admin.tsx` calls eight handlers that don't exist, and these
+are why typecheck fails:
 
 - `handleLeagueSubmit`, `handleDeleteLeague`
 - `handleEventSubmit`, `handleDeleteEvent`
 - `handleExcludeEvent`, `handleUnexcludeEvent`
 - `handleLeaderboardSubmit`, `handleNationalRankingsSubmit`
 
-Each needs a server function behind `authMiddleware`. Port the behaviour from
-`backend/app/routers/protected.py` and the services it calls:
+Each one needs a `createServerFn` behind `authMiddleware`, with its query in
+`src/db/queries.server.ts`. Copy the behaviour from
+`deprecated/backend/app/routers/protected.py` and
+`deprecated/backend/app/services/` (`league.py`, `event.py`,
+`leaderboard.py`):
 
 - Create, update and delete leagues and events.
-- Exclude or restore one occurrence of a weekly event.
+- Exclude or restore one occurrence of a weekly event by editing the series'
+  `excludedDates`. Occurrence ids are strings like `3:2026-11-18`: find the
+  series with `recurringEventId` and don't decode the id.
 - Replace a league's standings.
 - Replace the top 20 list.
 
-Occurrence ids are now strings like `3:2026-11-18`. Use `recurringEventId` to
-find the series, and do not decode the id.
+After each write, call `router.invalidate()` so the page reloads its data.
 
-### 3. Data
+### 3. Green CI
 
-The D1 database is empty, and `update/migrations/seed.sql` does not work. It is
-the Postgres seed file copied unchanged, so it uses `TRUNCATE`, `::jsonb` and
-a `weekly_events` table that no longer exists.
+CI should pass once step 2 is done. It is the bar for the MVP.
 
-- **Development:** write a SQLite seed outside `migrations/`, because wrangler
-  applies every `.sql` file in that folder. Use dates relative to today so the
-  calendar always shows events.
-- **Production:** import the leagues, events, weekly events and players from
-  Supabase. Convert each weekly event into an `events` row with
-  `isRecurring = 1`.
+### 4. End-to-end check and deploy
 
-### 4. Known gaps in the read queries
+- Load the import into the local database
+  (`wrangler d1 execute playsouthwales --local --file=.supabase-export/import.sql`),
+  run `npm run dev`, and click through every page and admin action.
+- Run `npm run db:migrate:remote` and `npm run deploy`, set
+  `CLERK_SECRET_KEY` with `wrangler secret put`, and point
+  `playsouthwales.uk` at the Worker.
 
-- `getRankings` accepts a season but ignores it. Only the current season exists.
-- A weekly event with a malformed start date produces no occurrences, with no
-  warning.
-- The schedule sort compares full date strings. A date that includes a time
-  sorts before one that doesn't, so type order breaks on that day.
-- The recurrence and sort logic has no tests.
+## Worth doing at the same time
+
+- **Schedule sort.** `sortEventsForSchedule` in `src/lib/event-types.ts`
+  compares whole date strings. On a day where some events have a time and some
+  don't, the event-type order breaks. Compare only the date part.
+- **Malformed dates.** A weekly event with a malformed start date produces no
+  occurrences, with no warning.
+- **Tests.** The recurrence and sort logic has none. Port
+  `deprecated/frontend/tests/event-sort.test.mjs` and
+  `event-descriptions.test.mjs` to Vitest.
+- **Development seed.** There is none. Write a small SQLite seed outside
+  `migrations/`, with dates relative to today, so contributors can see the
+  calendar working without production data.
 
 ## Can wait until after launch
 
-- The scrapers and hourly scheduler (`backend/app/web/pokedata.py`,
-  `championship_series.py`, `scheduler.py`). They need Cloudflare Cron
-  Triggers, and `wrangler.jsonc` has none.
-- The Discord bot announcements and weekly digest.
+- The scrapers and hourly scheduler (`deprecated/backend/app/web/`,
+  `scheduler.py`). They need Cloudflare Cron Triggers, and `wrangler.jsonc`
+  has none. The sync should match events on `pokedataGuid`.
+- The Discord bot announcements and the Sunday digest.
 - Set legality and regulation markers on the calendar (`sets.json`,
   `regs.json`).
-- Vercel analytics and the API index endpoint.
-- The old Python and Playwright tests.
-- CI. `.github/workflows/ci.yml` runs its npm scripts from the repo root. Check
-  that it covers `update/`, and expect typecheck to fail until step 2 is done.
+- Analytics and the API index endpoint.
+- Season filtering in `getRankings`. It accepts a season but ignores it,
+  because only the current season is stored.
+- Porting the old Python and Playwright tests.
 
 ## Suggested order
 
-1. Admin access rule (1), then admin writes (2).
-2. Development seed (3), so you can see the pages working.
-3. Production data import (3).
-4. Fix the read query gaps (4).
+1. Admin access rule (1), then admin writes (2), until CI is green (3).
+2. Fix the schedule sort and add tests for it.
+3. End-to-end check against the imported data, then deploy (4).
+4. Delete `deprecated/` once nothing in it is still needed for reference.
