@@ -91,7 +91,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 			{showPodium ? (
 				<LeaderboardPodium
 					rankings={podiumRankings}
-					className="min-h-full shrink-0 border-border-color pb-4 pt-6 min-[993px]:flex min-[993px]:items-center min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0"
+					className={cn(
+						"min-h-full shrink-0 border-border-color pb-4 pt-6 min-[993px]:flex min-[993px]:items-center min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0",
+					)}
 					size="lg"
 					showAvatar={false}
 					medalStyle="modern"
