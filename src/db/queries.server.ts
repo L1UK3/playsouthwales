@@ -10,7 +10,7 @@ import type {
 	ScheduleEvent,
 } from "#/types/domain";
 import { getDb } from "./client.server";
-import { events, leaderboards, leagues, players } from "./schema";
+import { events, leagues, players } from "./schema";
 
 function withoutNulls<Row extends object>(
 	row: Row,
@@ -21,19 +21,13 @@ function withoutNulls<Row extends object>(
 }
 
 export async function queryLeagues(): Promise<League[]> {
-	const db = getDb();
-	const [rows, standings] = await Promise.all([
-		db.select().from(leagues).orderBy(asc(leagues.id)),
-		db.select({ leagueId: leaderboards.leagueId }).from(leaderboards),
-	]);
-	const leagueIdsWithStandings = new Set(standings.map((s) => s.leagueId));
+	const rows = await getDb().select().from(leagues).orderBy(asc(leagues.id));
 
 	return rows.map((row) => {
 		const { id, ...league } = withoutNulls(row);
 		return {
 			...league,
 			leagueId: id,
-			hasStandings: leagueIdsWithStandings.has(id),
 		};
 	});
 }
