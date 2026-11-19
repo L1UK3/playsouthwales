@@ -155,7 +155,12 @@ export async function replacePlayers(
 		})
 		.from(players);
 	const existingByName = new Map(existing.map((row) => [row.name, row]));
-	const incomingNames = new Set(incoming.map((player) => player.name));
+	// A repeated name keeps its last occurrence, so the batch never inserts
+	// the same name twice and violates UNIQUE(name).
+	const uniqueIncoming = [
+		...new Map(incoming.map((player) => [player.name, player])).values(),
+	];
+	const incomingNames = new Set(uniqueIncoming.map((player) => player.name));
 
 	const statements: BatchItem<"sqlite">[] = [];
 	for (const row of existing) {
@@ -163,7 +168,7 @@ export async function replacePlayers(
 			statements.push(db.delete(players).where(eq(players.name, row.name)));
 		}
 	}
-	for (const player of incoming) {
+	for (const player of uniqueIncoming) {
 		const current = existingByName.get(player.name);
 		if (!current) {
 			statements.push(db.insert(players).values({ ...player, season }));
