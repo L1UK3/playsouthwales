@@ -76,7 +76,8 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 				))}
 
 				{showAdminControls && (
-					<div
+					<button
+						type="button"
 						className={
 							isScroll
 								? "flex flex-col items-center justify-center min-h-28 w-60 shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8"
@@ -84,11 +85,11 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 						}
 						onClick={onAdd}
 					>
-						<div className="flex flex-col items-center gap-2 font-bold text-[15px]">
+						<span className="flex flex-col items-center gap-2 font-bold text-[15px]">
 							<span className="text-2xl font-normal">+</span>
 							<span>Add New League</span>
-						</div>
-					</div>
+						</span>
+					</button>
 				)}
 			</div>
 		</div>

@@ -256,7 +256,9 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 					obj.geometry.dispose();
 					const material = obj.material;
 					if (Array.isArray(material)) {
-						material.forEach((m) => m.dispose());
+						material.forEach((m) => {
+							m.dispose();
+						});
 					} else {
 						material.dispose();
 					}

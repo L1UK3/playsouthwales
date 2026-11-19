@@ -89,7 +89,7 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 			const num = parseInt(String(value), 10);
 			updated[index] = {
 				...updated[index],
-				cp: isNaN(num) ? 0 : Math.max(0, num),
+				cp: Number.isNaN(num) ? 0 : Math.max(0, num),
 			};
 		} else {
 			updated[index] = {
@@ -166,13 +166,18 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 	};
 
 	return createPortal(
-		<div
-			className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]"
-			onClick={onClose}
-		>
+		<div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]">
+			<button
+				type="button"
+				aria-label="Close dialog"
+				tabIndex={-1}
+				className="absolute inset-0 cursor-default"
+				onClick={onClose}
+			/>
 			<div
-				className="bg-bg-card border-2 border-border-color rounded-lg w-full max-w-3xl max-h-[90vh] shadow-main flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]"
-				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				className="relative bg-bg-card border-2 border-border-color rounded-lg w-full max-w-3xl max-h-[90vh] shadow-main flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]"
 			>
 				<div className="py-5 px-7 border-b-2 border-border-color flex justify-between items-center bg-bg-card shrink-0">
 					<div>

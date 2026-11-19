@@ -45,7 +45,7 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 	onExclude,
 	onUnexclude,
 }) => {
-	const dateText = new Date(dateKey + "T00:00:00").toLocaleDateString(
+	const dateText = new Date(`${dateKey}T00:00:00`).toLocaleDateString(
 		undefined,
 		{
 			weekday: "long",

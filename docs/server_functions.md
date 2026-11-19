@@ -2,15 +2,12 @@
 
 Write-side server functions for the admin dashboard, ported from
 `deprecated/backend/app/routers/protected.py` and
-`deprecated/backend/app/services/{league,event,leaderboard}.py`.
+`deprecated/backend/app/services/{league,event}.py`.
 
 Every function is a `createServerFn({ method: "POST" })` guarded by
 `authMiddleware`, and every write goes through `src/db/queries.server.ts`.
 The route (`src/routes/_authed/admin.tsx`) calls `router.invalidate()` after
 each save so the loader re-reads the schedule.
-
-The leaderboard write (`handleLeaderboardSubmit`) is intentionally absent: the
-standings feature is deprecated and has no table in the current schema.
 
 ```mermaid
 classDiagram

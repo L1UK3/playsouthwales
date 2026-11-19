@@ -56,7 +56,7 @@ const PODIUM_CONFIG = {
 } as const;
 
 // Props
-interface LeaderboardPodiumProps extends React.HTMLAttributes<HTMLDivElement> {
+interface LeaderboardPodiumProps extends React.HTMLAttributes<HTMLUListElement> {
 	size?: PodiumSize;
 	/** Top 3 rankings (expects at least 1, ideally 3) */
 	rankings: LeaderboardRanking[];
@@ -98,9 +98,8 @@ const LeaderboardPodium = ({
 	}[size ?? "default"];
 
 	return (
-		<div
+		<ul
 			className={classNames(podiumVariants({ size }), className)}
-			role="list"
 			aria-label="Top 3 rankings"
 			{...props}
 		>
@@ -119,9 +118,8 @@ const LeaderboardPodium = ({
 				const itemLabel = `Rank ${ranking.rank}: ${displayName}${showValue ? `, ${ranking.value.toLocaleString()}` : ""}`;
 
 				return (
-					<div
+					<li
 						key={ranking.userId}
-						role="listitem"
 						aria-label={itemLabel}
 						className="flex flex-col items-center min-[993px]:h-full min-[993px]:justify-end"
 					>
@@ -197,10 +195,10 @@ const LeaderboardPodium = ({
 								{ranking.rank}
 							</div>
 						</div>
-					</div>
+					</li>
 				);
 			})}
-		</div>
+		</ul>
 	);
 };
 

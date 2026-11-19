@@ -73,6 +73,12 @@ export const handleLeagueSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: LeagueSubmitInput) => {
 		if (!input.name.trim()) throw new Error("League name is required");
+		if (input.latitude != null && !Number.isFinite(input.latitude)) {
+			throw new Error("Latitude must be a number");
+		}
+		if (input.longitude != null && !Number.isFinite(input.longitude)) {
+			throw new Error("Longitude must be a number");
+		}
 		return input;
 	})
 	.handler(async ({ data }) => {
@@ -116,6 +122,12 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: EventSubmitInput) => {
 		if (!input.name.trim()) throw new Error("Event name is required");
+		if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date)) {
+			throw new Error("Event date must be YYYY-MM-DD");
+		}
+		if (!Number.isInteger(input.leagueId) || input.leagueId <= 0) {
+			throw new Error("A valid league is required");
+		}
 		if (input.id !== undefined) parseEventId(input.id);
 		return input;
 	})
@@ -137,9 +149,22 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 			await insertEvent({ ...values, isRecurring: data.isRecurring ?? false });
 			return;
 		}
-		// Editing an occurrence edits the series it belongs to.
-		const { rowId } = parseEventId(data.id);
-		if (!(await updateEvent(rowId, values))) {
+		// Editing an occurrence edits the series it belongs to. The occurrence's
+		// date is not the series start, so it is not written: doing so would move
+		// the series template and drop its earlier occurrences.
+		const { rowId, occurrenceDate } = parseEventId(data.id);
+		if (data.isRecurring !== undefined) {
+			const stored = await findEvent(rowId);
+			if (!stored) throw new Error("Event not found");
+			if (stored.isRecurring !== data.isRecurring) {
+				throw new Error(
+					"Changing an event between one-off and recurring is not supported",
+				);
+			}
+		}
+		const { date: _date, ...seriesValues } = values;
+		const fields = occurrenceDate === undefined ? values : seriesValues;
+		if (!(await updateEvent(rowId, fields))) {
 			throw new Error("Event not found");
 		}
 	});
@@ -188,13 +213,18 @@ export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 	})
 	.handler(({ data }) => setOccurrenceExcluded(data.id, false));
 
-// handleLeaderboardSubmit - the leaderboard functionality is deprecated.
-
 /** Seasons start in July and are named after the year they end in. */
 function currentSeason(now: Date): number {
 	return now.getUTCMonth() >= 6
 		? now.getUTCFullYear() + 1
 		: now.getUTCFullYear();
+}
+
+/** Truncates a finite number to an integer; anything else becomes 0. */
+function toInteger(value: number | undefined): number {
+	return typeof value === "number" && Number.isFinite(value)
+		? Math.trunc(value)
+		: 0;
 }
 
 export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
@@ -204,10 +234,8 @@ export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
 		const players = data.players
 			.map((player) => ({
 				name: player.name.trim(),
-				cp: Number.isFinite(player.cp) ? Math.trunc(player.cp) : 0,
-				playerId: Number.isFinite(player.playerId)
-					? Math.trunc(player.playerId ?? 0)
-					: 0,
+				cp: toInteger(player.cp),
+				playerId: toInteger(player.playerId),
 			}))
 			.filter((player) => player.name !== "");
 

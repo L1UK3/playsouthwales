@@ -39,15 +39,29 @@ const Cell: React.FC<CellProps> = React.memo(
 		const visibleEvents = sortedEvents.slice(0, 3);
 		const extraCount = sortedEvents.length - 3;
 
+		const selectDay = () => {
+			if (!isOtherMonth) onSelectDay(dateKey);
+		};
+
 		return (
+			// biome-ignore lint/a11y/useSemanticElements: the cell contains nested cards, so it cannot be a <button>
 			<div
+				role="button"
+				tabIndex={isOtherMonth ? -1 : 0}
 				className={`min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform,box-shadow] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px]
                 ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""}
                 ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""}
                 ${isToday ? "border-2! border-today-border!" : ""}
                 ${isSpecialDay ? "border-2! border-special-day-border!" : ""}
                 `}
-				onClick={() => !isOtherMonth && onSelectDay(dateKey)}
+				onClick={selectDay}
+				onKeyDown={(e) => {
+					if (e.target !== e.currentTarget) return;
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						selectDay();
+					}
+				}}
 				data-date-key={dateKey}
 			>
 				<div className="text-[10px] @min-[700px]:text-xs font-bold text-text-main mb-0.5 @min-[700px]:mb-1.5 leading-none px-0.5">
