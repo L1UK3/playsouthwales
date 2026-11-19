@@ -2,7 +2,41 @@ import { createServerFn } from "@tanstack/react-start";
 import { querySchedule } from "#/db/queries.server";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
-import { write } from "node:fs";
+import type { Top20PlayerInput } from "./components/NationalRankingsModal";
+
+/** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
+export type EventId = number | string;
+
+export interface LeagueSubmitInput {
+	leagueId?: number;
+	name: string;
+	location?: string;
+	latitude?: number;
+	longitude?: number;
+	brandColor?: string;
+	logo?: string;
+	website?: string;
+	eventLink?: string;
+	socialLink?: string;
+	directions?: string;
+	accessibility?: string;
+	isChampionshipSeries: boolean;
+}
+
+export interface EventSubmitInput {
+	id?: EventId;
+	leagueId: number;
+	name: string;
+	date: string;
+	startTime?: string;
+	eventType: string;
+	game: string;
+	ticketLink?: string;
+	description?: string;
+	prizes?: string;
+	entryFee?: string;
+	isRecurring: boolean;
+}
 
 /** Same data as the public schedule, but cancelled occurrences stay in, flagged. */
 export const getAdminData = createServerFn({ method: "GET" })
@@ -15,93 +49,51 @@ export const getAdminData = createServerFn({ method: "GET" })
 
 export const handleLeagueSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: LeagueSubmitInput) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
 
 export const handleDeleteLeague = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: { leagueId: number }) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
 
 export const handleEventSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: EventSubmitInput) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
 
 export const handleDeleteEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: { id: EventId }) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
 
 export const handleExcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: { id: EventId }) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
 
 export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: { id: EventId }) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
 
 // handleLeaderboardSubmit - the leaderboard functionality is deprecated.
 
 export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { league: string }) => {
-		return input;
-	})
-	.handler(async ({ data }) =>
-		write(data.league, "league.txt", (err) => {
-			if (err) {
-				console.error("Error writing to league.txt", err);
-			}
-		}),
-	);
+	.validator((input: { players: Top20PlayerInput[] }) => input)
+	.handler(async () => {
+		throw new Error("Not implemented");
+	});
