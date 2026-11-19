@@ -213,8 +213,6 @@ export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 	})
 	.handler(({ data }) => setOccurrenceExcluded(data.id, false));
 
-// handleLeaderboardSubmit - the leaderboard functionality is deprecated.
-
 /** Seasons start in July and are named after the year they end in. */
 function currentSeason(now: Date): number {
 	return now.getUTCMonth() >= 6
