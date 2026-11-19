@@ -45,14 +45,16 @@ function LeaguesPage() {
 	return (
 		<div
 			className={cn(
-				"grid animate-swipe-up overflow-hidden rounded-md border border-border-color bg-bg-card",
-				"lg:h-[calc(100dvh-8rem)] lg:min-h-150 lg:grid-cols-[minmax(340px,400px)_1fr]",
+				"grid animate-swipe-up overflow-hidden rounded-md border",
+				"border-border-color bg-bg-card lg:h-[calc(100dvh-8rem)] lg:min-h-150",
+				"lg:grid-cols-[minmax(340px,400px)_1fr]",
 			)}
 		>
 			<div
 				className={cn(
-					"flex min-h-0 flex-col gap-3.5 overflow-y-auto border-b-2 border-border-color p-4 delay-75 animate-swipe-up",
-					"lg:h-full lg:border-r-2 lg:border-b-0",
+					"flex min-h-0 flex-col gap-3.5 overflow-y-auto border-b-2",
+					"border-border-color p-4 delay-75 animate-swipe-up lg:h-full",
+					"lg:border-r-2 lg:border-b-0",
 				)}
 			>
 				{leagues.length === 0 ? (
@@ -74,7 +76,7 @@ function LeaguesPage() {
 				)}
 			</div>
 
-			<div className={cn("relative h-[60dvh] min-h-0 bg-bg-main lg:h-full")}>
+			<div className="relative h-[60dvh] min-h-0 bg-bg-main lg:h-full">
 				<ClientOnly>
 					<LeagueMap
 						leagues={leagues}

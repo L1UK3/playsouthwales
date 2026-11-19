@@ -55,7 +55,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 	const isScroll = layout === "scroll";
 
 	return (
-		<div className={cn("flex flex-col gap-4")}>
+		<div className="flex flex-col gap-4">
 			<div
 				className={cn(
 					isScroll
@@ -80,8 +80,13 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 					<button
 						type="button"
 						className={cn(
-							"flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out",
-							"hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8",
+							"flex flex-col items-center justify-center rounded-lg border-2",
+							"border-dashed border-border-color bg-transparent",
+							"text-text-muted cursor-pointer",
+							"transition-[border-color,color,background-color,transform,box-shadow]",
+							"duration-200 ease-out",
+							"hover:border-primary hover:text-primary hover:bg-primary/4",
+							"hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8",
 							isScroll ? "min-h-28 w-60 shrink-0" : "min-h-28",
 						)}
 						onClick={onAdd}
@@ -91,7 +96,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 								"flex flex-col items-center gap-2 font-bold text-[15px]",
 							)}
 						>
-							<span className={cn("text-2xl font-normal")}>+</span>
+							<span className="text-2xl font-normal">+</span>
 							<span>Add New League</span>
 						</span>
 					</button>
