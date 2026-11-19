@@ -73,6 +73,12 @@ export const handleLeagueSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: LeagueSubmitInput) => {
 		if (!input.name.trim()) throw new Error("League name is required");
+		if (input.latitude != null && !Number.isFinite(input.latitude)) {
+			throw new Error("Latitude must be a number");
+		}
+		if (input.longitude != null && !Number.isFinite(input.longitude)) {
+			throw new Error("Longitude must be a number");
+		}
 		return input;
 	})
 	.handler(async ({ data }) => {
@@ -116,6 +122,12 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: EventSubmitInput) => {
 		if (!input.name.trim()) throw new Error("Event name is required");
+		if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date)) {
+			throw new Error("Event date must be YYYY-MM-DD");
+		}
+		if (!Number.isInteger(input.leagueId) || input.leagueId <= 0) {
+			throw new Error("A valid league is required");
+		}
 		if (input.id !== undefined) parseEventId(input.id);
 		return input;
 	})
