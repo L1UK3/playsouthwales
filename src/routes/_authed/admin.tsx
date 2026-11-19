@@ -4,7 +4,6 @@ import Card from "#/components/Card";
 import { getAdminData } from "#/features/admin/admin.functions";
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
-import LeaderboardFormModal from "#/features/admin/components/LeaderboardFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
 import NationalRankingsModal from "#/features/admin/components/NationalRankingsModal";
 import ListView from "#/features/calendar/components/ListView";
@@ -29,7 +28,6 @@ interface AdminSearch {
 type AdminModal =
 	| { kind: "league"; league?: League }
 	| { kind: "event"; event?: ScheduleEvent }
-	| { kind: "leaderboard"; leagueId: number }
 	| { kind: "nationalRankings" }
 	| null;
 
@@ -68,15 +66,6 @@ function AdminPage() {
 
 	const closeModal = () => setModal(null);
 
-	const openStandings = () => {
-		if (!activeLeague) return;
-		setModal(
-			activeLeague.isChampionshipSeries
-				? { kind: "nationalRankings" }
-				: { kind: "leaderboard", leagueId: activeLeague.leagueId },
-		);
-	};
-
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
 			<h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
@@ -87,8 +76,8 @@ function AdminPage() {
 						League Manager
 					</h2>
 					<p className="text-[14px] text-text-muted">
-						Pick a league or championship series to manage its events, update
-						standings, or create a new series.
+						Pick a league or championship series to manage its events or create
+						a new series.
 					</p>
 				</div>
 				<LeagueSelector
@@ -111,7 +100,6 @@ function AdminPage() {
 					key={activeLeague.leagueId}
 					league={activeLeague}
 					hasEvents={Object.keys(leagueEvents).length > 0}
-					onEditStandings={openStandings}
 					onAddEvent={() => setModal({ kind: "event" })}
 					navigation={
 						<NavBar
@@ -163,14 +151,6 @@ function AdminPage() {
 					initialData={modal.event ?? null}
 					leagueId={search.league ?? 0}
 					isChampionshipLeague={activeLeague?.isChampionshipSeries ?? false}
-				/>
-			)}
-			{modal?.kind === "leaderboard" && (
-				<LeaderboardFormModal
-					isOpen
-					onClose={closeModal}
-					onSubmit={handleLeaderboardSubmit}
-					leagueId={modal.leagueId}
 				/>
 			)}
 			{modal?.kind === "nationalRankings" && (

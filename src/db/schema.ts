@@ -53,24 +53,10 @@ export const events = sqliteTable(
 	],
 );
 
-export const leaderboards = sqliteTable(
-	"leaderboards",
-	{
-		id: integer().primaryKey({ autoIncrement: true }),
-		leagueId: integer()
-			.notNull()
-			.references(() => leagues.id, { onDelete: "cascade" }),
-		data: text({ mode: "json" }).notNull().default(sql`'[]'`),
-		createdAt: integer({ mode: "timestamp" })
-			.notNull()
-			.default(sql`(unixepoch())`),
-	},
-	(table) => [index("leaderboards_leagueId_idx").on(table.leagueId)],
-);
-
 export const players = sqliteTable("players", {
 	id: integer().primaryKey({ autoIncrement: true }),
 	name: text().notNull().unique(),
 	playerId: integer(),
 	cp: integer().notNull().default(0),
+	season: integer().notNull(),
 });

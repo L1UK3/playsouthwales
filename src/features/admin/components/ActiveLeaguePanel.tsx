@@ -5,7 +5,6 @@ import type { League } from "#/types/domain";
 interface ActiveLeaguePanelProps {
 	league: League;
 	hasEvents: boolean;
-	onEditStandings: () => void;
 	onAddEvent: () => void;
 	navigation: ReactNode;
 	children: ReactNode;
@@ -14,7 +13,6 @@ interface ActiveLeaguePanelProps {
 export default function ActiveLeaguePanel({
 	league,
 	hasEvents,
-	onEditStandings,
 	onAddEvent,
 	navigation,
 	children,
@@ -37,13 +35,6 @@ export default function ActiveLeaguePanel({
 					</p>
 				</div>
 				<div className="grid gap-2 sm:grid-cols-2 sm:justify-end">
-					<button
-						type="button"
-						className="btn btn-secondary min-h-11 w-full"
-						onClick={onEditStandings}
-					>
-						{championship ? "Edit National Rankings" : "Edit Standings"}
-					</button>
 					<button
 						type="button"
 						className="btn btn-primary min-h-11 w-full"
