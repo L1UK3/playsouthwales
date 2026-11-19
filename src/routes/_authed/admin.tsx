@@ -141,8 +141,12 @@ function AdminPage() {
 						onDelete={(event: ScheduleEvent) =>
 							commit(() => handleDeleteEvent({ data: { id: event.id } }))
 						}
-						onExclude={handleExcludeEvent}
-						onUnexclude={handleUnexcludeEvent}
+						onExclude={(event: ScheduleEvent) =>
+							commit(() => handleExcludeEvent({ data: { id: event.id } }))
+						}
+						onUnexclude={(event: ScheduleEvent) =>
+							commit(() => handleUnexcludeEvent({ data: { id: event.id } }))
+						}
 					/>
 				</ActiveLeaguePanel>
 			) : (

@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import {
 	deleteEvent,
 	deleteLeague,
+	findEvent,
 	findLeague,
 	insertEvent,
 	insertLeague,
@@ -154,19 +155,37 @@ export const handleDeleteEvent = createServerFn({ method: "POST" })
 		if (!(await deleteEvent(rowId))) throw new Error("Event not found");
 	});
 
+/** Adds or removes one occurrence date on its series' excluded dates. */
+async function setOccurrenceExcluded(id: EventId, excluded: boolean) {
+	const { rowId, occurrenceDate } = parseEventId(id);
+	if (!occurrenceDate) {
+		throw new Error("Only recurring occurrences can be excluded");
+	}
+	const series = await findEvent(rowId);
+	if (!series?.isRecurring) throw new Error("Event not found");
+
+	const others = series.excludedDates.filter((date) => date !== occurrenceDate);
+	const excludedDates = excluded ? [...others, occurrenceDate] : others;
+	if (!(await updateEvent(rowId, { excludedDates }))) {
+		throw new Error("Event not found");
+	}
+}
+
 export const handleExcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
-	});
+	.validator((input: { id: EventId }) => {
+		parseEventId(input.id);
+		return input;
+	})
+	.handler(({ data }) => setOccurrenceExcluded(data.id, true));
 
 export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
-	});
+	.validator((input: { id: EventId }) => {
+		parseEventId(input.id);
+		return input;
+	})
+	.handler(({ data }) => setOccurrenceExcluded(data.id, false));
 
 // handleLeaderboardSubmit - the leaderboard functionality is deprecated.
 

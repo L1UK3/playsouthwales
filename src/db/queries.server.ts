@@ -156,6 +156,22 @@ export async function updateEvent(
 	return rows.length > 0;
 }
 
+export async function findEvent(
+	id: number,
+): Promise<
+	{ id: number; isRecurring: boolean; excludedDates: string[] } | undefined
+> {
+	const [row] = await getDb()
+		.select({
+			id: events.id,
+			isRecurring: events.isRecurring,
+			excludedDates: events.excludedDates,
+		})
+		.from(events)
+		.where(eq(events.id, id));
+	return row;
+}
+
 /** Deletes an event row, which for a series removes every occurrence. */
 export async function deleteEvent(id: number): Promise<boolean> {
 	const rows = await getDb()
