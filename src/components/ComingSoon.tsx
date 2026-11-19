@@ -7,10 +7,7 @@ export interface ComingSoonProps {
 export function ComingSoon({ message }: ComingSoonProps) {
 	return (
 		<div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-1000 flex items-center justify-center p-4">
-			<div
-				className="bg-bg-card border-2 border-border-color rounded-xl w-full max-w-md shadow-main p-8 flex flex-col items-center text-center gap-6 animate-swipe-up"
-				onClick={(e) => e.stopPropagation()}
-			>
+			<div className="bg-bg-card border-2 border-border-color rounded-xl w-full max-w-md shadow-main p-8 flex flex-col items-center text-center gap-6 animate-swipe-up">
 				<div className="flex flex-col gap-2 items-center">
 					<h2 className="text-2xl font-black text-text-darker tracking-tight mt-2 m-0">
 						Coming Soon
