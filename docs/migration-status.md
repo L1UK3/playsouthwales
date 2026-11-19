@@ -14,15 +14,15 @@ FastAPI backend and React frontend are in `deprecated/backend/` and
   handling, page titles and loaders.
 - Clerk sign-in, the `/admin` redirect for signed-out users, and
   `authMiddleware` for server functions.
-- The D1 schema (`src/db/schema.ts`) with four tables: `leagues`, `events`,
-  `leaderboards` and `players`. The migrations are in `migrations/`, and
+- The D1 schema (`src/db/schema.ts`) with three tables: `leagues`, `events`
+  and `players`. The migrations are in `migrations/`, and
   `events` has a `pokedataGuid` column.
-- The ported UI: calendar, event cards, leagues selector and map, leaderboard,
-  admin modals, header, footer, mobile nav and the 3D "today" marker.
+- The ported UI: calendar, event cards, leagues selector and map,
+  national rankings, admin modals, header, footer, mobile nav and the 3D "today" marker.
 - The settings context, the stylesheet, and the `public/` folder with the
   favicon, `robots.txt` and `sitemap.xml`.
 - Real D1 queries for the four read functions:
-  - `getLeagues` returns leagues with a `hasStandings` flag.
+  - `getLeagues` returns leagues.
   - `getSchedule` and `getAdminData` return one month of events, expanding
     weekly events and honouring `excludedDates`. The admin version keeps
     excluded occurrences, flagged.
@@ -51,25 +51,23 @@ in can change data.
 ### 2. Admin write operations
 
 `src/features/admin/admin.functions.ts` only has `getAdminData`.
-`src/routes/_authed/admin.tsx` calls eight handlers that don't exist, and these
+`src/routes/_authed/admin.tsx` calls seven handlers that don't exist, and these
 are why typecheck fails:
 
 - `handleLeagueSubmit`, `handleDeleteLeague`
 - `handleEventSubmit`, `handleDeleteEvent`
 - `handleExcludeEvent`, `handleUnexcludeEvent`
-- `handleLeaderboardSubmit`, `handleNationalRankingsSubmit`
+- `handleNationalRankingsSubmit`
 
 Each one needs a `createServerFn` behind `authMiddleware`, with its query in
 `src/db/queries.server.ts`. Copy the behaviour from
 `deprecated/backend/app/routers/protected.py` and
-`deprecated/backend/app/services/` (`league.py`, `event.py`,
-`leaderboard.py`):
+`deprecated/backend/app/services/` (`league.py`, `event.py`):
 
 - Create, update and delete leagues and events.
 - Exclude or restore one occurrence of a weekly event by editing the series'
   `excludedDates`. Occurrence ids are strings like `3:2026-11-18`: find the
   series with `recurringEventId` and don't decode the id.
-- Replace a league's standings.
 - Replace the top 20 list.
 
 After each write, call `router.invalidate()` so the page reloads its data.

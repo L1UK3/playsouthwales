@@ -1,7 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import Card from "#/components/Card";
-import { getAdminData, handleDeleteEvent, handleDeleteLeague, handleEventSubmit, handleExcludeEvent, handleLeagueSubmit, handleNationalRankingsSubmit, handleUnexcludeEvent } from "#/features/admin/admin.functions";
+import {
+	getAdminData,
+	handleDeleteEvent,
+	handleDeleteLeague,
+	handleEventSubmit,
+	handleExcludeEvent,
+	handleLeagueSubmit,
+	handleNationalRankingsSubmit,
+	handleUnexcludeEvent,
+} from "#/features/admin/admin.functions";
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
@@ -45,6 +54,7 @@ export const Route = createFileRoute("/_authed/admin")({
 function AdminPage() {
 	const search = Route.useSearch();
 	const navigate = Route.useNavigate();
+	const router = useRouter();
 	const { leagues, types, events } = Route.useLoaderData();
 	const [modal, setModal] = useState<AdminModal>(null);
 
@@ -65,6 +75,18 @@ function AdminPage() {
 		navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
 
 	const closeModal = () => setModal(null);
+
+	const commit = async (action: () => Promise<void>) => {
+		await action();
+		setModal(null);
+		await router.invalidate();
+	};
+
+	const commitOrAlert = (action: () => Promise<void>) =>
+		commit(action).catch((error: unknown) => {
+			console.error("Admin save failed", error);
+			window.alert(error instanceof Error ? error.message : "Save failed");
+		});
 
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
@@ -89,7 +111,11 @@ function AdminPage() {
 					showAdminControls
 					onAdd={() => setModal({ kind: "league" })}
 					onEdit={(league: League) => setModal({ kind: "league", league })}
-					onDelete={handleDeleteLeague}
+					onDelete={(league: League) =>
+						commitOrAlert(() =>
+							handleDeleteLeague({ data: { leagueId: league.leagueId } }),
+						)
+					}
 					columns={4}
 					showInfo={false}
 				/>
@@ -118,9 +144,19 @@ function AdminPage() {
 						onEdit={(event: ScheduleEvent) =>
 							setModal({ kind: "event", event })
 						}
-						onDelete={handleDeleteEvent}
-						onExclude={handleExcludeEvent}
-						onUnexclude={handleUnexcludeEvent}
+						onDelete={(event: ScheduleEvent) =>
+							commitOrAlert(() => handleDeleteEvent({ data: { id: event.id } }))
+						}
+						onExclude={(event: ScheduleEvent) =>
+							commitOrAlert(() =>
+								handleExcludeEvent({ data: { id: event.id } }),
+							)
+						}
+						onUnexclude={(event: ScheduleEvent) =>
+							commitOrAlert(() =>
+								handleUnexcludeEvent({ data: { id: event.id } }),
+							)
+						}
 					/>
 				</ActiveLeaguePanel>
 			) : (
@@ -129,7 +165,7 @@ function AdminPage() {
 						Select a league to continue
 					</h3>
 					<p className="mt-2 text-[14px]">
-						Use the league cards above to open event tools and standings for
+						Use the league cards above to open event tools for
 						that league.
 					</p>
 				</Card>
@@ -139,7 +175,7 @@ function AdminPage() {
 				<LeagueFormModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={handleLeagueSubmit}
+					onSubmit={(data) => commitOrAlert(() => handleLeagueSubmit({ data }))}
 					initialData={modal.league ?? null}
 				/>
 			)}
@@ -147,7 +183,16 @@ function AdminPage() {
 				<EventFormModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={handleEventSubmit}
+					onSubmit={(data) =>
+						commitOrAlert(() =>
+							handleEventSubmit({
+								data: {
+									...data,
+									id: modal.kind === "event" ? modal.event?.id : undefined,
+								},
+							}),
+						)
+					}
 					initialData={modal.event ?? null}
 					leagueId={search.league ?? 0}
 					isChampionshipLeague={activeLeague?.isChampionshipSeries ?? false}
@@ -157,7 +202,9 @@ function AdminPage() {
 				<NationalRankingsModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={handleNationalRankingsSubmit}
+					onSubmit={(players) =>
+						commit(() => handleNationalRankingsSubmit({ data: { players } }))
+					}
 					initialPlayers={[]}
 				/>
 			)}

@@ -10,7 +10,16 @@ import { SkeletonRow } from "./SkeletonRow";
 
 export const TOP_CUTOFF_THRESHOLD = 20;
 export const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
-const SKELETON_ROW_COUNT = 8;
+const SKELETON_ROW_KEYS = [
+	"skeleton-1",
+	"skeleton-2",
+	"skeleton-3",
+	"skeleton-4",
+	"skeleton-5",
+	"skeleton-6",
+	"skeleton-7",
+	"skeleton-8",
+];
 const EMPTY_PLAYERS: LeaderboardPosition[] = [];
 
 const COLUMN_COUNT = 3;
@@ -98,9 +107,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 
 					<tbody className="divide-y divide-border-color/50">
 						{isLoading ? (
-							Array.from({ length: SKELETON_ROW_COUNT }, (_, index) => (
-								<SkeletonRow key={index} isGlobal />
-							))
+							SKELETON_ROW_KEYS.map((key) => <SkeletonRow key={key} isGlobal />)
 						) : sortedPlayers.length === 0 ? (
 							<tr>
 								<td

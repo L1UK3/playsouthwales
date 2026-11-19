@@ -16,8 +16,9 @@ export default function TabToggle({ tabs, activeTab }: TabToggleProps) {
 						className: "!bg-primary !text-white !border-primary-hover",
 					}}
 					key={tab.to}
-					children={tab.label}
-				/>
+				>
+					{tab.label}
+				</Link>
 			))}
 		</div>
 	);

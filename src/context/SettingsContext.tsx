@@ -25,6 +25,7 @@ function readDarkMode(): boolean {
 
 function writeDarkMode(darkMode: boolean) {
 	const value = encodeURIComponent(JSON.stringify({ darkMode }));
+	// biome-ignore lint/suspicious/noDocumentCookie: the Cookie Store API is not supported in all browsers, and the cookie is read server-side
 	document.cookie = `${COOKIE_NAME}=${value}; max-age=31536000; path=/; SameSite=Lax`;
 }
 

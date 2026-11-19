@@ -66,16 +66,16 @@ export function getStateFlags(
 /** Format plain GBP amounts while preserving descriptive entry fees. */
 export function getEntryFeeLabel(entryFee?: string | null): string {
 	const raw = entryFee?.trim();
-	if (!raw) return "£0.00";
+	if (!entryFee || !raw) return "£0.00";
 
 	// Fees are free text: do not reinterpret ranges, other currencies or notes.
 	const match = /^(?:£\s*)?(\d+(?:\.\d{1,2})?)$/.exec(raw);
-	if (!match) return entryFee!;
+	if (!match) return entryFee;
 
 	const amount = Number(match[1]);
 	return Number.isFinite(amount) && amount < 1e21
 		? `£${amount.toFixed(2)}`
-		: entryFee!;
+		: entryFee;
 }
 
 /**

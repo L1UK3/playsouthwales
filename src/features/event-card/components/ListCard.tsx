@@ -114,6 +114,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 		}
 
 		return (
+			// biome-ignore lint/a11y/useSemanticElements: the card contains nested interactive controls, so it cannot be a <button>
 			<div
 				role="button"
 				tabIndex={isDisabled && state === "disabled" ? -1 : 0}
