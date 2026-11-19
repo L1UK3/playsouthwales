@@ -192,7 +192,9 @@ function AdminPage() {
 				<NationalRankingsModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={handleNationalRankingsSubmit}
+					onSubmit={(players) =>
+						commit(() => handleNationalRankingsSubmit({ data: { players } }))
+					}
 					initialPlayers={[]}
 				/>
 			)}

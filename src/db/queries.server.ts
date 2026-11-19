@@ -1,4 +1,5 @@
 import { and, asc, desc, eq, gte, lt } from "drizzle-orm";
+import type { BatchItem } from "drizzle-orm/batch";
 import { EVENT_TYPE_LABELS, sortEventsForSchedule } from "#/lib/event-types";
 import { shiftMonth } from "#/lib/month";
 import { expandRecurring } from "#/lib/recurrence";
@@ -135,6 +136,58 @@ export async function deleteLeague(id: number): Promise<void> {
 		db.delete(events).where(eq(events.leagueId, id)),
 		db.delete(leagues).where(eq(leagues.id, id)),
 	]);
+}
+
+export interface PlayerValues {
+	name: string;
+	cp: number;
+	playerId: number;
+}
+
+/**
+ * Makes the players table match `incoming`: players missing from it are
+ * removed, changed points are updated and new names are inserted.
+ */
+export async function replacePlayers(
+	incoming: PlayerValues[],
+	season: number,
+): Promise<void> {
+	const db = getDb();
+	const existing = await db
+		.select({
+			name: players.name,
+			cp: players.cp,
+			playerId: players.playerId,
+		})
+		.from(players);
+	const existingByName = new Map(existing.map((row) => [row.name, row]));
+	const incomingNames = new Set(incoming.map((player) => player.name));
+
+	const statements: BatchItem<"sqlite">[] = [];
+	for (const row of existing) {
+		if (!incomingNames.has(row.name)) {
+			statements.push(db.delete(players).where(eq(players.name, row.name)));
+		}
+	}
+	for (const player of incoming) {
+		const current = existingByName.get(player.name);
+		if (!current) {
+			statements.push(db.insert(players).values({ ...player, season }));
+		} else if (
+			current.cp !== player.cp ||
+			current.playerId !== player.playerId
+		) {
+			statements.push(
+				db
+					.update(players)
+					.set({ cp: player.cp, playerId: player.playerId })
+					.where(eq(players.name, player.name)),
+			);
+		}
+	}
+
+	const [first, ...rest] = statements;
+	if (first) await db.batch([first, ...rest]);
 }
 
 export type EventValues = typeof events.$inferInsert;

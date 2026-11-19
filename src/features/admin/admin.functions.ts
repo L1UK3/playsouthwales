@@ -7,6 +7,7 @@ import {
 	insertEvent,
 	insertLeague,
 	querySchedule,
+	replacePlayers,
 	updateEvent,
 	updateLeague,
 } from "#/db/queries.server";
@@ -189,9 +190,26 @@ export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 
 // handleLeaderboardSubmit - the leaderboard functionality is deprecated.
 
+/** Seasons start in July and are named after the year they end in. */
+function currentSeason(now: Date): number {
+	return now.getUTCMonth() >= 6
+		? now.getUTCFullYear() + 1
+		: now.getUTCFullYear();
+}
+
 export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: { players: Top20PlayerInput[] }) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
+	.handler(async ({ data }) => {
+		const players = data.players
+			.map((player) => ({
+				name: player.name.trim(),
+				cp: Number.isFinite(player.cp) ? Math.trunc(player.cp) : 0,
+				playerId: Number.isFinite(player.playerId)
+					? Math.trunc(player.playerId ?? 0)
+					: 0,
+			}))
+			.filter((player) => player.name !== "");
+
+		await replacePlayers(players, currentSeason(new Date()));
 	});
