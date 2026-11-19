@@ -97,14 +97,14 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						"animate-pulse w-full",
 					)}
 				>
-					<div className="flex items-center gap-4 grow">
-						<div className="h-4 w-10 bg-bg-main rounded shrink-0" />
-						<div className="flex flex-col gap-1.5 grow">
-							<div className="h-4 w-1/3 bg-bg-main rounded" />
-							<div className="h-3.5 w-1/4 bg-bg-main rounded" />
+					<div className={cn("flex items-center gap-4 grow")}>
+						<div className={cn("h-4 w-10 bg-bg-main rounded shrink-0")} />
+						<div className={cn("flex flex-col gap-1.5 grow")}>
+							<div className={cn("h-4 w-1/3 bg-bg-main rounded")} />
+							<div className={cn("h-3.5 w-1/4 bg-bg-main rounded")} />
 						</div>
 					</div>
-					<div className="h-5 w-12 bg-bg-main rounded-full" />
+					<div className={cn("h-5 w-12 bg-bg-main rounded-full")} />
 				</div>
 			);
 		}
