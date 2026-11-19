@@ -7,7 +7,7 @@ type ClassValue =
 	| ClassValue[]
 	| { [className: string]: boolean | null | undefined };
 
-function cn(...inputs: ClassValue[]): any {
+function cn(...inputs: ClassValue[]): string {
 	return inputs
 		.flatMap((input) => {
 			if (!input) return [];
