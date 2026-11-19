@@ -39,7 +39,8 @@ export const LeagueMarker: React.FC<LeagueMarkerProps> = ({
 	<div
 		className={cn(
 			"flex origin-bottom flex-col items-center drop-shadow-md",
-			"transition-transform duration-150 ease-out motion-reduce:transition-none",
+			"transition-transform duration-150 ease-out",
+			"motion-reduce:transition-none",
 			isSelected ? "scale-125" : "hover:scale-110",
 		)}
 		style={{ "--brand-color": marker.brandColor } as React.CSSProperties}
@@ -61,12 +62,13 @@ export const LeagueMarker: React.FC<LeagueMarkerProps> = ({
 					loading="lazy"
 					decoding="async"
 					draggable={false}
-					className={cn("size-full object-contain p-0.5")}
+					className="size-full object-contain p-0.5"
 				/>
 			) : (
 				<span
 					className={cn(
-						"text-[11px] font-extrabold tracking-tight text-[color-mix(in_oklch,var(--brand-color)_70%,black)]",
+						"text-[11px] font-extrabold tracking-tight",
+						"text-[color-mix(in_oklch,var(--brand-color)_70%,black)]",
 					)}
 				>
 					{getInitials(marker.name)}
@@ -76,8 +78,8 @@ export const LeagueMarker: React.FC<LeagueMarkerProps> = ({
 		<span
 			aria-hidden="true"
 			className={cn(
-				"-mt-px h-0 w-0 border-x-[6px] border-t-8",
-				"border-x-transparent border-t-(--brand-color)",
+				"-mt-px h-0 w-0 border-x-[6px] border-t-8 border-x-transparent",
+				"border-t-(--brand-color)",
 			)}
 		/>
 	</div>

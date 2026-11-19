@@ -79,14 +79,15 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 		return (
 			<div
 				className={cn(
-					"flex flex-col items-center justify-center w-full h-full p-6 text-center",
-					"border-2 border-dashed border-border-color rounded-lg bg-bg-card text-text-muted min-h-75",
+					"flex flex-col items-center justify-center w-full h-full p-6",
+					"text-center border-2 border-dashed border-border-color rounded-lg",
+					"bg-bg-card text-text-muted min-h-75",
 				)}
 			>
-				<p className={cn("font-bold text-[16px] text-text-main mb-2")}>
+				<p className="font-bold text-[16px] text-text-main mb-2">
 					Map Unavailable
 				</p>
-				<p className={cn("text-sm max-w-sm")}>
+				<p className="text-sm max-w-sm">
 					Configure <code>VITE_GOOGLE_MAPS_API_KEY</code> in your frontend
 					environment to view local league venues.
 				</p>
@@ -96,11 +97,11 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 
 	return (
 		<APIProvider apiKey={apiKey}>
-			<div className={cn("w-full h-full overflow-hidden")}>
+			<div className="w-full h-full overflow-hidden">
 				<GoogleMap
 					defaultCenter={DEFAULT_CENTER}
 					defaultZoom={DEFAULT_ZOOM}
-					className={cn("w-full h-full")}
+					className="w-full h-full"
 					mapId={mapId}
 					colorScheme={colorScheme}
 					onClick={handleMapClick}

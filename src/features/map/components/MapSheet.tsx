@@ -58,28 +58,27 @@ export const MapSheet: React.FC<MapSheetProps> = ({
 			tabIndex={-1}
 			className={cn(
 				"absolute inset-x-0 bottom-0 z-20 flex max-h-[62%] flex-col",
-				"rounded-t-2xl border-t border-border-color bg-bg-card shadow-[0_-8px_24px_rgba(0,0,0,0.18)]",
-				"outline-none animate-sheet-up motion-reduce:animate-none",
+				"rounded-t-2xl border-t border-border-color bg-bg-card",
+				"shadow-[0_-8px_24px_rgba(0,0,0,0.18)] outline-none animate-sheet-up",
+				"motion-reduce:animate-none",
 			)}
 		>
 			<div
 				aria-hidden="true"
-				className={cn(
-					"mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-border-color",
-				)}
+				className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-border-color"
 			/>
 			<header
 				className={cn(
-					"flex items-center gap-3 px-4 pt-2 pb-3",
-					"border-b border-border-color/60",
+					"flex items-center gap-3 px-4 pt-2 pb-3 border-b",
+					"border-border-color/60",
 				)}
 			>
 				{leading}
 				<h2
 					id={titleId}
 					className={cn(
-						"m-0 grow min-w-0 truncate",
-						"text-base font-extrabold tracking-tight text-text-darker",
+						"m-0 grow min-w-0 truncate text-base font-extrabold tracking-tight",
+						"text-text-darker",
 					)}
 				>
 					{title}
@@ -89,19 +88,19 @@ export const MapSheet: React.FC<MapSheetProps> = ({
 					onClick={onClose}
 					aria-label={`Close ${title}`}
 					className={cn(
-						"inline-flex size-9 shrink-0 items-center justify-center rounded-full",
-						"border border-border-color bg-bg-main text-text-main cursor-pointer",
-						"transition-colors duration-150 hover:bg-bg-card-hover",
-						"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary",
+						"inline-flex size-9 shrink-0 items-center justify-center",
+						"rounded-full border border-border-color bg-bg-main text-text-main",
+						"cursor-pointer transition-colors duration-150",
+						"hover:bg-bg-card-hover focus-visible:outline-2",
+						"focus-visible:outline-offset-2 focus-visible:outline-secondary",
 					)}
 				>
-					<X aria-hidden="true" className={cn("size-4")} />
+					<X aria-hidden="true" className="size-4" />
 				</button>
 			</header>
 			<div
 				className={cn(
-					"min-h-0 overflow-y-auto overscroll-contain",
-					"px-4 pt-3 pb-4",
+					"min-h-0 overflow-y-auto overscroll-contain px-4 pt-3 pb-4",
 				)}
 			>
 				{children}
