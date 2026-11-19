@@ -3,7 +3,7 @@ import {
 	APIProvider,
 	CollisionBehavior,
 	ColorScheme,
-	Map,
+	Map as GoogleMap,
 } from "@vis.gl/react-google-maps";
 import type React from "react";
 import { useRef } from "react";
@@ -91,7 +91,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 	return (
 		<APIProvider apiKey={apiKey}>
 			<div className="w-full h-full overflow-hidden">
-				<Map
+				<GoogleMap
 					defaultCenter={DEFAULT_CENTER}
 					defaultZoom={DEFAULT_ZOOM}
 					className="w-full h-full"
@@ -135,7 +135,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 						cameraRef={cameraRef}
 						focusOffsetY={focusOffsetY}
 					/>
-				</Map>
+				</GoogleMap>
 			</div>
 		</APIProvider>
 	);
