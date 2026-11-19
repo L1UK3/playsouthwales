@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import Card from "#/components/Card";
-import { getAdminData } from "#/features/admin/admin.functions";
+import { getAdminData, handleDeleteEvent, handleDeleteLeague, handleEventSubmit, handleExcludeEvent, handleLeagueSubmit, handleNationalRankingsSubmit, handleUnexcludeEvent } from "#/features/admin/admin.functions";
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
