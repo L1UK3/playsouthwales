@@ -67,7 +67,7 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 				<span
 					className={cn(
 						"shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0",
-						"text-right type-${event.eventType} bg-white text-black",
+						`text-right type-${event.eventType} bg-white text-black`,
 						"dark:bg-white dark:text-black",
 					)}
 				>
