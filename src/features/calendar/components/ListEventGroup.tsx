@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
 import { ListCard } from "#/features/event-card";
+import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
 /**
@@ -64,15 +65,20 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 
 	return (
 		<div
-			className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0"
+			className={cn(
+				"bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0",
+			)}
 			id={`date-${dateKey}`}
 		>
 			<div
-				className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? "border-l-4! border-l-today-border!" : ""}`}
+				className={cn(
+					"bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color",
+					isToday && "border-l-4! border-l-today-border!",
+				)}
 			>
 				{dateText}
 			</div>
-			<div className="flex flex-col gap-3">
+			<div className={cn("flex flex-col gap-3")}>
 				{sortedEvents.map((event) => (
 					<ListCard
 						key={event.id}
