@@ -137,9 +137,13 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 			await insertEvent({ ...values, isRecurring: data.isRecurring ?? false });
 			return;
 		}
-		// Editing an occurrence edits the series it belongs to.
-		const { rowId } = parseEventId(data.id);
-		if (!(await updateEvent(rowId, values))) {
+		// Editing an occurrence edits the series it belongs to. The occurrence's
+		// date is not the series start, so it is not written: doing so would move
+		// the series template and drop its earlier occurrences.
+		const { rowId, occurrenceDate } = parseEventId(data.id);
+		const { date: _date, ...seriesValues } = values;
+		const fields = occurrenceDate === undefined ? values : seriesValues;
+		if (!(await updateEvent(rowId, fields))) {
 			throw new Error("Event not found");
 		}
 	});
