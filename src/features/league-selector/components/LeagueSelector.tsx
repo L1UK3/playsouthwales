@@ -1,6 +1,7 @@
 import React from "react";
 
 import LeagueCard from "#/features/league-selector/components/LeagueCard";
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 
 export interface LeagueSelectorProps {
@@ -54,13 +55,13 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 	const isScroll = layout === "scroll";
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className={cn("flex flex-col gap-4")}>
 			<div
-				className={
+				className={cn(
 					isScroll
 						? "flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth"
-						: `grid ${gridColsClass} gap-4`
-				}
+						: ["grid", gridColsClass, "gap-4"],
+				)}
 			>
 				{sortedLeagues.map((league) => (
 					<LeagueCard
@@ -71,22 +72,26 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 						onEdit={onEdit}
 						onDelete={onDelete}
 						showInfo={showInfo}
-						className={isScroll ? "w-60 shrink-0" : ""}
+						className={cn(isScroll && "w-60 shrink-0")}
 					/>
 				))}
 
 				{showAdminControls && (
 					<button
 						type="button"
-						className={
-							isScroll
-								? "flex flex-col items-center justify-center min-h-28 w-60 shrink-0 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8"
-								: "flex flex-col items-center justify-center min-h-28 rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8"
-						}
+						className={cn(
+							"flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border-color bg-transparent text-text-muted cursor-pointer transition-[border-color,color,background-color,transform,box-shadow] duration-200 ease-out",
+							"hover:border-primary hover:text-primary hover:bg-primary/4 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8",
+							isScroll ? "min-h-28 w-60 shrink-0" : "min-h-28",
+						)}
 						onClick={onAdd}
 					>
-						<span className="flex flex-col items-center gap-2 font-bold text-[15px]">
-							<span className="text-2xl font-normal">+</span>
+						<span
+							className={cn(
+								"flex flex-col items-center gap-2 font-bold text-[15px]",
+							)}
+						>
+							<span className={cn("text-2xl font-normal")}>+</span>
 							<span>Add New League</span>
 						</span>
 					</button>

@@ -4,7 +4,7 @@
  * contrast: pass (46–50)
  */
 import type React from "react";
-
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import LeagueInfo from "./LeagueInfo";
 
@@ -66,16 +66,20 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 	// Loading state (Skeleton card)
 	if (isLoading) {
 		return (
-			<div className="flex flex-col gap-3.5 p-4 rounded-xl border border-border-color/40 bg-bg-card shadow-sm animate-pulse w-full">
-				<div className="flex items-center gap-3">
-					<div className="size-8 rounded-lg bg-bg-main shrink-0" />
-					<div className="h-4 w-32 bg-bg-main rounded" />
+			<div
+				className={cn(
+					"flex flex-col gap-3.5 p-4 rounded-xl border border-border-color/40 bg-bg-card shadow-sm animate-pulse w-full",
+				)}
+			>
+				<div className={cn("flex items-center gap-3")}>
+					<div className={cn("size-8 rounded-lg bg-bg-main shrink-0")} />
+					<div className={cn("h-4 w-32 bg-bg-main rounded")} />
 				</div>
-				<div className="h-3.5 w-full bg-bg-main rounded mt-1" />
-				<div className="h-3.5 w-5/6 bg-bg-main rounded" />
-				<div className="flex gap-2 mt-2">
-					<div className="h-8 w-24 bg-bg-main rounded-md" />
-					<div className="h-8 w-24 bg-bg-main rounded-md" />
+				<div className={cn("h-3.5 w-full bg-bg-main rounded mt-1")} />
+				<div className={cn("h-3.5 w-5/6 bg-bg-main rounded")} />
+				<div className={cn("flex gap-2 mt-2")}>
+					<div className={cn("h-8 w-24 bg-bg-main rounded-md")} />
+					<div className={cn("h-8 w-24 bg-bg-main rounded-md")} />
 				</div>
 			</div>
 		);
@@ -84,8 +88,16 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 	// Error state card
 	if (isError) {
 		return (
-			<div className="flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/1 shadow-sm w-full">
-				<div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-xs">
+			<div
+				className={cn(
+					"flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20 bg-red-500/1 shadow-sm w-full",
+				)}
+			>
+				<div
+					className={cn(
+						"flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-xs",
+					)}
+				>
 					<span>⚠️</span>
 					<span>Failed to load league</span>
 				</div>
@@ -109,19 +121,21 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 		: "opacity-85 hover:opacity-100";
 
 	// Combine class styling
-	const cardClasses = `
-        flex flex-col gap-3 p-4 rounded-xl transition-all duration-200 outline-hidden cursor-pointer
-        ${champStyles}
-        ${selectionStyles}
-        ${successBorder}
-        ${isHover ? "-translate-y-0.5 shadow-md bg-bg-card-hover border-(--store-color) shadow-[0_0_12px_color-mix(in_oklch,var(--store-color)_30%,transparent)]" : "hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover"}
-        ${isFocus ? "ring-2 ring-focus ring-offset-2" : ""}
-        ${isActive ? "scale-[0.99] translate-y-px" : "active:scale-[0.99] active:translate-y-px"}
-        ${isDisabled ? "opacity-40 pointer-events-none cursor-not-allowed" : ""}
-        ${className}
-    `
-		.trim()
-		.replace(/\s+/g, " ");
+	const cardClasses = cn(
+		"flex flex-col gap-3 p-4 rounded-xl transition-all duration-200 outline-hidden cursor-pointer",
+		champStyles,
+		selectionStyles,
+		successBorder,
+		isHover
+			? "-translate-y-0.5 shadow-md bg-bg-card-hover border-(--store-color) shadow-[0_0_12px_color-mix(in_oklch,var(--store-color)_30%,transparent)]"
+			: "hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover",
+		isFocus && "ring-2 ring-focus ring-offset-2",
+		isActive
+			? "scale-[0.99] translate-y-px"
+			: "active:scale-[0.99] active:translate-y-px",
+		isDisabled && "opacity-40 pointer-events-none cursor-not-allowed",
+		className,
+	);
 
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: the card contains nested interactive controls, so it cannot be a <button>
@@ -134,7 +148,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 			onClick={() => onLeagueSelect(league.leagueId)}
 			onKeyDown={handleKeyDown}
 		>
-			<div className="flex items-center gap-3">
+			<div className={cn("flex items-center gap-3")}>
 				{/* Logo */}
 				{league.logo ? (
 					<img
@@ -144,21 +158,31 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 						height="32"
 						loading="lazy"
 						decoding="async"
-						className="size-8 rounded-lg object-contain bg-white border border-border-color shrink-0 p-1"
+						className={cn(
+							"size-8 rounded-lg object-contain bg-white border border-border-color shrink-0 p-1",
+						)}
 					/>
 				) : (
-					<div className="size-8 rounded-lg bg-bg-main border border-border-color shrink-0 flex items-center justify-center text-xs font-bold text-text-muted">
+					<div
+						className={cn(
+							"size-8 rounded-lg bg-bg-main border border-border-color shrink-0 flex items-center justify-center text-xs font-bold text-text-muted",
+						)}
+					>
 						{league.name.charAt(0)}
 					</div>
 				)}
 
 				{/* Title and Championship Indicator */}
-				<div className="flex flex-col gap-0.5 grow min-w-0">
-					<h3 className="text-sm font-bold text-text-darker truncate flex items-center gap-1.5 leading-snug">
-						{isChampionship && (
-							<span className="text-amber-500 text-xs shrink-0">🏆</span>
+				<div className={cn("flex flex-col gap-0.5 grow min-w-0")}>
+					<h3
+						className={cn(
+							"text-sm font-bold text-text-darker truncate flex items-center gap-1.5 leading-snug",
 						)}
-						<span className="truncate">{league.name}</span>
+					>
+						{isChampionship && (
+							<span className={cn("text-amber-500 text-xs shrink-0")}>🏆</span>
+						)}
+						<span className={cn("truncate")}>{league.name}</span>
 					</h3>
 				</div>
 			</div>
@@ -168,11 +192,15 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 
 			{/* Admin Controls */}
 			{(onEdit ?? onDelete) && (
-				<div className="flex flex-wrap gap-2 mt-2 pt-2 border-t border-border-color/30">
+				<div
+					className={cn(
+						"flex flex-wrap gap-2 mt-2 pt-2 border-t border-border-color/30",
+					)}
+				>
 					{onEdit && (
 						<button
 							type="button"
-							className="btn btn-secondary text-xs py-1.5 px-3"
+							className={cn("btn btn-secondary text-xs py-1.5 px-3")}
 							onClick={(e) => {
 								e.stopPropagation();
 								onEdit(league);
@@ -184,7 +212,9 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 					{onDelete && !isChampionship && (
 						<button
 							type="button"
-							className="btn btn-secondary text-xs py-1.5 px-3 border-red-500! text-red-600! dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!"
+							className={cn(
+								"btn btn-secondary text-xs py-1.5 px-3 border-red-500! text-red-600! dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!",
+							)}
 							onClick={(e) => {
 								e.stopPropagation();
 								onDelete(league);
