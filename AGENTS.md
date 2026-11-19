@@ -18,7 +18,7 @@ Issues are tracked in GitHub Issues for `L1UK3/playsouthwales` via the `gh` CLI.
 
 ### Triage labels
 
-Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+Vocabulary: `needs-triage`, `question` (needs info), `bug` (needs reproduction), `ready`, `in-progress`, `on-hold`, `wontfix`. See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
