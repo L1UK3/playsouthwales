@@ -124,6 +124,7 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 		.replace(/\s+/g, " ");
 
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: the card contains nested interactive controls, so it cannot be a <button>
 		<div
 			id={`league-card-${league.leagueId}`}
 			role="button"
