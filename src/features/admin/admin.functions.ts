@@ -222,6 +222,13 @@ function currentSeason(now: Date): number {
 		: now.getUTCFullYear();
 }
 
+/** Truncates a finite number to an integer; anything else becomes 0. */
+function toInteger(value: number | undefined): number {
+	return typeof value === "number" && Number.isFinite(value)
+		? Math.trunc(value)
+		: 0;
+}
+
 export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: { players: Top20PlayerInput[] }) => input)
@@ -229,10 +236,8 @@ export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
 		const players = data.players
 			.map((player) => ({
 				name: player.name.trim(),
-				cp: Number.isFinite(player.cp) ? Math.trunc(player.cp) : 0,
-				playerId: Number.isFinite(player.playerId)
-					? Math.trunc(player.playerId ?? 0)
-					: 0,
+				cp: toInteger(player.cp),
+				playerId: toInteger(player.playerId),
 			}))
 			.filter((player) => player.name !== "");
 
