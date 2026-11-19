@@ -81,29 +81,36 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 	return createPortal(
 		<div
 			className={cn(
-				"fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]",
+				"fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex",
+				"items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]",
 			)}
 		>
 			<button
 				type="button"
 				aria-label="Close dialog"
 				tabIndex={-1}
-				className={cn("absolute inset-0 cursor-default")}
+				className="absolute inset-0 cursor-default"
 				onClick={onClose}
 			/>
 			<div
 				role="dialog"
 				aria-modal="true"
 				className={cn(
-					"relative bg-bg-card border border-border-color rounded-lg w-full max-w-162.5 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]",
+					"relative bg-bg-card border border-border-color rounded-lg w-full",
+					"max-w-162.5 max-h-[90vh]",
+					"shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)]",
+					"flex flex-col overflow-hidden",
+					"animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]",
 				)}
 			>
 				<div
 					className={cn(
-						"py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight",
+						"py-6 px-7 border-b border-border-color flex justify-between",
+						"items-center [&_h3]:text-xl [&_h3]:font-extrabold",
+						"[&_h3]:text-text-darker [&_h3]:tracking-tight",
 					)}
 				>
-					<div className={cn("flex flex-col gap-0.5")}>
+					<div className="flex flex-col gap-0.5">
 						<h3>
 							{isChampionshipLeague
 								? initialData
@@ -116,7 +123,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 						{isChampionshipLeague && (
 							<span
 								className={cn(
-									"text-[12px] font-semibold text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded px-2 py-0.5 w-fit",
+									"text-[12px] font-semibold text-amber-500 bg-amber-500/10",
+									"border border-amber-500/20 rounded px-2 py-0.5 w-fit",
 								)}
 							>
 								Championship Series — Worlds, Regionals &amp; Special Events
@@ -126,7 +134,9 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 					<button
 						type="button"
 						className={cn(
-							"bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker",
+							"bg-transparent border-none text-xl text-text-muted",
+							"cursor-pointer p-1 rounded-full w-8 h-8 flex items-center",
+							"justify-center hover:bg-bg-main hover:text-text-darker",
 						)}
 						onClick={onClose}
 					>
@@ -134,19 +144,18 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 					</button>
 				</div>
 				<form
-					className={cn("flex flex-col gap-5 overflow-hidden")}
+					className="flex flex-col gap-5 overflow-hidden"
 					onSubmit={handleSubmit}
 				>
-					<div className={cn("p-7 overflow-y-auto")}>
-						<div className={cn("grid grid-cols-1 sm:grid-cols-2 gap-4")}>
+					<div className="p-7 overflow-y-auto">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 							{/* League ID Field */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="leagueIdField"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									{isChampionshipLeague
@@ -160,25 +169,26 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={leagueId}
 									onChange={(e) => setLeagueId(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								/>
 							</div>
 
 							{/* League Name */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="leagueName"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									{isChampionshipLeague ? "Series Name" : "League Name"}{" "}
-									<span
-										className={cn("text-primary text-[11px] font-semibold")}
-									>
+									<span className="text-primary text-[11px] font-semibold">
 										*
 									</span>
 								</label>
@@ -189,22 +199,28 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.name &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 									required
 								/>
 							</div>
 
 							{/* Location */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="leagueLocation"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									{isChampionshipLeague ? "Venue / Region" : "Address"}
@@ -218,18 +234,23 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={location}
 									onChange={(e) => setLocation(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								/>
 							</div>
 
 							{/* TODO: Implement automatic location detection, when an address is entered in the above field */}
 							{/* Latitude */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="leagueLatitude"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Latitude
@@ -242,19 +263,27 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={latitude}
 									onChange={(e) => setLatitude(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.latitude &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 								/>
 							</div>
 
 							{/* Longitude */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="leagueLongitude"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Longitude
@@ -267,31 +296,42 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={longitude}
 									onChange={(e) => setLongitude(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.longitude &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 								/>
 							</div>
 
 							{/* Brand Color */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="leagueBrandColor"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Brand Color
 								</label>
-								<div className={cn("flex items-center gap-3")}>
+								<div className="flex items-center gap-3">
 									<input
 										type="color"
 										id="leagueBrandColor"
 										value={brandColor}
 										onChange={(e) => setBrandColor(e.target.value)}
 										className={cn(
-											"p-0.5 w-11 h-11 rounded-md border border-border-color cursor-pointer bg-transparent focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+											"p-0.5 w-11 h-11 rounded-md border border-border-color",
+											"cursor-pointer bg-transparent focus:outline-none",
+											"focus:border-secondary",
+											"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										)}
 									/>
 									<input
@@ -301,7 +341,11 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 										value={brandColor}
 										onChange={(e) => setBrandColor(e.target.value)}
 										className={cn(
-											"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+											"py-3 px-3.5 rounded-md border border-border-color",
+											"text-sm bg-bg-card text-text-main w-full",
+											"transition-[background-color,border-color] duration-150",
+											"ease-out focus:outline-none focus:border-secondary",
+											"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										)}
 										style={{ flex: 1 }}
 									/>
@@ -309,11 +353,12 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 							</div>
 
 							{/* Logo URL */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="leagueLogo"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Logo Image URL
@@ -325,19 +370,27 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={logo}
 									onChange={(e) => setLogo(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.logo &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 								/>
 							</div>
 
 							{/* Website URL */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="leagueWebsite"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Official Website URL
@@ -349,19 +402,27 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={website}
 									onChange={(e) => setWebsite(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.website &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 								/>
 							</div>
 
 							{/* TCG Link */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="leagueEventLink"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									TCG Event Page URL
@@ -373,21 +434,27 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={eventLink}
 									onChange={(e) => setEventLink(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.eventLink &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 								/>
 							</div>
 
 							{/* Social Link */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="leagueSocialLink"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Social Media URL (e.g. Facebook)
@@ -399,22 +466,28 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 									value={socialLink}
 									onChange={(e) => setSocialLink(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 										errors.socialLink &&
-											"border-red-500! focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											cn(
+												"border-red-500!",
+												"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
+											),
 									)}
 								/>
 							</div>
 
 							{/* Directions — hidden for championship series */}
 							{!isChampionshipLeague && (
-								<div
-									className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-								>
+								<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 									<label
 										htmlFor="leagueDirections"
 										className={cn(
-											"text-[13px] font-bold text-text-main flex justify-between items-center",
+											"text-[13px] font-bold text-text-main flex",
+											"justify-between items-center",
 										)}
 									>
 										Directions
@@ -425,7 +498,12 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 										value={directions}
 										onChange={(e) => setDirections(e.target.value)}
 										className={cn(
-											"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20",
+											"py-3 px-3.5 rounded-md border border-border-color",
+											"text-sm bg-bg-card text-text-main w-full",
+											"transition-[background-color,border-color] duration-150",
+											"ease-out focus:outline-none focus:border-secondary",
+											"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
+											"min-h-20",
 										)}
 									/>
 								</div>
@@ -433,13 +511,12 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 
 							{/* Accessibility — hidden for championship series */}
 							{!isChampionshipLeague && (
-								<div
-									className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-								>
+								<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 									<label
 										htmlFor="leagueAccessibility"
 										className={cn(
-											"text-[13px] font-bold text-text-main flex justify-between items-center",
+											"text-[13px] font-bold text-text-main flex",
+											"justify-between items-center",
 										)}
 									>
 										Accessibility Info
@@ -450,7 +527,12 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 										value={accessibility}
 										onChange={(e) => setAccessibility(e.target.value)}
 										className={cn(
-											"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20",
+											"py-3 px-3.5 rounded-md border border-border-color",
+											"text-sm bg-bg-card text-text-main w-full",
+											"transition-[background-color,border-color] duration-150",
+											"ease-out focus:outline-none focus:border-secondary",
+											"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
+											"min-h-20",
 										)}
 									/>
 								</div>
@@ -459,7 +541,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 					</div>
 					<div
 						className={cn(
-							"border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0",
+							"border-t border-border-color py-5 px-7 flex justify-end gap-3",
+							"bg-bg-main shrink-0",
 						)}
 					>
 						<button

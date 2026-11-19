@@ -90,8 +90,8 @@ function AdminPage() {
 		});
 
 	return (
-		<div className={cn("flex animate-swipe-up flex-col gap-5 py-4 sm:py-6")}>
-			<h1 className={cn("sr-only")}>Play! South Wales Admin Dashboard</h1>
+		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
+			<h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
 
 			<Card>
 				<div
@@ -101,12 +101,13 @@ function AdminPage() {
 				>
 					<h2
 						className={cn(
-							"text-[clamp(1.35rem,2vw,1.85rem)] font-extrabold tracking-tight text-text-darker",
+							"text-[clamp(1.35rem,2vw,1.85rem)] font-extrabold tracking-tight",
+							"text-text-darker",
 						)}
 					>
 						League Manager
 					</h2>
-					<p className={cn("text-[14px] text-text-muted")}>
+					<p className="text-[14px] text-text-muted">
 						Pick a league or championship series to manage its events or create
 						a new series.
 					</p>
@@ -169,11 +170,11 @@ function AdminPage() {
 					/>
 				</ActiveLeaguePanel>
 			) : (
-				<Card className={cn("text-center text-text-muted")}>
-					<h3 className={cn("text-base font-bold text-text-darker")}>
+				<Card className="text-center text-text-muted">
+					<h3 className="text-base font-bold text-text-darker">
 						Select a league to continue
 					</h3>
-					<p className={cn("mt-2 text-[14px]")}>
+					<p className="mt-2 text-[14px]">
 						Use the league cards above to open event tools for that league.
 					</p>
 				</Card>

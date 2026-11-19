@@ -72,29 +72,36 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 	return createPortal(
 		<div
 			className={cn(
-				"fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]",
+				"fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex",
+				"items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]",
 			)}
 		>
 			<button
 				type="button"
 				aria-label="Close dialog"
 				tabIndex={-1}
-				className={cn("absolute inset-0 cursor-default")}
+				className="absolute inset-0 cursor-default"
 				onClick={onClose}
 			/>
 			<div
 				role="dialog"
 				aria-modal="true"
 				className={cn(
-					"relative bg-bg-card border border-border-color rounded-lg w-full max-w-150 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]",
+					"relative bg-bg-card border border-border-color rounded-lg w-full",
+					"max-w-150 max-h-[90vh]",
+					"shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)]",
+					"flex flex-col overflow-hidden",
+					"animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]",
 				)}
 			>
 				<div
 					className={cn(
-						"py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight",
+						"py-6 px-7 border-b border-border-color flex justify-between",
+						"items-center [&_h3]:text-xl [&_h3]:font-extrabold",
+						"[&_h3]:text-text-darker [&_h3]:tracking-tight",
 					)}
 				>
-					<div className={cn("flex flex-col gap-0.5")}>
+					<div className="flex flex-col gap-0.5">
 						<h3>
 							{initialData
 								? isChampionshipLeague
@@ -107,7 +114,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 						{isChampionshipLeague && (
 							<span
 								className={cn(
-									"text-[12px] font-semibold text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded px-2 py-0.5 w-fit",
+									"text-[12px] font-semibold text-amber-500 bg-amber-500/10",
+									"border border-amber-500/20 rounded px-2 py-0.5 w-fit",
 								)}
 							>
 								Championship Series — Worlds, Regionals &amp; Special Events
@@ -117,7 +125,9 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 					<button
 						type="button"
 						className={cn(
-							"bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker",
+							"bg-transparent border-none text-xl text-text-muted",
+							"cursor-pointer p-1 rounded-full w-8 h-8 flex items-center",
+							"justify-center hover:bg-bg-main hover:text-text-darker",
 						)}
 						onClick={onClose}
 					>
@@ -125,25 +135,22 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 					</button>
 				</div>
 				<form
-					className={cn("flex flex-col gap-5 overflow-hidden")}
+					className="flex flex-col gap-5 overflow-hidden"
 					onSubmit={handleSubmit}
 				>
-					<div className={cn("p-7 overflow-y-auto")}>
-						<div className={cn("grid grid-cols-1 sm:grid-cols-2 gap-4")}>
+					<div className="p-7 overflow-y-auto">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 							{/* Event Title */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="eventName"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Event Title{" "}
-									<span
-										className={cn("text-primary text-[11px] font-semibold")}
-									>
+									<span className="text-primary text-[11px] font-semibold">
 										*
 									</span>
 								</label>
@@ -158,24 +165,27 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 									required
 								/>
 							</div>
 
 							{/* Date */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="eventDate"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Date{" "}
-									<span
-										className={cn("text-primary text-[11px] font-semibold")}
-									>
+									<span className="text-primary text-[11px] font-semibold">
 										*
 									</span>
 								</label>
@@ -185,18 +195,23 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={date}
 									onChange={(e) => setDate(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 									required
 								/>
 							</div>
 
 							{/* Start Time */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="eventStartTime"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Start Time
@@ -207,23 +222,26 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={startTime}
 									onChange={(e) => setStartTime(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								/>
 							</div>
 
 							{/* Event Format */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="eventType"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Format{" "}
-									<span
-										className={cn("text-primary text-[11px] font-semibold")}
-									>
+									<span className="text-primary text-[11px] font-semibold">
 										*
 									</span>
 								</label>
@@ -232,7 +250,11 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={eventType}
 									onChange={(e) => setEventType(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								>
 									{isChampionshipLeague ? (
@@ -257,17 +279,16 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 							</div>
 
 							{/* Game Title */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="eventGame"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Game{" "}
-									<span
-										className={cn("text-primary text-[11px] font-semibold")}
-									>
+									<span className="text-primary text-[11px] font-semibold">
 										*
 									</span>
 								</label>
@@ -276,7 +297,11 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={game}
 									onChange={(e) => setGame(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								>
 									{isChampionshipLeague ? (
@@ -301,11 +326,12 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 							</div>
 
 							{/* Entry Fee */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="eventEntryFee"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Entry Fee
@@ -317,17 +343,22 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={entryFee}
 									onChange={(e) => setEntryFee(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								/>
 							</div>
 
 							{/* Ticket URL */}
-							<div className={cn("flex flex-col gap-1.5 relative")}>
+							<div className="flex flex-col gap-1.5 relative">
 								<label
 									htmlFor="eventTicketLink"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Registration Link
@@ -339,7 +370,11 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={ticketLink}
 									onChange={(e) => setTicketLink(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 									)}
 								/>
 							</div>
@@ -348,12 +383,14 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 							{!isChampionshipLeague && (
 								<div
 									className={cn(
-										"sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border border-border-color bg-bg-main/30 mb-2",
+										"sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border",
+										"border-border-color bg-bg-main/30 mb-2",
 									)}
 								>
 									<label
 										className={cn(
-											"flex items-center gap-3 cursor-pointer min-h-11 select-none",
+											"flex items-center gap-3 cursor-pointer min-h-11",
+											"select-none",
 										)}
 									>
 										<input
@@ -362,10 +399,13 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 											checked={isRecurring}
 											onChange={(e) => setIsRecurring(e.target.checked)}
 											className={cn(
-												"w-5 h-5 rounded border border-border-color text-secondary focus:ring-secondary cursor-pointer transition-[background-color,border-color] duration-150 ease-out",
+												"w-5 h-5 rounded border border-border-color",
+												"text-secondary focus:ring-secondary cursor-pointer",
+												"transition-[background-color,border-color]",
+												"duration-150 ease-out",
 											)}
 										/>
-										<span className={cn("text-sm font-bold text-text-main")}>
+										<span className="text-sm font-bold text-text-main">
 											Repeat Weekly
 										</span>
 									</label>
@@ -373,13 +413,12 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 							)}
 
 							{/* Description */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="eventDescription"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Description
@@ -394,19 +433,23 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={description}
 									onChange={(e) => setDescription(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
+										"min-h-20",
 									)}
 								/>
 							</div>
 
 							{/* Prizes */}
-							<div
-								className={cn("flex flex-col gap-1.5 relative sm:col-span-2")}
-							>
+							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
 								<label
 									htmlFor="eventPrizes"
 									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between items-center",
+										"text-[13px] font-bold text-text-main flex justify-between",
+										"items-center",
 									)}
 								>
 									Prizes Info
@@ -421,7 +464,12 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 									value={prizes}
 									onChange={(e) => setPrizes(e.target.value)}
 									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y min-h-20",
+										"py-3 px-3.5 rounded-md border border-border-color text-sm",
+										"bg-bg-card text-text-main w-full",
+										"transition-[background-color,border-color] duration-150",
+										"ease-out focus:outline-none focus:border-secondary",
+										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
+										"min-h-20",
 									)}
 								/>
 							</div>
@@ -430,7 +478,8 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 
 					<div
 						className={cn(
-							"border-t border-border-color py-5 px-7 flex justify-end gap-3 bg-bg-main shrink-0",
+							"border-t border-border-color py-5 px-7 flex justify-end gap-3",
+							"bg-bg-main shrink-0",
 						)}
 					>
 						<button
