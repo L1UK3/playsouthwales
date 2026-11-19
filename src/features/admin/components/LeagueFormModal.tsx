@@ -57,8 +57,8 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 		setIsSubmitting(true);
 		try {
 			onSubmit({
-				leagueId: leagueId ? parseInt(leagueId) : undefined,
-				id: leagueId ? parseInt(leagueId) : undefined,
+				leagueId: leagueId ? parseInt(leagueId, 10) : undefined,
+				id: leagueId ? parseInt(leagueId, 10) : undefined,
 				name,
 				location,
 				latitude: latitude ? parseFloat(latitude) : undefined,
