@@ -35,7 +35,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 	const isDateSelected = selectedDateKey !== undefined;
 
 	const title = isDateSelected
-		? new Date(selectedDateKey + "T00:00:00").toLocaleDateString(undefined, {
+		? new Date(`${selectedDateKey}T00:00:00`).toLocaleDateString(undefined, {
 				weekday: "long",
 				year: "numeric",
 				month: "long",
