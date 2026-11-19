@@ -45,31 +45,30 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 						src={logo}
 						alt=""
 						className={cn(
-							"rounded-full object-containt bg-white rounded-lg border border-border-color",
-							"shrink-0 size-3 @min-[700px]:size-4",
+							"rounded-full object-containt bg-white border",
+							"border-border-color shrink-0 size-3 @min-[700px]:size-4",
 						)}
 					/>
 				) : isReleaseEvent ? null : (
 					<div
 						className={cn(
-							"rounded-full bg-bg-card shrink-0",
-							"size-3 @min-[700px]:size-4",
+							"rounded-full bg-bg-card shrink-0 size-3 @min-[700px]:size-4",
 						)}
 					/>
 				)}
 				<span
 					className={cn(
-						"hidden @min-[700px]:block truncate min-w-0 flex-1",
-						"text-left text-[10px] leading-tight",
+						"hidden @min-[700px]:block truncate min-w-0 flex-1 text-left",
+						"text-[10px] leading-tight",
 					)}
 				>
 					{displayName}
 				</span>
 				<span
 					className={cn(
-						"shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0 text-right",
-						"type-${event.eventType}",
-						"bg-white text-black dark:bg-white dark:text-black",
+						"shrink-0 text-[8.5px] max-sm:text-[7.5px] rounded-full px-1 py-0",
+						"text-right type-${event.eventType} bg-white text-black",
+						"dark:bg-white dark:text-black",
 					)}
 				>
 					{types[event.eventType] ?? event.eventType}

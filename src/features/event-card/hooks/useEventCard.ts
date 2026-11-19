@@ -92,7 +92,10 @@ export function useEventCard(
 				isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
 				isDisabled && "opacity-55 pointer-events-none cursor-not-allowed",
 				isReleaseCard &&
-					"bg-bg-card-release border-2 border-black shadow-[0_0_8px_rgba(0,0,0,0.15)]",
+					cn(
+						"bg-bg-card-release border-2 border-black",
+						"shadow-[0_0_8px_rgba(0,0,0,0.15)]",
+					),
 			);
 		} else if (cardType === "calendar") {
 			cardClasses = cardStyles;

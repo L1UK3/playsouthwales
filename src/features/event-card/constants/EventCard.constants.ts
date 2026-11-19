@@ -5,15 +5,13 @@
 import { cn } from "#/lib/utils";
 
 // Common base transitions and layout properties
-export const CARD_BASE_CLASSES = cn(
-	"transition-all duration-200 outline-hidden",
-);
+export const CARD_BASE_CLASSES = "transition-all duration-200 outline-hidden";
 
 // Focus ring indicator style
-export const FOCUS_RING_CLASSES = cn("ring-2 ring-focus ring-offset-2");
+export const FOCUS_RING_CLASSES = "ring-2 ring-focus ring-offset-2";
 
 // Active/press action state scale and offset
-export const ACTIVE_STATE_CLASSES = cn("scale-[0.99] translate-y-px");
+export const ACTIVE_STATE_CLASSES = "scale-[0.99] translate-y-px";
 export const INACTIVE_ACTIVE_CLASSES = cn(
 	"active:scale-[0.99] active:translate-y-px",
 );
@@ -29,8 +27,8 @@ export const INACTIVE_HOVER_CLASSES = cn(
 
 // Formats / Event category tag styling
 export const TAG_BASE_CLASSES = cn(
-	"text-[9px] font-extrabold tracking-wider uppercase",
-	"border border-(--type-border)/30 text-(--type-border) bg-(--type-bg)",
+	"text-[9px] font-extrabold tracking-wider uppercase border",
+	"border-(--type-border)/30 text-(--type-border) bg-(--type-bg)",
 );
 
 // Common inline styles for event types

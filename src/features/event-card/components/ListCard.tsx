@@ -92,19 +92,19 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			return (
 				<div
 					className={cn(
-						"py-3 px-4 flex items-center justify-between gap-4",
-						"rounded-xl border border-border-color/40 bg-bg-card shadow-sm",
-						"animate-pulse w-full",
+						"py-3 px-4 flex items-center justify-between gap-4 rounded-xl",
+						"border border-border-color/40 bg-bg-card shadow-sm animate-pulse",
+						"w-full",
 					)}
 				>
-					<div className={cn("flex items-center gap-4 grow")}>
-						<div className={cn("h-4 w-10 bg-bg-main rounded shrink-0")} />
-						<div className={cn("flex flex-col gap-1.5 grow")}>
-							<div className={cn("h-4 w-1/3 bg-bg-main rounded")} />
-							<div className={cn("h-3.5 w-1/4 bg-bg-main rounded")} />
+					<div className="flex items-center gap-4 grow">
+						<div className="h-4 w-10 bg-bg-main rounded shrink-0" />
+						<div className="flex flex-col gap-1.5 grow">
+							<div className="h-4 w-1/3 bg-bg-main rounded" />
+							<div className="h-3.5 w-1/4 bg-bg-main rounded" />
 						</div>
 					</div>
-					<div className={cn("h-5 w-12 bg-bg-main rounded-full")} />
+					<div className="h-5 w-12 bg-bg-main rounded-full" />
 				</div>
 			);
 		}
@@ -114,14 +114,14 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			return (
 				<div
 					className={cn(
-						"py-3 px-4 rounded-xl",
-						"border-2 border-red-500/20 bg-red-500/1 shadow-sm",
-						"flex items-center justify-between w-full",
+						"py-3 px-4 rounded-xl border-2 border-red-500/20 bg-red-500/1",
+						"shadow-sm flex items-center justify-between w-full",
 					)}
 				>
 					<div
 						className={cn(
-							"flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-xs",
+							"flex items-center gap-2 text-red-600 dark:text-red-400",
+							"font-bold text-xs",
 						)}
 					>
 						<span>Failed to load event</span>
@@ -140,10 +140,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 				onClick={() => onToggle?.(event.id)}
 				onKeyDown={handleKeyDown}
 			>
-				<div
-					className={cn("py-3 px-4 flex justify-between items-center gap-4")}
-				>
-					<div className={cn("flex items-center gap-4 grow min-w-0")}>
+				<div className="py-3 px-4 flex justify-between items-center gap-4">
+					<div className="flex items-center gap-4 grow min-w-0">
 						{/* Start Time */}
 						<div
 							className={cn(
@@ -154,23 +152,23 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						</div>
 
 						{/* Name & Subtitle */}
-						<div className={cn("flex flex-col gap-0.5 grow min-w-0")}>
+						<div className="flex flex-col gap-0.5 grow min-w-0">
 							<div
 								className={cn(
-									"text-sm font-bold text-text-darker flex flex-wrap items-center gap-1.5 leading-snug",
+									"text-sm font-bold text-text-darker flex flex-wrap",
+									"items-center gap-1.5 leading-snug",
 								)}
 							>
 								{isChampionship && (
-									<span className={cn("text-amber-500 text-xs shrink-0")}>
-										🏆
-									</span>
+									<span className="text-amber-500 text-xs shrink-0">🏆</span>
 								)}
-								<span className={cn("truncate")}>{event.name}</span>
+								<span className="truncate">{event.name}</span>
 								{event.isExcluded && (
 									<span
 										className={cn(
-											"text-[10px] font-bold text-red-600 uppercase tracking-wider",
-											"bg-red-500/10 px-1.5 py-0.2 rounded shrink-0",
+											"text-[10px] font-bold text-red-600 uppercase",
+											"tracking-wider bg-red-500/10 px-1.5 py-0.2 rounded",
+											"shrink-0",
 										)}
 									>
 										Excluded
@@ -179,7 +177,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 							</div>
 							<div
 								className={cn(
-									"text-[11px] text-text-muted flex items-center gap-1.5 truncate",
+									"text-[11px] text-text-muted flex items-center gap-1.5",
+									"truncate",
 								)}
 							>
 								{league?.logo && (
@@ -191,11 +190,12 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 										loading="lazy"
 										decoding="async"
 										className={cn(
-											"size-3.5 rounded object-contain bg-white border border-border-color shrink-0 p-px",
+											"size-3.5 rounded object-contain bg-white border",
+											"border-border-color shrink-0 p-px",
 										)}
 									/>
 								)}
-								<span className={cn("truncate")}>
+								<span className="truncate">
 									{leagueName} •{" "}
 									{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
 								</span>
@@ -204,12 +204,13 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 					</div>
 
 					{/* Format Emoji & Expand Arrow */}
-					<div className={cn("flex items-center gap-3 shrink-0")}>
+					<div className="flex items-center gap-3 shrink-0">
 						{isOfficial && (
 							<span
 								className={cn(
-									"px-1.5 py-0.5 rounded text-[8px] font-extrabold tracking-wider uppercase",
-									"bg-white/20 text-white border border-white/30",
+									"px-1.5 py-0.5 rounded text-[8px] font-extrabold",
+									"tracking-wider uppercase bg-white/20 text-white border",
+									"border-white/30",
 								)}
 							>
 								Official
@@ -227,7 +228,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						</span>
 						<span
 							className={cn(
-								"text-[9px] text-text-muted/70 transition-transform duration-250",
+								"text-[9px] text-text-muted/70 transition-transform",
+								"duration-250",
 								isExpanded && "rotate-180 text-text-main",
 							)}
 						>
@@ -244,23 +246,19 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						isExpanded ? "max-h-150 opacity-100" : "max-h-0 opacity-0",
 					)}
 				>
-					<div className={cn("p-4 flex flex-col gap-3.5")}>
+					<div className="p-4 flex flex-col gap-3.5">
 						<div
 							className={cn(
 								"flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted",
 							)}
 						>
 							<span>
-								<strong className={cn("text-text-main font-bold")}>
-									Format:
-								</strong>{" "}
+								<strong className="text-text-main font-bold">Format:</strong>{" "}
 								{event.eventType}
 							</span>
 							{!isChampionship && (
 								<span>
-									<strong className={cn("text-text-main font-bold")}>
-										Entry:
-									</strong>{" "}
+									<strong className="text-text-main font-bold">Entry:</strong>{" "}
 									{getEntryFeeLabel(event.entryFee)}
 								</span>
 							)}
@@ -270,8 +268,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						{description && (
 							<div
 								className={cn(
-									"text-xs leading-relaxed text-text-muted",
-									"border-l-2 border-border-color/80 pl-3",
+									"text-xs leading-relaxed text-text-muted border-l-2",
+									"border-border-color/80 pl-3",
 								)}
 							>
 								{description}
@@ -281,8 +279,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						{event.prizes && (
 							<div
 								className={cn(
-									"text-xs leading-relaxed text-text-muted pl-3",
-									"border-l-2 border-amber-500/40 flex gap-1.5 items-start",
+									"text-xs leading-relaxed text-text-muted pl-3 border-l-2",
+									"border-amber-500/40 flex gap-1.5 items-start",
 								)}
 							>
 								<span
@@ -299,45 +297,37 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						{league?.directions && (
 							<div
 								className={cn(
-									"text-xs text-text-muted pl-3",
-									"border-l-2 border-border-color/80 flex flex-col gap-0.5",
+									"text-xs text-text-muted pl-3 border-l-2",
+									"border-border-color/80 flex flex-col gap-0.5",
 								)}
 							>
-								<span className={cn("font-semibold text-text-main")}>
+								<span className="font-semibold text-text-main">
 									📍 Directions
 								</span>
-								<span className={cn("leading-relaxed")}>
-									{league.directions}
-								</span>
+								<span className="leading-relaxed">{league.directions}</span>
 							</div>
 						)}
 
 						{league?.accessibility && (
 							<div
 								className={cn(
-									"text-xs text-text-muted pl-3",
-									"border-l-2 border-border-color/80 flex flex-col gap-0.5",
+									"text-xs text-text-muted pl-3 border-l-2",
+									"border-border-color/80 flex flex-col gap-0.5",
 								)}
 							>
-								<span className={cn("font-semibold text-text-main")}>
+								<span className="font-semibold text-text-main">
 									♿ Accessibility
 								</span>
-								<span className={cn("leading-relaxed")}>
-									{league.accessibility}
-								</span>
+								<span className="leading-relaxed">{league.accessibility}</span>
 							</div>
 						)}
 
 						{/* Action Buttons */}
-						<div
-							className={cn(
-								"flex flex-wrap items-center justify-end gap-2 mt-1",
-							)}
-						>
+						<div className="flex flex-wrap items-center justify-end gap-2 mt-1">
 							{event.ticketLink && (
 								<a
 									href={event.ticketLink}
-									className={cn("btn btn-primary")}
+									className="btn btn-primary"
 									target="_blank"
 									rel="noopener noreferrer"
 									onClick={(e) => e.stopPropagation()}
@@ -348,7 +338,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 							{onEdit && (
 								<button
 									type="button"
-									className={cn("btn btn-secondary")}
+									className="btn btn-secondary"
 									onClick={(e) => {
 										e.stopPropagation();
 										onEdit(event);
@@ -361,9 +351,9 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 								<button
 									type="button"
 									className={cn(
-										"btn btn-secondary",
-										"border-emerald-500! text-emerald-600! dark:text-emerald-400!",
-										"bg-emerald-500/5! hover:bg-emerald-500/10!",
+										"btn btn-secondary border-emerald-500! text-emerald-600!",
+										"dark:text-emerald-400! bg-emerald-500/5!",
+										"hover:bg-emerald-500/10!",
 									)}
 									onClick={(e) => {
 										e.stopPropagation();
@@ -377,9 +367,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 								<button
 									type="button"
 									className={cn(
-										"btn btn-secondary",
-										"border-red-500! text-red-600! dark:text-red-400!",
-										"bg-red-500/5! hover:bg-red-500/10!",
+										"btn btn-secondary border-red-500! text-red-600!",
+										"dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!",
 									)}
 									onClick={(e) => {
 										e.stopPropagation();
@@ -393,9 +382,8 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 								<button
 									type="button"
 									className={cn(
-										"btn btn-secondary",
-										"border-red-500! text-red-600! dark:text-red-400!",
-										"bg-red-500/5! hover:bg-red-500/10!",
+										"btn btn-secondary border-red-500! text-red-600!",
+										"dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!",
 									)}
 									onClick={(e) => {
 										e.stopPropagation();

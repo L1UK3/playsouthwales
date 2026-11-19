@@ -105,18 +105,18 @@ export function getCardStyles(
 	switch (theme) {
 		case "gold":
 			return cn(
-				"border-2 border-(--store-color) bg-linear-to-br from-yellow-600/[0.5] to-transparent",
-				"shadow-md shadow-amber-500/5",
+				"border-2 border-(--store-color) bg-linear-to-br from-yellow-600/[0.5]",
+				"to-transparent shadow-md shadow-amber-500/5",
 			);
 		case "silver":
 			return cn(
-				"border-2 border-(--store-color) bg-linear-to-br from-slate-500/[0.5] to-transparent",
-				"shadow-md shadow-slate-400/5 text-white",
+				"border-2 border-(--store-color) bg-linear-to-br from-slate-500/[0.5]",
+				"to-transparent shadow-md shadow-slate-400/5 text-white",
 			);
 		case "purple":
 			return cn(
-				"border-2 border-(--store-color) bg-linear-to-br from-purple-600/[0.5] to-transparent",
-				"shadow-md shadow-purple-500/5 text-white",
+				"border-2 border-(--store-color) bg-linear-to-br from-purple-600/[0.5]",
+				"to-transparent shadow-md shadow-purple-500/5 text-white",
 			);
 		default:
 			return cn(
