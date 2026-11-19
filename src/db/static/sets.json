@@ -1,23 +1,23 @@
 [
-    {
-        "code": "ME6",
-        "name": "Delta Reign",
-        "releaseDate": "2026-11-06",
-        "legalDate": "2026-11-20",
-        "format": "Standard"
-    },
-    {
-        "code": "30th",
-        "name": "30th Celebration",
-        "releaseDate": "2026-09-16",
-        "legalDate": "2026-09-25",
-        "format": "Standard"
-    },
-    {
-        "code": "ME5",
-        "name": "Pitch Black",
-        "releaseDate": "2026-07-17",
-        "legalDate": "2026-07-31",
-        "format": "Standard"
-    }
+	{
+		"code": "ME6",
+		"name": "Delta Reign",
+		"releaseDate": "2026-11-06",
+		"legalDate": "2026-11-20",
+		"format": "Standard"
+	},
+	{
+		"code": "30th",
+		"name": "30th Celebration",
+		"releaseDate": "2026-09-16",
+		"legalDate": "2026-09-25",
+		"format": "Standard"
+	},
+	{
+		"code": "ME5",
+		"name": "Pitch Black",
+		"releaseDate": "2026-07-17",
+		"legalDate": "2026-07-31",
+		"format": "Standard"
+	}
 ]

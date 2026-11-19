@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "#/lib/utils";
 import type { LeaderboardPosition } from "#/types/domain";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import {
@@ -81,12 +82,24 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 
 	return (
 		<div
-			className={`grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] animate-swipe-up ${showPodium ? "min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)] min-[993px]:grid-rows-1" : ""}`}
+			className={cn(
+				"grid min-h-0 w-full flex-1 grid-cols-1 grid-rows-[auto_minmax(0,1fr)]",
+				"animate-swipe-up",
+				showPodium &&
+					cn(
+						"min-[993px]:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.75fr)]",
+						"min-[993px]:grid-rows-1",
+					),
+			)}
 		>
 			{showPodium ? (
 				<LeaderboardPodium
 					rankings={podiumRankings}
-					className="min-h-full shrink-0 border-border-color pb-4 pt-6 min-[993px]:flex min-[993px]:items-center min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0"
+					className={cn(
+						"min-h-full shrink-0 border-border-color pb-4 pt-6",
+						"min-[993px]:flex min-[993px]:items-center",
+						"min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0",
+					)}
 					size="lg"
 					showAvatar={false}
 					medalStyle="modern"
@@ -94,11 +107,22 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 			) : null}
 
 			<div
-				className={`min-h-0 min-w-0 overflow-auto border-border-color bg-bg-card shadow-xs ${showPodium ? "rounded-b-lg border-t min-[993px]:rounded-bl-none" : "rounded-b-lg"}`}
+				className={cn(
+					"min-h-0 min-w-0 overflow-auto border-border-color bg-bg-card",
+					"shadow-xs",
+					showPodium
+						? "rounded-b-lg border-t min-[993px]:rounded-bl-none"
+						: "rounded-b-lg",
+				)}
 			>
 				<table className="w-full border-collapse text-left">
-					<thead className="sticky top-0 bg-bg-card  z-10">
-						<tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50 backdrop-blur-md">
+					<thead className="sticky top-0 bg-bg-card z-10">
+						<tr
+							className={cn(
+								"text-[11px] font-bold text-text-muted uppercase",
+								"tracking-wider bg-bg-main/50 backdrop-blur-md",
+							)}
+						>
 							<th className="py-2 px-3 w-16 text-center">Rank</th>
 							<th className="py-2 px-3">Player</th>
 							<LeaderboardHeader />
@@ -130,21 +154,39 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 											<tr className="bg-bg-main/30">
 												<td
 													colSpan={COLUMN_COUNT}
-													className="py-2 px-3 text-center text-xs font-bold text-text-muted border-t border-b border-border-color border-dashed uppercase tracking-wider select-none"
+													className={cn(
+														"py-2 px-3 text-center text-xs font-bold",
+														"text-text-muted border-t border-b",
+														"border-border-color border-dashed uppercase",
+														"tracking-wider select-none",
+													)}
 												>
 													Top 20 Cutoff
 												</td>
 											</tr>
 										) : null}
 										<tr
-											className={`hover:bg-bg-card-hover/60 transition-[background-color] duration-150 group cursor-pointer ${
-												PODIUM_STYLES[rank] ? PODIUM_STYLES[rank] : ""
-											}`}
+											className={cn(
+												"hover:bg-bg-card-hover/60",
+												"transition-[background-color] duration-150 group",
+												"cursor-pointer",
+												PODIUM_STYLES[rank],
+											)}
 										>
-											<td className="py-1.5 px-3 flex justify-center items-center">
+											<td
+												className={cn(
+													"py-1.5 px-3 flex justify-center items-center",
+												)}
+											>
 												<RankBadge position={rank} />
 											</td>
-											<td className="py-1.5 px-3 text-sm font-semibold text-text-main group-hover:text-text-darker transition-[color] duration-150">
+											<td
+												className={cn(
+													"py-1.5 px-3 text-sm font-semibold text-text-main",
+													"group-hover:text-text-darker transition-[color]",
+													"duration-150",
+												)}
+											>
 												<div className="flex items-center gap-2">
 													<span>{player.name}</span>
 												</div>

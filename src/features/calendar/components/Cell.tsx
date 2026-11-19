@@ -1,6 +1,7 @@
 import React from "react";
 import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { CalendarCard } from "#/features/event-card";
+import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
 export interface CellProps {
@@ -48,12 +49,18 @@ const Cell: React.FC<CellProps> = React.memo(
 			<div
 				role="button"
 				tabIndex={isOtherMonth ? -1 : 0}
-				className={`min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex flex-col justify-between transition-[background-color,border-color,outline,transform,box-shadow] duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px active:translate-y-px last:rounded-br-[7px] nth-last-7:rounded-bl-[7px]
-                ${isOtherMonth ? "bg-bg-cell-empty! cursor-default!" : ""}
-                ${isSelected ? "outline! outline-selected-border! -outline-offset-3!" : ""}
-                ${isToday ? "border-2! border-today-border!" : ""}
-                ${isSpecialDay ? "border-2! border-special-day-border!" : ""}
-                `}
+				className={cn(
+					"min-h-14.5 @min-[700px]:min-h-36 @min-[700px]:h-full min-w-0 w-full",
+					"px-0.5 py-1 @min-[700px]:p-2 bg-bg-card cursor-pointer flex",
+					"flex-col justify-between",
+					"transition-[background-color,border-color,outline,transform,box-shadow]",
+					"duration-150 ease-out hover:bg-bg-card-hover hover:-translate-y-px",
+					"active:translate-y-px last:rounded-br-md nth-last-7:rounded-bl-md",
+					isOtherMonth && "bg-bg-cell-empty! cursor-default!",
+					isSelected && "outline! outline-selected-border! -outline-offset-3!",
+					isToday && "border-2! border-today-border!",
+					isSpecialDay && "border-2! border-special-day-border!",
+				)}
 				onClick={selectDay}
 				onKeyDown={(e) => {
 					if (e.target !== e.currentTarget) return;
@@ -64,7 +71,12 @@ const Cell: React.FC<CellProps> = React.memo(
 				}}
 				data-date-key={dateKey}
 			>
-				<div className="text-[10px] @min-[700px]:text-xs font-bold text-text-main mb-0.5 @min-[700px]:mb-1.5 leading-none px-0.5">
+				<div
+					className={cn(
+						"text-[10px] @min-[700px]:text-xs font-bold text-text-main mb-0.5",
+						"@min-[700px]:mb-1.5 leading-none px-0.5",
+					)}
+				>
 					{day}
 				</div>
 				{sortedEvents.length > 0 && (
@@ -79,7 +91,14 @@ const Cell: React.FC<CellProps> = React.memo(
 							/>
 						))}
 						{extraCount > 0 && (
-							<div className="py-0.5 px-1 @min-[700px]:py-1 @min-[700px]:px-1.5 rounded-xs @min-[700px]:rounded-md bg-event-more-bg text-event-more-text text-[8px] @min-[700px]:text-[11px] text-center font-bold leading-none">
+							<div
+								className={cn(
+									"py-0.5 px-1 @min-[700px]:py-1 @min-[700px]:px-1.5",
+									"rounded-xs @min-[700px]:rounded-md bg-event-more-bg",
+									"text-event-more-text text-[8px] @min-[700px]:text-[11px]",
+									"text-center font-bold leading-none",
+								)}
+							>
 								+{extraCount} more
 							</div>
 						)}

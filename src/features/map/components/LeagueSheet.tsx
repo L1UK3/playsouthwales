@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { EventCard } from "#/features/event-card";
 import LeagueInfo from "#/features/league-selector/components/LeagueInfo";
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import { LEAGUE_SHEET_EVENT_LIMIT } from "../constants";
 import useLeagueUpcomingEvents from "../hooks/useLeagueUpcomingEvents";
@@ -36,12 +37,18 @@ export const LeagueSheet: React.FC<LeagueSheetProps> = ({
 			width="36"
 			height="36"
 			decoding="async"
-			className="size-9 shrink-0 rounded-lg border border-border-color bg-white object-contain p-1"
+			className={cn(
+				"size-9 shrink-0 rounded-lg border border-border-color bg-white",
+				"object-contain p-1",
+			)}
 		/>
 	) : (
 		<div
 			aria-hidden="true"
-			className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border-color bg-bg-main text-xs font-bold text-text-muted"
+			className={cn(
+				"flex size-9 shrink-0 items-center justify-center rounded-lg border",
+				"border-border-color bg-bg-main text-xs font-bold text-text-muted",
+			)}
 		>
 			{league.name.charAt(0)}
 		</div>
@@ -78,7 +85,10 @@ export const LeagueSheet: React.FC<LeagueSheetProps> = ({
 
 				<Link
 					to="/"
-					className="mt-3 inline-block text-xs font-bold text-primary no-underline hover:underline"
+					className={cn(
+						"mt-3 inline-block text-xs font-bold text-primary no-underline",
+						"hover:underline",
+					)}
 				>
 					See full schedule
 				</Link>

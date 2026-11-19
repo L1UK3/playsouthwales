@@ -1,12 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import type * as React from "react";
+import { cn } from "#/lib/utils";
 import { RankBadge } from "./RankBadge";
 
 type PodiumSize = "sm" | "default" | "lg";
-
-function classNames(...values: (string | false | null | undefined)[]) {
-	return values.filter(Boolean).join(" ");
-}
 
 // Types (inlined)
 interface LeaderboardRanking {
@@ -18,7 +15,7 @@ interface LeaderboardRanking {
 }
 
 const podiumVariants = ({ size = "default" }: { size?: PodiumSize } = {}) =>
-	classNames(
+	cn(
 		"flex items-end justify-center",
 		size === "sm"
 			? "gap-2"
@@ -56,7 +53,8 @@ const PODIUM_CONFIG = {
 } as const;
 
 // Props
-interface LeaderboardPodiumProps extends React.HTMLAttributes<HTMLUListElement> {
+interface LeaderboardPodiumProps
+	extends React.HTMLAttributes<HTMLUListElement> {
 	size?: PodiumSize;
 	/** Top 3 rankings (expects at least 1, ideally 3) */
 	rankings: LeaderboardRanking[];
@@ -88,7 +86,10 @@ const LeaderboardPodium = ({
 	const avatarSize = {
 		sm: "h-10 w-10 text-sm",
 		default: "h-14 w-14 text-lg",
-		lg: "h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24 min-[993px]:text-3xl",
+		lg: cn(
+			"h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24",
+			"min-[993px]:text-3xl",
+		),
 	}[size ?? "default"];
 
 	const textSize = {
@@ -99,7 +100,7 @@ const LeaderboardPodium = ({
 
 	return (
 		<ul
-			className={classNames(podiumVariants({ size }), className)}
+			className={cn(podiumVariants({ size }), className)}
 			aria-label="Top 3 rankings"
 			{...props}
 		>
@@ -121,7 +122,10 @@ const LeaderboardPodium = ({
 					<li
 						key={ranking.userId}
 						aria-label={itemLabel}
-						className="flex flex-col items-center min-[993px]:h-full min-[993px]:justify-end"
+						className={cn(
+							"flex flex-col items-center min-[993px]:h-full",
+							"min-[993px]:justify-end",
+						)}
 					>
 						{/* Rank badge */}
 						<div className="relative mb-2" aria-hidden="true">
@@ -129,14 +133,11 @@ const LeaderboardPodium = ({
 								<img
 									src={ranking.avatarUrl}
 									alt=""
-									className={classNames(
-										"rounded-full object-cover",
-										avatarSize,
-									)}
+									className={cn("rounded-full object-cover", avatarSize)}
 								/>
 							) : (
 								<div
-									className={classNames(
+									className={cn(
 										"flex items-center justify-center rounded-full",
 										avatarSize,
 										config.bg,
@@ -149,7 +150,7 @@ const LeaderboardPodium = ({
 
 						{/* Name */}
 						<span
-							className={classNames(
+							className={cn(
 								"max-w-28 truncate text-center font-medium",
 								textSize,
 							)}
@@ -159,14 +160,14 @@ const LeaderboardPodium = ({
 						</span>
 
 						<span
-							className={classNames("mt-2 h-1.5 w-20 rounded-full", config.bar)}
+							className={cn("mt-2 h-1.5 w-20 rounded-full", config.bar)}
 							aria-hidden="true"
 						/>
 
 						{/* Value */}
 						{showValue && (
 							<span
-								className={classNames(
+								className={cn(
 									"text-muted-foreground tabular-nums",
 									size === "sm" ? "text-xs" : "text-sm",
 								)}
@@ -178,7 +179,7 @@ const LeaderboardPodium = ({
 						{/* Podium block */}
 						<div
 							aria-hidden="true"
-							className={classNames(
+							className={cn(
 								"mt-3 w-20 rounded-t-lg min-[993px]:w-28",
 								size === "sm" && "w-20",
 								podiumHeight,
@@ -187,7 +188,7 @@ const LeaderboardPodium = ({
 							)}
 						>
 							<div
-								className={classNames(
+								className={cn(
 									"flex h-8 items-center justify-center font-bold",
 									config.color,
 								)}

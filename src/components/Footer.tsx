@@ -1,6 +1,13 @@
+import { cn } from "#/lib/utils";
+
 export function Footer() {
 	return (
-		<footer className="w-full text-center py-4 px-6 text-xs text-text-muted backdrop-blur-xs mt-auto">
+		<footer
+			className={cn(
+				"w-full text-center py-4 px-6 text-xs text-text-muted backdrop-blur-xs",
+				"mt-auto",
+			)}
+		>
 			Data for weekly events provided by league partners and data for sanctioned
 			and championship series events fetched from{" "}
 			<a

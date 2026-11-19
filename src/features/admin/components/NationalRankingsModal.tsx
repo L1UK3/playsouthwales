@@ -2,6 +2,7 @@ import { Plus, Trash2 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { cn } from "#/lib/utils";
 
 export interface Top20PlayerInput {
 	name: string;
@@ -166,7 +167,12 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 	};
 
 	return createPortal(
-		<div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]">
+		<div
+			className={cn(
+				"fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex",
+				"items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]",
+			)}
+		>
 			<button
 				type="button"
 				aria-label="Close dialog"
@@ -177,11 +183,24 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 			<div
 				role="dialog"
 				aria-modal="true"
-				className="relative bg-bg-card border-2 border-border-color rounded-lg w-full max-w-3xl max-h-[90vh] shadow-main flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]"
+				className={cn(
+					"relative bg-bg-card border-2 border-border-color rounded-lg w-full",
+					"max-w-3xl max-h-[90vh] shadow-main flex flex-col overflow-hidden",
+					"animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]",
+				)}
 			>
-				<div className="py-5 px-7 border-b-2 border-border-color flex justify-between items-center bg-bg-card shrink-0">
+				<div
+					className={cn(
+						"py-5 px-7 border-b-2 border-border-color flex justify-between",
+						"items-center bg-bg-card shrink-0",
+					)}
+				>
 					<div>
-						<h3 className="text-xl font-extrabold text-text-darker tracking-tight m-0">
+						<h3
+							className={cn(
+								"text-xl font-extrabold text-text-darker tracking-tight m-0",
+							)}
+						>
 							Edit National Rankings
 						</h3>
 						<p className="text-xs text-text-muted mt-0.5">
@@ -190,7 +209,11 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 					</div>
 					<button
 						type="button"
-						className="bg-transparent border-none text-xl text-text-muted cursor-pointer p-1 rounded-full w-8 h-8 flex items-center justify-center hover:bg-bg-main hover:text-text-darker"
+						className={cn(
+							"bg-transparent border-none text-xl text-text-muted",
+							"cursor-pointer p-1 rounded-full w-8 h-8 flex items-center",
+							"justify-center hover:bg-bg-main hover:text-text-darker",
+						)}
 						onClick={onClose}
 					>
 						✕
@@ -203,24 +226,40 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 				>
 					<div className="p-7 overflow-y-auto grow flex flex-col gap-4">
 						{errorMsg && (
-							<div className="p-3.5 bg-red-500/10 border border-red-500/20 text-red-500 rounded-md text-sm font-semibold">
+							<div
+								className={cn(
+									"p-3.5 bg-red-500/10 border border-red-500/20 text-red-500",
+									"rounded-md text-sm font-semibold",
+								)}
+							>
 								{errorMsg}
 							</div>
 						)}
 
-						<div className="flex flex-wrap gap-2.5 justify-between items-center bg-bg-main/30 p-3.5 rounded-lg border border-border-color/50">
+						<div
+							className={cn(
+								"flex flex-wrap gap-2.5 justify-between items-center",
+								"bg-bg-main/30 p-3.5 rounded-lg border border-border-color/50",
+							)}
+						>
 							<div className="flex gap-2.5">
 								<button
 									type="button"
 									onClick={handleAddRow}
-									className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
+									className={cn(
+										"btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex",
+										"items-center gap-1.5 font-bold cursor-pointer",
+									)}
 								>
 									<Plus className="w-4 h-4" /> Add Player Row
 								</button>
 								<button
 									type="button"
 									onClick={handleSortLeaderboard}
-									className="btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex items-center gap-1.5 font-bold cursor-pointer"
+									className={cn(
+										"btn btn-secondary text-xs py-1.5 px-3 min-h-9.5 flex",
+										"items-center gap-1.5 font-bold cursor-pointer",
+									)}
 								>
 									Auto-Sort (by CP)
 								</button>
@@ -230,10 +269,24 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 							</span>
 						</div>
 
-						<div className="grow overflow-auto rounded-lg border border-border-color bg-bg-card">
+						<div
+							className={cn(
+								"grow overflow-auto rounded-lg border border-border-color",
+								"bg-bg-card",
+							)}
+						>
 							<table className="w-full border-collapse text-left">
-								<thead className="sticky top-0 bg-bg-card border-b border-border-color z-10">
-									<tr className="text-[11px] font-bold text-text-muted uppercase tracking-wider bg-bg-main/50">
+								<thead
+									className={cn(
+										"sticky top-0 bg-bg-card border-b border-border-color z-10",
+									)}
+								>
+									<tr
+										className={cn(
+											"text-[11px] font-bold text-text-muted uppercase",
+											"tracking-wider bg-bg-main/50",
+										)}
+									>
 										<th className="py-2.5 px-3 w-16 text-center">Rank</th>
 										<th className="py-2.5 px-3 min-w-44">Player Name</th>
 										<th className="py-2.5 px-3 w-32 text-center">Player ID</th>
@@ -258,13 +311,21 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 										rows.map((row, index) => (
 											<tr
 												key={row.tempId}
-												className={`hover:bg-bg-main/20 ${draggedIndex === index ? "opacity-60" : ""}`}
+												className={cn(
+													"hover:bg-bg-main/20",
+													draggedIndex === index && "opacity-60",
+												)}
 												draggable
 												onDragStart={() => handleDragStart(index)}
 												onDragOver={handleDragOver}
 												onDrop={() => handleDrop(index)}
 											>
-												<td className="py-2 px-3 text-center text-sm font-semibold text-text-muted">
+												<td
+													className={cn(
+														"py-2 px-3 text-center text-sm font-semibold",
+														"text-text-muted",
+													)}
+												>
 													#{row.position}
 												</td>
 												<td className="py-2 px-3">
@@ -276,7 +337,12 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 														onChange={(e) =>
 															handleFieldChange(index, "name", e.target.value)
 														}
-														className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-full focus:outline-none focus:border-secondary"
+														className={cn(
+															"py-1.5 px-2 rounded-md border",
+															"border-border-color text-sm bg-bg-card",
+															"text-text-main w-full focus:outline-none",
+															"focus:border-secondary",
+														)}
 													/>
 												</td>
 												<td className="py-2 px-3 text-center">
@@ -293,7 +359,12 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 																e.target.value,
 															)
 														}
-														className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-28 text-center focus:outline-none focus:border-secondary"
+														className={cn(
+															"py-1.5 px-2 rounded-md border",
+															"border-border-color text-sm bg-bg-card",
+															"text-text-main w-28 text-center",
+															"focus:outline-none focus:border-secondary",
+														)}
 													/>
 												</td>
 												<td className="py-2 px-3 text-right pr-4">
@@ -305,14 +376,23 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 														onChange={(e) =>
 															handleFieldChange(index, "cp", e.target.value)
 														}
-														className="py-1.5 px-2 rounded-md border border-border-color text-sm bg-bg-card text-text-main w-24 text-right focus:outline-none focus:border-secondary"
+														className={cn(
+															"py-1.5 px-2 rounded-md border",
+															"border-border-color text-sm bg-bg-card",
+															"text-text-main w-24 text-right",
+															"focus:outline-none focus:border-secondary",
+														)}
 													/>
 												</td>
 												<td className="py-2 px-3 text-center">
 													<button
 														type="button"
 														onClick={() => handleRemoveRow(index)}
-														className="p-1.5 text-text-muted hover:text-accent bg-transparent border-none rounded cursor-pointer transition-colors"
+														className={cn(
+															"p-1.5 text-text-muted hover:text-accent",
+															"bg-transparent border-none rounded",
+															"cursor-pointer transition-colors",
+														)}
 														title="Delete player"
 														aria-label={`Delete ${row.name || "player"}`}
 													>
@@ -327,19 +407,30 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 						</div>
 					</div>
 
-					<div className="py-4 px-7 border-t-2 border-border-color bg-bg-card flex justify-end gap-3 shrink-0">
+					<div
+						className={cn(
+							"py-4 px-7 border-t-2 border-border-color bg-bg-card flex",
+							"justify-end gap-3 shrink-0",
+						)}
+					>
 						<button
 							type="button"
 							onClick={onClose}
 							disabled={isSubmitting}
-							className="btn btn-secondary py-2 px-4 text-sm font-semibold cursor-pointer"
+							className={cn(
+								"btn btn-secondary py-2 px-4 text-sm font-semibold",
+								"cursor-pointer",
+							)}
 						>
 							Cancel
 						</button>
 						<button
 							type="submit"
 							disabled={isSubmitting}
-							className="btn btn-primary py-2 px-5 text-sm font-bold min-w-28 flex items-center justify-center cursor-pointer"
+							className={cn(
+								"btn btn-primary py-2 px-5 text-sm font-bold min-w-28 flex",
+								"items-center justify-center cursor-pointer",
+							)}
 						>
 							{isSubmitting ? "Saving…" : "Save Rankings"}
 						</button>

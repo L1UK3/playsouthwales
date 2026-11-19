@@ -8,6 +8,7 @@ import {
 import type React from "react";
 import { useRef } from "react";
 import { useSettings } from "#/context/SettingsContext";
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "../constants";
 import MapHandler, { type CameraSnapshot } from "../helper/MapHandler";
@@ -76,7 +77,13 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 
 	if (!apiKey) {
 		return (
-			<div className="flex flex-col items-center justify-center w-full h-full p-6 text-center border-2 border-dashed border-border-color rounded-lg bg-bg-card text-text-muted min-h-75">
+			<div
+				className={cn(
+					"flex flex-col items-center justify-center w-full h-full p-6",
+					"text-center border-2 border-dashed border-border-color rounded-lg",
+					"bg-bg-card text-text-muted min-h-75",
+				)}
+			>
 				<p className="font-bold text-[16px] text-text-main mb-2">
 					Map Unavailable
 				</p>

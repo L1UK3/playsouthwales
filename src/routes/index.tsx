@@ -17,6 +17,7 @@ import {
 } from "#/lib/month";
 import { optionalId, optionalString } from "#/lib/search";
 import { pageMeta } from "#/lib/seo";
+import { cn } from "#/lib/utils";
 
 interface ScheduleSearch {
 	month?: string;
@@ -125,7 +126,12 @@ function SchedulePage() {
 	return (
 		<div className="flex flex-col animate-swipe-up">
 			<h1 className="sr-only">Events Schedule South Wales</h1>
-			<div className="z-10 mb-4 flex shrink-0 flex-col gap-3 rounded-lg border-2 border-border-color bg-bg-main p-3.5">
+			<div
+				className={cn(
+					"z-10 mb-4 flex shrink-0 flex-col gap-3 rounded-lg border-2",
+					"border-border-color bg-bg-main p-3.5",
+				)}
+			>
 				<NavBar
 					monthName={monthName}
 					year={year}
@@ -146,7 +152,7 @@ function SchedulePage() {
 
 			<div
 				key={`${view}-${month}`}
-				className={`@container flex-1 ${swipeClass}`}
+				className={cn("@container flex-1", swipeClass)}
 			>
 				{view === "calendar" ? (
 					<div className="flex flex-col gap-4 @6xl:flex-row">
@@ -160,7 +166,12 @@ function SchedulePage() {
 								onSelectDay={selectDay}
 							/>
 						</div>
-						<div className="w-full @6xl:relative @6xl:w-auto @6xl:max-w-100 @6xl:flex-[0_0_400px]">
+						<div
+							className={cn(
+								"w-full @6xl:relative @6xl:w-auto @6xl:max-w-100",
+								"@6xl:flex-[0_0_400px]",
+							)}
+						>
 							<SelectedDaySection
 								month={month}
 								selectedDateKey={search.day}

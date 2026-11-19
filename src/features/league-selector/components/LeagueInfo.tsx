@@ -1,5 +1,5 @@
 import type React from "react";
-
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 
 interface LeagueInfoProps {
@@ -13,19 +13,34 @@ interface LeagueInfoProps {
 export const LeagueInfo: React.FC<LeagueInfoProps> = ({ league }) => (
 	<div className="flex flex-col gap-2.5 mt-0.5">
 		{league.location && (
-			<div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
+			<div
+				className={cn(
+					"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
+					"flex-col gap-0.5",
+				)}
+			>
 				<span className="font-semibold text-text-main">Location</span>
 				<span className="leading-relaxed">{league.location}</span>
 			</div>
 		)}
 		{league.directions && (
-			<div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
+			<div
+				className={cn(
+					"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
+					"flex-col gap-0.5",
+				)}
+			>
 				<span className="font-semibold text-text-main">Directions</span>
 				<span className="leading-relaxed">{league.directions}</span>
 			</div>
 		)}
 		{league.accessibility && (
-			<div className="text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex flex-col gap-0.5">
+			<div
+				className={cn(
+					"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
+					"flex-col gap-0.5",
+				)}
+			>
 				<span className="font-semibold text-text-main">Accessibility</span>
 				<span className="leading-relaxed">{league.accessibility}</span>
 			</div>

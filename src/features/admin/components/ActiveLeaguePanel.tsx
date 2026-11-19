@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Card from "#/components/Card";
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 
 interface ActiveLeaguePanelProps {
@@ -24,7 +25,12 @@ export default function ActiveLeaguePanel({
 
 	return (
 		<Card className="flex animate-swipe-down flex-col gap-5">
-			<div className="flex flex-col gap-3 border-b-2 border-border-color pb-3 sm:flex-row sm:items-center sm:justify-between">
+			<div
+				className={cn(
+					"flex flex-col gap-3 border-b-2 border-border-color pb-3 sm:flex-row",
+					"sm:items-center sm:justify-between",
+				)}
+			>
 				<div>
 					<h3 className="text-base font-bold">
 						{championship ? "Championship Events" : "Scheduled Events"} (

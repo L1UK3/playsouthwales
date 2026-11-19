@@ -1,6 +1,7 @@
 import type React from "react";
 
 import type { EventFilters } from "#/lib/events";
+import { cn } from "#/lib/utils";
 import type { EventTypeMap, League } from "#/types/domain";
 
 /**
@@ -43,7 +44,13 @@ const Filters: React.FC<FiltersProps> = ({
 				</label>
 				<select
 					id="league-filter"
-					className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:ring-3 focus:ring-secondary/15 w-full cursor-pointer"
+					className={cn(
+						"py-1.5 px-2.5 rounded-md border border-border-color text-xs",
+						"sm:text-sm bg-bg-card text-text-main",
+						"transition-[background-color,border-color] duration-150 ease-out",
+						"focus:outline-none focus:border-secondary focus:ring-3",
+						"focus:ring-secondary/15 w-full cursor-pointer",
+					)}
 					value={filters.league ?? ""}
 					onChange={(e) => onFilterChange("league", e.target.value)}
 				>
@@ -62,7 +69,13 @@ const Filters: React.FC<FiltersProps> = ({
 				</label>
 				<select
 					id="type-filter"
-					className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:ring-3 focus:ring-secondary/15 w-full cursor-pointer"
+					className={cn(
+						"py-1.5 px-2.5 rounded-md border border-border-color text-xs",
+						"sm:text-sm bg-bg-card text-text-main",
+						"transition-[background-color,border-color] duration-150 ease-out",
+						"focus:outline-none focus:border-secondary focus:ring-3",
+						"focus:ring-secondary/15 w-full cursor-pointer",
+					)}
 					value={filters.eventType ?? ""}
 					onChange={(e) => onFilterChange("eventType", e.target.value)}
 				>
@@ -83,7 +96,13 @@ const Filters: React.FC<FiltersProps> = ({
 				</label>
 				<select
 					id="game-filter"
-					className="py-1.5 px-2.5 rounded-md border border-border-color text-xs sm:text-sm bg-bg-card text-text-main transition-[background-color,border-color] duration-150 ease-out focus:outline-none focus:border-secondary focus:ring-3 focus:ring-secondary/15 w-full cursor-pointer"
+					className={cn(
+						"py-1.5 px-2.5 rounded-md border border-border-color text-xs",
+						"sm:text-sm bg-bg-card text-text-main",
+						"transition-[background-color,border-color] duration-150 ease-out",
+						"focus:outline-none focus:border-secondary focus:ring-3",
+						"focus:ring-secondary/15 w-full cursor-pointer",
+					)}
 					value={filters.game ?? ""}
 					onChange={(e) => onFilterChange("game", e.target.value)}
 				>
@@ -96,7 +115,9 @@ const Filters: React.FC<FiltersProps> = ({
 
 			<button
 				type="button"
-				className="btn btn-primary py-1.5 w-full sm:w-auto sm:shrink-0 sm:min-w-20"
+				className={cn(
+					"btn btn-primary py-1.5 w-full sm:w-auto sm:shrink-0 sm:min-w-20",
+				)}
 				onClick={onClear}
 			>
 				Clear

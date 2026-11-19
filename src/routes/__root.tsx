@@ -7,13 +7,13 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
+import { Header } from "#/components/Header";
+import { MobileNavBar } from "#/components/MobileNavBar";
+import { SuspenseLoader } from "#/components/SuspenseLoader";
 import { SettingsProvider } from "#/context/SettingsContext";
 import { SITE_NAME } from "#/lib/seo";
 import appCss from "#/styles.css?url";
-import { MobileNavBar } from "#/components/MobileNavBar";
-import { SuspenseLoader } from "#/components/SuspenseLoader";
-import { Header } from "#/components/Header";
 
 export const Route = createRootRoute({
 	head: () => ({

@@ -3,6 +3,7 @@ import { lazy, Suspense, useMemo, useRef } from "react";
 import Cell from "#/features/calendar/components/Cell";
 import type { CellData } from "#/features/calendar/types/CellData";
 import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
+import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
 const ActiveMarkerOverlay = lazy(() => import("./ActiveMarkerOverlay"));
@@ -92,10 +93,19 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
 	return (
 		<div
-			className="relative bg-bg-card rounded-lg shadow-main overflow-hidden lg:flex lg:flex-col"
+			className={cn(
+				"relative bg-bg-card rounded-lg shadow-main overflow-hidden lg:flex",
+				"lg:flex-col",
+			)}
 			ref={wrapperRef}
 		>
-			<div className="grid grid-cols-7 bg-bg-day-header border-b border-border-color text-center text-text-muted font-bold border-2 rounded-t-lg shrink-0">
+			<div
+				className={cn(
+					"grid grid-cols-7 bg-bg-day-header border-b border-border-color",
+					"text-center text-text-muted font-bold border-2 rounded-t-lg",
+					"shrink-0",
+				)}
+			>
 				{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
 					<div key={d} className="py-2.5 px-2 text-xs uppercase tracking-wider">
 						{d}
@@ -103,7 +113,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 				))}
 			</div>
 			<div
-				className="relative grid grid-cols-7 grid-rows-[repeat(auto-fill,minmax(0,1fr))] @6xl:grid-rows-[repeat(var(--num-rows,5),minmax(0,1fr))]! gap-px bg-border-color border-2 border-border-color border-t-0 rounded-b-lg overflow-hidden @6xl:flex-1"
+				className={cn(
+					"relative grid grid-cols-7",
+					"grid-rows-[repeat(auto-fill,minmax(0,1fr))]",
+					"@6xl:grid-rows-[repeat(var(--num-rows,5),minmax(0,1fr))]! gap-px",
+					"bg-border-color border-2 border-border-color border-t-0",
+					"rounded-b-lg overflow-hidden @6xl:flex-1",
+				)}
 				style={{ "--num-rows": cells.length / 7 } as React.CSSProperties}
 			>
 				{cells.map((cell) => (

@@ -27,6 +27,7 @@ import {
 } from "#/lib/month";
 import { optionalId } from "#/lib/search";
 import { pageMeta } from "#/lib/seo";
+import { cn } from "#/lib/utils";
 import type { League, ScheduleEvent } from "#/types/domain";
 
 interface AdminSearch {
@@ -93,8 +94,17 @@ function AdminPage() {
 			<h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
 
 			<Card>
-				<div className="mb-4 flex flex-col gap-1.5 border-b-2 border-border-color pb-3">
-					<h2 className="text-[clamp(1.35rem,2vw,1.85rem)] font-extrabold tracking-tight text-text-darker">
+				<div
+					className={cn(
+						"mb-4 flex flex-col gap-1.5 border-b-2 border-border-color pb-3",
+					)}
+				>
+					<h2
+						className={cn(
+							"text-[clamp(1.35rem,2vw,1.85rem)] font-extrabold tracking-tight",
+							"text-text-darker",
+						)}
+					>
 						League Manager
 					</h2>
 					<p className="text-[14px] text-text-muted">
@@ -165,8 +175,7 @@ function AdminPage() {
 						Select a league to continue
 					</h3>
 					<p className="mt-2 text-[14px]">
-						Use the league cards above to open event tools for
-						that league.
+						Use the league cards above to open event tools for that league.
 					</p>
 				</Card>
 			)}
