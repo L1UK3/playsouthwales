@@ -82,6 +82,12 @@ function AdminPage() {
 		await router.invalidate();
 	};
 
+	const commitOrAlert = (action: () => Promise<void>) =>
+		commit(action).catch((error: unknown) => {
+			console.error("Admin save failed", error);
+			window.alert(error instanceof Error ? error.message : "Save failed");
+		});
+
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
 			<h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
@@ -106,7 +112,7 @@ function AdminPage() {
 					onAdd={() => setModal({ kind: "league" })}
 					onEdit={(league: League) => setModal({ kind: "league", league })}
 					onDelete={(league: League) =>
-						commit(() =>
+						commitOrAlert(() =>
 							handleDeleteLeague({ data: { leagueId: league.leagueId } }),
 						)
 					}
@@ -139,13 +145,17 @@ function AdminPage() {
 							setModal({ kind: "event", event })
 						}
 						onDelete={(event: ScheduleEvent) =>
-							commit(() => handleDeleteEvent({ data: { id: event.id } }))
+							commitOrAlert(() => handleDeleteEvent({ data: { id: event.id } }))
 						}
 						onExclude={(event: ScheduleEvent) =>
-							commit(() => handleExcludeEvent({ data: { id: event.id } }))
+							commitOrAlert(() =>
+								handleExcludeEvent({ data: { id: event.id } }),
+							)
 						}
 						onUnexclude={(event: ScheduleEvent) =>
-							commit(() => handleUnexcludeEvent({ data: { id: event.id } }))
+							commitOrAlert(() =>
+								handleUnexcludeEvent({ data: { id: event.id } }),
+							)
 						}
 					/>
 				</ActiveLeaguePanel>
@@ -165,7 +175,7 @@ function AdminPage() {
 				<LeagueFormModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={(data) => commit(() => handleLeagueSubmit({ data }))}
+					onSubmit={(data) => commitOrAlert(() => handleLeagueSubmit({ data }))}
 					initialData={modal.league ?? null}
 				/>
 			)}
@@ -174,7 +184,7 @@ function AdminPage() {
 					isOpen
 					onClose={closeModal}
 					onSubmit={(data) =>
-						commit(() =>
+						commitOrAlert(() =>
 							handleEventSubmit({
 								data: {
 									...data,
