@@ -1,9 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import {
+	deleteEvent,
 	deleteLeague,
 	findLeague,
+	insertEvent,
 	insertLeague,
 	querySchedule,
+	updateEvent,
 	updateLeague,
 } from "#/db/queries.server";
 import { authMiddleware } from "#/features/auth/auth.middleware";
@@ -41,7 +44,18 @@ export interface EventSubmitInput {
 	description?: string;
 	prizes?: string;
 	entryFee?: string;
-	isRecurring: boolean;
+	isRecurring?: boolean;
+}
+
+/** Splits an event id into the stored row id and, for occurrences, the date. */
+function parseEventId(id: EventId): { rowId: number; occurrenceDate?: string } {
+	if (typeof id === "number") {
+		if (!Number.isInteger(id) || id <= 0) throw new Error("Invalid event id");
+		return { rowId: id };
+	}
+	const match = /^(\d+):(\d{4}-\d{2}-\d{2})$/.exec(id);
+	if (!match) throw new Error("Invalid event id");
+	return { rowId: Number(match[1]), occurrenceDate: match[2] };
 }
 
 /** Same data as the public schedule, but cancelled occurrences stay in, flagged. */
@@ -98,16 +112,46 @@ export const handleDeleteLeague = createServerFn({ method: "POST" })
 
 export const handleEventSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: EventSubmitInput) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
+	.validator((input: EventSubmitInput) => {
+		if (!input.name.trim()) throw new Error("Event name is required");
+		if (input.id !== undefined) parseEventId(input.id);
+		return input;
+	})
+	.handler(async ({ data }) => {
+		const values = {
+			leagueId: data.leagueId,
+			name: data.name,
+			date: data.date,
+			startTime: data.startTime ?? null,
+			eventType: data.eventType,
+			game: data.game,
+			ticketLink: data.ticketLink ?? null,
+			description: data.description ?? null,
+			prizes: data.prizes ?? null,
+			entryFee: data.entryFee ?? null,
+		};
+
+		if (data.id === undefined) {
+			await insertEvent({ ...values, isRecurring: data.isRecurring ?? false });
+			return;
+		}
+		// Editing an occurrence edits the series it belongs to.
+		const { rowId } = parseEventId(data.id);
+		if (!(await updateEvent(rowId, values))) {
+			throw new Error("Event not found");
+		}
 	});
 
 export const handleDeleteEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => input)
-	.handler(async () => {
-		throw new Error("Not implemented");
+	.validator((input: { id: EventId }) => {
+		parseEventId(input.id);
+		return input;
+	})
+	.handler(async ({ data }) => {
+		// A series occurrence deletes the whole series, as the legacy API did.
+		const { rowId } = parseEventId(data.id);
+		if (!(await deleteEvent(rowId))) throw new Error("Event not found");
 	});
 
 export const handleExcludeEvent = createServerFn({ method: "POST" })

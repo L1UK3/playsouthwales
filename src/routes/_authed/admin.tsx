@@ -138,7 +138,9 @@ function AdminPage() {
 						onEdit={(event: ScheduleEvent) =>
 							setModal({ kind: "event", event })
 						}
-						onDelete={handleDeleteEvent}
+						onDelete={(event: ScheduleEvent) =>
+							commit(() => handleDeleteEvent({ data: { id: event.id } }))
+						}
 						onExclude={handleExcludeEvent}
 						onUnexclude={handleUnexcludeEvent}
 					/>
@@ -167,7 +169,16 @@ function AdminPage() {
 				<EventFormModal
 					isOpen
 					onClose={closeModal}
-					onSubmit={handleEventSubmit}
+					onSubmit={(data) =>
+						commit(() =>
+							handleEventSubmit({
+								data: {
+									...data,
+									id: modal.kind === "event" ? modal.event?.id : undefined,
+								},
+							}),
+						)
+					}
 					initialData={modal.event ?? null}
 					leagueId={search.league ?? 0}
 					isChampionshipLeague={activeLeague?.isChampionshipSeries ?? false}

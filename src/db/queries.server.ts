@@ -136,3 +136,31 @@ export async function deleteLeague(id: number): Promise<void> {
 		db.delete(leagues).where(eq(leagues.id, id)),
 	]);
 }
+
+export type EventValues = typeof events.$inferInsert;
+
+export async function insertEvent(values: EventValues): Promise<void> {
+	await getDb().insert(events).values(values);
+}
+
+/** Returns false when no event row has the given id. */
+export async function updateEvent(
+	id: number,
+	values: Partial<EventValues>,
+): Promise<boolean> {
+	const rows = await getDb()
+		.update(events)
+		.set(values)
+		.where(eq(events.id, id))
+		.returning({ id: events.id });
+	return rows.length > 0;
+}
+
+/** Deletes an event row, which for a series removes every occurrence. */
+export async function deleteEvent(id: number): Promise<boolean> {
+	const rows = await getDb()
+		.delete(events)
+		.where(eq(events.id, id))
+		.returning({ id: events.id });
+	return rows.length > 0;
+}
