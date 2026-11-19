@@ -4,12 +4,11 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { cn } from "#/lib/utils";
 import Card from "./Card";
 
 export function RoutePending() {
 	return (
-		<output className={cn("block py-12 text-center text-sm text-text-muted")}>
+		<output className="block py-12 text-center text-sm text-text-muted">
 			Loading…
 		</output>
 	);
@@ -25,16 +24,16 @@ export function RouteError({ error }: ErrorComponentProps) {
 	}, [error]);
 
 	return (
-		<Card className={cn("text-center")}>
-			<h1 className={cn("text-base font-bold text-text-darker")}>
+		<Card className="text-center">
+			<h1 className="text-base font-bold text-text-darker">
 				Something went wrong
 			</h1>
-			<p className={cn("mt-2 text-sm text-text-muted")}>
+			<p className="mt-2 text-sm text-text-muted">
 				We couldn&apos;t load this page. Please try again.
 			</p>
 			<button
 				type="button"
-				className={cn("btn btn-secondary mt-4 min-h-11")}
+				className="btn btn-secondary mt-4 min-h-11"
 				onClick={() => router.invalidate()}
 			>
 				Try again
@@ -45,13 +44,11 @@ export function RouteError({ error }: ErrorComponentProps) {
 
 export function NotFound() {
 	return (
-		<Card className={cn("text-center")}>
-			<h1 className={cn("text-base font-bold text-text-darker")}>
-				Page not found
-			</h1>
+		<Card className="text-center">
+			<h1 className="text-base font-bold text-text-darker">Page not found</h1>
 			<Link
 				to="/"
-				className={cn("mt-4 inline-block text-sm font-bold text-secondary")}
+				className="mt-4 inline-block text-sm font-bold text-secondary"
 			>
 				Back to the schedule
 			</Link>

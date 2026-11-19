@@ -4,7 +4,8 @@ export function Footer() {
 	return (
 		<footer
 			className={cn(
-				"w-full text-center py-4 px-6 text-xs text-text-muted backdrop-blur-xs mt-auto",
+				"w-full text-center py-4 px-6 text-xs text-text-muted backdrop-blur-xs",
+				"mt-auto",
 			)}
 		>
 			Data for weekly events provided by league partners and data for sanctioned
@@ -13,7 +14,7 @@ export function Footer() {
 				href="https://pokedata.ovh"
 				target="_blank"
 				rel="noopener noreferrer"
-				className={cn("text-blue-500")}
+				className="text-blue-500"
 			>
 				pokedata.ovh
 			</a>
