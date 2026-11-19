@@ -69,13 +69,18 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 	};
 
 	return createPortal(
-		<div
-			className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]"
-			onClick={onClose}
-		>
+		<div className="fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]">
+			<button
+				type="button"
+				aria-label="Close dialog"
+				tabIndex={-1}
+				className="absolute inset-0 cursor-default"
+				onClick={onClose}
+			/>
 			<div
-				className="bg-bg-card border border-border-color rounded-lg w-full max-w-150 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]"
-				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				className="relative bg-bg-card border border-border-color rounded-lg w-full max-w-150 max-h-[90vh] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]"
 			>
 				<div className="py-6 px-7 border-b border-border-color flex justify-between items-center [&_h3]:text-xl [&_h3]:font-extrabold [&_h3]:text-text-darker [&_h3]:tracking-tight">
 					<div className="flex flex-col gap-0.5">
