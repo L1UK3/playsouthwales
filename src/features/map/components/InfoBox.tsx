@@ -1,5 +1,6 @@
 import { InfoWindow } from "@vis.gl/react-google-maps";
 import type React from "react";
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import { SELECTED_MARKER_HEIGHT } from "./LeagueMarker";
 
@@ -37,10 +38,10 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
 			onCloseClick={onCloseClick}
 		>
 			<div
-				className="text-[#0f172a] p-1.5 font-sans min-w-50"
+				className={cn("text-[#0f172a] p-1.5 font-sans min-w-50")}
 				style={{ "--brand-color": brandColor } as React.CSSProperties}
 			>
-				<div className="flex items-center gap-2 mb-2">
+				<div className={cn("flex items-center gap-2 mb-2")}>
 					{selectedLeague.logo && (
 						<img
 							src={selectedLeague.logo}
@@ -49,25 +50,35 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
 							height="28"
 							loading="lazy"
 							decoding="async"
-							className="w-7 h-7 rounded-md object-contain bg-white border border-[#e2e8f0] p-px"
+							className={cn(
+								"w-7 h-7 rounded-md object-contain",
+								"bg-white border border-[#e2e8f0] p-px",
+							)}
 						/>
 					)}
-					<h3 className="m-0 text-[15px] font-bold text-[#0f172a] leading-tight">
+					<h3
+						className={cn(
+							"m-0 text-[15px] font-bold text-[#0f172a] leading-tight",
+						)}
+					>
 						{selectedLeague.name}
 					</h3>
 				</div>
 				{selectedLeague.location && (
-					<p className="m-0 mb-2.5 text-[13px] text-[#475569]">
+					<p className={cn("m-0 mb-2.5 text-[13px] text-[#475569]")}>
 						📍 {selectedLeague.location}
 					</p>
 				)}
-				<div className="flex gap-3 border-t border-[#e2e8f0] pt-2 mt-2">
+				<div className={cn("flex gap-3 border-t border-[#e2e8f0] pt-2 mt-2")}>
 					{selectedLeague.website && (
 						<a
 							href={selectedLeague.website}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)] no-underline font-bold transition-colors duration-200 hover:underline"
+							className={cn(
+								"inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)]",
+								"no-underline font-bold transition-colors duration-200 hover:underline",
+							)}
 						>
 							Website
 						</a>
@@ -77,7 +88,10 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
 							href={selectedLeague.eventLink}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)] no-underline font-bold transition-colors duration-200 hover:underline"
+							className={cn(
+								"inline-block text-xs text-[color-mix(in_srgb,var(--brand-color,#2563eb)_80%,#0f172a)]",
+								"no-underline font-bold transition-colors duration-200 hover:underline",
+							)}
 						>
 							Official Events
 						</a>

@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { EventCard } from "#/features/event-card";
 import LeagueInfo from "#/features/league-selector/components/LeagueInfo";
+import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import { LEAGUE_SHEET_EVENT_LIMIT } from "../constants";
 import useLeagueUpcomingEvents from "../hooks/useLeagueUpcomingEvents";
@@ -36,12 +37,19 @@ export const LeagueSheet: React.FC<LeagueSheetProps> = ({
 			width="36"
 			height="36"
 			decoding="async"
-			className="size-9 shrink-0 rounded-lg border border-border-color bg-white object-contain p-1"
+			className={cn(
+				"size-9 shrink-0 rounded-lg",
+				"border border-border-color bg-white object-contain p-1",
+			)}
 		/>
 	) : (
 		<div
 			aria-hidden="true"
-			className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border-color bg-bg-main text-xs font-bold text-text-muted"
+			className={cn(
+				"flex size-9 shrink-0 items-center justify-center rounded-lg",
+				"border border-border-color bg-bg-main",
+				"text-xs font-bold text-text-muted",
+			)}
 		>
 			{league.name.charAt(0)}
 		</div>
@@ -51,23 +59,23 @@ export const LeagueSheet: React.FC<LeagueSheetProps> = ({
 		<MapSheet title={league.name} leading={logo} onClose={onClose}>
 			<LeagueInfo league={league} />
 
-			<section aria-label="Upcoming events" className="mt-4">
-				<h3 className="m-0 mb-2.5 text-sm font-bold text-text-darker">
+			<section aria-label="Upcoming events" className={cn("mt-4")}>
+				<h3 className={cn("m-0 mb-2.5", "text-sm font-bold text-text-darker")}>
 					Upcoming events
 				</h3>
 
 				{isLoading ? (
-					<p className="m-0 text-xs text-text-muted">Loading events…</p>
+					<p className={cn("m-0 text-xs text-text-muted")}>Loading events…</p>
 				) : isError ? (
-					<p className="m-0 text-xs text-text-muted">
+					<p className={cn("m-0 text-xs text-text-muted")}>
 						Events could not be loaded. Try the full schedule.
 					</p>
 				) : events.length === 0 ? (
-					<p className="m-0 text-xs text-text-muted">
+					<p className={cn("m-0 text-xs text-text-muted")}>
 						No upcoming events are listed for this league.
 					</p>
 				) : (
-					<ul className="m-0 flex list-none flex-col gap-3 p-0">
+					<ul className={cn("m-0 flex list-none flex-col gap-3 p-0")}>
 						{events.map((event) => (
 							<li key={event.id}>
 								<EventCard event={event} leagueMap={leagueMap} types={types} />
@@ -78,7 +86,10 @@ export const LeagueSheet: React.FC<LeagueSheetProps> = ({
 
 				<Link
 					to="/"
-					className="mt-3 inline-block text-xs font-bold text-primary no-underline hover:underline"
+					className={cn(
+						"mt-3 inline-block text-xs font-bold",
+						"text-primary no-underline hover:underline",
+					)}
 				>
 					See full schedule
 				</Link>
