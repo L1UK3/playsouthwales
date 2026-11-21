@@ -1,122 +1,134 @@
-# REST API reference
+# Public API
 
-The Play! South Wales backend exposes a REST API running on port `5000`. The Discord bot also provides a lightweight HTTP notification server on port `5001`.
-
-## Authentication
-
-Public endpoints require no authentication credentials. Administrative endpoints require a valid Clerk JWT passed in the HTTP request header:
-
-```http
-Authorization: Bearer <clerk_session_token>
-```
-
-Requests lacking a valid bearer token return HTTP status `401 Unauthorized`.
-
-## Public endpoints
-
-| Method | Endpoint                         | Description                                       | Query parameters                             |
-| :----- | :------------------------------- | :------------------------------------------------ | :------------------------------------------- |
-| `GET`  | `/api/health`                    | Check backend server health                       | None                                         |
-| `GET`  | `/api/events`                    | List tournament events                            | `month`, `year`, `day`, `weekly`, `leagueId` |
-| `GET`  | `/api/weekly-events`             | List all weekly recurring event templates         | None                                         |
-| `GET`  | `/api/weekly-events/{league_id}` | Get the recurring event template for a league     | None                                         |
-| `GET`  | `/api/leagues`                   | List all active gaming leagues                    | None                                         |
-| `GET`  | `/api/leaderboard/{league_id}`   | Get standings leaderboard for a league            | None                                         |
-| `GET`  | `/api/players/top20`             | Get Welsh player rankings and Championship Points | `season` (e.g. `2026`)                       |
-| `GET`  | `/api/sets`                      | List Pokémon TCG set legality dates               | None                                         |
-| `GET`  | `/api/regs`                      | List Pokémon VGC regulation schedules             | None                                         |
-
-## Protected endpoints
-
-Protected routes enforce authorization via the [require_auth](file:///d:/Projects/playsouthwales/backend/app/auth.py) dependency.
-
-| Method   | Endpoint                        | Description                               | Request body                                                                            |
-| :------- | :------------------------------ | :---------------------------------------- | :-------------------------------------------------------------------------------------- |
-| `POST`   | `/api/events`                   | Create a single calendar event            | [`EventCreate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `PATCH`  | `/api/events/{id}`              | Partially update an existing event        | [`EventUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `PUT`    | `/api/events/{id}`              | Update an existing event                  | [`EventUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `DELETE` | `/api/events/{id}`              | Delete an event or date occurrence        | Query param: `excludeDate` (`YYYY-MM-DD`)                                               |
-| `POST`   | `/api/events/sync-pokedata`     | Trigger manual Pokédata tournament scrape | None                                                                                    |
-| `POST`   | `/api/events/sync-championship` | Trigger manual Championship Series sync   | None                                                                                    |
-| `POST`   | `/api/leagues`                  | Create a new gaming league                | [`LeagueCreate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `PATCH`  | `/api/leagues/{id}`             | Partially update a gaming league          | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `PUT`    | `/api/leagues/{id}`             | Update a gaming league                    | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `DELETE` | `/api/leagues/{id}`             | Delete an existing league                 | None                                                                                    |
-| `PUT`    | `/api/leaderboard/{id}`         | Upsert league standings leaderboard       | [`LeaderboardUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload |
-| `PUT`    | `/api/players/top20`            | Declaratively update national rankings    | [`Top20Update`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload        |
-
-## Discord bot HTTP notifier endpoints
-
-Base URL: `http://localhost:5001`
-
-| Method | Endpoint      | Description                       | Request body                                   |
-| :----- | :------------ | :-------------------------------- | :--------------------------------------------- |
-| `GET`  | `/health`     | Health check for bot process      | None                                           |
-| `GET`  | `/api/health` | Health check alias                | None                                           |
-| `POST` | `/api/notify` | Send message to a Discord channel | `{"channelId": "string", "message": "string"}` |
-| `POST` | `/api/emit`   | Emit a custom event to the bot    | `{"event": "string", "data": any}`             |
-
-## Schema payloads
-
-### Event creation (`EventCreate`)
+All responses are JSON. Errors return:
 
 ```json
-{
-    "name": "Cardiff Pokémon League Cup",
-    "date": "2026-10-15",
-    "startTime": "10:30",
-    "leagueId": 1,
-    "eventType": "League Cup",
-    "format": "Standard",
-    "entryFee": "£15",
-    "description": "Registration opens at 10:00 AM."
-}
+{ "error": { "code": "invalid_parameter", "message": "Invalid month" } }
 ```
 
-### League creation (`LeagueCreate`)
+| Status | Code                | Meaning                          |
+| :----- | :------------------ | :------------------------------- |
+| `400`  | `invalid_parameter` | A query parameter is malformed   |
+| `404`  | `not_found`         | The league or player is unknown  |
+| `500`  | `internal_error`    | Unexpected server failure        |
+| `503`  | `unavailable`       | The database can't be reached    |
+
+Every route sends `Access-Control-Allow-Origin` and answers `OPTIONS` preflight requests with `204`.
+
+Optional properties (marked `?`) are left out of the response when they have no value, rather than sent as `null`.
+
+## `GET /api/health`
+
+Checks that the Worker and the D1 database are reachable.
+
+**Returns** `200`:
 
 ```json
-{
-    "name": "Cardiff Pokémon Club",
-    "location": "Cardiff, CF10 1EP",
-    "postcode": "CF10 1EP",
-    "brandColor": "#E3350D",
-    "logoUrl": "https://example.com/logo.png",
-    "contact": "contact@cardiffpokemon.co.uk"
-}
+{ "status": "ok", "db": "ok" }
 ```
 
-### Leaderboard update (`LeaderboardUpdate`)
+Returns `503` with `{ "status": "error", "db": "error" }` if the database check fails.
+
+## `GET /api/events`
+
+Lists events, including occurrences of weekly events. Excluded dates are left out.
+
+**Query parameters**
+
+| Parameter  | Type                                   | Description                       |
+| :--------- | :------------------------------------- | :-------------------------------- |
+| `leagueId` | integer                                | Only events from this league      |
+| `day`      | `YYYY-MM-DD`                           | Only events on this day           |
+| `month`    | `YYYY-MM`                              | Only events in this month         |
+| `year`     | `YYYY`                                 | Only events in this year          |
+| `groupBy`  | `league` \| `day` \| `month` \| `year` | Group the events by this key. Keys are the `leagueId`, `YYYY-MM-DD`, `YYYY-MM` or `YYYY` |
+
+**Returns** `200`:
 
 ```json
-{
-    "data": [
-        {
-            "rank": 1,
-            "player_name": "Ash Ketchum",
-            "points": 150,
-            "division": "Masters"
-        }
-    ]
-}
+{ "events": [Event] }
 ```
 
-## Error format
-
-The API returns consistent JSON error envelopes when operations fail:
+With `groupBy`, events are keyed by the group value:
 
 ```json
-{
-    "detail": {
-        "code": "not_found",
-        "message": "Event with id 42 not found"
-    }
-}
+{ "events": { "2026-11-21": [Event] } }
 ```
 
-Common status codes include:
+**Event**
 
-- `400 Bad Request`: Validation failure or malformed date parameter.
-- `401 Unauthorized`: Missing or invalid Clerk authentication token.
-- `404 Not Found`: Target resource does not exist.
-- `500 Internal Server Error`: Unexpected database or upstream network failure.
+| Property           | Type             | Description                                          |
+| :----------------- | :--------------- | :--------------------------------------------------- |
+| `id`               | number \| string | Event ID. Weekly occurrences use `"<eventId>:<YYYY-MM-DD>"` |
+| `name`             | string           | Event name                                           |
+| `date`             | string           | `YYYY-MM-DD`                                         |
+| `startTime`        | string?          | `HH:MM`                                              |
+| `leagueId`         | number           | ID of the hosting league                             |
+| `eventType`        | string           | `CASUAL`, `STANDARD`, `CHALLENGE`, `CUP`, `PRE-RELEASE`, `SPECIAL`, `REGIONAL`, `INTERNATIONAL` or `WORLDS` |
+| `game`             | string           | `TCG`, `VGC`, `GO` or `ALL`                          |
+| `ticketLink`       | string?          | Ticket URL                                           |
+| `description`      | string?          | Free-text description                                |
+| `prizes`           | string?          | Prize details                                        |
+| `entryFee`         | string?          | Entry fee as text                                    |
+| `isRecurring`      | boolean          | `true` for occurrences of a weekly event, `false` for one-off events |
+| `recurringEventId` | number?          | ID of the weekly event an occurrence comes from      |
+
+**Errors:** `400` for an invalid date or `groupBy`, `404` for an unknown `leagueId`.
+
+## `GET /api/leagues`
+
+Lists every league.
+
+**Returns** `200`:
+
+```json
+{ "leagues": [League] }
+```
+
+**League**
+
+| Property               | Type    | Description                                 |
+| :--------------------- | :------ | :------------------------------------------ |
+| `leagueId`             | number  | League ID                                   |
+| `name`                 | string  | League name                                 |
+| `location`             | string? | Address or area                             |
+| `latitude`             | number? | Map latitude                                |
+| `longitude`            | number? | Map longitude                               |
+| `directions`           | string? | How to get there                            |
+| `accessibility`        | string? | Accessibility information                   |
+| `logo`                 | string? | Logo URL                                    |
+| `brandColor`           | string? | Brand colour                                |
+| `website`              | string? | Website URL                                 |
+| `socialLink`           | string? | Social media URL                            |
+| `eventLink`            | string? | Event listing URL                           |
+| `webLink`              | string? | Additional web URL                          |
+| `isChampionshipSeries` | boolean | `true` for the Championship Series league   |
+
+## `GET /api/rankings`
+
+Lists the National Rankings: Welsh players ordered by Championship Points.
+
+**Query parameters**
+
+| Parameter    | Type    | Description                                     |
+| :----------- | :------ | :---------------------------------------------- |
+| `season`     | `YYYY`  | Season to return. Defaults to the current season, which starts in July |
+| `playerId`   | integer | Only this player                                |
+| `playerName` | string  | Only players whose name matches                 |
+
+**Returns** `200`:
+
+```json
+{ "season": "2027", "rankings": [Ranking] }
+```
+
+**Ranking**
+
+| Property   | Type   | Description                         |
+| :--------- | :----- | :---------------------------------- |
+| `position` | number | Rank, starting at 1                 |
+| `name`     | string | Player name                         |
+| `playerId` | number? | Player ID, used by the `playerId` filter |
+| `cp`       | number | Championship Points for the season  |
+
+**Errors:** `400` for an invalid `season`, `404` for an unknown player.
