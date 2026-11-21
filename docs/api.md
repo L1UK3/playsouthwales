@@ -1,122 +1,99 @@
-# REST API reference
+# Public API routes
 
-The Play! South Wales backend exposes a REST API running on port `5000`. The Discord bot also provides a lightweight HTTP notification server on port `5001`.
+> **Status:** proposed. Nothing on this page is built yet. It replaces the
+> reference for the old FastAPI backend, which is in git history. Tracked in
+> [#235](https://github.com/L1UK3/playsouthwales/issues/235).
 
-## Authentication
+All routes are TanStack Start server routes under `src/routes/api/`. They call
+the query functions in `#/db/queries.server.ts` directly, not the server
+functions.
 
-Public endpoints require no authentication credentials. Administrative endpoints require a valid Clerk JWT passed in the HTTP request header:
+## Shared behaviour
 
-```http
-Authorization: Bearer <clerk_session_token>
-```
+| Concern            | Rule                                                                                                                   |
+| :----------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **Response format** | JSON. Successful responses wrap the result: `{ "events": [...] }`, `{ "leagues": [...] }`, `{ "rankings": [...] }`     |
+| **Error format**   | `{ "error": { "code": string, "message": string } }`                                                                   |
+| **CORS**           | `Access-Control-Allow-Origin` on every response. Each route has an `OPTIONS` handler that answers preflight with `204` |
+| **Analytics**      | Every API request is recorded with the analytics provider (provider still to be chosen)                                |
+| **Caching**        | Not decided yet; see the open questions                                                                                |
 
-Requests lacking a valid bearer token return HTTP status `401 Unauthorized`.
+### Error codes
 
-## Public endpoints
+| Status | Code                | When                                                  |
+| :----- | :------------------ | :---------------------------------------------------- |
+| `400`  | `invalid_parameter` | A query parameter is missing or malformed             |
+| `404`  | `not_found`         | An unknown league or player                           |
+| `500`  | `internal_error`    | Unexpected failure, logged with `console.error`       |
+| `503`  | `unavailable`       | The health check can't reach D1                       |
 
-| Method | Endpoint                         | Description                                       | Query parameters                             |
-| :----- | :------------------------------- | :------------------------------------------------ | :------------------------------------------- |
-| `GET`  | `/api/health`                    | Check backend server health                       | None                                         |
-| `GET`  | `/api/events`                    | List tournament events                            | `month`, `year`, `day`, `weekly`, `leagueId` |
-| `GET`  | `/api/weekly-events`             | List all weekly recurring event templates         | None                                         |
-| `GET`  | `/api/weekly-events/{league_id}` | Get the recurring event template for a league     | None                                         |
-| `GET`  | `/api/leagues`                   | List all active gaming leagues                    | None                                         |
-| `GET`  | `/api/leaderboard/{league_id}`   | Get standings leaderboard for a league            | None                                         |
-| `GET`  | `/api/players/top20`             | Get Welsh player rankings and Championship Points | `season` (e.g. `2026`)                       |
-| `GET`  | `/api/sets`                      | List Pokémon TCG set legality dates               | None                                         |
-| `GET`  | `/api/regs`                      | List Pokémon VGC regulation schedules             | None                                         |
+## `GET /api/health`
 
-## Protected endpoints
+Health check for uptime monitors. Workers stay online all the time, so no
+stay-alive cron is needed.
 
-Protected routes enforce authorization via the [require_auth](file:///d:/Projects/playsouthwales/backend/app/auth.py) dependency.
+- Runs `SELECT 1` against D1.
+- Returns `200 { "status": "ok", "db": "ok" }`.
+- Returns `503 { "status": "error", "db": "error" }` if the query fails.
 
-| Method   | Endpoint                        | Description                               | Request body                                                                            |
-| :------- | :------------------------------ | :---------------------------------------- | :-------------------------------------------------------------------------------------- |
-| `POST`   | `/api/events`                   | Create a single calendar event            | [`EventCreate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `PATCH`  | `/api/events/{id}`              | Partially update an existing event        | [`EventUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `PUT`    | `/api/events/{id}`              | Update an existing event                  | [`EventUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `DELETE` | `/api/events/{id}`              | Delete an event or date occurrence        | Query param: `excludeDate` (`YYYY-MM-DD`)                                               |
-| `POST`   | `/api/events/sync-pokedata`     | Trigger manual Pokédata tournament scrape | None                                                                                    |
-| `POST`   | `/api/events/sync-championship` | Trigger manual Championship Series sync   | None                                                                                    |
-| `POST`   | `/api/leagues`                  | Create a new gaming league                | [`LeagueCreate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `PATCH`  | `/api/leagues/{id}`             | Partially update a gaming league          | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `PUT`    | `/api/leagues/{id}`             | Update a gaming league                    | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `DELETE` | `/api/leagues/{id}`             | Delete an existing league                 | None                                                                                    |
-| `PUT`    | `/api/leaderboard/{id}`         | Upsert league standings leaderboard       | [`LeaderboardUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload |
-| `PUT`    | `/api/players/top20`            | Declaratively update national rankings    | [`Top20Update`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload        |
+## `GET /api/events`
 
-## Discord bot HTTP notifier endpoints
+Returns events, filtered and optionally grouped.
 
-Base URL: `http://localhost:5001`
+| Query parameter | Type                                  | Description                                                                 |
+| :-------------- | :------------------------------------ | :-------------------------------------------------------------------------- |
+| `leagueId`      | integer                               | Only events from this league. `404` if the league doesn't exist             |
+| `day`           | `YYYY-MM-DD`                          | Only events on this day                                                     |
+| `month`         | `YYYY-MM`                             | Only events in this month                                                   |
+| `year`          | `YYYY`                                | Only events in this year (needs a range limit; see the open questions)     |
+| `groupBy`       | `league` \| `day` \| `month` \| `year` | Group results by this key. Without it, the response is a flat list          |
 
-| Method | Endpoint      | Description                       | Request body                                   |
-| :----- | :------------ | :-------------------------------- | :--------------------------------------------- |
-| `GET`  | `/health`     | Health check for bot process      | None                                           |
-| `GET`  | `/api/health` | Health check alias                | None                                           |
-| `POST` | `/api/notify` | Send message to a Discord channel | `{"channelId": "string", "message": "string"}` |
-| `POST` | `/api/emit`   | Emit a custom event to the bot    | `{"event": "string", "data": any}`             |
+- **Source:** `querySchedule(month, false)`. Its `month` parameter has to be
+  widened to accept a day, a year or a date range.
+- **Excluded dates:** excluded occurrences of weekly events are left out.
+- **Returns:**
+  - `200 { "events": Event[] }`
+  - or, with `groupBy`, `200 { "events": { [key]: Event[] } }`
+- **Errors:** `400` for an invalid date or `groupBy`, `404` for an unknown
+  `leagueId`.
 
-## Schema payloads
+## `GET /api/leagues`
 
-### Event creation (`EventCreate`)
+Returns every league.
 
-```json
-{
-    "name": "Cardiff Pokémon League Cup",
-    "date": "2026-10-15",
-    "startTime": "10:30",
-    "leagueId": 1,
-    "eventType": "League Cup",
-    "format": "Standard",
-    "entryFee": "£15",
-    "description": "Registration opens at 10:00 AM."
-}
-```
+- **Source:** `queryLeagues()`.
+- **Returns:** `200 { "leagues": League[] }`.
 
-### League creation (`LeagueCreate`)
+## `GET /api/rankings`
 
-```json
-{
-    "name": "Cardiff Pokémon Club",
-    "location": "Cardiff, CF10 1EP",
-    "postcode": "CF10 1EP",
-    "brandColor": "#E3350D",
-    "logoUrl": "https://example.com/logo.png",
-    "contact": "contact@cardiffpokemon.co.uk"
-}
-```
+Returns National Rankings by Championship Points.
 
-### Leaderboard update (`LeaderboardUpdate`)
+| Query parameter | Type    | Description                                       |
+| :-------------- | :------ | :------------------------------------------------ |
+| `season`        | `YYYY`  | Season to return. Defaults to `currentSeason()`   |
+| `playerId`      | integer | Only this player. `404` if there's no such player |
+| `playerName`    | string  | Only players whose name matches                   |
 
-```json
-{
-    "data": [
-        {
-            "rank": 1,
-            "player_name": "Ash Ketchum",
-            "points": 150,
-            "division": "Masters"
-        }
-    ]
-}
-```
+- **Source:** `queryRankings()`.
+- **Returns:** `200 { "season": number, "rankings": { position, name, cp }[] }`.
+- **Errors:** `400` for an invalid `season`, `404` for an unknown player.
 
-## Error format
+## Open questions
 
-The API returns consistent JSON error envelopes when operations fail:
-
-```json
-{
-    "detail": {
-        "code": "not_found",
-        "message": "Event with id 42 not found"
-    }
-}
-```
-
-Common status codes include:
-
-- `400 Bad Request`: Validation failure or malformed date parameter.
-- `401 Unauthorized`: Missing or invalid Clerk authentication token.
-- `404 Not Found`: Target resource does not exist.
-- `500 Internal Server Error`: Unexpected database or upstream network failure.
+1. **Seasons ([#238](https://github.com/L1UK3/playsouthwales/issues/238)):**
+   the `players` table holds one season, with one `cp` per player. Previous
+   seasons, `total_points` and the choice between grouping by player or by
+   season all need a per-season table first. Until then, `season` accepts only
+   the current season.
+2. **Public player profiles:** `docs/CONTEXT.md` says there are none. Do
+   `playerId` and `playerName` filters count as profiles?
+3. **Event range limit:** weekly events are expanded per month. A request with
+   only `year` set expands 12 months, and a request with no date filter can't
+   be expanded at all. Should a date filter be required, with a maximum range?
+4. **Analytics provider:** which one, and does it log every call or only
+   counts?
+5. **CORS origin:** `*`, or a list of allowed origins?
+6. **Caching:** whether to send `Cache-Control` on GET responses, and for how
+   long.
+7. **`GET /api/` index page:** #235 also asks for the HTML API guide (the old
+   `src/routes/api/api_index.py`). Should it be in this list?
