@@ -14,6 +14,7 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as LeaguesRouteImport } from './routes/leagues'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as AuthedAdminRouteImport } from './routes/_authed/admin'
+import { Route as ApiEventsRouteImport } from './routes/api/events'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as ApiLeaguesRouteImport } from './routes/api/leagues'
 
@@ -41,6 +42,11 @@ const AuthedAdminRoute = AuthedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthedRoute,
 } as any)
+const ApiEventsRoute = ApiEventsRouteImport.update({
+  id: '/api/events',
+  path: '/api/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiHealthRoute = ApiHealthRouteImport.update({
   id: '/api/health',
   path: '/api/health',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/leagues': typeof LeaguesRoute
   '/rankings': typeof RankingsRoute
   '/admin': typeof AuthedAdminRoute
+  '/api/events': typeof ApiEventsRoute
   '/api/health': typeof ApiHealthRoute
   '/api/leagues': typeof ApiLeaguesRoute
 }
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/leagues': typeof LeaguesRoute
   '/rankings': typeof RankingsRoute
   '/admin': typeof AuthedAdminRoute
+  '/api/events': typeof ApiEventsRoute
   '/api/health': typeof ApiHealthRoute
   '/api/leagues': typeof ApiLeaguesRoute
 }
@@ -75,15 +83,29 @@ export interface FileRoutesById {
   '/leagues': typeof LeaguesRoute
   '/rankings': typeof RankingsRoute
   '/_authed/admin': typeof AuthedAdminRoute
+  '/api/events': typeof ApiEventsRoute
   '/api/health': typeof ApiHealthRoute
   '/api/leagues': typeof ApiLeaguesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/leagues' | '/rankings' | '/admin' | '/api/health' | '/api/leagues'
+    | '/'
+    | '/leagues'
+    | '/rankings'
+    | '/admin'
+    | '/api/events'
+    | '/api/health'
+    | '/api/leagues'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leagues' | '/rankings' | '/admin' | '/api/health' | '/api/leagues'
+  to:
+    | '/'
+    | '/leagues'
+    | '/rankings'
+    | '/admin'
+    | '/api/events'
+    | '/api/health'
+    | '/api/leagues'
   id:
     | '__root__'
     | '/'
@@ -91,6 +113,7 @@ export interface FileRouteTypes {
     | '/leagues'
     | '/rankings'
     | '/_authed/admin'
+    | '/api/events'
     | '/api/health'
     | '/api/leagues'
   fileRoutesById: FileRoutesById
@@ -100,6 +123,7 @@ export interface RootRouteChildren {
   AuthedRoute: typeof AuthedRouteWithChildren
   LeaguesRoute: typeof LeaguesRoute
   RankingsRoute: typeof RankingsRoute
+  ApiEventsRoute: typeof ApiEventsRoute
   ApiHealthRoute: typeof ApiHealthRoute
   ApiLeaguesRoute: typeof ApiLeaguesRoute
 }
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedAdminRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/api/events': {
+      id: '/api/events'
+      path: '/api/events'
+      fullPath: '/api/events'
+      preLoaderRoute: typeof ApiEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/health': {
       id: '/api/health'
       path: '/api/health'
@@ -174,6 +205,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRouteWithChildren,
   LeaguesRoute: LeaguesRoute,
   RankingsRoute: RankingsRoute,
+  ApiEventsRoute: ApiEventsRoute,
   ApiHealthRoute: ApiHealthRoute,
   ApiLeaguesRoute: ApiLeaguesRoute,
 }
