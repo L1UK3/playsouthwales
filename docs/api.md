@@ -1,99 +1,131 @@
-# Public API routes
+# Public API
 
-> **Status:** proposed. Nothing on this page is built yet. It replaces the
-> reference for the old FastAPI backend, which is in git history. Tracked in
-> [#235](https://github.com/L1UK3/playsouthwales/issues/235).
+All responses are JSON. Errors return:
 
-All routes are TanStack Start server routes under `src/routes/api/`. They call
-the query functions in `#/db/queries.server.ts` directly, not the server
-functions.
+```json
+{ "error": { "code": "invalid_parameter", "message": "Invalid month" } }
+```
 
-## Shared behaviour
+| Status | Code                | Meaning                          |
+| :----- | :------------------ | :------------------------------- |
+| `400`  | `invalid_parameter` | A query parameter is malformed   |
+| `404`  | `not_found`         | The league or player is unknown  |
+| `500`  | `internal_error`    | Unexpected server failure        |
+| `503`  | `unavailable`       | The database can't be reached    |
 
-| Concern            | Rule                                                                                                                   |
-| :----------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| **Response format** | JSON. Successful responses wrap the result: `{ "events": [...] }`, `{ "leagues": [...] }`, `{ "rankings": [...] }`     |
-| **Error format**   | `{ "error": { "code": string, "message": string } }`                                                                   |
-| **CORS**           | `Access-Control-Allow-Origin` on every response. Each route has an `OPTIONS` handler that answers preflight with `204` |
-| **Analytics**      | Every API request is recorded with the analytics provider (provider still to be chosen)                                |
-| **Caching**        | Not decided yet; see the open questions                                                                                |
-
-### Error codes
-
-| Status | Code                | When                                                  |
-| :----- | :------------------ | :---------------------------------------------------- |
-| `400`  | `invalid_parameter` | A query parameter is missing or malformed             |
-| `404`  | `not_found`         | An unknown league or player                           |
-| `500`  | `internal_error`    | Unexpected failure, logged with `console.error`       |
-| `503`  | `unavailable`       | The health check can't reach D1                       |
+Every route sends `Access-Control-Allow-Origin` and answers `OPTIONS` preflight requests with `204`.
 
 ## `GET /api/health`
 
-Health check for uptime monitors. Workers stay online all the time, so no
-stay-alive cron is needed.
+Checks that the Worker and the D1 database are reachable.
 
-- Runs `SELECT 1` against D1.
-- Returns `200 { "status": "ok", "db": "ok" }`.
-- Returns `503 { "status": "error", "db": "error" }` if the query fails.
+**Returns** `200`:
+
+```json
+{ "status": "ok", "db": "ok" }
+```
+
+Returns `503` with `{ "status": "error", "db": "error" }` if the database check fails.
 
 ## `GET /api/events`
 
-Returns events, filtered and optionally grouped.
+Lists events, including occurrences of weekly events. Excluded dates are left out.
 
-| Query parameter | Type                                  | Description                                                                 |
-| :-------------- | :------------------------------------ | :-------------------------------------------------------------------------- |
-| `leagueId`      | integer                               | Only events from this league. `404` if the league doesn't exist             |
-| `day`           | `YYYY-MM-DD`                          | Only events on this day                                                     |
-| `month`         | `YYYY-MM`                             | Only events in this month                                                   |
-| `year`          | `YYYY`                                | Only events in this year (needs a range limit; see the open questions)     |
-| `groupBy`       | `league` \| `day` \| `month` \| `year` | Group results by this key. Without it, the response is a flat list          |
+**Query parameters**
 
-- **Source:** `querySchedule(month, false)`. Its `month` parameter has to be
-  widened to accept a day, a year or a date range.
-- **Excluded dates:** excluded occurrences of weekly events are left out.
-- **Returns:**
-  - `200 { "events": Event[] }`
-  - or, with `groupBy`, `200 { "events": { [key]: Event[] } }`
-- **Errors:** `400` for an invalid date or `groupBy`, `404` for an unknown
-  `leagueId`.
+| Parameter  | Type                                   | Description                       |
+| :--------- | :------------------------------------- | :-------------------------------- |
+| `leagueId` | integer                                | Only events from this league      |
+| `day`      | `YYYY-MM-DD`                           | Only events on this day           |
+| `month`    | `YYYY-MM`                              | Only events in this month         |
+| `year`     | `YYYY`                                 | Only events in this year          |
+| `groupBy`  | `league` \| `day` \| `month` \| `year` | Group the events by this key      |
+
+**Returns** `200`:
+
+```json
+{ "events": [Event] }
+```
+
+With `groupBy`, events are keyed by the group value:
+
+```json
+{ "events": { "2026-11-21": [Event] } }
+```
+
+**Event**
+
+| Property           | Type             | Description                                          |
+| :----------------- | :--------------- | :--------------------------------------------------- |
+| `id`               | number \| string | Event ID. Weekly occurrences use a string ID          |
+| `name`             | string           | Event name                                           |
+| `date`             | string           | `YYYY-MM-DD`                                         |
+| `startTime`        | string?          | `HH:MM`                                              |
+| `leagueId`         | number           | ID of the hosting league                             |
+| `eventType`        | string           | Category, such as `CHALLENGE`, `CUP` or `LEAGUE`     |
+| `game`             | string           | `TCG`, `VGC`, `GO` or `ALL`                          |
+| `ticketLink`       | string?          | Ticket URL                                           |
+| `description`      | string?          | Free-text description                                |
+| `prizes`           | string?          | Prize details                                        |
+| `entryFee`         | string?          | Entry fee as text                                    |
+| `isRecurring`      | boolean          | `true` for occurrences of a weekly event             |
+| `recurringEventId` | number?          | ID of the weekly event an occurrence comes from      |
+
+**Errors:** `400` for an invalid date or `groupBy`, `404` for an unknown `leagueId`.
 
 ## `GET /api/leagues`
 
-Returns every league.
+Lists every league.
 
-- **Source:** `queryLeagues()`.
-- **Returns:** `200 { "leagues": League[] }`.
+**Returns** `200`:
+
+```json
+{ "leagues": [League] }
+```
+
+**League**
+
+| Property               | Type    | Description                                 |
+| :--------------------- | :------ | :------------------------------------------ |
+| `leagueId`             | number  | League ID                                   |
+| `name`                 | string  | League name                                 |
+| `location`             | string? | Address or area                             |
+| `latitude`             | number? | Map latitude                                |
+| `longitude`            | number? | Map longitude                               |
+| `directions`           | string? | How to get there                            |
+| `accessibility`        | string? | Accessibility information                   |
+| `logo`                 | string? | Logo URL                                    |
+| `brandColor`           | string? | Brand colour                                |
+| `website`              | string? | Website URL                                 |
+| `socialLink`           | string? | Social media URL                            |
+| `eventLink`            | string? | Event listing URL                           |
+| `webLink`              | string? | Additional web URL                          |
+| `isChampionshipSeries` | boolean | `true` for the Championship Series league   |
 
 ## `GET /api/rankings`
 
-Returns National Rankings by Championship Points.
+Lists the National Rankings: Welsh players ordered by Championship Points.
 
-| Query parameter | Type    | Description                                       |
-| :-------------- | :------ | :------------------------------------------------ |
-| `season`        | `YYYY`  | Season to return. Defaults to `currentSeason()`   |
-| `playerId`      | integer | Only this player. `404` if there's no such player |
-| `playerName`    | string  | Only players whose name matches                   |
+**Query parameters**
 
-- **Source:** `queryRankings()`.
-- **Returns:** `200 { "season": number, "rankings": { position, name, cp }[] }`.
-- **Errors:** `400` for an invalid `season`, `404` for an unknown player.
+| Parameter    | Type    | Description                                     |
+| :----------- | :------ | :---------------------------------------------- |
+| `season`     | `YYYY`  | Season to return. Defaults to the current season |
+| `playerId`   | integer | Only this player                                |
+| `playerName` | string  | Only players whose name matches                 |
 
-## Open questions
+**Returns** `200`:
 
-1. **Seasons ([#238](https://github.com/L1UK3/playsouthwales/issues/238)):**
-   the `players` table holds one season, with one `cp` per player. Previous
-   seasons, `total_points` and the choice between grouping by player or by
-   season all need a per-season table first. Until then, `season` accepts only
-   the current season.
-2. **Public player profiles:** `docs/CONTEXT.md` says there are none. Do
-   `playerId` and `playerName` filters count as profiles?
-3. **Event range limit:** weekly events are expanded per month. A request with
-   only `year` set expands 12 months, and a request with no date filter can't
-   be expanded at all. Should a date filter be required, with a maximum range?
-4. **Analytics provider:** which one, and does it log every call or only
-   counts?
-5. **CORS origin:** `*`, or a list of allowed origins?
-6. **Caching:** whether to send `Cache-Control` on GET responses, and for how
-   long.
-7. **`GET /api/` index page:** #235 also asks for the HTML API guide (the old
-   `src/routes/api/api_index.py`). Should it be in this list?
+```json
+{ "season": 2027, "rankings": [Ranking] }
+```
+
+**Ranking**
+
+| Property   | Type   | Description                         |
+| :--------- | :----- | :---------------------------------- |
+| `position` | number | Rank, starting at 1                 |
+| `name`     | string | Player name                         |
+| `cp`       | number | Championship Points for the season  |
+
+**Errors:** `400` for an invalid `season`, `404` for an unknown player.
