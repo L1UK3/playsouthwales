@@ -5,7 +5,6 @@ export interface League {
 	website?: string;
 	socialLink?: string;
 	eventLink?: string;
-	webLink?: string;
 	brandColor?: string;
 	location?: string;
 	directions?: string;

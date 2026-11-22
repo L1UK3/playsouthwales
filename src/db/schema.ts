@@ -14,7 +14,6 @@ export const leagues = sqliteTable("leagues", {
 	website: text(),
 	socialLink: text(),
 	eventLink: text(),
-	webLink: text(),
 	brandColor: text(),
 	location: text(),
 	directions: text(),
