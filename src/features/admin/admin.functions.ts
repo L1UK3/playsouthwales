@@ -13,6 +13,7 @@ import {
 } from "#/db/queries.server";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
+import { isValidCalendarDate } from "#/lib/recurrence";
 import type { Top20PlayerInput } from "./components/NationalRankingsModal";
 
 /** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
@@ -122,8 +123,8 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
 	.validator((input: EventSubmitInput) => {
 		if (!input.name.trim()) throw new Error("Event name is required");
-		if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date)) {
-			throw new Error("Event date must be YYYY-MM-DD");
+		if (!isValidCalendarDate(input.date)) {
+			throw new Error("Event date must be a valid calendar date (YYYY-MM-DD)");
 		}
 		if (!Number.isInteger(input.leagueId) || input.leagueId <= 0) {
 			throw new Error("A valid league is required");
