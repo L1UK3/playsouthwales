@@ -222,7 +222,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 					<span
 						className={cn(
 							TAG_BASE_CLASSES,
-							"px-2.5 py-0.5 rounded-full",
+							"px-2 sm:px-2.5 py-0.5 rounded-full whitespace-nowrap",
 							`type-${event.eventType}`,
 						)}
 						style={TAG_STYLE_PROPERTIES as React.CSSProperties}
