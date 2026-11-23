@@ -31,16 +31,30 @@ const TYPE_RANK: Record<string, number> = {
 };
 const UNKNOWN_TYPE_RANK = 7;
 
-const rankOf = (eventType: string) =>
-	TYPE_RANK[eventType.toUpperCase()] ?? UNKNOWN_TYPE_RANK;
+export const rankOf = (eventType?: string | null) => {
+	if (!eventType) return UNKNOWN_TYPE_RANK;
+	return TYPE_RANK[eventType.trim().toUpperCase()] ?? UNKNOWN_TYPE_RANK;
+};
+
+export function compareEventsForSchedule(
+	a: ScheduleEvent,
+	b: ScheduleEvent,
+): number {
+	const dateA = a.date.slice(0, 10);
+	const dateB = b.date.slice(0, 10);
+	if (dateA !== dateB) {
+		return dateA.localeCompare(dateB);
+	}
+	const rankDiff = rankOf(a.eventType) - rankOf(b.eventType);
+	if (rankDiff !== 0) {
+		return rankDiff;
+	}
+	return (a.startTime ?? "").localeCompare(b.startTime ?? "");
+}
 
 export function sortEventsForSchedule(
 	events: ScheduleEvent[],
 ): ScheduleEvent[] {
-	return [...events].sort(
-		(a, b) =>
-			a.date.localeCompare(b.date) ||
-			rankOf(a.eventType) - rankOf(b.eventType) ||
-			(a.startTime ?? "").localeCompare(b.startTime ?? ""),
-	);
+	if (events.length <= 1) return events;
+	return [...events].sort(compareEventsForSchedule);
 }
