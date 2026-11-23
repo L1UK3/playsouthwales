@@ -45,7 +45,7 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 						src={logo}
 						alt=""
 						className={cn(
-							"rounded-full object-containt bg-white border",
+							"rounded-full object-contain bg-white border",
 							"border-border-color shrink-0 size-3 @min-[700px]:size-4",
 						)}
 					/>
