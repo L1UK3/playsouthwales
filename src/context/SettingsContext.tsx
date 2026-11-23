@@ -13,13 +13,13 @@ function readDarkMode(): boolean {
 		const entry = document.cookie
 			.split("; ")
 			.find((c) => c.startsWith(`${COOKIE_NAME}=`));
-		if (!entry) return false;
+		if (!entry) return true;
 		const parsed = JSON.parse(
 			decodeURIComponent(entry.slice(COOKIE_NAME.length + 1)),
 		);
-		return parsed.darkMode === true;
+		return parsed.darkMode !== false;
 	} catch {
-		return false;
+		return true;
 	}
 }
 
