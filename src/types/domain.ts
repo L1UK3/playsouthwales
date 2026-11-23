@@ -5,7 +5,6 @@ export interface League {
 	website?: string;
 	socialLink?: string;
 	eventLink?: string;
-	webLink?: string;
 	brandColor?: string;
 	location?: string;
 	directions?: string;
@@ -52,3 +51,9 @@ export interface LeaderboardPosition {
 export type LeagueMap = Record<number, League>;
 
 export type EventsByDate = Record<string, ScheduleEvent[]>;
+
+export interface ScheduleData {
+	leagues: League[];
+	types: EventTypeMap;
+	events: ScheduleEvent[];
+}
