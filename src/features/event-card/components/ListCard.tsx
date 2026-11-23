@@ -204,13 +204,13 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 					</div>
 
 					{/* Format Emoji & Expand Arrow */}
-					<div className="flex items-center gap-3 shrink-0">
+					<div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-wrap sm:flex-nowrap justify-end">
 						{isOfficial && (
 							<span
 								className={cn(
 									"px-1.5 py-0.5 rounded text-[8px] font-extrabold",
 									"tracking-wider uppercase bg-white/20 text-white border",
-									"border-white/30",
+									"border-white/30 shrink-0",
 								)}
 							>
 								Official
@@ -219,7 +219,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						<span
 							className={cn(
 								TAG_BASE_CLASSES,
-								"px-2 py-0.5 rounded",
+								"px-2 py-0.5 rounded text-[11px] sm:text-xs shrink-0 whitespace-nowrap",
 								`type-${event.eventType}`,
 							)}
 							style={TAG_STYLE_PROPERTIES as React.CSSProperties}
