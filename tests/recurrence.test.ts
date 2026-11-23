@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { RecurringEvent } from "./recurrence";
-import { expandRecurring, isValidCalendarDate } from "./recurrence";
+import type { RecurringEvent } from "#/lib/recurrence";
+import { expandRecurring, isValidCalendarDate } from "#/lib/recurrence";
 
 function makeRecurringEvent(
 	overrides: Partial<RecurringEvent> = {},
