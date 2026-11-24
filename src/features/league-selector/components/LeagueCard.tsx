@@ -13,7 +13,6 @@ export interface LeagueCardProps {
 	onEdit?: (league: League) => void;
 	onDelete?: (league: League) => void;
 	showInfo?: boolean;
-	className?: string;
 }
 
 /** Gold styling for Championship Series leagues, as on their event cards. */
@@ -43,7 +42,6 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 	onEdit,
 	onDelete,
 	showInfo = true,
-	className = "",
 }) => {
 	const isSelected = selectedLeagueID === league.leagueId;
 	const brandColor = league.brandColor ?? "var(--color-primary)";
@@ -69,7 +67,6 @@ const LeagueCard: React.FC<LeagueCardProps> = ({
 				isSelected ? SELECTED_CLASSES : "opacity-85 hover:opacity-100",
 				"hover:-translate-y-0.5 hover:shadow-md hover:bg-bg-card-hover",
 				"active:scale-[0.99] active:translate-y-px",
-				className,
 			)}
 			style={{ "--store-color": brandColor } as React.CSSProperties}
 			onClick={() => onLeagueSelect(league.leagueId)}

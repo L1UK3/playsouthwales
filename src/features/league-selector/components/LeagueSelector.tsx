@@ -14,7 +14,6 @@ export interface LeagueSelectorProps {
 	showAdminControls?: boolean;
 	columns?: number;
 	showInfo?: boolean;
-	layout?: "grid" | "scroll";
 }
 
 /**
@@ -31,7 +30,6 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 	showAdminControls,
 	columns,
 	showInfo,
-	layout = "grid",
 }) => {
 	const gridColsClass =
 		{
@@ -52,17 +50,9 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 		});
 	}, [leagues]);
 
-	const isScroll = layout === "scroll";
-
 	return (
 		<div className="flex flex-col gap-4">
-			<div
-				className={cn(
-					isScroll
-						? "flex flex-row gap-4 overflow-x-auto pb-3 pt-1 px-1 scroll-smooth"
-						: ["grid", gridColsClass, "gap-4"],
-				)}
-			>
+			<div className={cn("grid gap-4", gridColsClass)}>
 				{sortedLeagues.map((league) => (
 					<LeagueCard
 						key={league.leagueId}
@@ -72,7 +62,6 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 						onEdit={onEdit}
 						onDelete={onDelete}
 						showInfo={showInfo}
-						className={cn(isScroll && "w-60 shrink-0")}
 					/>
 				))}
 
@@ -87,7 +76,7 @@ export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 							"duration-200 ease-out",
 							"hover:border-primary hover:text-primary hover:bg-primary/4",
 							"hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/8",
-							isScroll ? "min-h-28 w-60 shrink-0" : "min-h-28",
+							"min-h-28",
 						)}
 						onClick={onAdd}
 					>

@@ -1,20 +1,11 @@
 ﻿import { cn } from "#/lib/utils";
 
-export interface SuspenseLoaderProps {
-	fullPage?: boolean;
-	message?: string;
-}
-
-export function SuspenseLoader({
-	fullPage = false,
-	message = "Loading…",
-}: SuspenseLoaderProps) {
+export function SuspenseLoader() {
 	return (
 		<div
 			className={cn(
 				"flex flex-col items-center justify-center min-h-62.5 w-full",
 				"animate-[fadeIn_0.4s_ease-out]",
-				fullPage && "fixed inset-0 min-h-screen bg-[#121214] z-9999",
 			)}
 		>
 			<div className="relative w-16 h-16">
@@ -32,16 +23,14 @@ export function SuspenseLoader({
 					)}
 				/>
 			</div>
-			{message ? (
-				<div
-					className={cn(
-						"mt-5 font-sans text-[0.95rem] font-medium text-text-muted",
-						"tracking-wider animate-pulse",
-					)}
-				>
-					{message}
-				</div>
-			) : null}
+			<div
+				className={cn(
+					"mt-5 font-sans text-[0.95rem] font-medium text-text-muted",
+					"tracking-wider animate-pulse",
+				)}
+			>
+				Loading…
+			</div>
 		</div>
 	);
 }
