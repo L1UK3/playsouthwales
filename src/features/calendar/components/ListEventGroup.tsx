@@ -1,7 +1,7 @@
 import type React from "react";
 import { useMemo } from "react";
-import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
 import { ListCard } from "#/features/event-card";
+import { formatDayHeading, localDateKey } from "#/lib/month";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
@@ -45,18 +45,10 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 	onExclude,
 	onUnexclude,
 }) => {
-	const dateText = new Date(`${dateKey}T00:00:00`).toLocaleDateString(
-		undefined,
-		{
-			weekday: "long",
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		},
-	);
+	const dateText = formatDayHeading(dateKey);
 
 	const isToday = useMemo(
-		() => dateKey === getLocalDateString(new Date()),
+		() => dateKey === localDateKey(new Date()),
 		[dateKey],
 	);
 

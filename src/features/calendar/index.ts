@@ -1,3 +1,7 @@
+export {
+	localDateKey as getLocalDateString,
+	type MonthGridDay as CellData,
+} from "#/lib/month";
 export * from "./components/CalendarView";
 export { default as CalendarView } from "./components/CalendarView";
 export * from "./components/Cell";
@@ -12,6 +16,4 @@ export * from "./components/NavBar";
 export { default as NavBar } from "./components/NavBar";
 export * from "./components/SelectedDaySection";
 export { default as SelectedDaySection } from "./components/SelectedDaySection";
-export * from "./types/CellData";
-export * from "./utils/getLocalDateString";
 export * from "./utils/playMarkerPop";

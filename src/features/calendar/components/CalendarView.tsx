@@ -1,8 +1,7 @@
 import type React from "react";
 import { lazy, Suspense, useMemo, useRef } from "react";
 import Cell from "#/features/calendar/components/Cell";
-import type { CellData } from "#/features/calendar/types/CellData";
-import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
+import { localDateKey, monthGrid } from "#/lib/month";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
@@ -44,52 +43,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 	onSelectDay,
 }) => {
 	const today = useMemo(() => new Date(), []);
-	const todayKey = getLocalDateString(today);
+	const todayKey = localDateKey(today);
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
-	const cells = useMemo(() => {
-		const [year, monthNumber] = monthKey.split("-").map(Number);
-		const month = monthNumber - 1;
-
-		const firstDay = new Date(year, month, 1).getDay();
-		const daysInMonth = new Date(year, month + 1, 0).getDate();
-		const daysInPrevMonth = new Date(year, month, 0).getDate();
-		const startDay = firstDay === 0 ? 6 : firstDay - 1;
-
-		const generateCellData = (
-			day: number,
-			m: number,
-			y: number,
-			isOtherMonth: boolean,
-		): CellData => {
-			const cellDate = new Date(y, m - 1, day);
-			return {
-				day,
-				month: m,
-				year: y,
-				isOtherMonth,
-				dateKey: getLocalDateString(cellDate),
-			};
-		};
-
-		const list: CellData[] = [];
-
-		for (let i = startDay - 1; i >= 0; i--) {
-			list.push(generateCellData(daysInPrevMonth - i, month, year, true));
-		}
-
-		for (let day = 1; day <= daysInMonth; day++) {
-			list.push(generateCellData(day, month + 1, year, false));
-		}
-
-		const totalCells = list.length;
-		const remainingCells = Math.ceil(totalCells / 7) * 7 - totalCells;
-		for (let day = 1; day <= remainingCells; day++) {
-			list.push(generateCellData(day, month + 2, year, true));
-		}
-
-		return list;
-	}, [monthKey]);
+	const cells = useMemo(() => monthGrid(monthKey), [monthKey]);
 
 	return (
 		<div
