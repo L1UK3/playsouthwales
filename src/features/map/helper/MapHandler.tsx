@@ -2,6 +2,7 @@ import { useMap } from "@vis.gl/react-google-maps";
 import type React from "react";
 import { useEffect } from "react";
 import type { League } from "#/types/domain";
+import { getLeaguePosition } from "./index";
 
 /** Zoom level the camera uses when it focuses on a selected league. */
 const SELECTED_ZOOM = 13;
@@ -48,7 +49,7 @@ interface MapHandlerProps {
  * The map rebuilds when the colour scheme changes, which remounts this component.
  * It then restores the saved camera, so a theme switch keeps the current view.
  */
-export const MapHandler: React.FC<MapHandlerProps> = ({
+const MapHandler: React.FC<MapHandlerProps> = ({
 	selectedLeague,
 	defaultCenter,
 	defaultZoom,
@@ -68,19 +69,11 @@ export const MapHandler: React.FC<MapHandlerProps> = ({
 			return;
 		}
 
-		if (
-			selectedLeague?.latitude !== null &&
-			selectedLeague?.latitude !== undefined &&
-			selectedLeague?.longitude !== null &&
-			selectedLeague?.longitude !== undefined
-		) {
+		const position = selectedLeague ? getLeaguePosition(selectedLeague) : null;
+		if (position) {
 			map.panTo({
-				lat: offsetLatitude(
-					selectedLeague.latitude,
-					focusOffsetY,
-					SELECTED_ZOOM,
-				),
-				lng: selectedLeague.longitude,
+				lat: offsetLatitude(position.lat, focusOffsetY, SELECTED_ZOOM),
+				lng: position.lng,
 			});
 			map.setZoom(SELECTED_ZOOM);
 		} else {

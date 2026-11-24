@@ -3,7 +3,27 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Moon, Sun } from "lucide-react";
 import { useSettings } from "#/context/SettingsContext";
 import { cn } from "#/lib/utils";
+import {
+	ADMIN_NAV_ITEM,
+	CLERK_SIGN_IN_APPEARANCE,
+	getSectionTitle,
+	isNavItemActive,
+	NAV_ITEMS,
+} from "./nav";
 import TabToggle from "./TabToggle";
+
+/**
+ * Shared look of the Header's action buttons (Admin, Sign In, theme). It
+ * leaves out the display class, so each button picks when it shows.
+ */
+const ACTION_BUTTON_CLASS = cn(
+	"items-center gap-1.5 py-1.5 px-3 border border-border-color rounded-md",
+	"bg-bg-main text-text-main text-sm font-semibold cursor-pointer",
+	"transition-colors duration-150 no-underline hover:bg-bg-card-hover",
+	"hover:text-text-darker hover:border-text-muted",
+);
+
+const TABS = NAV_ITEMS.map(({ to, label }) => ({ to, label }));
 
 /**
  * Wrapper for the header component
@@ -14,13 +34,8 @@ export function Header() {
 	const path = location.pathname;
 	const { isLoaded, isSignedIn } = useAuth();
 	const { darkMode, toggleDarkMode } = useSettings();
-	const title = path.startsWith("/leagues")
-		? "Leagues"
-		: path.startsWith("/rankings")
-			? "Rankings"
-			: path.startsWith("/admin")
-				? "Admin"
-				: "Schedule";
+	const title = getSectionTitle(path);
+	const themeLabel = darkMode ? "Switch to light mode" : "Switch to dark mode";
 
 	return (
 		<header className="top-0 z-30 px-4 pt-4">
@@ -46,60 +61,31 @@ export function Header() {
 				</div>
 
 				<div className="hidden sm:block">
-					<TabToggle
-						tabs={[
-							{ to: "/", label: "Schedule" },
-							{ to: "/leagues", label: "Leagues" },
-							{ to: "/rankings", label: "Rankings" },
-						]}
-						activeTab={path}
-					/>
+					<TabToggle tabs={TABS} activeTab={path} />
 				</div>
 
-				<div
-					className={cn(
-						"flex gap-2.5 items-center justify-end flex-none sm:flex-1",
-					)}
-				>
+				<div className="flex gap-2.5 items-center justify-end flex-none sm:flex-1">
 					{isLoaded && isSignedIn && (
 						<>
 							<UserButton />
 							<Link
-								to="/admin"
+								to={ADMIN_NAV_ITEM.to}
 								className={cn(
-									"hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3",
-									"border border-border-color rounded-md bg-bg-main",
-									"text-text-main text-sm font-semibold cursor-pointer",
-									"transition-colors duration-150 no-underline",
-									"hover:bg-bg-card-hover hover:text-text-darker",
-									"hover:border-text-muted",
-									path.startsWith("/admin") &&
+									"hidden sm:inline-flex",
+									ACTION_BUTTON_CLASS,
+									isNavItemActive(path, ADMIN_NAV_ITEM.to) &&
 										"bg-primary! text-white! border-primary-hover!",
 								)}
 							>
-								Admin
+								{ADMIN_NAV_ITEM.label}
 							</Link>
 						</>
 					)}
 					{isLoaded && !isSignedIn && (
-						<SignInButton
-							mode="modal"
-							appearance={{
-								elements: {
-									footerAction: { display: "none" },
-								},
-							}}
-						>
+						<SignInButton mode="modal" appearance={CLERK_SIGN_IN_APPEARANCE}>
 							<button
 								type="button"
-								className={cn(
-									"hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3",
-									"border border-border-color rounded-md bg-bg-main",
-									"text-text-main text-sm font-semibold cursor-pointer",
-									"transition-colors duration-150 no-underline",
-									"hover:bg-bg-card-hover hover:text-text-darker",
-									"hover:border-text-muted",
-								)}
+								className={cn("hidden sm:inline-flex", ACTION_BUTTON_CLASS)}
 							>
 								Sign In
 							</button>
@@ -107,19 +93,11 @@ export function Header() {
 					)}
 					<button
 						type="button"
-						className={cn(
-							"inline-flex items-center gap-1.5 py-1.5 px-3 border",
-							"border-border-color rounded-md bg-bg-main text-text-main",
-							"text-sm font-semibold cursor-pointer transition-colors",
-							"duration-150 hover:bg-bg-card-hover hover:text-text-darker",
-							"hover:border-text-muted",
-						)}
+						className={cn("inline-flex", ACTION_BUTTON_CLASS)}
 						onClick={() => toggleDarkMode()}
-						aria-label={
-							darkMode ? "Switch to light mode" : "Switch to dark mode"
-						}
+						aria-label={themeLabel}
 						aria-pressed={darkMode}
-						title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+						title={themeLabel}
 					>
 						{darkMode ? (
 							<Sun aria-hidden="true" className="h-5 w-5" />

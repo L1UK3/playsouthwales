@@ -1,8 +1,9 @@
 // Shared utilities for EventCard components
 
+import { isDateMarkerType, isOfficialEvent } from "#/lib/event-types";
 import { cn } from "#/lib/utils";
 import type { League, ScheduleEvent } from "#/types/domain";
-import type { EventCardAdditionalProps } from "../types/EventCard.types";
+import { getEventDescription } from "./getEventDescription";
 
 /**
  * Extract league information and computed store color.
@@ -30,38 +31,52 @@ export function getStoreColor(
 	event: ScheduleEvent,
 	league: League | null,
 ): string {
-	return event.eventType === "LEGALITY" ||
-		event.eventType === "RELEASE" ||
-		event.eventType === "REGULATION"
+	return isDateMarkerType(event.eventType)
 		? "var(--color-special-day-border)"
 		: (league?.brandColor ??
 				`hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 }
 
+/** Display label for the game(s) an event is for. */
+export function getGameLabel(game: string): string {
+	return game === "ALL" ? "TCG, VGC, GO" : game;
+}
+
 /**
- * Resolve component state flags.
- * @param state {EventCardAdditionalProps['state']} - The current state of the card.
- * @param event {Event} - The event object containing event details.
- * @returns {stateFlags} - An object containing flags for each state.
+ * Everything a card variant needs to know about an event, independent of
+ * how the variant lays it out.
  */
-export function getStateFlags(
-	state: EventCardAdditionalProps["state"],
+export interface EventCardView {
+	league: League | null;
+	leagueName: string;
+	storeColor: string;
+	isChampionship: boolean;
+	isOfficial: boolean;
+	isDateMarker: boolean;
+	description: string;
+	gameLabel: string;
+	/** Tier theme classes (gold / silver / purple / default border). */
+	themeClasses: string;
+}
+
+/** Resolve an event and its league into the card view shared by all variants. */
+export function describeEventCard(
 	event: ScheduleEvent,
-) {
-	const stateFlags = {
-		isHover: state === "hover",
-		isFocus: state === "focus",
-		isActive: state === "active",
-		isDisabled: state === "disabled",
-		isLoading: state === "loading",
-		isError: state === "error",
-		isSuccess: state === "success",
-		isReleaseCard:
-			event.eventType === "RELEASE" ||
-			event.eventType === "LEGALITY" ||
-			event.eventType === "REGULATION",
+	leagueMap: Record<number, League>,
+): EventCardView {
+	const { league, leagueName } = getLeagueInfo(event, leagueMap);
+	const isChampionship = league?.isChampionshipSeries ?? false;
+	return {
+		league,
+		leagueName,
+		storeColor: getStoreColor(event, league),
+		isChampionship,
+		isOfficial: isOfficialEvent(event.eventType, isChampionship),
+		isDateMarker: isDateMarkerType(event.eventType),
+		description: getEventDescription(event),
+		gameLabel: getGameLabel(event.game),
+		themeClasses: getCardStyles(event.eventType, isChampionship),
 	};
-	return stateFlags;
 }
 
 /** Format plain GBP amounts while preserving descriptive entry fees. */

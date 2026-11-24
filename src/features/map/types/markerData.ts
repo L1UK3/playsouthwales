@@ -10,7 +10,4 @@ export interface MarkerData {
 	name: string;
 	brandColor: string;
 	logo?: string;
-	location?: string;
-	website?: string;
-	eventLink?: string;
 }

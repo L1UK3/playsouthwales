@@ -1,8 +1,7 @@
 import type React from "react";
 import { useMemo } from "react";
-import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
-import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
 import { ListCard } from "#/features/event-card";
+import { formatDayHeading, localDateKey } from "#/lib/month";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
@@ -46,20 +45,10 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 	onExclude,
 	onUnexclude,
 }) => {
-	const dateText = new Date(`${dateKey}T00:00:00`).toLocaleDateString(
-		undefined,
-		{
-			weekday: "long",
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		},
-	);
-
-	const sortedEvents = useSortEvents(eventsForDay);
+	const dateText = formatDayHeading(dateKey);
 
 	const isToday = useMemo(
-		() => dateKey === getLocalDateString(new Date()),
+		() => dateKey === localDateKey(new Date()),
 		[dateKey],
 	);
 
@@ -81,7 +70,7 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 				{dateText}
 			</div>
 			<div className="flex flex-col gap-3">
-				{sortedEvents.map((event) => (
+				{eventsForDay.map((event) => (
 					<ListCard
 						key={event.id}
 						event={event}

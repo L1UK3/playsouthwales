@@ -1,10 +1,16 @@
+import { isDateMarkerType } from "#/lib/event-types";
 import { type EventFilters, groupByDate, matchesFilters } from "#/lib/events";
 import type { EventsByDate, ScheduleEvent } from "#/types/domain";
 
-const DATE_MARKER_TYPES = new Set(["LEGALITY", "RELEASE", "REGULATION"]);
-
 const isDateMarker = (event: ScheduleEvent) =>
-	DATE_MARKER_TYPES.has(event.eventType);
+	isDateMarkerType(event.eventType);
+
+/**
+ * A day is special (highlighted border) when it carries a date marker: a set
+ * release, set legality or regulation change, matching the cards' styling.
+ */
+export const isSpecialDay = (eventsForDay: ScheduleEvent[]) =>
+	eventsForDay.some(isDateMarker);
 
 interface ScheduleSelection {
 	calendar: EventsByDate;
@@ -12,6 +18,11 @@ interface ScheduleSelection {
 	sidebar: ScheduleEvent[];
 }
 
+/**
+ * Splits a month's schedule into what each view shows. `events` arrive in
+ * schedule order from `querySchedule`; every selection preserves that order,
+ * so views render them as-is without re-sorting.
+ */
 export function selectSchedule(
 	events: ScheduleEvent[],
 	filters: EventFilters,

@@ -70,8 +70,6 @@ body {
     --animate-swipe-left: swipeLeft 0.5s ease forwards;
     --animate-swipe-right: swipeRight 0.5s ease forwards;
     --animate-swipe-down: swipeDown 0.5s ease forwards;
-    --animate-slide-in-down: slideInDown 0.4s ease forwards;
-    --animate-slide-in-right: slideInRight 0.4s ease forwards;
     --animate-sheet-up: sheetUp 0.25s var(--ease-out) both;
 
     @keyframes sheetUp {
@@ -258,46 +256,6 @@ body {
         background: var(--color-bg-card-hover);
         border-color: var(--color-text-muted);
     }
-
-    .not-yet-implemented {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 480px;
-        max-width: 900px;
-        width: 100%;
-        margin: auto;
-        padding: 32px;
-        color: var(--color-text-muted);
-        background-color: var(--color-bg-card);
-        border: 1px solid var(--color-border-color);
-        border-radius: var(--radius-lg);
-        text-align: center;
-        gap: 16px;
-        animation: swipeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    .not-yet-implemented:hover {
-        transform: translateY(-4px);
-    }
-
-    .not-yet-implemented p {
-        font-size: 36px;
-        font-weight: 800;
-        color: var(--color-text-darker);
-        letter-spacing: -0.5px;
-        margin: 0;
-    }
-
-    .not-yet-implemented-subtext {
-        font-size: 16px;
-        font-weight: 500;
-        color: var(--color-text-muted);
-        max-width: 500px;
-        line-height: 1.6;
-        margin-top: 4px;
-    }
 }
 
 /* Event Type Color Schemes */
@@ -368,30 +326,6 @@ body {
     --card-hover-shadow-mix: 30%;
     --cal-card-bg-mix: 8%;
     --cal-card-hover-mix: 18%;
-    --bg-challenge-day: color-mix(in oklch, oklch(0.75 0.25 45) 8%, var(--color-bg-card));
-    --bg-challenge-day-hover: color-mix(in oklch, oklch(0.75 0.25 45) 13%, var(--color-bg-card));
-    --shadow-challenge-day-inset: inset 0 0 12px color-mix(in oklch, oklch(0.75 0.25 45) 12%, transparent);
-    --bg-championship-day: color-mix(in oklch, oklch(0.82 0.22 85) 10%, var(--color-bg-card));
-    --bg-championship-day-hover: color-mix(in oklch, oklch(0.82 0.22 85) 16%, var(--color-bg-card));
-    --shadow-championship-day-inset: inset 0 0 14px color-mix(in oklch, oklch(0.82 0.22 85) 16%, transparent);
-}
-
-@utility bg-challenge-day {
-    background-color: var(--bg-challenge-day) !important;
-    box-shadow: var(--shadow-challenge-day-inset);
-
-    &:hover {
-        background-color: var(--bg-challenge-day-hover) !important;
-    }
-}
-
-@utility bg-championship-day {
-    background-color: var(--bg-championship-day) !important;
-    box-shadow: var(--shadow-championship-day-inset);
-
-    &:hover {
-        background-color: var(--bg-championship-day-hover) !important;
-    }
 }
 
 @utility calendar-card {
@@ -443,12 +377,6 @@ html.dark {
     --color-event-bg: rgba(255, 77, 77, 0.2);
     --color-event-more-bg: rgba(255, 255, 255, 0.1);
     --color-special-day-border: oklch(0.78 0.18 80);
-    --bg-challenge-day: color-mix(in oklch, oklch(0.75 0.25 45) 14%, var(--color-bg-card));
-    --bg-challenge-day-hover: color-mix(in oklch, oklch(0.75 0.25 45) 20%, var(--color-bg-card));
-    --shadow-challenge-day-inset: inset 0 0 14px color-mix(in oklch, oklch(0.75 0.25 45) 20%, transparent);
-    --bg-championship-day: color-mix(in oklch, oklch(0.82 0.22 85) 15%, var(--color-bg-card));
-    --bg-championship-day-hover: color-mix(in oklch, oklch(0.82 0.22 85) 22%, var(--color-bg-card));
-    --shadow-championship-day-inset: inset 0 0 16px color-mix(in oklch, oklch(0.82 0.22 85) 22%, transparent);
 
     .type-LEGALITY {
         --type-bg: oklch(0.88 0.005 28 / 0.12);

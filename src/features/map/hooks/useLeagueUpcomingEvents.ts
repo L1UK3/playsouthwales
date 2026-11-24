@@ -22,7 +22,7 @@ function toDateKey(date: Date): string {
  * so it includes weekly recurring events. Reading two months keeps the list
  * filled near the end of a month.
  */
-export function useLeagueUpcomingEvents(leagueId: number, limit: number) {
+function useLeagueUpcomingEvents(leagueId: number, limit: number) {
 	// Fixed for the component's lifetime, so the requests stay stable.
 	const [{ thisMonth, nextMonth, todayKey }] = useState(() => {
 		const now = new Date();
