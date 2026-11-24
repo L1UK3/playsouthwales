@@ -1,12 +1,13 @@
 import type React from "react";
 import { cn } from "#/lib/utils";
 import type { ScheduleEvent } from "#/types/domain";
+import type { EventSubmitInput } from "../admin.functions";
 import { FormDialog } from "./AdminDialog";
 import { Field, Select, TextArea, TextInput, useFormDraft } from "./FormField";
 
-export interface EventFormModalProps {
+interface EventFormModalProps {
 	onClose: () => void;
-	onSubmit: (data: Omit<ScheduleEvent, "id">) => void | Promise<void>;
+	onSubmit: (data: Omit<EventSubmitInput, "id">) => void | Promise<void>;
 	initialData?: ScheduleEvent | null;
 	leagueId: number;
 	/** When true, shows Championship Series event types (Worlds, Regionals, Special Events) */
@@ -80,7 +81,7 @@ function OptionList({ options }: { options: Option[] }) {
 	));
 }
 
-export const EventFormModal: React.FC<EventFormModalProps> = ({
+const EventFormModal: React.FC<EventFormModalProps> = ({
 	onClose,
 	onSubmit,
 	initialData,
