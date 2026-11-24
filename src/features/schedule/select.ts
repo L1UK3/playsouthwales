@@ -1,10 +1,9 @@
+import { isDateMarkerType } from "#/lib/event-types";
 import { type EventFilters, groupByDate, matchesFilters } from "#/lib/events";
 import type { EventsByDate, ScheduleEvent } from "#/types/domain";
 
-const DATE_MARKER_TYPES = new Set(["LEGALITY", "RELEASE", "REGULATION"]);
-
 const isDateMarker = (event: ScheduleEvent) =>
-	DATE_MARKER_TYPES.has(event.eventType);
+	isDateMarkerType(event.eventType);
 
 interface ScheduleSelection {
 	calendar: EventsByDate;

@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { rankOf, sortEventsForSchedule } from "#/lib/event-types";
+import {
+	isDateMarkerType,
+	isOfficialEvent,
+	rankOf,
+	sortEventsForSchedule,
+} from "#/lib/event-types";
 import type { ScheduleEvent } from "#/types/domain";
 
 function makeEvent(overrides: Partial<ScheduleEvent> = {}): ScheduleEvent {
@@ -94,5 +99,32 @@ describe("compareEventsForSchedule & sortEventsForSchedule", () => {
 
 		const single = [makeEvent()];
 		assert.equal(sortEventsForSchedule(single), single);
+	});
+});
+
+describe("isDateMarkerType", () => {
+	it("treats legality, release and regulation entries as date markers", () => {
+		for (const type of ["LEGALITY", "RELEASE", "REGULATION"]) {
+			assert.equal(isDateMarkerType(type), true);
+		}
+	});
+
+	it("does not treat played events as date markers", () => {
+		for (const type of ["CUP", "CASUAL", "PRE-RELEASE", "WORLDS"]) {
+			assert.equal(isDateMarkerType(type), false);
+		}
+	});
+});
+
+describe("isOfficialEvent", () => {
+	it("marks cups, challenges and prereleases as official", () => {
+		for (const type of ["CUP", "CHALLENGE", "PRE-RELEASE"]) {
+			assert.equal(isOfficialEvent(type), true);
+		}
+	});
+
+	it("marks any Championship Series event as official", () => {
+		assert.equal(isOfficialEvent("CASUAL", true), true);
+		assert.equal(isOfficialEvent("CASUAL", false), false);
 	});
 });
