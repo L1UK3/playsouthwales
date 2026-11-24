@@ -1,10 +1,8 @@
 import React from "react";
 import { cn } from "#/lib/utils";
 import type { LeaderboardPosition } from "#/types/domain";
-import {
-	LeaderboardPodium,
-	type LeaderboardRanking as LeaderboardPodiumRanking,
-} from "./leaderboard-podium";
+import { LeaderboardPodium } from "./leaderboard-podium";
+import { podiumTier } from "./podium-tiers";
 import { RankBadge } from "./RankBadge";
 import { SkeletonRow } from "./SkeletonRow";
 
@@ -22,12 +20,6 @@ const SKELETON_ROW_KEYS = [
 ];
 
 const COLUMN_COUNT = 3;
-
-const PODIUM_STYLES: Record<number, string> = {
-	1: "border-l-4 border-t-1 border-amber-400 bg-amber-400/5",
-	2: "border-l-4 border-slate-400 bg-slate-400/5",
-	3: "border-l-4 border-amber-700 bg-amber-700/5",
-};
 
 export interface LeaderboardProps {
 	/** Already in National Rankings order, as returned by getRankings. */
@@ -51,17 +43,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 	players: sortedPlayers,
 	isLoading = false,
 }) => {
-	const podiumRankings = React.useMemo<LeaderboardPodiumRanking[]>(
-		() =>
-			sortedPlayers.slice(0, 3).map((player, index) => ({
-				userId: String(player.userId ?? `${player.name}-${index}`),
-				userName: player.name,
-				rank: index + 1,
-				value: player.cp ?? 0,
-			})),
-		[sortedPlayers],
-	);
-	const showPodium = !isLoading && podiumRankings.length > 0;
+	const showPodium = !isLoading && sortedPlayers.length > 0;
 
 	return (
 		<div
@@ -77,15 +59,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 		>
 			{showPodium ? (
 				<LeaderboardPodium
-					rankings={podiumRankings}
+					players={sortedPlayers}
 					className={cn(
 						"min-h-full shrink-0 border-border-color pb-4 pt-6",
 						"min-[993px]:flex min-[993px]:items-center",
 						"min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0",
 					)}
-					size="lg"
-					showAvatar={false}
-					medalStyle="modern"
 				/>
 			) : null}
 
@@ -153,7 +132,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 												"hover:bg-bg-card-hover/60",
 												"transition-[background-color] duration-150 group",
 												"cursor-pointer",
-												PODIUM_STYLES[rank],
+												podiumTier(rank)?.row,
 											)}
 										>
 											<td
