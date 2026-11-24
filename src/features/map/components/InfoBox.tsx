@@ -2,6 +2,7 @@ import { InfoWindow } from "@vis.gl/react-google-maps";
 import type React from "react";
 import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
+import { DEFAULT_BRAND_COLOR, getLeaguePosition } from "../helper";
 import { SELECTED_MARKER_HEIGHT } from "./LeagueMarker";
 
 interface InfoBoxProps {
@@ -17,23 +18,14 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
 	selectedLeague,
 	onCloseClick,
 }) => {
-	if (
-		selectedLeague.latitude === undefined ||
-		selectedLeague.longitude === undefined ||
-		selectedLeague.latitude === null ||
-		selectedLeague.longitude === null
-	) {
-		return null;
-	}
+	const position = getLeaguePosition(selectedLeague);
+	if (!position) return null;
 
-	const brandColor = selectedLeague.brandColor ?? "#e31d23";
+	const brandColor = selectedLeague.brandColor ?? DEFAULT_BRAND_COLOR;
 
 	return (
 		<InfoWindow
-			position={{
-				lat: selectedLeague.latitude,
-				lng: selectedLeague.longitude,
-			}}
+			position={position}
 			pixelOffset={[0, -SELECTED_MARKER_HEIGHT]}
 			onCloseClick={onCloseClick}
 		>
