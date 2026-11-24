@@ -67,6 +67,12 @@ function parseEventId(id: EventId): { rowId: number; occurrenceDate?: string } {
 	return { rowId: Number(match[1]), occurrenceDate: match[2] };
 }
 
+/** Validator for the server functions that take only an event id. */
+function validateEventIdInput(input: { id: EventId }) {
+	parseEventId(input.id);
+	return input;
+}
+
 /** Same data as the public schedule, but cancelled occurrences stay in, flagged. */
 export const getAdminData = createServerFn({ method: "GET" })
 	.middleware([authMiddleware])
@@ -178,10 +184,7 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 
 export const handleDeleteEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => {
-		parseEventId(input.id);
-		return input;
-	})
+	.validator(validateEventIdInput)
 	.handler(async ({ data }) => {
 		// A series occurrence deletes the whole series, as the legacy API did.
 		const { rowId } = parseEventId(data.id);
@@ -206,18 +209,12 @@ async function setOccurrenceExcluded(id: EventId, excluded: boolean) {
 
 export const handleExcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => {
-		parseEventId(input.id);
-		return input;
-	})
+	.validator(validateEventIdInput)
 	.handler(({ data }) => setOccurrenceExcluded(data.id, true));
 
 export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => {
-		parseEventId(input.id);
-		return input;
-	})
+	.validator(validateEventIdInput)
 	.handler(({ data }) => setOccurrenceExcluded(data.id, false));
 
 /** Seasons start in July and are named after the year they end in. */
