@@ -1,7 +1,6 @@
 import { Calendar } from "lucide-react";
 import type React from "react";
 import { Footer } from "#/components/Footer";
-import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { EventCard } from "#/features/event-card";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
@@ -44,8 +43,6 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 			})
 		: "Selected Day";
 
-	const sortedEvents = useSortEvents(selectedDayEvents);
-
 	return (
 		<div
 			id="selected-day-section"
@@ -84,7 +81,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 							Click a date on the calendar to view its scheduled events.
 						</p>
 					</div>
-				) : sortedEvents.length === 0 ? (
+				) : selectedDayEvents.length === 0 ? (
 					<div
 						className={cn(
 							"text-text-muted text-sm p-2.5 rounded-xl bg-bg-main text-center",
@@ -94,7 +91,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 					</div>
 				) : (
 					<div className="flex flex-col gap-2.5">
-						{sortedEvents.map((event) => (
+						{selectedDayEvents.map((event) => (
 							<EventCard
 								key={event.id}
 								event={event}
