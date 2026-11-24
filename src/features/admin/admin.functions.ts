@@ -17,7 +17,7 @@ import { isValidCalendarDate } from "#/lib/recurrence";
 import type { League, ScheduleEvent } from "#/types/domain";
 
 /** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
-export type EventId = ScheduleEvent["id"];
+type EventId = ScheduleEvent["id"];
 
 /** A league as the form sends it; `leagueId` is absent when creating. */
 export type LeagueSubmitInput = Omit<League, "leagueId"> & {
