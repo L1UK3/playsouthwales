@@ -32,10 +32,7 @@ function getInitials(name: string): string {
  * brand colour, with a tail that points at the venue. The selected marker grows
  * and gains a soft halo in the same colour.
  */
-export const LeagueMarker: React.FC<LeagueMarkerProps> = ({
-	marker,
-	isSelected,
-}) => (
+const LeagueMarker: React.FC<LeagueMarkerProps> = ({ marker, isSelected }) => (
 	<div
 		className={cn(
 			"flex origin-bottom flex-col items-center drop-shadow-md",

@@ -4,7 +4,7 @@ import LeagueCard from "#/features/league-selector/components/LeagueCard";
 import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 
-export interface LeagueSelectorProps {
+interface LeagueSelectorProps {
 	leagues: League[];
 	selectedLeagueId: number | null;
 	setSelectedLeagueId: (id: number | null) => void;
@@ -20,7 +20,7 @@ export interface LeagueSelectorProps {
  * LeagueSelector component displays a grid of all participating leagues.
  * Clicking a card selects it as the active league to manage events.
  */
-export const LeagueSelector: React.FC<LeagueSelectorProps> = ({
+const LeagueSelector: React.FC<LeagueSelectorProps> = ({
 	leagues,
 	selectedLeagueId,
 	setSelectedLeagueId,

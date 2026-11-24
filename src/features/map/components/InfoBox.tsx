@@ -14,10 +14,7 @@ interface InfoBoxProps {
  * InfoBox renders the Google Map InfoWindow popup card detailing a selected league,
  * styling links and actions with the league's brand color.
  */
-export const InfoBox: React.FC<InfoBoxProps> = ({
-	selectedLeague,
-	onCloseClick,
-}) => {
+const InfoBox: React.FC<InfoBoxProps> = ({ selectedLeague, onCloseClick }) => {
 	const position = getLeaguePosition(selectedLeague);
 	if (!position) return null;
 
