@@ -11,8 +11,8 @@
 //   npm run db:seed:local                      # shortcut for --local
 
 import { execSync } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 import { parseArgs } from "node:util";
 
 const { values: args } = parseArgs({
@@ -73,6 +73,8 @@ async function main() {
 		"DELETE FROM events;",
 		"DELETE FROM leagues;",
 		"DELETE FROM players;",
+		"DELETE FROM regs;",
+		"DELETE FROM sets;",
 		"",
 	];
 
@@ -312,6 +314,42 @@ async function main() {
 	statements.push("-- Players");
 	for (const player of samplePlayers) {
 		statements.push(insert("players", player));
+	}
+	statements.push("");
+
+	// 4. Sets and Regs
+	const staticSetsPath = join(process.cwd(), "src/db/static/sets.json");
+	const staticRegsPath = join(process.cwd(), "src/db/static/regs.json");
+	const staticSets = JSON.parse(await readFile(staticSetsPath, "utf8"));
+	const staticRegs = JSON.parse(await readFile(staticRegsPath, "utf8"));
+
+	const devSets = [
+		...staticSets,
+		{
+			code: "DEV1",
+			name: "Surging Sparks (Dev)",
+			releaseDate: formatDate(addDays(today, -5)),
+			legalDate: formatDate(addDays(today, 5)),
+			format: "Standard",
+		},
+	];
+	const devRegs = [
+		...staticRegs,
+		{
+			name: "Regulation H (Dev)",
+			date: formatDate(addDays(today, -2)),
+		},
+	];
+
+	statements.push("-- Sets");
+	for (const set of devSets) {
+		statements.push(insert("sets", set));
+	}
+	statements.push("");
+
+	statements.push("-- Regulations");
+	for (const reg of devRegs) {
+		statements.push(insert("regs", reg));
 	}
 	statements.push("");
 
