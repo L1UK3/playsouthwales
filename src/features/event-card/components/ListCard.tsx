@@ -22,6 +22,10 @@ import type {
 } from "../types/EventCard.types";
 import { getEntryFeeLabel, getStateFlags } from "../utils/EventCard.utils";
 import {
+	getListCardActions,
+	type ListCardAction,
+} from "../utils/listCardActions";
+import {
 	DescriptionNote,
 	EventTypeTag,
 	PrizesNote,
@@ -47,6 +51,19 @@ export interface ListCardProps
 	onExclude?: (event: ScheduleEvent) => void;
 	onUnexclude?: (event: ScheduleEvent) => void;
 }
+
+const ACTION_TONE_CLASSES: Record<ListCardAction["tone"], string> = {
+	neutral: "btn btn-secondary",
+	positive: cn(
+		"btn btn-secondary border-emerald-500! text-emerald-600!",
+		"dark:text-emerald-400! bg-emerald-500/5!",
+		"hover:bg-emerald-500/10!",
+	),
+	danger: cn(
+		"btn btn-secondary border-red-500! text-red-600!",
+		"dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!",
+	),
+};
 
 /**
  * ListCard component represents a single event entry within a list view.
@@ -110,6 +127,13 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 				"opacity-55 grayscale-[30%] border-dashed border-red-500/20",
 			isDisabled && "opacity-40 pointer-events-none cursor-not-allowed",
 		);
+
+		const actions = getListCardActions(event, {
+			onEdit,
+			onDelete,
+			onExclude,
+			onUnexclude,
+		});
 
 		// Keyboard press handler for toggle
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -319,64 +343,19 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 									Tickets & Info
 								</a>
 							)}
-							{onEdit && (
+							{actions.map((action) => (
 								<button
+									key={action.key}
 									type="button"
-									className="btn btn-secondary"
+									className={ACTION_TONE_CLASSES[action.tone]}
 									onClick={(e) => {
 										e.stopPropagation();
-										onEdit(event);
+										action.run();
 									}}
 								>
-									Edit
+									{action.label}
 								</button>
-							)}
-							{event.isExcluded && onUnexclude && (
-								<button
-									type="button"
-									className={cn(
-										"btn btn-secondary border-emerald-500! text-emerald-600!",
-										"dark:text-emerald-400! bg-emerald-500/5!",
-										"hover:bg-emerald-500/10!",
-									)}
-									onClick={(e) => {
-										e.stopPropagation();
-										onUnexclude(event);
-									}}
-								>
-									Unexclude
-								</button>
-							)}
-							{!event.isExcluded && event.isRecurring && onExclude && (
-								<button
-									type="button"
-									className={cn(
-										"btn btn-secondary border-red-500! text-red-600!",
-										"dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!",
-									)}
-									onClick={(e) => {
-										e.stopPropagation();
-										onExclude(event);
-									}}
-								>
-									Exclude
-								</button>
-							)}
-							{onDelete && (
-								<button
-									type="button"
-									className={cn(
-										"btn btn-secondary border-red-500! text-red-600!",
-										"dark:text-red-400! bg-red-500/5! hover:bg-red-500/10!",
-									)}
-									onClick={(e) => {
-										e.stopPropagation();
-										onDelete(event);
-									}}
-								>
-									{event.isRecurring ? "Delete Series" : "Delete"}
-								</button>
-							)}
+							))}
 						</div>
 					</div>
 				</div>
