@@ -1,516 +1,214 @@
 import type React from "react";
-import { useState } from "react";
-import { createPortal } from "react-dom";
 import { cn } from "#/lib/utils";
 import type { ScheduleEvent } from "#/types/domain";
+import type { EventSubmitInput } from "../admin.functions";
+import { FormDialog } from "./AdminDialog";
+import { Field, Select, TextArea, TextInput, useFormDraft } from "./FormField";
 
-export interface EventFormModalProps {
-	isOpen: boolean;
+interface EventFormModalProps {
 	onClose: () => void;
-	onSubmit: (data: Omit<ScheduleEvent, "id">) => void;
+	onSubmit: (data: Omit<EventSubmitInput, "id">) => void | Promise<void>;
 	initialData?: ScheduleEvent | null;
 	leagueId: number;
 	/** When true, shows Championship Series event types (Worlds, Regionals, Special Events) */
 	isChampionshipLeague?: boolean;
 }
 
-export const EventFormModal: React.FC<EventFormModalProps> = ({
-	isOpen,
+type Option = readonly [value: string, label: string];
+
+const LEAGUE_FORMATS: Option[] = [
+	["STANDARD", "Standard"],
+	["CHALLENGE", "League Challenge"],
+	["CUP", "League Cup"],
+	["PRE-RELEASE", "Pre-release"],
+	["CASUAL", "Casual"],
+];
+
+const CHAMPIONSHIP_FORMATS: Option[] = [
+	["REGIONAL", "Regional Championship"],
+	["WORLDS", "World Championship"],
+	["SPECIAL", "Special Event"],
+	["INTERNATIONAL", "International Championship"],
+];
+
+const LEAGUE_GAMES: Option[] = [
+	["TCG", "TCG (Trading Card Game)"],
+	["VGC", "VGC (Video Game Championships)"],
+	["GO", "GO"],
+];
+
+const CHAMPIONSHIP_GAMES: Option[] = [
+	["ALL", "All Games (TCG, VGC, GO)"],
+	...LEAGUE_GAMES,
+];
+
+/** Copy and choices that differ between local leagues and the Championship Series. */
+const VARIANTS = {
+	league: {
+		formats: LEAGUE_FORMATS,
+		games: LEAGUE_GAMES,
+		defaultFormat: "STANDARD",
+		defaultGame: "TCG",
+		createTitle: "Schedule New Event",
+		editTitle: "Edit Event",
+		createLabel: "Schedule Event",
+		namePlaceholder: "e.g. Standard League Challenge",
+		descriptionPlaceholder:
+			"Describe tournament rounds, standard regulations, match rules, etc.",
+		prizesPlaceholder:
+			"e.g. Championship points, booster packs for participating",
+	},
+	championship: {
+		formats: CHAMPIONSHIP_FORMATS,
+		games: CHAMPIONSHIP_GAMES,
+		defaultFormat: "REGIONAL",
+		defaultGame: "ALL",
+		createTitle: "Add Championship Event",
+		editTitle: "Edit Championship Event",
+		createLabel: "Add Event",
+		namePlaceholder: "e.g. Welsh Regional Championship 2025",
+		descriptionPlaceholder:
+			"Describe the championship format, eligibility, rounds, etc.",
+		prizesPlaceholder: "e.g. Championship points, travel awards, trophies",
+	},
+};
+
+function OptionList({ options }: { options: Option[] }) {
+	return options.map(([value, label]) => (
+		<option key={value} value={value}>
+			{label}
+		</option>
+	));
+}
+
+const EventFormModal: React.FC<EventFormModalProps> = ({
 	onClose,
 	onSubmit,
 	initialData,
 	leagueId,
 	isChampionshipLeague = false,
 }) => {
-	const [name, setName] = useState(initialData?.name ?? "");
-	const [date, setDate] = useState(
-		initialData?.date ? initialData.date.slice(0, 10) : "",
-	);
-	const [startTime, setStartTime] = useState(initialData?.startTime ?? "");
-	const [eventType, setEventType] = useState(
-		initialData?.eventType ?? (isChampionshipLeague ? "REGIONAL" : "STANDARD"),
-	);
-	const [game, setGame] = useState(
-		initialData?.game ?? (isChampionshipLeague ? "ALL" : "TCG"),
-	);
-	const [entryFee, setEntryFee] = useState(initialData?.entryFee ?? "");
-	const [ticketLink, setTicketLink] = useState(initialData?.ticketLink ?? "");
-	const [description, setDescription] = useState(
-		initialData?.description ?? "",
-	);
-	const [prizes, setPrizes] = useState(initialData?.prizes ?? "");
-	const [isRecurring, setIsRecurring] = useState(
-		initialData?.isRecurring ?? false,
-	);
-	const [isSubmitting, setIsSubmitting] = useState(false);
+	const variant = VARIANTS[isChampionshipLeague ? "championship" : "league"];
+	const { draft, set, bind } = useFormDraft(() => ({
+		name: initialData?.name ?? "",
+		date: initialData?.date ? initialData.date.slice(0, 10) : "",
+		startTime: initialData?.startTime ?? "",
+		eventType: initialData?.eventType ?? variant.defaultFormat,
+		game: initialData?.game ?? variant.defaultGame,
+		entryFee: initialData?.entryFee ?? "",
+		ticketLink: initialData?.ticketLink ?? "",
+		description: initialData?.description ?? "",
+		prizes: initialData?.prizes ?? "",
+		isRecurring: initialData?.isRecurring ?? false,
+	}));
 
-	if (!isOpen) return null;
+	const handleSubmit = () =>
+		onSubmit({
+			...draft,
+			leagueId: initialData ? initialData.leagueId : leagueId,
+		});
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (isSubmitting) return;
-		setIsSubmitting(true);
-		try {
-			await onSubmit({
-				name,
-				date,
-				startTime: startTime ?? undefined,
-				eventType,
-				game,
-				entryFee: entryFee ?? undefined,
-				ticketLink: ticketLink ?? undefined,
-				description: description ?? undefined,
-				prizes: prizes ?? undefined,
-				leagueId: initialData ? initialData.leagueId : leagueId,
-				isRecurring,
-			});
-		} finally {
-			setIsSubmitting(false);
-		}
-	};
-
-	return createPortal(
-		<div
-			className={cn(
-				"fixed inset-0 bg-[rgba(17,24,39,0.6)] backdrop-blur-sm z-1000 flex",
-				"items-center justify-center p-6 animate-[fadeIn_0.25s_ease-out]",
-			)}
+	return (
+		<FormDialog
+			title={initialData ? variant.editTitle : variant.createTitle}
+			championship={isChampionshipLeague}
+			maxWidth="max-w-150"
+			submitLabel={initialData ? "Save Changes" : variant.createLabel}
+			onClose={onClose}
+			onSubmit={handleSubmit}
 		>
-			<button
-				type="button"
-				aria-label="Close dialog"
-				tabIndex={-1}
-				className="absolute inset-0 cursor-default"
-				onClick={onClose}
-			/>
-			<div
-				role="dialog"
-				aria-modal="true"
-				className={cn(
-					"relative bg-bg-card border border-border-color rounded-lg w-full",
-					"max-w-150 max-h-[90vh]",
-					"shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15),0_10px_10px_-5px_rgba(0,0,0,0.04)]",
-					"flex flex-col overflow-hidden",
-					"animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]",
-				)}
-			>
+			<Field id="eventName" wide required label="Event Title">
+				<TextInput
+					type="text"
+					id="eventName"
+					placeholder={variant.namePlaceholder}
+					{...bind("name")}
+					required
+				/>
+			</Field>
+
+			<Field id="eventDate" required label="Date">
+				<TextInput type="date" id="eventDate" {...bind("date")} required />
+			</Field>
+
+			<Field id="eventStartTime" label="Start Time">
+				<TextInput type="time" id="eventStartTime" {...bind("startTime")} />
+			</Field>
+
+			<Field id="eventType" required label="Format">
+				<Select id="eventType" {...bind("eventType")}>
+					<OptionList options={variant.formats} />
+				</Select>
+			</Field>
+
+			<Field id="eventGame" required label="Game">
+				<Select id="eventGame" {...bind("game")}>
+					<OptionList options={variant.games} />
+				</Select>
+			</Field>
+
+			<Field id="eventEntryFee" label="Entry Fee">
+				<TextInput
+					type="text"
+					id="eventEntryFee"
+					placeholder="e.g. £10 or Free"
+					{...bind("entryFee")}
+				/>
+			</Field>
+
+			<Field id="eventTicketLink" label="Registration Link">
+				<TextInput
+					type="url"
+					id="eventTicketLink"
+					placeholder="https://example.com/tickets"
+					{...bind("ticketLink")}
+				/>
+			</Field>
+
+			{/* Recurring Event Options — hidden for championship series */}
+			{!isChampionshipLeague && (
 				<div
 					className={cn(
-						"py-6 px-7 border-b border-border-color flex justify-between",
-						"items-center [&_h3]:text-xl [&_h3]:font-extrabold",
-						"[&_h3]:text-text-darker [&_h3]:tracking-tight",
+						"sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border",
+						"border-border-color bg-bg-main/30 mb-2",
 					)}
 				>
-					<div className="flex flex-col gap-0.5">
-						<h3>
-							{initialData
-								? isChampionshipLeague
-									? "Edit Championship Event"
-									: "Edit Event"
-								: isChampionshipLeague
-									? "Add Championship Event"
-									: "Schedule New Event"}
-						</h3>
-						{isChampionshipLeague && (
-							<span
-								className={cn(
-									"text-[12px] font-semibold text-amber-500 bg-amber-500/10",
-									"border border-amber-500/20 rounded px-2 py-0.5 w-fit",
-								)}
-							>
-								Championship Series — Worlds, Regionals &amp; Special Events
-							</span>
-						)}
-					</div>
-					<button
-						type="button"
-						className={cn(
-							"bg-transparent border-none text-xl text-text-muted",
-							"cursor-pointer p-1 rounded-full w-8 h-8 flex items-center",
-							"justify-center hover:bg-bg-main hover:text-text-darker",
-						)}
-						onClick={onClose}
-					>
-						X
-					</button>
+					<label className="flex items-center gap-3 cursor-pointer min-h-11 select-none">
+						<input
+							type="checkbox"
+							id="eventIsRecurring"
+							checked={draft.isRecurring}
+							onChange={(e) => set("isRecurring", e.target.checked)}
+							className={cn(
+								"w-5 h-5 rounded border border-border-color",
+								"text-secondary focus:ring-secondary cursor-pointer",
+								"transition-[background-color,border-color]",
+								"duration-150 ease-out",
+							)}
+						/>
+						<span className="text-sm font-bold text-text-main">
+							Repeat Weekly
+						</span>
+					</label>
 				</div>
-				<form
-					className="flex flex-col gap-5 overflow-hidden"
-					onSubmit={handleSubmit}
-				>
-					<div className="p-7 overflow-y-auto">
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							{/* Event Title */}
-							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-								<label
-									htmlFor="eventName"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Event Title{" "}
-									<span className="text-primary text-[11px] font-semibold">
-										*
-									</span>
-								</label>
-								<input
-									type="text"
-									id="eventName"
-									placeholder={
-										isChampionshipLeague
-											? "e.g. Welsh Regional Championship 2025"
-											: "e.g. Standard League Challenge"
-									}
-									value={name}
-									onChange={(e) => setName(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-									required
-								/>
-							</div>
+			)}
 
-							{/* Date */}
-							<div className="flex flex-col gap-1.5 relative">
-								<label
-									htmlFor="eventDate"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Date{" "}
-									<span className="text-primary text-[11px] font-semibold">
-										*
-									</span>
-								</label>
-								<input
-									type="date"
-									id="eventDate"
-									value={date}
-									onChange={(e) => setDate(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-									required
-								/>
-							</div>
+			<Field id="eventDescription" wide label="Description">
+				<TextArea
+					id="eventDescription"
+					placeholder={variant.descriptionPlaceholder}
+					{...bind("description")}
+				/>
+			</Field>
 
-							{/* Start Time */}
-							<div className="flex flex-col gap-1.5 relative">
-								<label
-									htmlFor="eventStartTime"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Start Time
-								</label>
-								<input
-									type="time"
-									id="eventStartTime"
-									value={startTime}
-									onChange={(e) => setStartTime(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-								/>
-							</div>
-
-							{/* Event Format */}
-							<div className="flex flex-col gap-1.5 relative">
-								<label
-									htmlFor="eventType"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Format{" "}
-									<span className="text-primary text-[11px] font-semibold">
-										*
-									</span>
-								</label>
-								<select
-									id="eventType"
-									value={eventType}
-									onChange={(e) => setEventType(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-								>
-									{isChampionshipLeague ? (
-										<>
-											<option value="REGIONAL">Regional Championship</option>
-											<option value="WORLDS">World Championship</option>
-											<option value="SPECIAL">Special Event</option>
-											<option value="INTERNATIONAL">
-												International Championship
-											</option>
-										</>
-									) : (
-										<>
-											<option value="STANDARD">Standard</option>
-											<option value="CHALLENGE">League Challenge</option>
-											<option value="CUP">League Cup</option>
-											<option value="PRE-RELEASE">Pre-release</option>
-											<option value="CASUAL">Casual</option>
-										</>
-									)}
-								</select>
-							</div>
-
-							{/* Game Title */}
-							<div className="flex flex-col gap-1.5 relative">
-								<label
-									htmlFor="eventGame"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Game{" "}
-									<span className="text-primary text-[11px] font-semibold">
-										*
-									</span>
-								</label>
-								<select
-									id="eventGame"
-									value={game}
-									onChange={(e) => setGame(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-								>
-									{isChampionshipLeague ? (
-										<>
-											<option value="ALL">All Games (TCG, VGC, GO)</option>
-											<option value="TCG">TCG (Trading Card Game)</option>
-											<option value="VGC">
-												VGC (Video Game Championships)
-											</option>
-											<option value="GO">GO</option>
-										</>
-									) : (
-										<>
-											<option value="TCG">TCG (Trading Card Game)</option>
-											<option value="VGC">
-												VGC (Video Game Championships)
-											</option>
-											<option value="GO">GO</option>
-										</>
-									)}
-								</select>
-							</div>
-
-							{/* Entry Fee */}
-							<div className="flex flex-col gap-1.5 relative">
-								<label
-									htmlFor="eventEntryFee"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Entry Fee
-								</label>
-								<input
-									type="text"
-									id="eventEntryFee"
-									placeholder="e.g. £10 or Free"
-									value={entryFee}
-									onChange={(e) => setEntryFee(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-								/>
-							</div>
-
-							{/* Ticket URL */}
-							<div className="flex flex-col gap-1.5 relative">
-								<label
-									htmlFor="eventTicketLink"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Registration Link
-								</label>
-								<input
-									type="url"
-									id="eventTicketLink"
-									placeholder="https://example.com/tickets"
-									value={ticketLink}
-									onChange={(e) => setTicketLink(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-									)}
-								/>
-							</div>
-
-							{/* Recurring Event Options — hidden for championship series */}
-							{!isChampionshipLeague && (
-								<div
-									className={cn(
-										"sm:col-span-2 flex flex-col gap-3 p-4 rounded-md border",
-										"border-border-color bg-bg-main/30 mb-2",
-									)}
-								>
-									<label
-										className={cn(
-											"flex items-center gap-3 cursor-pointer min-h-11",
-											"select-none",
-										)}
-									>
-										<input
-											type="checkbox"
-											id="eventIsRecurring"
-											checked={isRecurring}
-											onChange={(e) => setIsRecurring(e.target.checked)}
-											className={cn(
-												"w-5 h-5 rounded border border-border-color",
-												"text-secondary focus:ring-secondary cursor-pointer",
-												"transition-[background-color,border-color]",
-												"duration-150 ease-out",
-											)}
-										/>
-										<span className="text-sm font-bold text-text-main">
-											Repeat Weekly
-										</span>
-									</label>
-								</div>
-							)}
-
-							{/* Description */}
-							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-								<label
-									htmlFor="eventDescription"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Description
-								</label>
-								<textarea
-									id="eventDescription"
-									placeholder={
-										isChampionshipLeague
-											? "Describe the championship format, eligibility, rounds, etc."
-											: "Describe tournament rounds, standard regulations, match rules, etc."
-									}
-									value={description}
-									onChange={(e) => setDescription(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
-										"min-h-20",
-									)}
-								/>
-							</div>
-
-							{/* Prizes */}
-							<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-								<label
-									htmlFor="eventPrizes"
-									className={cn(
-										"text-[13px] font-bold text-text-main flex justify-between",
-										"items-center",
-									)}
-								>
-									Prizes Info
-								</label>
-								<textarea
-									id="eventPrizes"
-									placeholder={
-										isChampionshipLeague
-											? "e.g. Championship points, travel awards, trophies"
-											: "e.g. Championship points, booster packs for participating"
-									}
-									value={prizes}
-									onChange={(e) => setPrizes(e.target.value)}
-									className={cn(
-										"py-3 px-3.5 rounded-md border border-border-color text-sm",
-										"bg-bg-card text-text-main w-full",
-										"transition-[background-color,border-color] duration-150",
-										"ease-out focus:outline-none focus:border-secondary",
-										"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
-										"min-h-20",
-									)}
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div
-						className={cn(
-							"border-t border-border-color py-5 px-7 flex justify-end gap-3",
-							"bg-bg-main shrink-0",
-						)}
-					>
-						<button
-							type="button"
-							className={cn(
-								"btn btn-secondary min-h-11 flex items-center justify-center",
-							)}
-							onClick={onClose}
-						>
-							Cancel
-						</button>
-						<button
-							type="submit"
-							className={cn(
-								"btn btn-primary min-h-11 flex items-center justify-center",
-							)}
-							disabled={isSubmitting}
-						>
-							{isSubmitting
-								? "Saving…"
-								: initialData
-									? "Save Changes"
-									: isChampionshipLeague
-										? "Add Event"
-										: "Schedule Event"}
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>,
-		document.body,
+			<Field id="eventPrizes" wide label="Prizes Info">
+				<TextArea
+					id="eventPrizes"
+					placeholder={variant.prizesPlaceholder}
+					{...bind("prizes")}
+				/>
+			</Field>
+		</FormDialog>
 	);
 };
 

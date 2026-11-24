@@ -1,8 +1,8 @@
 import { Calendar } from "lucide-react";
 import type React from "react";
 import { Footer } from "#/components/Footer";
-import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { EventCard } from "#/features/event-card";
+import { formatDayHeading } from "#/lib/month";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
@@ -10,7 +10,6 @@ import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
  * Properties for the SelectedDaySection component.
  * @property selectedDateKey - The dateKey of the currently selected day (YYYY-MM-DD).
  * @property selectedDayEvents - Array of events occurring on the selected day or month.
- * @property month - The currently active month as a YYYY-MM key.
  * @property leagueMap - A mapping of league IDs to league details for branding.
  * @property types - A mapping of event type keys to their display names or icons.
  * @property onClose - Optional callback to clear/close the selection.
@@ -18,7 +17,6 @@ import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 export interface SelectedDaySectionProps {
 	selectedDateKey: string | undefined;
 	selectedDayEvents: ScheduleEvent[];
-	month?: string;
 	leagueMap: Record<number, League>;
 	types: EventTypeMap;
 }
@@ -36,15 +34,8 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 	const isDateSelected = selectedDateKey !== undefined;
 
 	const title = isDateSelected
-		? new Date(`${selectedDateKey}T00:00:00`).toLocaleDateString(undefined, {
-				weekday: "long",
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-			})
+		? formatDayHeading(selectedDateKey)
 		: "Selected Day";
-
-	const sortedEvents = useSortEvents(selectedDayEvents);
 
 	return (
 		<div
@@ -84,7 +75,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 							Click a date on the calendar to view its scheduled events.
 						</p>
 					</div>
-				) : sortedEvents.length === 0 ? (
+				) : selectedDayEvents.length === 0 ? (
 					<div
 						className={cn(
 							"text-text-muted text-sm p-2.5 rounded-xl bg-bg-main text-center",
@@ -94,7 +85,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 					</div>
 				) : (
 					<div className="flex flex-col gap-2.5">
-						{sortedEvents.map((event) => (
+						{selectedDayEvents.map((event) => (
 							<EventCard
 								key={event.id}
 								event={event}

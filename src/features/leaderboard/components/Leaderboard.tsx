@@ -1,40 +1,18 @@
 import React from "react";
 import { cn } from "#/lib/utils";
 import type { LeaderboardPosition } from "#/types/domain";
-import { useLeaderboard } from "../hooks/useLeaderboard";
-import {
-	LeaderboardPodium,
-	type LeaderboardRanking as LeaderboardPodiumRanking,
-} from "./leaderboard-podium";
+import { LeaderboardPodium } from "./leaderboard-podium";
+import { podiumTier } from "./podium-tiers";
 import { RankBadge } from "./RankBadge";
-import { SkeletonRow } from "./SkeletonRow";
 
-export const TOP_CUTOFF_THRESHOLD = 20;
-export const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
-const SKELETON_ROW_KEYS = [
-	"skeleton-1",
-	"skeleton-2",
-	"skeleton-3",
-	"skeleton-4",
-	"skeleton-5",
-	"skeleton-6",
-	"skeleton-7",
-	"skeleton-8",
-];
-const EMPTY_PLAYERS: LeaderboardPosition[] = [];
+const TOP_CUTOFF_THRESHOLD = 20;
+const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
 
 const COLUMN_COUNT = 3;
 
-const PODIUM_STYLES: Record<number, string> = {
-	1: "border-l-4 border-t-1 border-amber-400 bg-amber-400/5",
-	2: "border-l-4 border-slate-400 bg-slate-400/5",
-	3: "border-l-4 border-amber-700 bg-amber-700/5",
-};
-
-export interface LeaderboardProps {
-	season?: string;
-	players?: LeaderboardPosition[];
-	isLoading?: boolean;
+interface LeaderboardProps {
+	/** Already in National Rankings order, as returned by getRankings. */
+	players: LeaderboardPosition[];
 }
 
 const LeaderboardHeader = () => (
@@ -44,41 +22,13 @@ const LeaderboardHeader = () => (
 const LeaderboardMetrics: React.FC<{ player: LeaderboardPosition }> = ({
 	player,
 }) => (
-	<td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">
-		{player.cp ?? 0}
-	</td>
+	<td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">{player.cp}</td>
 );
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
-	season,
-	players: propPlayers,
-	isLoading: propIsLoading,
+	players: sortedPlayers,
 }) => {
-	const { data: fetchedPlayers = EMPTY_PLAYERS, isLoading: queryIsLoading } =
-		useLeaderboard(season, propPlayers !== undefined);
-
-	const rawPlayers = propPlayers ?? fetchedPlayers;
-
-	const sortedPlayers: LeaderboardPosition[] = React.useMemo(() => {
-		return [...rawPlayers].sort((a, b) => {
-			const cpDiff = (b.cp ?? 0) - (a.cp ?? 0);
-			if (cpDiff !== 0) return cpDiff;
-			return a.name.localeCompare(b.name);
-		});
-	}, [rawPlayers]);
-
-	const isLoading = propIsLoading ?? queryIsLoading;
-	const podiumRankings = React.useMemo<LeaderboardPodiumRanking[]>(
-		() =>
-			sortedPlayers.slice(0, 3).map((player, index) => ({
-				userId: String(player.userId ?? `${player.name}-${index}`),
-				userName: player.name,
-				rank: index + 1,
-				value: player.cp ?? 0,
-			})),
-		[sortedPlayers],
-	);
-	const showPodium = !isLoading && podiumRankings.length > 0;
+	const showPodium = sortedPlayers.length > 0;
 
 	return (
 		<div
@@ -94,15 +44,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 		>
 			{showPodium ? (
 				<LeaderboardPodium
-					rankings={podiumRankings}
+					players={sortedPlayers}
 					className={cn(
 						"min-h-full shrink-0 border-border-color pb-4 pt-6",
 						"min-[993px]:flex min-[993px]:items-center",
 						"min-[993px]:justify-center min-[993px]:pb-0 min-[993px]:pt-0",
 					)}
-					size="lg"
-					showAvatar={false}
-					medalStyle="modern"
 				/>
 			) : null}
 
@@ -130,9 +77,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 					</thead>
 
 					<tbody className="divide-y divide-border-color/50">
-						{isLoading ? (
-							SKELETON_ROW_KEYS.map((key) => <SkeletonRow key={key} isGlobal />)
-						) : sortedPlayers.length === 0 ? (
+						{sortedPlayers.length === 0 ? (
 							<tr>
 								<td
 									colSpan={COLUMN_COUNT}
@@ -142,14 +87,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 								</td>
 							</tr>
 						) : (
-							sortedPlayers.map((player, index) => {
-								const rank = index + 1;
+							sortedPlayers.map((player) => {
+								const rank = player.position;
 								const renderCutoff = rank === TOP_CUTOFF_POSITION;
 
 								return (
-									<React.Fragment
-										key={player.userId ?? `${rank}-${player.name}`}
-									>
+									<React.Fragment key={player.position}>
 										{renderCutoff ? (
 											<tr className="bg-bg-main/30">
 												<td
@@ -170,7 +113,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 												"hover:bg-bg-card-hover/60",
 												"transition-[background-color] duration-150 group",
 												"cursor-pointer",
-												PODIUM_STYLES[rank],
+												podiumTier(rank)?.row,
 											)}
 										>
 											<td

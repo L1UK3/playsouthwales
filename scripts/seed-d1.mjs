@@ -14,6 +14,7 @@ import { execSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { parseArgs } from "node:util";
+import { parseSeason, replaceAllSql } from "./lib/d1-sql.mjs";
 
 const { values: args } = parseArgs({
 	options: {
@@ -24,16 +25,7 @@ const { values: args } = parseArgs({
 	},
 });
 
-function defaultSeason(now = new Date()) {
-	return now.getUTCMonth() + 1 >= 7
-		? now.getUTCFullYear() + 1
-		: now.getUTCFullYear();
-}
-
-const season = args.season ? Number(args.season) : defaultSeason();
-if (!Number.isInteger(season)) {
-	throw new Error(`--season must be an integer year, got "${args.season}"`);
-}
+const season = parseSeason(args.season);
 
 function formatDate(date) {
 	const y = date.getUTCFullYear();
@@ -48,33 +40,8 @@ function addDays(base, days) {
 	return res;
 }
 
-function sqlValue(val) {
-	if (val === null || val === undefined) return "NULL";
-	if (typeof val === "boolean") return val ? "1" : "0";
-	if (typeof val === "number") {
-		if (!Number.isFinite(val)) return "NULL";
-		return String(val);
-	}
-	return `'${String(val).replaceAll("'", "''")}'`;
-}
-
-function insert(table, row) {
-	const cols = Object.keys(row);
-	const vals = Object.values(row).map(sqlValue);
-	return `INSERT INTO ${table} (${cols.join(", ")}) VALUES (${vals.join(", ")});`;
-}
-
 async function main() {
 	const today = new Date();
-	const statements = [
-		"-- Development seed for local D1 database",
-		`-- Generated at ${today.toISOString()} relative to current date`,
-		"",
-		"DELETE FROM events;",
-		"DELETE FROM leagues;",
-		"DELETE FROM players;",
-		"",
-	];
 
 	// 1. Sample Leagues across South Wales
 	const sampleLeagues = [
@@ -139,12 +106,6 @@ async function main() {
 			isChampionshipSeries: 0,
 		},
 	];
-
-	statements.push("-- Leagues");
-	for (const league of sampleLeagues) {
-		statements.push(insert("leagues", league));
-	}
-	statements.push("");
 
 	// 2. Sample Events (both weekly recurring and one-off)
 	// Recurring events start 2-4 weeks ago so the current month calendar is populated
@@ -289,12 +250,6 @@ async function main() {
 		},
 	];
 
-	statements.push("-- Events");
-	for (const event of sampleEvents) {
-		statements.push(insert("events", event));
-	}
-	statements.push("");
-
 	// 3. Sample Welsh Players for CP Rankings
 	const samplePlayers = [
 		{ name: "Dylan Thomas", playerId: 100234, cp: 285, season },
@@ -309,13 +264,13 @@ async function main() {
 		{ name: "Ffion Jenkins", playerId: 135678, cp: 30, season },
 	];
 
-	statements.push("-- Players");
-	for (const player of samplePlayers) {
-		statements.push(insert("players", player));
-	}
-	statements.push("");
-
-	const sqlContent = `${statements.join("\n")}\n`;
+	const { sql: sqlContent } = replaceAllSql(
+		[
+			"Development seed for local D1 database",
+			`Generated at ${today.toISOString()} relative to current date`,
+		],
+		{ leagues: sampleLeagues, events: sampleEvents, players: samplePlayers },
+	);
 	await mkdir(dirname(args.out), { recursive: true });
 	await writeFile(args.out, sqlContent, "utf8");
 
