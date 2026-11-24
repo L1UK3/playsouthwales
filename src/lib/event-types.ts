@@ -1,3 +1,4 @@
+import { eventDateKey } from "#/lib/month";
 import type { EventTypeMap, ScheduleEvent } from "#/types/domain";
 
 export const EVENT_TYPE_LABELS: EventTypeMap = {
@@ -40,8 +41,8 @@ export function compareEventsForSchedule(
 	a: ScheduleEvent,
 	b: ScheduleEvent,
 ): number {
-	const dateA = a.date.slice(0, 10);
-	const dateB = b.date.slice(0, 10);
+	const dateA = eventDateKey(a);
+	const dateB = eventDateKey(b);
 	if (dateA !== dateB) {
 		return dateA.localeCompare(dateB);
 	}

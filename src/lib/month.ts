@@ -38,6 +38,11 @@ export function todayDateKey(now = new Date()): string {
 	return `${part("year")}-${part("month")}-${part("day")}`;
 }
 
+/** The `YYYY-MM-DD` day an event falls on, ignoring any time suffix. */
+export function eventDateKey(event: { date: string }): string {
+	return event.date.slice(0, 10);
+}
+
 export function currentMonthKey(now = new Date()): string {
 	return todayDateKey(now).slice(0, 7);
 }
