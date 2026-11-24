@@ -44,11 +44,6 @@ classDiagram
             +input id EventId
             +Promise~void~
         }
-        class handleNationalRankingsSubmit {
-            <<createServerFn POST>>
-            +input players Top20PlayerInput[]
-            +Promise~void~
-        }
     }
 
     class AuthMiddleware {
@@ -67,7 +62,6 @@ classDiagram
         +updateEvent(id, values) boolean
         +deleteEvent(id) void
         +setExcludedDates(id, dates) void
-        +replacePlayers(players, season) void
     }
 
     class Schema {
@@ -88,7 +82,6 @@ classDiagram
     AdminRoute ..> handleDeleteEvent : calls
     AdminRoute ..> handleExcludeEvent : calls
     AdminRoute ..> handleUnexcludeEvent : calls
-    AdminRoute ..> handleNationalRankingsSubmit : calls
 
     handleLeagueSubmit ..> AuthMiddleware : guarded by
     handleDeleteLeague ..> AuthMiddleware : guarded by
@@ -96,7 +89,6 @@ classDiagram
     handleDeleteEvent ..> AuthMiddleware : guarded by
     handleExcludeEvent ..> AuthMiddleware : guarded by
     handleUnexcludeEvent ..> AuthMiddleware : guarded by
-    handleNationalRankingsSubmit ..> AuthMiddleware : guarded by
 
     handleLeagueSubmit ..> QueriesServer : findLeague, insertLeague, updateLeague
     handleDeleteLeague ..> QueriesServer : findLeague, deleteLeague
@@ -104,7 +96,6 @@ classDiagram
     handleDeleteEvent ..> QueriesServer : deleteEvent
     handleExcludeEvent ..> QueriesServer : findEvent, setExcludedDates
     handleUnexcludeEvent ..> QueriesServer : findEvent, setExcludedDates
-    handleNationalRankingsSubmit ..> QueriesServer : replacePlayers
 
     QueriesServer ..> Schema : drizzle
 ```
@@ -150,12 +141,6 @@ classDiagram
         occurrence of series 42: "42:2026-11-05"
     }
 
-    class Top20PlayerInput {
-        +name string
-        +cp number
-        +playerId? number
-    }
-
     EventSubmitInput --> EventId : id
 ```
 
@@ -169,4 +154,3 @@ classDiagram
 | `handleDeleteEvent` | `delete_event` | One-off id: delete the row. Occurrence id: delete the whole series. |
 | `handleExcludeEvent` | `delete_event` with `excludeDate` | Occurrence id only. Adds the occurrence date to the series' `excludedDates`. Idempotent. |
 | `handleUnexcludeEvent` | none in legacy | Occurrence id only. Removes the date from `excludedDates`. Added because the admin list exposes an "unexclude" action. |
-| `handleNationalRankingsSubmit` | `update_top20` | Declarative reconcile by name: delete missing, update changed `cp`/`playerId`, insert new (season from the legacy season rule). |

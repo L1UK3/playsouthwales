@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "#/lib/utils";
 
-export interface TabToggleProps {
+interface TabToggleProps {
 	tabs: { to: string; label: string }[];
 	activeTab: string;
 }
@@ -22,9 +22,6 @@ export default function TabToggle({ tabs, activeTab }: TabToggleProps) {
 						tab.to === activeTab &&
 							"bg-primary! text-white! border-primary-hover!",
 					)}
-					activeProps={{
-						className: "!bg-primary !text-white !border-primary-hover",
-					}}
 					key={tab.to}
 				>
 					{tab.label}

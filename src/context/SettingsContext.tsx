@@ -52,7 +52,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 	);
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useSettings = (): SettingsContextType => {
 	const context = use(SettingsContext);
 	if (!context) {

@@ -1,199 +1,94 @@
-/* eslint-disable react-refresh/only-export-components */
-import type * as React from "react";
 import { cn } from "#/lib/utils";
+import type { LeaderboardPosition } from "#/types/domain";
+import { podiumTier } from "./podium-tiers";
 import { RankBadge } from "./RankBadge";
 
-type PodiumSize = "sm" | "default" | "lg";
+/** Display order on the podium: second place left, first centre, third right. */
+const PODIUM_ORDER = [2, 1, 3];
 
-// Types (inlined)
-interface LeaderboardRanking {
-	userId: string;
-	userName: string | null;
-	rank: number;
-	value: number;
-	avatarUrl?: string | null;
+interface LeaderboardPodiumProps {
+	/** Ranked players; only positions 1 to 3 are drawn. */
+	players: LeaderboardPosition[];
+	className?: string;
 }
 
-const podiumVariants = ({ size = "default" }: { size?: PodiumSize } = {}) =>
-	cn(
-		"flex items-end justify-center",
-		size === "sm"
-			? "gap-2"
-			: size === "lg"
-				? "gap-4 min-[993px]:gap-10"
-				: "gap-4",
-	);
-
-// Podium styles for each position
-const PODIUM_CONFIG = {
-	1: {
-		color: "text-amber-500",
-		bg: "bg-amber-400/20",
-		bar: "bg-amber-400",
-		height: "h-32",
-		heightSm: "h-24",
-		heightLg: "h-36 min-[993px]:h-64",
-	},
-	2: {
-		color: "text-slate-500",
-		bg: "bg-slate-400/20",
-		bar: "bg-slate-400",
-		height: "h-24",
-		heightSm: "h-20",
-		heightLg: "h-32 min-[993px]:h-56",
-	},
-	3: {
-		color: "text-amber-700",
-		bg: "bg-amber-700/20",
-		bar: "bg-amber-700",
-		height: "h-20",
-		heightSm: "h-16",
-		heightLg: "h-28 min-[993px]:h-48",
-	},
-} as const;
-
-// Props
-interface LeaderboardPodiumProps
-	extends React.HTMLAttributes<HTMLUListElement> {
-	size?: PodiumSize;
-	/** Top 3 rankings (expects at least 1, ideally 3) */
-	rankings: LeaderboardRanking[];
-	/** Show value below name */
-	showValue?: boolean;
-	/** Show avatar */
-	showAvatar?: boolean;
-	/** Crown badge style variant */
-	medalStyle?: "classic" | "modern" | "minimal";
-}
-
-const LeaderboardPodium = ({
+export const LeaderboardPodium = ({
+	players,
 	className,
-	size,
-	rankings,
-	showValue = true,
-	showAvatar = true,
-	medalStyle = "classic",
-	...props
 }: LeaderboardPodiumProps) => {
-	const podiumOrder = [2, 1, 3]
-		.map((rank) => rankings.find((ranking) => ranking.rank === rank))
-		.filter((ranking): ranking is LeaderboardRanking => ranking !== undefined);
+	const podium = PODIUM_ORDER.flatMap((position) => {
+		const player = players.find((p) => p.position === position);
+		const tier = podiumTier(position);
+		return player && tier ? [{ player, tier }] : [];
+	});
 
-	if (podiumOrder.length === 0) {
-		return null;
-	}
-
-	const avatarSize = {
-		sm: "h-10 w-10 text-sm",
-		default: "h-14 w-14 text-lg",
-		lg: cn(
-			"h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24",
-			"min-[993px]:text-3xl",
-		),
-	}[size ?? "default"];
-
-	const textSize = {
-		sm: "text-xs",
-		default: "text-sm",
-		lg: "text-base",
-	}[size ?? "default"];
+	if (podium.length === 0) return null;
 
 	return (
 		<ul
-			className={cn(podiumVariants({ size }), className)}
+			className={cn(
+				"flex items-end justify-center gap-4 min-[993px]:gap-10",
+				className,
+			)}
 			aria-label="Top 3 rankings"
-			{...props}
 		>
-			{podiumOrder.map((ranking) => {
-				const config = PODIUM_CONFIG[ranking.rank as 1 | 2 | 3];
-				if (!config) return null;
-
-				const displayName =
-					ranking.userName ?? `User ${ranking.userId.slice(0, 6)}`;
-				const podiumHeight = {
-					sm: config.heightSm,
-					default: config.height,
-					lg: config.heightLg,
-				}[size ?? "default"];
-
-				const itemLabel = `Rank ${ranking.rank}: ${displayName}${showValue ? `, ${ranking.value.toLocaleString()}` : ""}`;
+			{podium.map(({ player, tier }) => {
+				const points = player.cp.toLocaleString();
 
 				return (
 					<li
-						key={ranking.userId}
-						aria-label={itemLabel}
+						key={player.position}
+						aria-label={`Rank ${player.position}: ${player.name}, ${points}`}
 						className={cn(
 							"flex flex-col items-center min-[993px]:h-full",
 							"min-[993px]:justify-end",
 						)}
 					>
-						{/* Rank badge */}
 						<div className="relative mb-2" aria-hidden="true">
-							{showAvatar && ranking.avatarUrl ? (
-								<img
-									src={ranking.avatarUrl}
-									alt=""
-									className={cn("rounded-full object-cover", avatarSize)}
-								/>
-							) : (
-								<div
-									className={cn(
-										"flex items-center justify-center rounded-full",
-										avatarSize,
-										config.bg,
-									)}
-								>
-									<RankBadge position={ranking.rank} />
-								</div>
-							)}
+							<div
+								className={cn(
+									"flex items-center justify-center rounded-full",
+									"h-16 w-16 text-xl min-[993px]:h-24 min-[993px]:w-24",
+									"min-[993px]:text-3xl",
+									tier.bg,
+								)}
+							>
+								<RankBadge position={player.position} />
+							</div>
 						</div>
 
-						{/* Name */}
 						<span
-							className={cn(
-								"max-w-28 truncate text-center font-medium",
-								textSize,
-							)}
-							title={displayName}
+							className="max-w-28 truncate text-center font-medium text-base"
+							title={player.name}
 						>
-							{displayName}
+							{player.name}
 						</span>
 
 						<span
-							className={cn("mt-2 h-1.5 w-20 rounded-full", config.bar)}
+							className={cn("mt-2 h-1.5 w-20 rounded-full", tier.bar)}
 							aria-hidden="true"
 						/>
 
-						{/* Value */}
-						{showValue && (
-							<span
-								className={cn(
-									"text-muted-foreground tabular-nums",
-									size === "sm" ? "text-xs" : "text-sm",
-								)}
-							>
-								{ranking.value.toLocaleString()}
-							</span>
-						)}
+						<span className="text-muted-foreground tabular-nums text-sm">
+							{points}
+						</span>
 
-						{/* Podium block */}
 						<div
 							aria-hidden="true"
 							className={cn(
 								"mt-3 w-20 rounded-t-lg min-[993px]:w-28",
-								size === "sm" && "w-20",
-								podiumHeight,
-								config.bg,
-								medalStyle === "modern" && "rounded-t-xl",
+								tier.height,
+								tier.bg,
+								"rounded-t-xl",
 							)}
 						>
 							<div
 								className={cn(
 									"flex h-8 items-center justify-center font-bold",
-									config.color,
+									tier.text,
 								)}
 							>
-								{ranking.rank}
+								{player.position}
 							</div>
 						</div>
 					</li>
@@ -202,6 +97,3 @@ const LeaderboardPodium = ({
 		</ul>
 	);
 };
-
-export { LeaderboardPodium, podiumVariants };
-export type { LeaderboardPodiumProps, LeaderboardRanking };
