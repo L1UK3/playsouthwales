@@ -1,3 +1,6 @@
+import { env } from "cloudflare:workers";
+import { queryRankings } from "#/db/queries.server";
+
 interface _PokedataPlayer {
 	guid: string;
 	name: string;
@@ -5,26 +8,33 @@ interface _PokedataPlayer {
 }
 
 /**
- * Fetch championship points data from the Pokedata API.
- * @returns
+ * Fetch the list of player names from the database.
+ * @returns A promise resolving to an array of player names.
  */
-async function _getChampionshipPoints(): Promise<_PokedataPlayer[] | null> {
-	const response = await fetch(
-		`${_API_URL}championship-points/${_COORDS_TO_STRING}`,
+async function _fetchPlayerData(): Promise<string[]> {
+	return queryRankings().then((rankings) =>
+		rankings.map((player: { name: string }) => player.name),
 	);
+}
+
+/**
+ * Fetch championship points data from the Pokedata API.
+ * Server-only: reads the POKEDATA_KEY secret from the Worker environment.
+ * @returns The parsed JSON response from the Pokedata API.
+ */
+async function _getChampionshipPoints() {
+	const response = await fetch("https://pokedata.ovh/2026/api/", {
+		method: "POST",
+		headers: { accept: "application/json", "content-type": "application/json" },
+		body: JSON.stringify({
+			APIKEY: env.POKEDATA_KEY,
+			players: await _fetchPlayerData(),
+		}),
+	});
+
 	if (!response.ok) {
-		console.error(
-			`Failed to fetch championship points: ${response.statusText}`,
-		);
-		return null;
+		throw new Error(`Pokedata API request failed: ${response.status}`);
 	}
 
-	const data = await response.json();
-	if (!Array.isArray(data)) {
-		console.error(
-			`Invalid data format for championship points: expected an array, got ${typeof data}`,
-		);
-		return null;
-	}
-	return data as _PokedataPlayer[];
+	return response.json();
 }
