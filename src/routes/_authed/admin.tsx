@@ -89,6 +89,12 @@ function AdminPage() {
 			window.alert(error instanceof Error ? error.message : "Save failed");
 		});
 
+	/** Runs an event-id server function for the clicked event. */
+	const onEvent =
+		(action: (input: { data: { id: ScheduleEvent["id"] } }) => Promise<void>) =>
+		(event: ScheduleEvent) =>
+			commitOrAlert(() => action({ data: { id: event.id } }));
+
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
 			<h1 className="sr-only">Play! South Wales Admin Dashboard</h1>
@@ -154,19 +160,9 @@ function AdminPage() {
 						onEdit={(event: ScheduleEvent) =>
 							setModal({ kind: "event", event })
 						}
-						onDelete={(event: ScheduleEvent) =>
-							commitOrAlert(() => handleDeleteEvent({ data: { id: event.id } }))
-						}
-						onExclude={(event: ScheduleEvent) =>
-							commitOrAlert(() =>
-								handleExcludeEvent({ data: { id: event.id } }),
-							)
-						}
-						onUnexclude={(event: ScheduleEvent) =>
-							commitOrAlert(() =>
-								handleUnexcludeEvent({ data: { id: event.id } }),
-							)
-						}
+						onDelete={onEvent(handleDeleteEvent)}
+						onExclude={onEvent(handleExcludeEvent)}
+						onUnexclude={onEvent(handleUnexcludeEvent)}
 					/>
 				</ActiveLeaguePanel>
 			) : (
@@ -197,7 +193,7 @@ function AdminPage() {
 							handleEventSubmit({
 								data: {
 									...data,
-									id: modal.kind === "event" ? modal.event?.id : undefined,
+									id: modal.event?.id,
 								},
 							}),
 						)
@@ -214,7 +210,6 @@ function AdminPage() {
 					onSubmit={(players) =>
 						commit(() => handleNationalRankingsSubmit({ data: { players } }))
 					}
-					initialPlayers={[]}
 				/>
 			)}
 		</div>
