@@ -283,9 +283,8 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 													value={row.playerId ?? ""}
 													aria-label={`Player ${index + 1} ID`}
 													onChange={(e) =>
-														// Stored as the raw string, as before; the server reads non-numbers as 0.
 														updateRow(index, {
-															playerId: e.target.value as unknown as number,
+															playerId: toCount(e.target.value),
 														})
 													}
 													className={cn(
