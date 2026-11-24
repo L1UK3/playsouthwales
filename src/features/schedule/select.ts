@@ -5,11 +5,12 @@ import type { EventsByDate, ScheduleEvent } from "#/types/domain";
 const isDateMarker = (event: ScheduleEvent) =>
 	isDateMarkerType(event.eventType);
 
-const SPECIAL_DAY_TYPES = new Set(["LEGALITY", "REGULATION"]);
-
-/** A day is special (highlighted border) when a set or regulation goes legal. */
+/**
+ * A day is special (highlighted border) when it carries a date marker: a set
+ * release, set legality or regulation change, matching the cards' styling.
+ */
 export const isSpecialDay = (eventsForDay: ScheduleEvent[]) =>
-	eventsForDay.some((event) => SPECIAL_DAY_TYPES.has(event.eventType));
+	eventsForDay.some(isDateMarker);
 
 interface ScheduleSelection {
 	calendar: EventsByDate;
