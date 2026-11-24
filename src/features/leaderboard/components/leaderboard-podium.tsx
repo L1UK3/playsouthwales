@@ -33,7 +33,7 @@ export const LeaderboardPodium = ({
 			aria-label="Top 3 rankings"
 		>
 			{podium.map(({ player, tier }) => {
-				const points = (player.cp ?? 0).toLocaleString();
+				const points = player.cp.toLocaleString();
 
 				return (
 					<li

@@ -2,7 +2,7 @@ import { Medal, Trophy } from "lucide-react";
 import React from "react";
 import { cn } from "#/lib/utils";
 
-export interface RankBadgeProps {
+interface RankBadgeProps {
 	position?: number;
 }
 

@@ -35,7 +35,7 @@ export type EventTypeMap = Record<string, string>;
 export interface LeaderboardPosition {
 	position: number;
 	name: string;
-	cp?: number;
+	cp: number;
 }
 
 export type LeagueMap = Record<number, League>;

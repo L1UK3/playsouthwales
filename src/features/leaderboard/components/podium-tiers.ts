@@ -2,7 +2,7 @@
  * Colours for the top three National Rankings places, shared by the podium and
  * the highlighted rows of the leaderboard table.
  */
-export const PODIUM_TIERS = {
+const PODIUM_TIERS = {
 	1: {
 		row: "border-l-4 border-t-1 border-amber-400 bg-amber-400/5",
 		text: "text-amber-500",
@@ -26,7 +26,7 @@ export const PODIUM_TIERS = {
 	},
 } as const;
 
-export type PodiumPosition = keyof typeof PODIUM_TIERS;
+type PodiumPosition = keyof typeof PODIUM_TIERS;
 
 export function podiumTier(position: number) {
 	return PODIUM_TIERS[position as PodiumPosition] as
