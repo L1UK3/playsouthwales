@@ -8,6 +8,12 @@ import React from "react";
 import { cn } from "#/lib/utils";
 import type { ScheduleEvent } from "#/types/domain";
 import {
+	ACTIVE_STATE_CLASSES,
+	CARD_BASE_CLASSES,
+	FOCUS_RING_CLASSES,
+	HOVER_TRANSITION_CLASSES,
+	INACTIVE_ACTIVE_CLASSES,
+	INACTIVE_HOVER_CLASSES,
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
@@ -16,7 +22,7 @@ import type {
 	EventCardAdditionalProps,
 	EventCardProps,
 } from "../types/EventCard.types";
-import { getEntryFeeLabel } from "../utils/EventCard.utils";
+import { getEntryFeeLabel, getStateFlags } from "../utils/EventCard.utils";
 
 /**
  * ListCardProps interface extends EventCardProps and EventCardAdditionalProps to include additional properties specific to the ListCard component.
@@ -70,14 +76,36 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			description,
 			league,
 			leagueName,
-			storeColor,
+			style,
 			isChampionship,
-			stateFlags,
-			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, state, "list");
-		const { isLoading, isError, isDisabled: isStateDisabled } = stateFlags;
-		const isDisabled = isStateDisabled || event.isExcluded;
+			gameLabel,
+			themeClasses,
+		} = useEventCard(event, leagueMap);
+		const {
+			isLoading,
+			isError,
+			isDisabled,
+			isHover,
+			isFocus,
+			isActive,
+			isSuccess,
+		} = getStateFlags(state);
+
+		const cardClasses = cn(
+			"rounded-xl overflow-hidden cursor-pointer",
+			CARD_BASE_CLASSES,
+			themeClasses,
+			isSuccess && "border-2 border-emerald-500/30 bg-emerald-500/[0.01]",
+			isHover
+				? [HOVER_TRANSITION_CLASSES, "translate-x-0.5"]
+				: [INACTIVE_HOVER_CLASSES, "hover:translate-x-0.5"],
+			isFocus && FOCUS_RING_CLASSES,
+			isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
+			event.isExcluded &&
+				"opacity-55 grayscale-[30%] border-dashed border-red-500/20",
+			isDisabled && "opacity-40 pointer-events-none cursor-not-allowed",
+		);
 
 		// Keyboard press handler for toggle
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -134,9 +162,9 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			// biome-ignore lint/a11y/useSemanticElements: the card contains nested interactive controls, so it cannot be a <button>
 			<div
 				role="button"
-				tabIndex={isDisabled && state === "disabled" ? -1 : 0}
+				tabIndex={isDisabled ? -1 : 0}
 				className={cardClasses}
-				style={{ "--store-color": storeColor } as React.CSSProperties}
+				style={style}
 				onClick={() => onToggle?.(event.id)}
 				onKeyDown={handleKeyDown}
 			>
@@ -196,8 +224,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 									/>
 								)}
 								<span className="truncate">
-									{leagueName} •{" "}
-									{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
+									{leagueName} • {gameLabel}
 								</span>
 							</div>
 						</div>

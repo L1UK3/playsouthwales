@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { League, ScheduleEvent } from "#/types/domain";
-import { getStoreColor } from "./EventCard.utils";
+import { describeEventCard, getStoreColor } from "./EventCard.utils";
 
 function makeEvent(overrides: Partial<ScheduleEvent> = {}): ScheduleEvent {
 	return {
@@ -53,5 +53,41 @@ describe("getStoreColor", () => {
 			getStoreColor(event, null),
 			`hsl(${(2 * 137) % 360}, 65%, 55%)`,
 		);
+	});
+});
+
+describe("describeEventCard", () => {
+	it("resolves league, colour and labels for a league event", () => {
+		const league = makeLeague({ brandColor: "#123456" });
+		const view = describeEventCard(
+			makeEvent({ eventType: "CUP", game: "ALL" }),
+			{ 1: league },
+		);
+		assert.equal(view.league, league);
+		assert.equal(view.leagueName, "Cardiff League");
+		assert.equal(view.storeColor, "#123456");
+		assert.equal(view.isOfficial, true);
+		assert.equal(view.isDateMarker, false);
+		assert.equal(view.gameLabel, "TCG, VGC, GO");
+		assert.match(view.description, /League Cups/);
+	});
+
+	it("treats every Championship Series event as official", () => {
+		const view = describeEventCard(makeEvent({ eventType: "CASUAL" }), {
+			1: makeLeague({ isChampionshipSeries: true }),
+		});
+		assert.equal(view.isChampionship, true);
+		assert.equal(view.isOfficial, true);
+	});
+
+	it("describes date markers without a league", () => {
+		const view = describeEventCard(
+			makeEvent({ eventType: "RELEASE", leagueId: -1, leagueName: "Sets" }),
+			{ 1: makeLeague() },
+		);
+		assert.equal(view.league, null);
+		assert.equal(view.leagueName, "Sets");
+		assert.equal(view.isDateMarker, true);
+		assert.equal(view.storeColor, "var(--color-special-day-border)");
 	});
 });

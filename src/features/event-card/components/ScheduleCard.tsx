@@ -6,6 +6,12 @@
 import React from "react";
 import { cn } from "#/lib/utils";
 import {
+	ACTIVE_STATE_CLASSES,
+	CARD_BASE_CLASSES,
+	FOCUS_RING_CLASSES,
+	HOVER_TRANSITION_CLASSES,
+	INACTIVE_ACTIVE_CLASSES,
+	INACTIVE_HOVER_CLASSES,
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
@@ -14,7 +20,7 @@ import type {
 	EventCardAdditionalProps,
 	EventCardProps,
 } from "../types/EventCard.types";
-import { getEntryFeeLabel } from "../utils/EventCard.utils";
+import { getEntryFeeLabel, getStateFlags } from "../utils/EventCard.utils";
 
 /**
  * EventCard component displays information about a single event.
@@ -31,13 +37,38 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 			description,
 			league,
 			leagueName,
-			storeColor,
+			style,
 			isChampionship,
-			stateFlags,
-			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, state, "schedule");
-		const { isLoading, isError, isReleaseCard } = stateFlags;
+			isDateMarker,
+			gameLabel,
+			themeClasses,
+		} = useEventCard(event, leagueMap);
+		const {
+			isLoading,
+			isError,
+			isDisabled,
+			isHover,
+			isFocus,
+			isActive,
+			isSuccess,
+		} = getStateFlags(state);
+
+		const cardClasses = cn(
+			"flex flex-col gap-3 p-4 rounded-xl",
+			CARD_BASE_CLASSES,
+			themeClasses,
+			isSuccess && "border-2 border-emerald-500/30 bg-emerald-500/[0.01]",
+			isHover ? HOVER_TRANSITION_CLASSES : INACTIVE_HOVER_CLASSES,
+			isFocus && FOCUS_RING_CLASSES,
+			isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
+			isDisabled && "opacity-55 pointer-events-none cursor-not-allowed",
+			isDateMarker &&
+				cn(
+					"bg-bg-card-release border-2 border-black",
+					"shadow-[0_0_8px_rgba(0,0,0,0.15)]",
+				),
+		);
 		const links = [event?.ticketLink, league?.website]
 			.map((value) => value?.trim())
 			.filter((value): value is string => Boolean(value));
@@ -97,12 +128,9 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 			);
 		}
 
-		if (isReleaseCard) {
+		if (isDateMarker) {
 			return (
-				<div
-					className={cardClasses}
-					style={{ "--store-color": storeColor } as React.CSSProperties}
-				>
+				<div className={cardClasses} style={style}>
 					<div className="flex items-start gap-3">
 						{/* Metadata & Title */}
 						<div className="flex flex-col gap-0.5 grow min-w-0">
@@ -136,7 +164,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 								"tracking-wider",
 							)}
 						>
-							{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
+							{gameLabel}
 						</span>
 						<span
 							className={cn(
@@ -163,10 +191,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 		}
 
 		return (
-			<div
-				className={cardClasses}
-				style={{ "--store-color": storeColor } as React.CSSProperties}
-			>
+			<div className={cardClasses} style={style}>
 				<div className="flex items-start gap-3">
 					{/* League Logo */}
 					{league?.logo ? (
@@ -238,7 +263,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 							"tracking-wider",
 						)}
 					>
-						{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
+						{gameLabel}
 					</span>
 					{isOfficial && (
 						<span
