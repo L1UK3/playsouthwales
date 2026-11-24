@@ -9,130 +9,85 @@ export type { Top20PlayerInput };
 
 export interface NationalRankingsEntry extends Top20PlayerInput {
 	tempId: string;
-	position: number;
 }
 
 export interface NationalRankingsModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	onSubmit: (players: Top20PlayerInput[]) => Promise<void>;
-	initialPlayers?: { name: string; cp: number; playerId?: number }[];
+	initialPlayers?: Top20PlayerInput[];
 }
 
+/** Parses a number control's value as a non-negative integer, else 0. */
+function toCount(value: string): number {
+	const num = parseInt(value, 10);
+	return Number.isNaN(num) ? 0 : Math.max(0, num);
+}
+
+/** Moves the item at `from` to `to`, returning a new array. */
+function move<T>(items: T[], from: number, to: number): T[] {
+	const updated = [...items];
+	const [moved] = updated.splice(from, 1);
+	updated.splice(to, 0, moved);
+	return updated;
+}
+
+/** Rank order: most CP first, ties broken by name. */
+function byRank(a: NationalRankingsEntry, b: NationalRankingsEntry) {
+	return b.cp - a.cp || a.name.localeCompare(b.name);
+}
+
+/**
+ * Edits the National Rankings table. A row's rank is its position in the
+ * list, so reordering (drag, sort, delete) is the only way to change it.
+ * Mounted fresh each time it opens, so `initialPlayers` is read once.
+ */
 export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 	isOpen,
 	onClose,
 	onSubmit,
 	initialPlayers = [],
 }) => {
-	const [rows, setRows] = useState<NationalRankingsEntry[]>(() => {
-		return (initialPlayers || []).map((p, idx) => ({
+	const [rows, setRows] = useState<NationalRankingsEntry[]>(() =>
+		initialPlayers.map((p, idx) => ({
 			tempId: `player-${idx}-${p.name}`,
-			position: idx + 1,
 			name: p.name,
 			cp: p.cp ?? 0,
 			playerId: p.playerId ?? 0,
-		}));
-	});
+		})),
+	);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [errorMsg, setErrorMsg] = useState("");
 	const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-	const [prevInitial, setPrevInitial] = useState(initialPlayers);
-
-	if (initialPlayers !== prevInitial) {
-		setPrevInitial(initialPlayers);
-		setRows(
-			(initialPlayers || []).map((p, idx) => ({
-				tempId: `player-${idx}-${p.name}`,
-				position: idx + 1,
-				name: p.name,
-				cp: p.cp ?? 0,
-				playerId: p.playerId ?? 0,
-			})),
-		);
-		setErrorMsg("");
-	}
 
 	if (!isOpen) return null;
 
-	const handleAddRow = () => {
-		const nextPos = rows.length + 1;
-		const newRow: NationalRankingsEntry = {
-			tempId: `player-${Date.now()}-${Math.random()}`,
-			position: nextPos,
-			name: "",
-			cp: 0,
-			playerId: 0,
-		};
-		setRows([...rows, newRow]);
-	};
+	const handleAddRow = () =>
+		setRows([
+			...rows,
+			{
+				tempId: `player-${Date.now()}-${Math.random()}`,
+				name: "",
+				cp: 0,
+				playerId: 0,
+			},
+		]);
 
-	const handleRemoveRow = (index: number) => {
-		const updated = rows
-			.filter((_, idx) => idx !== index)
-			.map((row, idx) => ({
-				...row,
-				position: idx + 1,
-			}));
-		setRows(updated);
-	};
+	const handleRemoveRow = (index: number) =>
+		setRows(rows.filter((_, idx) => idx !== index));
 
-	const handleFieldChange = (
-		index: number,
-		field: "name" | "cp" | "playerId",
-		value: string | number,
-	) => {
-		const updated = [...rows];
-		if (field === "cp") {
-			const num = parseInt(String(value), 10);
-			updated[index] = {
-				...updated[index],
-				cp: Number.isNaN(num) ? 0 : Math.max(0, num),
-			};
-		} else {
-			updated[index] = {
-				...updated[index],
-				[field]: String(value),
-			};
-		}
-		setRows(updated);
-	};
-
-	const handleDragStart = (index: number) => {
-		setDraggedIndex(index);
-	};
-
-	const handleDragOver = (event: React.DragEvent<HTMLTableRowElement>) => {
-		event.preventDefault();
-	};
+	const updateRow = (index: number, patch: Partial<NationalRankingsEntry>) =>
+		setRows(
+			rows.map((row, idx) => (idx === index ? { ...row, ...patch } : row)),
+		);
 
 	const handleDrop = (dropIndex: number) => {
 		if (draggedIndex === null || draggedIndex === dropIndex) return;
-
-		const updated = [...rows];
-		const [movedRow] = updated.splice(draggedIndex, 1);
-		updated.splice(dropIndex, 0, movedRow);
-		setRows(
-			updated.map((row, idx) => ({
-				...row,
-				position: idx + 1,
-			})),
-		);
+		setRows(move(rows, draggedIndex, dropIndex));
 		setDraggedIndex(null);
 	};
 
-	const handleSortLeaderboard = () => {
-		const sorted = [...rows]
-			.sort((a, b) => {
-				if (b.cp !== a.cp) return b.cp - a.cp;
-				return a.name.localeCompare(b.name);
-			})
-			.map((row, idx) => ({
-				...row,
-				position: idx + 1,
-			}));
-		setRows(sorted);
-	};
+	const handleSortLeaderboard = () => setRows([...rows].sort(byRank));
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -291,8 +246,8 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 												draggedIndex === index && "opacity-60",
 											)}
 											draggable
-											onDragStart={() => handleDragStart(index)}
-											onDragOver={handleDragOver}
+											onDragStart={() => setDraggedIndex(index)}
+											onDragOver={(event) => event.preventDefault()}
 											onDrop={() => handleDrop(index)}
 										>
 											<td
@@ -301,16 +256,16 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 													"text-text-muted",
 												)}
 											>
-												#{row.position}
+												#{index + 1}
 											</td>
 											<td className="py-2 px-3">
 												<input
 													type="text"
 													placeholder="Player name"
 													value={row.name}
-													aria-label={`Player ${row.position} Name`}
+													aria-label={`Player ${index + 1} Name`}
 													onChange={(e) =>
-														handleFieldChange(index, "name", e.target.value)
+														updateRow(index, { name: e.target.value })
 													}
 													className={cn(
 														"py-1.5 px-2 rounded-md border",
@@ -326,9 +281,12 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 													min={0}
 													placeholder="POP ID"
 													value={row.playerId ?? ""}
-													aria-label={`Player ${row.position} ID`}
+													aria-label={`Player ${index + 1} ID`}
 													onChange={(e) =>
-														handleFieldChange(index, "playerId", e.target.value)
+														// Stored as the raw string, as before; the server reads non-numbers as 0.
+														updateRow(index, {
+															playerId: e.target.value as unknown as number,
+														})
 													}
 													className={cn(
 														"py-1.5 px-2 rounded-md border",
@@ -343,9 +301,9 @@ export const NationalRankingsModal: React.FC<NationalRankingsModalProps> = ({
 													type="number"
 													min={0}
 													value={row.cp}
-													aria-label={`Player ${row.position} CP`}
+													aria-label={`Player ${index + 1} CP`}
 													onChange={(e) =>
-														handleFieldChange(index, "cp", e.target.value)
+														updateRow(index, { cp: toCount(e.target.value) })
 													}
 													className={cn(
 														"py-1.5 px-2 rounded-md border",
