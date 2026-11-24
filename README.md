@@ -34,6 +34,7 @@ npm ci
 cp .env.example .env.local      # then add your Clerk keys
 npm run cf-typegen              # generates worker-configuration.d.ts (not committed)
 npm run db:migrate:local        # creates the local D1 database
+npm run db:seed:local           # loads sample leagues, events and players relative to today
 npm run dev                     # http://localhost:3000
 ```
 
@@ -52,6 +53,8 @@ npm run dev                     # http://localhost:3000
 | `npm run db:generate` | Generates a SQL migration from `src/db/schema.ts` |
 | `npm run db:migrate:local` | Applies migrations to the local D1 database |
 | `npm run db:migrate:remote` | Applies migrations to the production D1 database |
+| `npm run db:seed:local` | Seeds the local D1 database with sample leagues, recurring/one-off events relative to today, and players |
+| `npm run db:seed` | Generates `.seed/seed.sql` with sample dates relative to today without applying |
 | `npm run db:studio` | Opens Drizzle Studio on the local database |
 | `npm run cf-typegen` | Regenerates `worker-configuration.d.ts` |
 
