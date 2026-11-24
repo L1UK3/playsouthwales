@@ -6,6 +6,12 @@ const DATE_MARKER_TYPES = new Set(["LEGALITY", "RELEASE", "REGULATION"]);
 const isDateMarker = (event: ScheduleEvent) =>
 	DATE_MARKER_TYPES.has(event.eventType);
 
+const SPECIAL_DAY_TYPES = new Set(["LEGALITY", "REGULATION"]);
+
+/** A day is special (highlighted border) when a set or regulation goes legal. */
+export const isSpecialDay = (eventsForDay: ScheduleEvent[]) =>
+	eventsForDay.some((event) => SPECIAL_DAY_TYPES.has(event.eventType));
+
 interface ScheduleSelection {
 	calendar: EventsByDate;
 	list: EventsByDate;

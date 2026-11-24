@@ -1,6 +1,7 @@
 import type React from "react";
 import { lazy, Suspense, useMemo, useRef } from "react";
 import Cell from "#/features/calendar/components/Cell";
+import { isSpecialDay } from "#/features/schedule/select";
 import { localDateKey, monthGrid } from "#/lib/month";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
@@ -90,13 +91,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 						types={types}
 						selectedDateKey={selectedDateKey}
 						todayKey={todayKey}
-						isSpecialDay={
-							events[cell.dateKey]?.some(
-								(event) =>
-									event.eventType === "LEGALITY" ||
-									event.eventType === "REGULATION",
-							) ?? false
-						}
+						isSpecialDay={isSpecialDay(events[cell.dateKey] ?? EMPTY_ARRAY)}
 						onSelectDay={onSelectDay}
 					/>
 				))}
