@@ -1,6 +1,7 @@
 CREATE TABLE `events` (
 	`id` integer PRIMARY KEY AUTOINCREMENT,
 	`leagueId` integer NOT NULL,
+	`pokedataGuid` text UNIQUE,
 	`name` text NOT NULL,
 	`date` text NOT NULL,
 	`startTime` text,
@@ -15,14 +16,6 @@ CREATE TABLE `events` (
 	CONSTRAINT `fk_events_leagueId_leagues_id_fk` FOREIGN KEY (`leagueId`) REFERENCES `leagues`(`id`) ON DELETE CASCADE
 );
 --> statement-breakpoint
-CREATE TABLE `leaderboards` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`leagueId` integer NOT NULL,
-	`data` text DEFAULT '[]' NOT NULL,
-	`createdAt` integer DEFAULT (unixepoch()) NOT NULL,
-	CONSTRAINT `fk_leaderboards_leagueId_leagues_id_fk` FOREIGN KEY (`leagueId`) REFERENCES `leagues`(`id`) ON DELETE CASCADE
-);
---> statement-breakpoint
 CREATE TABLE `leagues` (
 	`id` integer PRIMARY KEY AUTOINCREMENT,
 	`name` text NOT NULL,
@@ -30,7 +23,6 @@ CREATE TABLE `leagues` (
 	`website` text,
 	`socialLink` text,
 	`eventLink` text,
-	`webLink` text,
 	`brandColor` text,
 	`location` text,
 	`directions` text,
@@ -42,11 +34,11 @@ CREATE TABLE `leagues` (
 --> statement-breakpoint
 CREATE TABLE `players` (
 	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`name` text NOT NULL UNIQUE,
+	`name` text NOT NULL,
 	`playerId` integer,
-	`cp` integer DEFAULT 0 NOT NULL
+	`cp` integer DEFAULT 0 NOT NULL,
+	`season` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE INDEX `events_leagueId_idx` ON `events` (`leagueId`);--> statement-breakpoint
-CREATE INDEX `events_date_idx` ON `events` (`date`);--> statement-breakpoint
-CREATE INDEX `leaderboards_leagueId_idx` ON `leaderboards` (`leagueId`);
+CREATE INDEX `events_date_idx` ON `events` (`date`);

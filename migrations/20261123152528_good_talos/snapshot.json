@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "122b1517-b80f-4a33-96eb-5ceeca54f131",
+  "id": "59076eb0-86be-4a25-8605-c963be212117",
   "prevIds": [
-    "cf280e01-988e-417c-9e7a-cb362619fce6"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -224,16 +224,6 @@
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "webLink",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
-      "type": "text",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
       "name": "brandColor",
       "entityType": "columns",
       "table": "leagues"
@@ -426,15 +416,6 @@
       "name": "events_pokedataGuid_unique",
       "entityType": "uniques",
       "table": "events"
-    },
-    {
-      "columns": [
-        "name"
-      ],
-      "nameExplicit": false,
-      "name": "players_name_unique",
-      "entityType": "uniques",
-      "table": "players"
     }
   ],
   "renames": []
