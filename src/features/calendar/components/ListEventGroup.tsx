@@ -1,6 +1,5 @@
 import type React from "react";
 import { useMemo } from "react";
-import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { getLocalDateString } from "#/features/calendar/utils/getLocalDateString";
 import { ListCard } from "#/features/event-card";
 import { cn } from "#/lib/utils";
@@ -56,8 +55,6 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 		},
 	);
 
-	const sortedEvents = useSortEvents(eventsForDay);
-
 	const isToday = useMemo(
 		() => dateKey === getLocalDateString(new Date()),
 		[dateKey],
@@ -81,7 +78,7 @@ const ListEventGroup: React.FC<ListEventGroupProps> = ({
 				{dateText}
 			</div>
 			<div className="flex flex-col gap-3">
-				{sortedEvents.map((event) => (
+				{eventsForDay.map((event) => (
 					<ListCard
 						key={event.id}
 						event={event}

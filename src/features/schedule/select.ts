@@ -11,6 +11,11 @@ interface ScheduleSelection {
 	sidebar: ScheduleEvent[];
 }
 
+/**
+ * Splits a month's schedule into what each view shows. `events` arrive in
+ * schedule order from `querySchedule`; every selection preserves that order,
+ * so views render them as-is without re-sorting.
+ */
 export function selectSchedule(
 	events: ScheduleEvent[],
 	filters: EventFilters,
