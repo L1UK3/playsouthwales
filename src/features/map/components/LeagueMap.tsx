@@ -6,13 +6,13 @@ import {
 	Map as GoogleMap,
 } from "@vis.gl/react-google-maps";
 import type React from "react";
-import { useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useSettings } from "#/context/SettingsContext";
 import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "../constants";
+import { getSelectedLeague, mapLeaguesToMarkers } from "../helper";
 import MapHandler, { type CameraSnapshot } from "../helper/MapHandler";
-import useMarker from "../hooks/useMarker";
 import InfoBox from "./InfoBox";
 import LeagueMarker from "./LeagueMarker";
 
@@ -63,17 +63,16 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 	// the camera across that rebuild, so the view stays put.
 	const cameraRef = useRef<CameraSnapshot | null>(null);
 
-	const {
-		markers,
-		selectedLeague,
-		handleMarkerClick,
-		handleMapClick,
-		handleCloseInfoWindow,
-	} = useMarker({
-		leagues,
-		selectedLeagueId,
-		onLeagueSelect,
-	});
+	const markers = useMemo(() => mapLeaguesToMarkers(leagues), [leagues]);
+	const selectedLeague = useMemo(
+		() => getSelectedLeague(leagues, selectedLeagueId),
+		[leagues, selectedLeagueId],
+	);
+	// Clicking the map or closing the info window both clear the selection.
+	const clearSelection = useCallback(
+		() => onLeagueSelect(null),
+		[onLeagueSelect],
+	);
 
 	if (!apiKey) {
 		return (
@@ -104,7 +103,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 					className="w-full h-full"
 					mapId={mapId}
 					colorScheme={colorScheme}
-					onClick={handleMapClick}
+					onClick={clearSelection}
 					streetViewControl={false}
 					mapTypeControl={false}
 					fullscreenControl={false}
@@ -121,7 +120,10 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 								collisionBehavior={
 									CollisionBehavior.REQUIRED_AND_HIDES_OPTIONAL
 								}
-								onClick={(e) => handleMarkerClick(marker.id, e.domEvent)}
+								onClick={(e) => {
+									e.domEvent?.stopPropagation();
+									onLeagueSelect(marker.id);
+								}}
 							>
 								<LeagueMarker marker={marker} isSelected={isSelected} />
 							</AdvancedMarker>
@@ -131,7 +133,7 @@ const LeagueMap: React.FC<LeagueMapProps> = ({
 					{showInfoWindow && selectedLeague && (
 						<InfoBox
 							selectedLeague={selectedLeague}
-							onCloseClick={handleCloseInfoWindow}
+							onCloseClick={clearSelection}
 						/>
 					)}
 
