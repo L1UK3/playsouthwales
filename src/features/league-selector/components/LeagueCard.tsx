@@ -16,11 +16,11 @@ export interface LeagueCardProps {
 	className?: string;
 }
 
-// TODO: this string has stray spaces, so none of these classes apply and
-// Championship Series cards get no border colour or gradient. Kept as-is so
-// this refactor does not change how the card looks.
-const CHAMPIONSHIP_CLASSES =
-	"border-2 border - (--store - color) bg - linear - to - br from - yellow - 600 / [0.5] to - transparent shadow - md shadow - amber - 500 / 5";
+/** Gold styling for Championship Series leagues, as on their event cards. */
+const CHAMPIONSHIP_CLASSES = cn(
+	"border-2 border-(--store-color) bg-linear-to-br from-yellow-600/[0.5]",
+	"to-transparent shadow-md shadow-amber-500/5",
+);
 
 const STORE_CLASSES = cn(
 	"border-2 border-(--store-color) bg-bg-card text-text-main",
