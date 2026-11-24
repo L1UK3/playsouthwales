@@ -22,9 +22,6 @@ export default function TabToggle({ tabs, activeTab }: TabToggleProps) {
 						tab.to === activeTab &&
 							"bg-primary! text-white! border-primary-hover!",
 					)}
-					activeProps={{
-						className: "!bg-primary !text-white !border-primary-hover",
-					}}
 					key={tab.to}
 				>
 					{tab.label}
