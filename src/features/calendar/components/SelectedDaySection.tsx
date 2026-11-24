@@ -2,6 +2,7 @@ import { Calendar } from "lucide-react";
 import type React from "react";
 import { Footer } from "#/components/Footer";
 import { EventCard } from "#/features/event-card";
+import { formatDayHeading } from "#/lib/month";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 
@@ -35,12 +36,7 @@ const SelectedDaySection: React.FC<SelectedDaySectionProps> = ({
 	const isDateSelected = selectedDateKey !== undefined;
 
 	const title = isDateSelected
-		? new Date(`${selectedDateKey}T00:00:00`).toLocaleDateString(undefined, {
-				weekday: "long",
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-			})
+		? formatDayHeading(selectedDateKey)
 		: "Selected Day";
 
 	return (
