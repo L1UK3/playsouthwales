@@ -17,3 +17,16 @@ export function withoutNulls<Row extends object>(row: Row): WithoutNulls<Row> {
 		Object.entries(row).filter(([, value]) => value !== null),
 	) as WithoutNulls<Row>;
 }
+
+/**
+ * Picks `keys` from `input`, writing an absent value as null so an update
+ * clears the column. The inverse of withoutNulls for nullable columns.
+ */
+export function withNulls<Input extends object, Key extends keyof Input>(
+	input: Input,
+	keys: readonly Key[],
+): { [K in Key]-?: Exclude<Input[K], undefined> | null } {
+	return Object.fromEntries(keys.map((key) => [key, input[key] ?? null])) as {
+		[K in Key]-?: Exclude<Input[K], undefined> | null;
+	};
+}

@@ -10,6 +10,7 @@ import {
 	updateEvent,
 	updateLeague,
 } from "#/db/queries.server";
+import { withNulls } from "#/db/utils";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
 import { isValidCalendarDate } from "#/lib/recurrence";
@@ -89,16 +90,18 @@ export const handleLeagueSubmit = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const values = {
 			name: data.name,
-			location: data.location ?? null,
-			latitude: data.latitude ?? null,
-			longitude: data.longitude ?? null,
-			brandColor: data.brandColor ?? null,
-			logo: data.logo ?? null,
-			website: data.website ?? null,
-			eventLink: data.eventLink ?? null,
-			socialLink: data.socialLink ?? null,
-			directions: data.directions ?? null,
-			accessibility: data.accessibility ?? null,
+			...withNulls(data, [
+				"location",
+				"latitude",
+				"longitude",
+				"brandColor",
+				"logo",
+				"website",
+				"eventLink",
+				"socialLink",
+				"directions",
+				"accessibility",
+			]),
 			isChampionshipSeries: data.isChampionshipSeries ?? false,
 		};
 
@@ -141,13 +144,15 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 			leagueId: data.leagueId,
 			name: data.name,
 			date: data.date,
-			startTime: data.startTime ?? null,
 			eventType: data.eventType,
 			game: data.game,
-			ticketLink: data.ticketLink ?? null,
-			description: data.description ?? null,
-			prizes: data.prizes ?? null,
-			entryFee: data.entryFee ?? null,
+			...withNulls(data, [
+				"startTime",
+				"ticketLink",
+				"description",
+				"prizes",
+				"entryFee",
+			]),
 		};
 
 		if (data.id === undefined) {
