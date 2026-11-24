@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { ScheduleEvent } from "#/types/domain";
 import { rankOf, sortEventsForSchedule } from "#/lib/event-types";
+import type { ScheduleEvent } from "#/types/domain";
 
 function makeEvent(overrides: Partial<ScheduleEvent> = {}): ScheduleEvent {
 	return {
