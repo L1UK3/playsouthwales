@@ -19,8 +19,8 @@ export interface CalendarCardProps extends EventCardProps {
  */
 const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 	({ event, leagueMap, types, isOtherMonth }) => {
-		const { league, leagueName, storeColor, cardClasses, isDateMarker } =
-			useEventCard(event, leagueMap, "calendar");
+		const { league, leagueName, style, themeClasses, isDateMarker } =
+			useEventCard(event, leagueMap);
 
 		const logo = league?.logo ?? null;
 		const displayName = isDateMarker && event.name ? event.name : leagueName;
@@ -28,7 +28,7 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 		return (
 			<div
 				className={cn(
-					cardClasses,
+					themeClasses,
 					"flex justify-between items-center",
 					"gap-0.5 @min-[700px]:gap-1.5",
 					"py-[1.5px] px-1 @min-[700px]:py-1 @min-[700px]:px-2",
@@ -37,7 +37,7 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 					`type-${event.eventType}`,
 					isOtherMonth && "opacity-35! grayscale! pointer-events-none!",
 				)}
-				style={{ "--store-color": storeColor } as React.CSSProperties}
+				style={style}
 			>
 				{logo ? (
 					<img

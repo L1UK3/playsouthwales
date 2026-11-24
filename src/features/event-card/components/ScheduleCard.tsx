@@ -6,6 +6,9 @@
 import React from "react";
 import { cn } from "#/lib/utils";
 import {
+	ACTIVE_CLASSES,
+	CARD_BASE_CLASSES,
+	HOVER_CLASSES,
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
@@ -27,12 +30,26 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 			description,
 			league,
 			leagueName,
-			storeColor,
+			style,
 			isChampionship,
-			isDateMarker,
-			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, "schedule");
+			isDateMarker,
+			gameLabel,
+			themeClasses,
+		} = useEventCard(event, leagueMap);
+
+		const cardClasses = cn(
+			"flex flex-col gap-3 p-4 rounded-xl",
+			CARD_BASE_CLASSES,
+			themeClasses,
+			HOVER_CLASSES,
+			ACTIVE_CLASSES,
+			isDateMarker &&
+				cn(
+					"bg-bg-card-release border-2 border-black",
+					"shadow-[0_0_8px_rgba(0,0,0,0.15)]",
+				),
+		);
 		const links = [event?.ticketLink, league?.website]
 			.map((value) => value?.trim())
 			.filter((value): value is string => Boolean(value));
@@ -41,10 +58,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 
 		if (isDateMarker) {
 			return (
-				<div
-					className={cardClasses}
-					style={{ "--store-color": storeColor } as React.CSSProperties}
-				>
+				<div className={cardClasses} style={style}>
 					<div className="flex items-start gap-3">
 						{/* Metadata & Title */}
 						<div className="flex flex-col gap-0.5 grow min-w-0">
@@ -78,7 +92,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 								"tracking-wider",
 							)}
 						>
-							{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
+							{gameLabel}
 						</span>
 						<span
 							className={cn(
@@ -105,10 +119,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 		}
 
 		return (
-			<div
-				className={cardClasses}
-				style={{ "--store-color": storeColor } as React.CSSProperties}
-			>
+			<div className={cardClasses} style={style}>
 				<div className="flex items-start gap-3">
 					{/* League Logo */}
 					{league?.logo ? (
@@ -180,7 +191,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 							"tracking-wider",
 						)}
 					>
-						{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
+						{gameLabel}
 					</span>
 					{isOfficial && (
 						<span

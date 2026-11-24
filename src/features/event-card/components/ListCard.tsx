@@ -8,6 +8,9 @@ import React from "react";
 import { cn } from "#/lib/utils";
 import type { ScheduleEvent } from "#/types/domain";
 import {
+	ACTIVE_CLASSES,
+	CARD_BASE_CLASSES,
+	HOVER_CLASSES,
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
@@ -63,11 +66,23 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			description,
 			league,
 			leagueName,
-			storeColor,
+			style,
 			isChampionship,
-			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, "list");
+			gameLabel,
+			themeClasses,
+		} = useEventCard(event, leagueMap);
+
+		const cardClasses = cn(
+			"rounded-xl overflow-hidden cursor-pointer",
+			CARD_BASE_CLASSES,
+			themeClasses,
+			HOVER_CLASSES,
+			"hover:translate-x-0.5",
+			ACTIVE_CLASSES,
+			event.isExcluded &&
+				"opacity-55 grayscale-[30%] border-dashed border-red-500/20",
+		);
 
 		// Keyboard press handler for toggle
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -83,7 +98,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 				role="button"
 				tabIndex={0}
 				className={cardClasses}
-				style={{ "--store-color": storeColor } as React.CSSProperties}
+				style={style}
 				onClick={() => onToggle?.(event.id)}
 				onKeyDown={handleKeyDown}
 			>
@@ -143,8 +158,7 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 									/>
 								)}
 								<span className="truncate">
-									{leagueName} •{" "}
-									{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
+									{leagueName} • {gameLabel}
 								</span>
 							</div>
 						</div>
