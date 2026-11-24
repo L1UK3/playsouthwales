@@ -8,13 +8,11 @@ import {
 	handleEventSubmit,
 	handleExcludeEvent,
 	handleLeagueSubmit,
-	handleNationalRankingsSubmit,
 	handleUnexcludeEvent,
 } from "#/features/admin/admin.functions";
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
-import NationalRankingsModal from "#/features/admin/components/NationalRankingsModal";
 import ListView from "#/features/calendar/components/ListView";
 import NavBar from "#/features/calendar/components/NavBar";
 import LeagueSelector from "#/features/league-selector/components/LeagueSelector";
@@ -38,7 +36,6 @@ interface AdminSearch {
 type AdminModal =
 	| { kind: "league"; league?: League }
 	| { kind: "event"; event?: ScheduleEvent }
-	| { kind: "nationalRankings" }
 	| null;
 
 export const Route = createFileRoute("/_authed/admin")({
@@ -205,16 +202,6 @@ function AdminPage() {
 					initialData={modal.event ?? null}
 					leagueId={search.league ?? 0}
 					isChampionshipLeague={activeLeague?.isChampionshipSeries ?? false}
-				/>
-			)}
-			{modal?.kind === "nationalRankings" && (
-				<NationalRankingsModal
-					isOpen
-					onClose={closeModal}
-					onSubmit={(players) =>
-						commit(() => handleNationalRankingsSubmit({ data: { players } }))
-					}
-					initialPlayers={[]}
 				/>
 			)}
 		</div>
