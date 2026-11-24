@@ -1,5 +1,6 @@
-import { asc, desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import type { BatchItem } from "drizzle-orm/batch";
+import { rankPlayers } from "#/features/rankings/ranking";
 import type { LeaderboardPosition } from "#/types/domain";
 import { getDb } from "../client.server";
 import { players } from "./schema";
@@ -13,10 +14,9 @@ export interface PlayerValues {
 export async function queryRankings(): Promise<LeaderboardPosition[]> {
 	const rows = await getDb()
 		.select({ name: players.name, cp: players.cp })
-		.from(players)
-		.orderBy(desc(players.cp), asc(players.name));
+		.from(players);
 
-	return rows.map((row, index) => ({ ...row, position: index + 1 }));
+	return rankPlayers(rows);
 }
 
 /**

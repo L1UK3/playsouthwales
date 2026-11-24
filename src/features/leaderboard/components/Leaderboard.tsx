@@ -30,6 +30,7 @@ const PODIUM_STYLES: Record<number, string> = {
 };
 
 export interface LeaderboardProps {
+	/** Already in National Rankings order, as returned by getRankings. */
 	players: LeaderboardPosition[];
 	isLoading?: boolean;
 }
@@ -47,17 +48,9 @@ const LeaderboardMetrics: React.FC<{ player: LeaderboardPosition }> = ({
 );
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
-	players: rawPlayers,
+	players: sortedPlayers,
 	isLoading = false,
 }) => {
-	const sortedPlayers: LeaderboardPosition[] = React.useMemo(() => {
-		return [...rawPlayers].sort((a, b) => {
-			const cpDiff = (b.cp ?? 0) - (a.cp ?? 0);
-			if (cpDiff !== 0) return cpDiff;
-			return a.name.localeCompare(b.name);
-		});
-	}, [rawPlayers]);
-
 	const podiumRankings = React.useMemo<LeaderboardPodiumRanking[]>(
 		() =>
 			sortedPlayers.slice(0, 3).map((player, index) => ({
@@ -132,8 +125,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 								</td>
 							</tr>
 						) : (
-							sortedPlayers.map((player, index) => {
-								const rank = index + 1;
+							sortedPlayers.map((player) => {
+								const rank = player.position;
 								const renderCutoff = rank === TOP_CUTOFF_POSITION;
 
 								return (
