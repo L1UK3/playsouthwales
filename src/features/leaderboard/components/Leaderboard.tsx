@@ -4,27 +4,15 @@ import type { LeaderboardPosition } from "#/types/domain";
 import { LeaderboardPodium } from "./leaderboard-podium";
 import { podiumTier } from "./podium-tiers";
 import { RankBadge } from "./RankBadge";
-import { SkeletonRow } from "./SkeletonRow";
 
-export const TOP_CUTOFF_THRESHOLD = 20;
-export const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
-const SKELETON_ROW_KEYS = [
-	"skeleton-1",
-	"skeleton-2",
-	"skeleton-3",
-	"skeleton-4",
-	"skeleton-5",
-	"skeleton-6",
-	"skeleton-7",
-	"skeleton-8",
-];
+const TOP_CUTOFF_THRESHOLD = 20;
+const TOP_CUTOFF_POSITION = TOP_CUTOFF_THRESHOLD + 1;
 
 const COLUMN_COUNT = 3;
 
-export interface LeaderboardProps {
+interface LeaderboardProps {
 	/** Already in National Rankings order, as returned by getRankings. */
 	players: LeaderboardPosition[];
-	isLoading?: boolean;
 }
 
 const LeaderboardHeader = () => (
@@ -34,16 +22,13 @@ const LeaderboardHeader = () => (
 const LeaderboardMetrics: React.FC<{ player: LeaderboardPosition }> = ({
 	player,
 }) => (
-	<td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">
-		{player.cp ?? 0}
-	</td>
+	<td className="py-1.5 px-3 text-right pr-4 text-sm font-bold">{player.cp}</td>
 );
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
 	players: sortedPlayers,
-	isLoading = false,
 }) => {
-	const showPodium = !isLoading && sortedPlayers.length > 0;
+	const showPodium = sortedPlayers.length > 0;
 
 	return (
 		<div
@@ -92,9 +77,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 					</thead>
 
 					<tbody className="divide-y divide-border-color/50">
-						{isLoading ? (
-							SKELETON_ROW_KEYS.map((key) => <SkeletonRow key={key} />)
-						) : sortedPlayers.length === 0 ? (
+						{sortedPlayers.length === 0 ? (
 							<tr>
 								<td
 									colSpan={COLUMN_COUNT}
