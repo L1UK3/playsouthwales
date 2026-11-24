@@ -117,7 +117,6 @@ function SchedulePage() {
 							)}
 						>
 							<SelectedDaySection
-								month={month}
 								selectedDateKey={search.day}
 								selectedDayEvents={schedule.sidebar}
 								leagueMap={leagueMap}

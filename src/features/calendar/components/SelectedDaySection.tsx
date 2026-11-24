@@ -10,7 +10,6 @@ import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
  * Properties for the SelectedDaySection component.
  * @property selectedDateKey - The dateKey of the currently selected day (YYYY-MM-DD).
  * @property selectedDayEvents - Array of events occurring on the selected day or month.
- * @property month - The currently active month as a YYYY-MM key.
  * @property leagueMap - A mapping of league IDs to league details for branding.
  * @property types - A mapping of event type keys to their display names or icons.
  * @property onClose - Optional callback to clear/close the selection.
@@ -18,7 +17,6 @@ import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
 export interface SelectedDaySectionProps {
 	selectedDateKey: string | undefined;
 	selectedDayEvents: ScheduleEvent[];
-	month?: string;
 	leagueMap: Record<number, League>;
 	types: EventTypeMap;
 }
