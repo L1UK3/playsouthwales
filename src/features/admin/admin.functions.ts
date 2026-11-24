@@ -7,14 +7,12 @@ import {
 	insertEvent,
 	insertLeague,
 	querySchedule,
-	replacePlayers,
 	updateEvent,
 	updateLeague,
 } from "#/db/queries.server";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
 import { isValidCalendarDate } from "#/lib/recurrence";
-import type { Top20PlayerInput } from "./components/NationalRankingsModal";
 
 /** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
 export type EventId = number | string;
@@ -213,32 +211,3 @@ export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 		return input;
 	})
 	.handler(({ data }) => setOccurrenceExcluded(data.id, false));
-
-/** Seasons start in July and are named after the year they end in. */
-function currentSeason(now: Date): number {
-	return now.getUTCMonth() >= 6
-		? now.getUTCFullYear() + 1
-		: now.getUTCFullYear();
-}
-
-/** Truncates a finite number to an integer; anything else becomes 0. */
-function toInteger(value: number | undefined): number {
-	return typeof value === "number" && Number.isFinite(value)
-		? Math.trunc(value)
-		: 0;
-}
-
-export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
-	.middleware([authMiddleware])
-	.validator((input: { players: Top20PlayerInput[] }) => input)
-	.handler(async ({ data }) => {
-		const players = data.players
-			.map((player) => ({
-				name: player.name.trim(),
-				cp: toInteger(player.cp),
-				playerId: toInteger(player.playerId),
-			}))
-			.filter((player) => player.name !== "");
-
-		await replacePlayers(players, currentSeason(new Date()));
-	});
