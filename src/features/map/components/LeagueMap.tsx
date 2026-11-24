@@ -18,7 +18,7 @@ import LeagueMarker from "./LeagueMarker";
 
 /**
  * Google's demo Map ID, which shows Google's default map style. Set
- * VITE_GOOGLE_MAPS_MAP_ID to use the templates in docs/map-styles instead.
+ * VITE_GOOGLE_MAPS_MAP_ID to use the templates in ../styles instead.
  */
 const FALLBACK_MAP_ID = "DEMO_MAP_ID";
 
