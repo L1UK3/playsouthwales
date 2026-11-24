@@ -7,48 +7,33 @@ import {
 	insertEvent,
 	insertLeague,
 	querySchedule,
-	replacePlayers,
 	updateEvent,
 	updateLeague,
 } from "#/db/queries.server";
+import { withNulls } from "#/db/utils";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
 import { isValidCalendarDate } from "#/lib/recurrence";
-import type { Top20PlayerInput } from "./components/NationalRankingsModal";
+import type { League, ScheduleEvent } from "#/types/domain";
 
 /** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
-export type EventId = number | string;
+type EventId = ScheduleEvent["id"];
 
-export interface LeagueSubmitInput {
+/** A league as the form sends it; `leagueId` is absent when creating. */
+export type LeagueSubmitInput = Omit<League, "leagueId"> & {
 	leagueId?: number;
-	name: string;
-	location?: string;
-	latitude?: number;
-	longitude?: number;
-	brandColor?: string;
-	logo?: string;
-	website?: string;
-	eventLink?: string;
-	socialLink?: string;
-	directions?: string;
-	accessibility?: string;
-	isChampionshipSeries?: boolean;
-}
+};
 
-export interface EventSubmitInput {
-	id?: EventId;
-	leagueId: number;
-	name: string;
-	date: string;
-	startTime?: string;
-	eventType: string;
-	game: string;
-	ticketLink?: string;
-	description?: string;
-	prizes?: string;
-	entryFee?: string;
-	isRecurring?: boolean;
-}
+/** An event as the form sends it; `id` is absent when creating. */
+export type EventSubmitInput = Omit<
+	ScheduleEvent,
+	| "id"
+	| "pokedataGuid"
+	| "leagueName"
+	| "recurringEventId"
+	| "excludedDates"
+	| "isExcluded"
+> & { id?: EventId };
 
 /** Splits an event id into the stored row id and, for occurrences, the date. */
 function parseEventId(id: EventId): { rowId: number; occurrenceDate?: string } {
@@ -59,6 +44,12 @@ function parseEventId(id: EventId): { rowId: number; occurrenceDate?: string } {
 	const match = /^(\d+):(\d{4}-\d{2}-\d{2})$/.exec(id);
 	if (!match) throw new Error("Invalid event id");
 	return { rowId: Number(match[1]), occurrenceDate: match[2] };
+}
+
+/** Validator for the server functions that take only an event id. */
+function validateEventIdInput(input: { id: EventId }) {
+	parseEventId(input.id);
+	return input;
 }
 
 /** Same data as the public schedule, but cancelled occurrences stay in, flagged. */
@@ -85,16 +76,18 @@ export const handleLeagueSubmit = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const values = {
 			name: data.name,
-			location: data.location ?? null,
-			latitude: data.latitude ?? null,
-			longitude: data.longitude ?? null,
-			brandColor: data.brandColor ?? null,
-			logo: data.logo ?? null,
-			website: data.website ?? null,
-			eventLink: data.eventLink ?? null,
-			socialLink: data.socialLink ?? null,
-			directions: data.directions ?? null,
-			accessibility: data.accessibility ?? null,
+			...withNulls(data, [
+				"location",
+				"latitude",
+				"longitude",
+				"brandColor",
+				"logo",
+				"website",
+				"eventLink",
+				"socialLink",
+				"directions",
+				"accessibility",
+			]),
 			isChampionshipSeries: data.isChampionshipSeries ?? false,
 		};
 
@@ -137,13 +130,15 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 			leagueId: data.leagueId,
 			name: data.name,
 			date: data.date,
-			startTime: data.startTime ?? null,
 			eventType: data.eventType,
 			game: data.game,
-			ticketLink: data.ticketLink ?? null,
-			description: data.description ?? null,
-			prizes: data.prizes ?? null,
-			entryFee: data.entryFee ?? null,
+			...withNulls(data, [
+				"startTime",
+				"ticketLink",
+				"description",
+				"prizes",
+				"entryFee",
+			]),
 		};
 
 		if (data.id === undefined) {
@@ -172,10 +167,7 @@ export const handleEventSubmit = createServerFn({ method: "POST" })
 
 export const handleDeleteEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => {
-		parseEventId(input.id);
-		return input;
-	})
+	.validator(validateEventIdInput)
 	.handler(async ({ data }) => {
 		// A series occurrence deletes the whole series, as the legacy API did.
 		const { rowId } = parseEventId(data.id);
@@ -200,45 +192,10 @@ async function setOccurrenceExcluded(id: EventId, excluded: boolean) {
 
 export const handleExcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => {
-		parseEventId(input.id);
-		return input;
-	})
+	.validator(validateEventIdInput)
 	.handler(({ data }) => setOccurrenceExcluded(data.id, true));
 
 export const handleUnexcludeEvent = createServerFn({ method: "POST" })
 	.middleware([authMiddleware])
-	.validator((input: { id: EventId }) => {
-		parseEventId(input.id);
-		return input;
-	})
+	.validator(validateEventIdInput)
 	.handler(({ data }) => setOccurrenceExcluded(data.id, false));
-
-/** Seasons start in July and are named after the year they end in. */
-function currentSeason(now: Date): number {
-	return now.getUTCMonth() >= 6
-		? now.getUTCFullYear() + 1
-		: now.getUTCFullYear();
-}
-
-/** Truncates a finite number to an integer; anything else becomes 0. */
-function toInteger(value: number | undefined): number {
-	return typeof value === "number" && Number.isFinite(value)
-		? Math.trunc(value)
-		: 0;
-}
-
-export const handleNationalRankingsSubmit = createServerFn({ method: "POST" })
-	.middleware([authMiddleware])
-	.validator((input: { players: Top20PlayerInput[] }) => input)
-	.handler(async ({ data }) => {
-		const players = data.players
-			.map((player) => ({
-				name: player.name.trim(),
-				cp: toInteger(player.cp),
-				playerId: toInteger(player.playerId),
-			}))
-			.filter((player) => player.name !== "");
-
-		await replacePlayers(players, currentSeason(new Date()));
-	});

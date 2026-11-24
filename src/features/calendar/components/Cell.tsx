@@ -1,5 +1,4 @@
 import React from "react";
-import { useSortEvents } from "#/features/calendar/hooks/useSortEvents";
 import { CalendarCard } from "#/features/event-card";
 import { cn } from "#/lib/utils";
 import type { EventTypeMap, League, ScheduleEvent } from "#/types/domain";
@@ -36,9 +35,8 @@ const Cell: React.FC<CellProps> = React.memo(
 		const isSelected = dateKey === selectedDateKey;
 		const isToday = dateKey === todayKey;
 
-		const sortedEvents = useSortEvents(eventsForDay);
-		const visibleEvents = sortedEvents.slice(0, 3);
-		const extraCount = sortedEvents.length - 3;
+		const visibleEvents = eventsForDay.slice(0, 3);
+		const extraCount = eventsForDay.length - 3;
 
 		const selectDay = () => {
 			if (!isOtherMonth) onSelectDay(dateKey);
@@ -79,7 +77,7 @@ const Cell: React.FC<CellProps> = React.memo(
 				>
 					{day}
 				</div>
-				{sortedEvents.length > 0 && (
+				{eventsForDay.length > 0 && (
 					<div className="grid gap-0.5 @min-[700px]:gap-1 min-w-0 w-full">
 						{visibleEvents.map((event) => (
 							<CalendarCard

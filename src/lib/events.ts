@@ -1,3 +1,4 @@
+import { eventDateKey } from "#/lib/month";
 import type {
 	EventsByDate,
 	League,
@@ -34,7 +35,7 @@ export function matchesFilters(
 export function groupByDate(events: ScheduleEvent[]): EventsByDate {
 	const grouped: EventsByDate = {};
 	for (const event of events) {
-		const dateKey = event.date.slice(0, 10);
+		const dateKey = eventDateKey(event);
 		grouped[dateKey] ??= [];
 		grouped[dateKey].push(event);
 	}

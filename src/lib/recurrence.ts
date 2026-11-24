@@ -1,3 +1,4 @@
+import { eventDateKey } from "#/lib/month";
 import type { ScheduleEvent } from "#/types/domain";
 
 export type RecurringEvent = ScheduleEvent & { id: number };
@@ -24,7 +25,7 @@ export function expandRecurring(
 	const occurrences: ScheduleEvent[] = [];
 
 	for (const event of recurring) {
-		const firstDate = event.date.slice(0, 10);
+		const firstDate = eventDateKey(event);
 		if (!isValidCalendarDate(firstDate)) {
 			console.warn(
 				`[expandRecurring] Skipping recurring event ${event.id}: invalid date "${event.date}"`,
