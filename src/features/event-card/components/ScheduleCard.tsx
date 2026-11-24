@@ -12,8 +12,6 @@ import {
 	HOVER_TRANSITION_CLASSES,
 	INACTIVE_ACTIVE_CLASSES,
 	INACTIVE_HOVER_CLASSES,
-	TAG_BASE_CLASSES,
-	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
 import { useEventCard } from "../hooks/useEventCard";
 import type {
@@ -21,6 +19,12 @@ import type {
 	EventCardProps,
 } from "../types/EventCard.types";
 import { getEntryFeeLabel, getStateFlags } from "../utils/EventCard.utils";
+import {
+	DescriptionNote,
+	EventTypeTag,
+	MetaPill,
+	PrizesNote,
+} from "./EventCardParts";
 
 /**
  * EventCard component displays information about a single event.
@@ -147,45 +151,18 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 					{/* Event Format Tags */}
 					<div className="flex flex-wrap gap-1.5 items-center">
-						<span
-							className={cn(
-								TAG_BASE_CLASSES,
-								"px-2.5 py-0.5 rounded-full",
-								`type-${event.eventType}`,
-							)}
-							style={TAG_STYLE_PROPERTIES as React.CSSProperties}
+						<EventTypeTag
+							eventType={event.eventType}
+							className="px-2.5 py-0.5 rounded-full"
 						>
 							{event.eventType}
-						</span>
-						<span
-							className={cn(
-								"text-[9px] font-semibold text-text-muted bg-bg-main px-2",
-								"py-0.5 rounded-full border border-border-color/60 uppercase",
-								"tracking-wider",
-							)}
-						>
-							{gameLabel}
-						</span>
-						<span
-							className={cn(
-								"text-[9px] font-semibold text-text-muted bg-bg-main px-2",
-								"py-0.5 rounded-full border border-border-color/60 uppercase",
-								"tracking-wider",
-							)}
-						>
-							Official
-						</span>
+						</EventTypeTag>
+						<MetaPill>{gameLabel}</MetaPill>
+						<MetaPill>Official</MetaPill>
 					</div>
 
 					{/* Description */}
-					<div
-						className={cn(
-							"text-xs leading-relaxed text-text-muted border-l-2",
-							"border-border-color/80 pl-3 mt-1.5",
-						)}
-					>
-						{description}
-					</div>
+					<DescriptionNote className="mt-1.5">{description}</DescriptionNote>
 				</div>
 			);
 		}
@@ -244,38 +221,16 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 				{/* Event Format Tags */}
 				<div className="flex flex-wrap gap-1.5 items-center">
-					<span
-						className={cn(
-							TAG_BASE_CLASSES,
-							"px-2.5 py-0.5 rounded-full",
-							`type-${event.eventType}`,
-						)}
-						style={TAG_STYLE_PROPERTIES as React.CSSProperties}
+					<EventTypeTag
+						eventType={event.eventType}
+						className="px-2.5 py-0.5 rounded-full"
 					>
 						{isOfficial
 							? `${types[event.eventType]}` + ` ${event.eventType}`
 							: event.eventType}
-					</span>
-					<span
-						className={cn(
-							"text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5",
-							"rounded-full border border-border-color/60 uppercase",
-							"tracking-wider",
-						)}
-					>
-						{gameLabel}
-					</span>
-					{isOfficial && (
-						<span
-							className={cn(
-								"text-[9px] font-semibold text-text-muted bg-bg-main px-2",
-								"py-0.5 rounded-full border border-border-color/60 uppercase",
-								"tracking-wider",
-							)}
-						>
-							Official
-						</span>
-					)}
+					</EventTypeTag>
+					<MetaPill>{gameLabel}</MetaPill>
+					{isOfficial && <MetaPill>Official</MetaPill>}
 				</div>
 
 				{/* Time & Cost Info */}
@@ -303,33 +258,10 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 				{/* Description & Prizes (No nested card structures) */}
 				{description && (
-					<div
-						className={cn(
-							"text-xs leading-relaxed text-text-muted border-l-2",
-							"border-border-color/80 pl-3 mt-1.5",
-						)}
-					>
-						{description}
-					</div>
+					<DescriptionNote className="mt-1.5">{description}</DescriptionNote>
 				)}
 
-				{event.prizes && (
-					<div
-						className={cn(
-							"text-xs leading-relaxed text-text-muted pl-3 border-l-2",
-							"border-amber-500/40 mt-1 flex gap-1.5 items-start",
-						)}
-					>
-						<span
-							className={cn(
-								"text-amber-600 dark:text-amber-400 font-bold shrink-0",
-							)}
-						>
-							Prizes:
-						</span>
-						<span>{event.prizes}</span>
-					</div>
-				)}
+				{event.prizes && <PrizesNote prizes={event.prizes} className="mt-1" />}
 
 				{/* Action Button */}
 				{link && (

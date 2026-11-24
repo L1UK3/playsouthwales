@@ -14,8 +14,6 @@ import {
 	HOVER_TRANSITION_CLASSES,
 	INACTIVE_ACTIVE_CLASSES,
 	INACTIVE_HOVER_CLASSES,
-	TAG_BASE_CLASSES,
-	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
 import { useEventCard } from "../hooks/useEventCard";
 import type {
@@ -23,6 +21,12 @@ import type {
 	EventCardProps,
 } from "../types/EventCard.types";
 import { getEntryFeeLabel, getStateFlags } from "../utils/EventCard.utils";
+import {
+	DescriptionNote,
+	EventTypeTag,
+	PrizesNote,
+	VenueNote,
+} from "./EventCardParts";
 
 /**
  * ListCardProps interface extends EventCardProps and EventCardAdditionalProps to include additional properties specific to the ListCard component.
@@ -243,16 +247,12 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 								Official
 							</span>
 						)}
-						<span
-							className={cn(
-								TAG_BASE_CLASSES,
-								"px-2 py-0.5 rounded",
-								`type-${event.eventType}`,
-							)}
-							style={TAG_STYLE_PROPERTIES as React.CSSProperties}
+						<EventTypeTag
+							eventType={event.eventType}
+							className="px-2 py-0.5 rounded"
 						>
 							{types[event.eventType] ? `${types[event.eventType]} ` : ""}
-						</span>
+						</EventTypeTag>
 						<span
 							className={cn(
 								"text-[9px] text-text-muted/70 transition-transform",
@@ -292,61 +292,18 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 						</div>
 
 						{/* Details (Clean text with left border indicators instead of cards-in-card) */}
-						{description && (
-							<div
-								className={cn(
-									"text-xs leading-relaxed text-text-muted border-l-2",
-									"border-border-color/80 pl-3",
-								)}
-							>
-								{description}
-							</div>
-						)}
+						{description && <DescriptionNote>{description}</DescriptionNote>}
 
-						{event.prizes && (
-							<div
-								className={cn(
-									"text-xs leading-relaxed text-text-muted pl-3 border-l-2",
-									"border-amber-500/40 flex gap-1.5 items-start",
-								)}
-							>
-								<span
-									className={cn(
-										"text-amber-600 dark:text-amber-400 font-bold shrink-0",
-									)}
-								>
-									Prizes:
-								</span>
-								<span>{event.prizes}</span>
-							</div>
-						)}
+						{event.prizes && <PrizesNote prizes={event.prizes} />}
 
 						{league?.directions && (
-							<div
-								className={cn(
-									"text-xs text-text-muted pl-3 border-l-2",
-									"border-border-color/80 flex flex-col gap-0.5",
-								)}
-							>
-								<span className="font-semibold text-text-main">
-									📍 Directions
-								</span>
-								<span className="leading-relaxed">{league.directions}</span>
-							</div>
+							<VenueNote title="📍 Directions">{league.directions}</VenueNote>
 						)}
 
 						{league?.accessibility && (
-							<div
-								className={cn(
-									"text-xs text-text-muted pl-3 border-l-2",
-									"border-border-color/80 flex flex-col gap-0.5",
-								)}
-							>
-								<span className="font-semibold text-text-main">
-									♿ Accessibility
-								</span>
-								<span className="leading-relaxed">{league.accessibility}</span>
-							</div>
+							<VenueNote title="♿ Accessibility">
+								{league.accessibility}
+							</VenueNote>
 						)}
 
 						{/* Action Buttons */}
