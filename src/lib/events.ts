@@ -11,6 +11,11 @@ export interface EventFilters {
 	game?: string;
 }
 
+/** The `YYYY-MM-DD` day an event falls on, ignoring any time suffix. */
+export function eventDateKey(event: Pick<ScheduleEvent, "date">): string {
+	return event.date.slice(0, 10);
+}
+
 export function createLeagueMap(leagues: League[]): LeagueMap {
 	return Object.fromEntries(leagues.map((league) => [league.leagueId, league]));
 }
@@ -34,7 +39,7 @@ export function matchesFilters(
 export function groupByDate(events: ScheduleEvent[]): EventsByDate {
 	const grouped: EventsByDate = {};
 	for (const event of events) {
-		const dateKey = event.date.slice(0, 10);
+		const dateKey = eventDateKey(event);
 		grouped[dateKey] ??= [];
 		grouped[dateKey].push(event);
 	}
