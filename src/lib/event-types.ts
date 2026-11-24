@@ -1,3 +1,4 @@
+import { eventDateKey } from "#/lib/month";
 import type { EventTypeMap, ScheduleEvent } from "#/types/domain";
 
 export const EVENT_TYPE_LABELS: EventTypeMap = {
@@ -40,8 +41,8 @@ export function compareEventsForSchedule(
 	a: ScheduleEvent,
 	b: ScheduleEvent,
 ): number {
-	const dateA = a.date.slice(0, 10);
-	const dateB = b.date.slice(0, 10);
+	const dateA = eventDateKey(a);
+	const dateB = eventDateKey(b);
 	if (dateA !== dateB) {
 		return dateA.localeCompare(dateB);
 	}
@@ -58,3 +59,32 @@ export function sortEventsForSchedule(
 	if (events.length <= 1) return events;
 	return [...events].sort(compareEventsForSchedule);
 }
+
+/**
+ * Date markers are calendar entries for set legality, set release and
+ * regulation changes. They belong to no league and are not played.
+ */
+const DATE_MARKER_TYPES: ReadonlySet<string> = new Set([
+	"LEGALITY",
+	"RELEASE",
+	"REGULATION",
+]);
+
+/** Event types run under official Play! Pokémon sanctioning tiers. */
+const OFFICIAL_TYPES: ReadonlySet<string> = new Set([
+	"CUP",
+	"CHALLENGE",
+	"PRE-RELEASE",
+]);
+
+export const isDateMarkerType = (eventType: string): boolean =>
+	DATE_MARKER_TYPES.has(eventType);
+
+/**
+ * Official events are League Cups, League Challenges, Prereleases and
+ * anything hosted by the Championship Series league.
+ */
+export const isOfficialEvent = (
+	eventType: string,
+	isChampionshipSeries = false,
+): boolean => isChampionshipSeries || OFFICIAL_TYPES.has(eventType);

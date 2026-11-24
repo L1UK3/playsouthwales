@@ -1,51 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import CalendarView from "#/features/calendar/components/CalendarView";
 import Filters from "#/features/calendar/components/Filters";
 import ListView from "#/features/calendar/components/ListView";
 import NavBar from "#/features/calendar/components/NavBar";
 import SelectedDaySection from "#/features/calendar/components/SelectedDaySection";
 import { getSchedule } from "#/features/schedule/schedule.functions";
-import { selectSchedule } from "#/features/schedule/select";
-import { createLeagueMap } from "#/lib/events";
 import {
-	currentMonthKey,
-	formatMonth,
-	isMonthKey,
-	shiftMonth,
-	todayDateKey,
-} from "#/lib/month";
-import { optionalId, optionalString } from "#/lib/search";
+	filtersFromSearch,
+	validateScheduleSearch,
+} from "#/features/schedule/search";
+import { selectSchedule } from "#/features/schedule/select";
+import {
+	type UpdateScheduleSearch,
+	useScheduleNavigation,
+} from "#/features/schedule/useScheduleNavigation";
+import { createLeagueMap } from "#/lib/events";
+import { currentMonthKey, formatMonth } from "#/lib/month";
 import { pageMeta } from "#/lib/seo";
 import { cn } from "#/lib/utils";
 
-interface ScheduleSearch {
-	month?: string;
-	view?: "list";
-	day?: string;
-	league?: number;
-	type?: string;
-	game?: string;
-}
-
-type SwipeDirection = "left" | "right" | "up" | "down" | null;
-
-const SWIPE_CLASS: Record<NonNullable<SwipeDirection>, string> = {
-	left: "animate-swipe-left",
-	right: "animate-swipe-right",
-	up: "animate-swipe-up",
-	down: "animate-swipe-down",
-};
-
 export const Route = createFileRoute("/")({
-	validateSearch: (search): ScheduleSearch => ({
-		month: isMonthKey(search.month) ? search.month : undefined,
-		view: search.view === "list" ? "list" : undefined,
-		day: optionalString(search.day),
-		league: optionalId(search.league),
-		type: optionalString(search.type),
-		game: optionalString(search.game),
-	}),
+	validateSearch: validateScheduleSearch,
 	loaderDeps: ({ search }) => ({ month: search.month ?? currentMonthKey() }),
 	loader: ({ deps }) => getSchedule({ data: deps }),
 	head: () =>
@@ -60,68 +36,36 @@ function SchedulePage() {
 	const search = Route.useSearch();
 	const navigate = Route.useNavigate();
 	const { leagues, types, events } = Route.useLoaderData();
-	const [direction, setDirection] = useState<SwipeDirection>("up");
-
 	const { month } = Route.useLoaderDeps();
-	const view = search.view ?? "calendar";
 	const { monthName, year } = formatMonth(month);
-	const filters = useMemo(
-		() => ({
-			league: search.league,
-			eventType: search.type,
-			game: search.game,
-		}),
-		[search.league, search.type, search.game],
-	);
 
-	const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
-	const schedule = useMemo(
-		() => selectSchedule(events, filters, month, search.day),
-		[events, filters, month, search.day],
-	);
-
-	const updateSearch = (
-		patch: ScheduleSearch,
-		options?: { viewTransition?: boolean },
-	) =>
+	const updateSearch: UpdateScheduleSearch = (patch, options) =>
 		navigate({
 			search: (prev) => ({ ...prev, ...patch }),
 			replace: true,
 			...options,
 		});
+	const {
+		view,
+		swipeClass,
+		goToMonth,
+		goToToday,
+		toggleView,
+		selectDay,
+		changeFilter,
+		clearFilters,
+	} = useScheduleNavigation(month, search, updateSearch);
 
-	const goToMonth = (delta: number) => {
-		setDirection(delta < 0 ? "right" : "left");
-		updateSearch({ month: shiftMonth(month, delta), day: undefined });
-	};
-
-	const goToToday = () => {
-		const today = currentMonthKey();
-		setDirection(today < month ? "right" : today > month ? "left" : null);
-		updateSearch({ month: undefined, day: todayDateKey() });
-	};
-
-	const toggleView = () => {
-		setDirection("down");
-		updateSearch(
-			{ view: view === "calendar" ? "list" : undefined },
-			{ viewTransition: true },
-		);
-	};
-
-	const selectDay = (dateKey: string) =>
-		updateSearch({ day: search.day === dateKey ? undefined : dateKey });
-
-	const changeFilter = (name: keyof typeof filters, value: string) => {
-		if (name === "league") updateSearch({ league: optionalId(value) });
-		if (name === "eventType") updateSearch({ type: optionalString(value) });
-		if (name === "game") updateSearch({ game: optionalString(value) });
-	};
-
-	const clearFilters = () =>
-		updateSearch({ league: undefined, type: undefined, game: undefined });
-
-	const swipeClass = direction ? SWIPE_CLASS[direction] : "";
+	const { league, type, game } = search;
+	const filters = useMemo(
+		() => filtersFromSearch({ league, type, game }),
+		[league, type, game],
+	);
+	const leagueMap = useMemo(() => createLeagueMap(leagues), [leagues]);
+	const schedule = useMemo(
+		() => selectSchedule(events, filters, month, search.day),
+		[events, filters, month, search.day],
+	);
 
 	return (
 		<div className="flex flex-col animate-swipe-up">
@@ -173,7 +117,6 @@ function SchedulePage() {
 							)}
 						>
 							<SelectedDaySection
-								month={month}
 								selectedDateKey={search.day}
 								selectedDayEvents={schedule.sidebar}
 								leagueMap={leagueMap}

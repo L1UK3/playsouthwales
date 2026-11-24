@@ -3,8 +3,12 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import activeMarkerUrl from "#/assets/activeMarker.glb?url";
+import {
+	createMarkerMotion,
+	markerMetrics,
+	type Point,
+} from "#/features/calendar/utils/markerMotion";
 // import { playMarkerPop } from '#/features/calendar/utils/playMarkerPop';
-import { getParams } from "#/features/calendar/utils/getParams";
 
 /**
  * Properties for the ActiveMarkerOverlay component.
@@ -18,24 +22,41 @@ export interface ActiveMarkerOverlayProps {
 	todayKey: string;
 }
 
-const JUMP_DURATION = 480;
-const IDLE_SPEED = 0.0028;
 const ROTATION_SPEED = 1.4;
 
-const easeInOutQuad = (t: number) =>
-	t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+/** Loads the marker model, normalised to unit size and centred on the origin. */
+function loadMarkerModel(onLoad: (model: THREE.Object3D) => void) {
+	new GLTFLoader().load(activeMarkerUrl, (gltf) => {
+		const model = gltf.scene;
+		const box = new THREE.Box3().setFromObject(model);
+		const size = new THREE.Vector3();
+		const center = new THREE.Vector3();
+		box.getSize(size);
+		box.getCenter(center);
 
-interface Point {
-	x: number;
-	y: number;
+		const scale = 1 / (Math.max(size.x, size.y, size.z) || 1);
+		model.scale.setScalar(scale);
+		model.position.sub(center.multiplyScalar(scale));
+		onLoad(model);
+	});
+}
+
+function disposeScene(scene: THREE.Scene) {
+	scene.traverse((obj) => {
+		if (!(obj instanceof THREE.Mesh)) return;
+		obj.geometry.dispose();
+		const materials = Array.isArray(obj.material)
+			? obj.material
+			: [obj.material];
+		for (const material of materials) material.dispose();
+	});
 }
 
 /**
  * ActiveMarkerOverlay renders a small 3D ActiveMarker that hovers above the calendar grid,
  * spinning gently and hopping in an arc to sit above whichever day is selected.
- * @param {ActiveMarkerOverlayProps} props - The properties passed to the component.
- * @returns {JSX.Element} A transparent canvas overlaid on the calendar grid.
+ * Motion lives in `createMarkerMotion`; this component only adapts it to
+ * three.js, the DOM and requestAnimationFrame.
  */
 const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 	containerRef,
@@ -75,11 +96,11 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 		const ball = new THREE.Group();
 		scene.add(ball);
 
-		let viewWidth = 1;
+		const motion = createMarkerMotion(/* { onHop: playMarkerPop } */);
 		let viewHeight = 1;
 
-		// The resting spot for the active day, in DOM pixel space (origin top-left,
-		// y-down) -- the top-right "whitespace" of the cell, beside the date number.
+		// The resting spot for the active day in camera space (y-up): the
+		// top-right "whitespace" of the cell, beside the date number.
 		const computeRestSpot = (): Point | null => {
 			const cell = container.querySelector<HTMLElement>(
 				`[data-date-key="${activeKeyRef.current}"]`,
@@ -88,31 +109,24 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 
 			const cellRect = cell.getBoundingClientRect();
 			const canvasRect = canvas.getBoundingClientRect();
-
-			const { ballDiameter, rightMargin, topMargin } = getParams();
+			const { ballDiameter, rightMargin, topMargin } = markerMetrics(
+				window.innerWidth,
+			);
 
 			return {
 				x: cellRect.right - canvasRect.left - rightMargin - ballDiameter / 2,
-				y: cellRect.top - canvasRect.top + topMargin,
+				y: viewHeight - (cellRect.top - canvasRect.top + topMargin),
 			};
 		};
 
-		// Three.js camera space here is y-up; DOM rects are y-down.
-		const toCameraSpace = (p: Point): Point => ({
-			x: p.x,
-			y: viewHeight - p.y,
-		});
-
-		let base: Point | null = null;
-		let jumpFrom: Point = { x: 0, y: 0 };
-		let jumpStart = 0;
-		let jumping = false;
-		let queued: Point | null = null;
-		let lastKey = activeKeyRef.current;
+		const snap = (spot: Point) => {
+			motion.snap(spot);
+			ball.position.set(spot.x, spot.y, 0);
+		};
 
 		const resize = () => {
 			const rect = canvas.getBoundingClientRect();
-			viewWidth = Math.max(rect.width, 1);
+			const viewWidth = Math.max(rect.width, 1);
 			viewHeight = Math.max(rect.height, 1);
 
 			renderer.setSize(viewWidth, viewHeight, false);
@@ -124,12 +138,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 
 			// Snap to the (possibly moved) rest spot rather than animating a jump.
 			const spot = computeRestSpot();
-			if (spot) {
-				base = toCameraSpace(spot);
-				jumping = false;
-				queued = null;
-				ball.position.set(base.x, base.y, 0);
-			}
+			if (spot) snap(spot);
 		};
 
 		const resizeObserver = new ResizeObserver(resize);
@@ -137,23 +146,8 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 
 		let modelReady = false;
 		let cancelled = false;
-
-		new GLTFLoader().load(activeMarkerUrl, (gltf) => {
+		loadMarkerModel((model) => {
 			if (cancelled) return;
-
-			const model = gltf.scene;
-			const box = new THREE.Box3().setFromObject(model);
-			const size = new THREE.Vector3();
-			const center = new THREE.Vector3();
-			box.getSize(size);
-			box.getCenter(center);
-
-			const maxDim = Math.max(size.x, size.y, size.z) || 1;
-			const scale = 1 / maxDim; // Normalize to size 1
-
-			model.scale.setScalar(scale);
-			model.position.sub(center.multiplyScalar(scale));
-
 			ball.add(model);
 			modelReady = true;
 		});
@@ -161,6 +155,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 		resize();
 
 		let frameId: number;
+		let lastKey = activeKeyRef.current;
 
 		const animate = (now: number) => {
 			frameId = requestAnimationFrame(animate);
@@ -173,75 +168,25 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 			// changes (or the very first time) -- recomputing it every frame
 			// picks up incidental layout shifts (e.g. cell hover transitions)
 			// and turns those into spurious little hops.
-			if (activeKeyRef.current !== lastKey || !base) {
-				const dateChanged = activeKeyRef.current !== lastKey;
+			const dateChanged = activeKeyRef.current !== lastKey;
+			if (dateChanged || !motion.hasRest()) {
 				lastKey = activeKeyRef.current;
-
 				const spot = computeRestSpot();
 				if (spot) {
-					const target = toCameraSpace(spot);
-					if (!base || !dateChanged) {
-						base = target;
-						queued = null;
-						ball.position.set(target.x, target.y, 0);
-					} else if (jumping) {
-						// A hop is already in flight -- queue this destination
-						// (replacing any previously queued one) instead of
-						// redirecting mid-air, which is what made spam-clicking
-						// look like the ball was freezing/freaking out.
-						queued = target;
-					} else {
-						jumpFrom = { x: ball.position.x, y: ball.position.y };
-						base = target;
-						jumping = true;
-						jumpStart = now;
-						//playMarkerPop();
-					}
+					if (!motion.hasRest() || !dateChanged) snap(spot);
+					else motion.hopTo(spot, now);
 				}
 			}
 
-			if (!base) {
-				renderer.render(scene, camera);
-				return;
+			const frame = motion.frame(
+				now,
+				markerMetrics(window.innerWidth),
+				viewHeight,
+			);
+			if (frame) {
+				ball.position.set(frame.x, frame.y, 0);
+				ball.scale.setScalar(frame.scale);
 			}
-
-			const { ballDiameter, arcHeight, idleAmplitude } = getParams();
-
-			let displayX = base.x;
-			let displayY = base.y;
-			let scaleMod = 1;
-
-			if (jumping) {
-				const t = Math.min((now - jumpStart) / JUMP_DURATION, 1);
-				const eased = easeInOutQuad(t);
-				displayX = lerp(jumpFrom.x, base.x, eased);
-				displayY =
-					lerp(jumpFrom.y, base.y, eased) + Math.sin(Math.PI * t) * arcHeight;
-				scaleMod = 1 + Math.sin(Math.PI * t) * 0.18;
-
-				if (t >= 1) {
-					jumping = false;
-					if (queued) {
-						jumpFrom = base;
-						base = queued;
-						queued = null;
-						jumping = true;
-						jumpStart = now;
-						//playMarkerPop();
-					}
-				}
-			} else {
-				displayY += Math.sin(now * IDLE_SPEED) * idleAmplitude;
-			}
-
-			// Keep the ball from arcing above the canvas's top edge -- the grid
-			// clips overflow, so for top-row cells the arc would otherwise get
-			// visibly cut off mid-hop.
-			displayY = Math.min(displayY, viewHeight - ballDiameter / 2);
-
-			ball.position.set(displayX, displayY, 0);
-			ball.scale.setScalar(ballDiameter * scaleMod);
-
 			renderer.render(scene, camera);
 		};
 		frameId = requestAnimationFrame(animate);
@@ -251,19 +196,7 @@ const ActiveMarkerOverlay: React.FC<ActiveMarkerOverlayProps> = ({
 			cancelAnimationFrame(frameId);
 			resizeObserver.disconnect();
 			renderer.dispose();
-			scene.traverse((obj) => {
-				if (obj instanceof THREE.Mesh) {
-					obj.geometry.dispose();
-					const material = obj.material;
-					if (Array.isArray(material)) {
-						material.forEach((m) => {
-							m.dispose();
-						});
-					} else {
-						material.dispose();
-					}
-				}
-			});
+			disposeScene(scene);
 		};
 	}, [containerRef]);
 

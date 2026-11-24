@@ -2,6 +2,13 @@ import type React from "react";
 import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 
+/** The free-text venue details, in the order they are listed. */
+const DETAILS = [
+	{ key: "location", label: "Location" },
+	{ key: "directions", label: "Directions" },
+	{ key: "accessibility", label: "Accessibility" },
+] as const satisfies readonly { key: keyof League; label: string }[];
+
 interface LeagueInfoProps {
 	league: League;
 }
@@ -10,40 +17,21 @@ interface LeagueInfoProps {
  * LeagueInfo lists a league's location, directions, accessibility notes, and
  * external links. LeagueCard and the mobile map sheet both use it.
  */
-export const LeagueInfo: React.FC<LeagueInfoProps> = ({ league }) => (
+const LeagueInfo: React.FC<LeagueInfoProps> = ({ league }) => (
 	<div className="flex flex-col gap-2.5 mt-0.5">
-		{league.location && (
-			<div
-				className={cn(
-					"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
-					"flex-col gap-0.5",
-				)}
-			>
-				<span className="font-semibold text-text-main">Location</span>
-				<span className="leading-relaxed">{league.location}</span>
-			</div>
-		)}
-		{league.directions && (
-			<div
-				className={cn(
-					"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
-					"flex-col gap-0.5",
-				)}
-			>
-				<span className="font-semibold text-text-main">Directions</span>
-				<span className="leading-relaxed">{league.directions}</span>
-			</div>
-		)}
-		{league.accessibility && (
-			<div
-				className={cn(
-					"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
-					"flex-col gap-0.5",
-				)}
-			>
-				<span className="font-semibold text-text-main">Accessibility</span>
-				<span className="leading-relaxed">{league.accessibility}</span>
-			</div>
+		{DETAILS.map(({ key, label }) =>
+			league[key] ? (
+				<div
+					key={key}
+					className={cn(
+						"text-xs text-text-muted pl-3 border-l-2 border-border-color/80 flex",
+						"flex-col gap-0.5",
+					)}
+				>
+					<span className="font-semibold text-text-main">{label}</span>
+					<span className="leading-relaxed">{league[key]}</span>
+				</div>
+			) : null,
 		)}
 
 		{/* External Website & Event Links */}
