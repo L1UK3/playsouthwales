@@ -14,40 +14,26 @@ import { withNulls } from "#/db/utils";
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
 import { isValidCalendarDate } from "#/lib/recurrence";
+import type { League, ScheduleEvent } from "#/types/domain";
 
 /** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
-export type EventId = number | string;
+export type EventId = ScheduleEvent["id"];
 
-export interface LeagueSubmitInput {
+/** A league as the form sends it; `leagueId` is absent when creating. */
+export type LeagueSubmitInput = Omit<League, "leagueId"> & {
 	leagueId?: number;
-	name: string;
-	location?: string;
-	latitude?: number;
-	longitude?: number;
-	brandColor?: string;
-	logo?: string;
-	website?: string;
-	eventLink?: string;
-	socialLink?: string;
-	directions?: string;
-	accessibility?: string;
-	isChampionshipSeries?: boolean;
-}
+};
 
-export interface EventSubmitInput {
-	id?: EventId;
-	leagueId: number;
-	name: string;
-	date: string;
-	startTime?: string;
-	eventType: string;
-	game: string;
-	ticketLink?: string;
-	description?: string;
-	prizes?: string;
-	entryFee?: string;
-	isRecurring?: boolean;
-}
+/** An event as the form sends it; `id` is absent when creating. */
+export type EventSubmitInput = Omit<
+	ScheduleEvent,
+	| "id"
+	| "pokedataGuid"
+	| "leagueName"
+	| "recurringEventId"
+	| "excludedDates"
+	| "isExcluded"
+> & { id?: EventId };
 
 /** Splits an event id into the stored row id and, for occurrences, the date. */
 function parseEventId(id: EventId): { rowId: number; occurrenceDate?: string } {
