@@ -5,7 +5,6 @@ import { FormDialog } from "./AdminDialog";
 import { Field, TextArea, TextInput, useFormDraft } from "./FormField";
 
 export interface LeagueFormModalProps {
-	isOpen: boolean;
 	onClose: () => void;
 	onSubmit: (
 		data: Omit<League, "leagueId"> & { leagueId?: number; id?: number },
@@ -32,7 +31,6 @@ function toDraft(league?: League | null) {
 }
 
 export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
-	isOpen,
 	onClose,
 	onSubmit,
 	initialData,
@@ -41,8 +39,6 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 
 	// Not editable via the form: preserved from initialData.
 	const championship = initialData?.isChampionshipSeries ?? false;
-
-	if (!isOpen) return null;
 
 	const handleSubmit = () => {
 		const leagueId = draft.leagueId ? parseInt(draft.leagueId, 10) : undefined;

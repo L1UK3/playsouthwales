@@ -175,7 +175,6 @@ function AdminPage() {
 
 			{modal?.kind === "league" && (
 				<LeagueFormModal
-					isOpen
 					onClose={closeModal}
 					onSubmit={(data) => commitOrAlert(() => handleLeagueSubmit({ data }))}
 					initialData={modal.league ?? null}
@@ -183,7 +182,6 @@ function AdminPage() {
 			)}
 			{modal?.kind === "event" && (
 				<EventFormModal
-					isOpen
 					onClose={closeModal}
 					onSubmit={(data) =>
 						commitOrAlert(() =>

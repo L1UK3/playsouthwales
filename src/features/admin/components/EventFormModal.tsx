@@ -5,7 +5,6 @@ import { FormDialog } from "./AdminDialog";
 import { Field, Select, TextArea, TextInput, useFormDraft } from "./FormField";
 
 export interface EventFormModalProps {
-	isOpen: boolean;
 	onClose: () => void;
 	onSubmit: (data: Omit<ScheduleEvent, "id">) => void | Promise<void>;
 	initialData?: ScheduleEvent | null;
@@ -82,7 +81,6 @@ function OptionList({ options }: { options: Option[] }) {
 }
 
 export const EventFormModal: React.FC<EventFormModalProps> = ({
-	isOpen,
 	onClose,
 	onSubmit,
 	initialData,
@@ -102,8 +100,6 @@ export const EventFormModal: React.FC<EventFormModalProps> = ({
 		prizes: initialData?.prizes ?? "",
 		isRecurring: initialData?.isRecurring ?? false,
 	}));
-
-	if (!isOpen) return null;
 
 	const handleSubmit = () =>
 		onSubmit({
