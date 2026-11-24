@@ -27,9 +27,7 @@ export function MobileNavBar() {
 				className={cn(
 					"flex flex-col items-center gap-1 py-1 px-3 text-text-muted",
 					"no-underline transition-colors duration-150",
-					path.startsWith("/schedule")
-						? "text-primary!"
-						: "hover:text-text-main",
+					path === "/" ? "text-primary!" : "hover:text-text-main",
 				)}
 			>
 				<Calendar
