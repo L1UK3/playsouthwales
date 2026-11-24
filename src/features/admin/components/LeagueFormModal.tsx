@@ -1,14 +1,13 @@
 ﻿import type React from "react";
 import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
+import type { LeagueSubmitInput } from "../admin.functions";
 import { FormDialog } from "./AdminDialog";
 import { Field, TextArea, TextInput, useFormDraft } from "./FormField";
 
-export interface LeagueFormModalProps {
+interface LeagueFormModalProps {
 	onClose: () => void;
-	onSubmit: (
-		data: Omit<League, "leagueId"> & { leagueId?: number; id?: number },
-	) => void | Promise<void>;
+	onSubmit: (data: LeagueSubmitInput) => void | Promise<void>;
 	initialData?: League | null;
 }
 
@@ -30,7 +29,7 @@ function toDraft(league?: League | null) {
 	};
 }
 
-export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
+const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 	onClose,
 	onSubmit,
 	initialData,
@@ -45,7 +44,6 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 		return onSubmit({
 			...draft,
 			leagueId,
-			id: leagueId,
 			latitude: draft.latitude ? parseFloat(draft.latitude) : undefined,
 			longitude: draft.longitude ? parseFloat(draft.longitude) : undefined,
 			directions: draft.directions || undefined,
