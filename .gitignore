@@ -569,3 +569,4 @@ worker-configuration.d.ts
 
 .claude/
 .supabase-export/
+.seed/
