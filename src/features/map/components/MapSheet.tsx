@@ -18,7 +18,7 @@ interface MapSheetProps {
  * MapSheet is a bottom sheet that slides up over the mobile map.
  * It takes focus when it opens, closes on Escape, and hands focus back when it closes.
  */
-export const MapSheet: React.FC<MapSheetProps> = ({
+const MapSheet: React.FC<MapSheetProps> = ({
 	title,
 	leading,
 	onClose,

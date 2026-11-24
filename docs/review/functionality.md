@@ -34,15 +34,13 @@ predates the admin work, but the admin page cannot load until it is fixed.
 `commit` in `src/routes/_authed/admin.tsx` awaits the action and only then
 closes the modal and invalidates. If the action throws, the rejection reaches
 `LeagueFormModal` and `EventFormModal`, which ignore the returned promise. The
-modal stays open and the user gets no message. `NationalRankingsModal` is the
-only caller that catches the error.
+modal stays open and the user gets no message.
 
 ### 3. Duplicate names break the rankings save
 
-`replacePlayers` builds one insert per incoming row. Duplicate names in the
-submission produce two inserts for a name that is not yet stored. The second
-violates `UNIQUE(name)` and the batch rolls back. Legacy `update_top20`
-collapsed duplicates by name, last one wins.
+Resolved by removal. The admin rankings save path (`NationalRankingsModal`,
+`handleNationalRankingsSubmit`, `replacePlayers`) was unreachable and has been
+deleted.
 
 ### 4. Editing an occurrence rewrites the series
 

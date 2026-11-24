@@ -31,6 +31,7 @@
     "lint": "biome lint --write",
     "check": "biome check --write",
     "typecheck": "tsc --noEmit",
+    "test": "tsx --test \"tests/**/*.test.ts\" \"src/**/*.test.ts\"",
     "deploy": "npm run build && wrangler deploy",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply playsouthwales --local",
@@ -66,6 +67,7 @@
     "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "^6.3.0",
     "drizzle-kit": "^1.0.0-rc.5",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.8",
     "wrangler": "^4.70.0"
