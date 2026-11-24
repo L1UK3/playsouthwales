@@ -8,13 +8,11 @@ import {
 	handleEventSubmit,
 	handleExcludeEvent,
 	handleLeagueSubmit,
-	handleNationalRankingsSubmit,
 	handleUnexcludeEvent,
 } from "#/features/admin/admin.functions";
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
-import NationalRankingsModal from "#/features/admin/components/NationalRankingsModal";
 import ListView from "#/features/calendar/components/ListView";
 import NavBar from "#/features/calendar/components/NavBar";
 import LeagueSelector from "#/features/league-selector/components/LeagueSelector";
@@ -38,7 +36,6 @@ interface AdminSearch {
 type AdminModal =
 	| { kind: "league"; league?: League }
 	| { kind: "event"; event?: ScheduleEvent }
-	| { kind: "nationalRankings" }
 	| null;
 
 export const Route = createFileRoute("/_authed/admin")({
@@ -88,6 +85,12 @@ function AdminPage() {
 			console.error("Admin save failed", error);
 			window.alert(error instanceof Error ? error.message : "Save failed");
 		});
+
+	/** Runs an event-id server function for the clicked event. */
+	const onEvent =
+		(action: (input: { data: { id: ScheduleEvent["id"] } }) => Promise<void>) =>
+		(event: ScheduleEvent) =>
+			commitOrAlert(() => action({ data: { id: event.id } }));
 
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
@@ -154,19 +157,9 @@ function AdminPage() {
 						onEdit={(event: ScheduleEvent) =>
 							setModal({ kind: "event", event })
 						}
-						onDelete={(event: ScheduleEvent) =>
-							commitOrAlert(() => handleDeleteEvent({ data: { id: event.id } }))
-						}
-						onExclude={(event: ScheduleEvent) =>
-							commitOrAlert(() =>
-								handleExcludeEvent({ data: { id: event.id } }),
-							)
-						}
-						onUnexclude={(event: ScheduleEvent) =>
-							commitOrAlert(() =>
-								handleUnexcludeEvent({ data: { id: event.id } }),
-							)
-						}
+						onDelete={onEvent(handleDeleteEvent)}
+						onExclude={onEvent(handleExcludeEvent)}
+						onUnexclude={onEvent(handleUnexcludeEvent)}
 					/>
 				</ActiveLeaguePanel>
 			) : (
@@ -182,7 +175,6 @@ function AdminPage() {
 
 			{modal?.kind === "league" && (
 				<LeagueFormModal
-					isOpen
 					onClose={closeModal}
 					onSubmit={(data) => commitOrAlert(() => handleLeagueSubmit({ data }))}
 					initialData={modal.league ?? null}
@@ -190,14 +182,13 @@ function AdminPage() {
 			)}
 			{modal?.kind === "event" && (
 				<EventFormModal
-					isOpen
 					onClose={closeModal}
 					onSubmit={(data) =>
 						commitOrAlert(() =>
 							handleEventSubmit({
 								data: {
 									...data,
-									id: modal.kind === "event" ? modal.event?.id : undefined,
+									id: modal.event?.id,
 								},
 							}),
 						)
@@ -205,16 +196,6 @@ function AdminPage() {
 					initialData={modal.event ?? null}
 					leagueId={search.league ?? 0}
 					isChampionshipLeague={activeLeague?.isChampionshipSeries ?? false}
-				/>
-			)}
-			{modal?.kind === "nationalRankings" && (
-				<NationalRankingsModal
-					isOpen
-					onClose={closeModal}
-					onSubmit={(players) =>
-						commit(() => handleNationalRankingsSubmit({ data: { players } }))
-					}
-					initialPlayers={[]}
 				/>
 			)}
 		</div>

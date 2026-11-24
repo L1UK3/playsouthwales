@@ -101,7 +101,7 @@ function RankingsPage() {
 						</select>
 					</div>
 				</div>
-				<Leaderboard season={season} players={players} />
+				<Leaderboard players={players} />
 			</section>
 		</div>
 	);

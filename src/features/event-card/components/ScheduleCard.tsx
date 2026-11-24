@@ -1,20 +1,24 @@
 /* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4 */
 /* Hallmark · component: card · genre: modern-minimal · theme: custom (design.md)
- * states: default · hover · focus · active · disabled · loading · error · success
+ * states: default · hover · active
  * contrast: pass (46–50)
  */
 import React from "react";
 import { cn } from "#/lib/utils";
 import {
-	TAG_BASE_CLASSES,
-	TAG_STYLE_PROPERTIES,
+	ACTIVE_CLASSES,
+	CARD_BASE_CLASSES,
+	HOVER_CLASSES,
 } from "../constants/EventCard.constants";
 import { useEventCard } from "../hooks/useEventCard";
-import type {
-	EventCardAdditionalProps,
-	EventCardProps,
-} from "../types/EventCard.types";
+import type { EventCardProps } from "../types/EventCard.types";
 import { getEntryFeeLabel } from "../utils/EventCard.utils";
+import {
+	DescriptionNote,
+	EventTypeTag,
+	MetaPill,
+	PrizesNote,
+} from "./EventCardParts";
 
 /**
  * EventCard component displays information about a single event.
@@ -22,87 +26,43 @@ import { getEntryFeeLabel } from "../utils/EventCard.utils";
  * @param event {Event} - The event object containing event details.
  * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
  * @param types {EventTypeMap} - A mapping of event types to their corresponding properties.
- * @param state {EventCardAdditionalProps['state']} - The current state of the card.
  * @returns A React component rendering the event card with appropriate styles and states.
  */
-const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
-	React.memo(({ event, leagueMap, types, state }) => {
+const EventCard: React.FC<EventCardProps> = React.memo(
+	({ event, leagueMap, types }) => {
 		const {
 			description,
 			league,
 			leagueName,
-			storeColor,
+			style,
 			isChampionship,
-			stateFlags,
-			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, state, "schedule");
-		const { isLoading, isError, isReleaseCard } = stateFlags;
+			isDateMarker,
+			gameLabel,
+			themeClasses,
+		} = useEventCard(event, leagueMap);
+
+		const cardClasses = cn(
+			"flex flex-col gap-3 p-4 rounded-xl",
+			CARD_BASE_CLASSES,
+			themeClasses,
+			HOVER_CLASSES,
+			ACTIVE_CLASSES,
+			isDateMarker &&
+				cn(
+					"bg-bg-card-release border-2 border-black",
+					"shadow-[0_0_8px_rgba(0,0,0,0.15)]",
+				),
+		);
 		const links = [event?.ticketLink, league?.website]
 			.map((value) => value?.trim())
 			.filter((value): value is string => Boolean(value));
 
 		const link = links[0] ?? null;
 
-		// Loading state (Skeleton layout)
-		if (isLoading) {
+		if (isDateMarker) {
 			return (
-				<div
-					className={cn(
-						"flex flex-col gap-3 p-4 rounded-xl border border-border-color/40",
-						"bg-bg-card shadow-sm animate-pulse w-full max-w-sm",
-					)}
-				>
-					<div className="flex items-center gap-3">
-						<div className="size-9 rounded-lg bg-bg-main shrink-0" />
-						<div className="flex flex-col gap-1.5 grow">
-							<div className="h-3 w-16 bg-bg-main rounded" />
-							<div className="h-4 w-32 bg-bg-main rounded" />
-						</div>
-					</div>
-					<div className="flex gap-2 mt-1">
-						<div className="h-5 w-20 bg-bg-main rounded-full" />
-						<div className="h-5 w-12 bg-bg-main rounded-full" />
-					</div>
-					<div className="h-3 w-full bg-bg-main rounded mt-1.5" />
-					<div className="h-3 w-3/4 bg-bg-main rounded" />
-					<div className="h-9 w-full bg-bg-main rounded-md mt-3" />
-				</div>
-			);
-		}
-
-		// Error state fallback banner inside card
-		if (isError) {
-			return (
-				<div
-					className={cn(
-						"flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20",
-						"bg-red-500/2 shadow-sm w-full max-w-sm",
-					)}
-				>
-					<div
-						className={cn(
-							"flex items-center gap-2 text-red-600 dark:text-red-400",
-							"font-bold text-sm",
-						)}
-					>
-						<span></span>
-						<span>Failed to load event details</span>
-					</div>
-					<p className="text-xs text-text-muted leading-relaxed">
-						Something went wrong while retrieving info for this event. Please
-						try again.
-					</p>
-				</div>
-			);
-		}
-
-		if (isReleaseCard) {
-			return (
-				<div
-					className={cardClasses}
-					style={{ "--store-color": storeColor } as React.CSSProperties}
-				>
+				<div className={cardClasses} style={style}>
 					<div className="flex items-start gap-3">
 						{/* Metadata & Title */}
 						<div className="flex flex-col gap-0.5 grow min-w-0">
@@ -119,54 +79,24 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 					{/* Event Format Tags */}
 					<div className="flex flex-wrap gap-1.5 items-center">
-						<span
-							className={cn(
-								TAG_BASE_CLASSES,
-								"px-2.5 py-0.5 rounded-full",
-								`type-${event.eventType}`,
-							)}
-							style={TAG_STYLE_PROPERTIES as React.CSSProperties}
+						<EventTypeTag
+							eventType={event.eventType}
+							className="px-2.5 py-0.5 rounded-full"
 						>
 							{event.eventType}
-						</span>
-						<span
-							className={cn(
-								"text-[9px] font-semibold text-text-muted bg-bg-main px-2",
-								"py-0.5 rounded-full border border-border-color/60 uppercase",
-								"tracking-wider",
-							)}
-						>
-							{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
-						</span>
-						<span
-							className={cn(
-								"text-[9px] font-semibold text-text-muted bg-bg-main px-2",
-								"py-0.5 rounded-full border border-border-color/60 uppercase",
-								"tracking-wider",
-							)}
-						>
-							Official
-						</span>
+						</EventTypeTag>
+						<MetaPill>{gameLabel}</MetaPill>
+						<MetaPill>Official</MetaPill>
 					</div>
 
 					{/* Description */}
-					<div
-						className={cn(
-							"text-xs leading-relaxed text-text-muted border-l-2",
-							"border-border-color/80 pl-3 mt-1.5",
-						)}
-					>
-						{description}
-					</div>
+					<DescriptionNote className="mt-1.5">{description}</DescriptionNote>
 				</div>
 			);
 		}
 
 		return (
-			<div
-				className={cardClasses}
-				style={{ "--store-color": storeColor } as React.CSSProperties}
-			>
+			<div className={cardClasses} style={style}>
 				<div className="flex items-start gap-3">
 					{/* League Logo */}
 					{league?.logo ? (
@@ -219,38 +149,16 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 				{/* Event Format Tags */}
 				<div className="flex flex-wrap gap-1.5 items-center">
-					<span
-						className={cn(
-							TAG_BASE_CLASSES,
-							"px-2 sm:px-2.5 py-0.5 rounded-full whitespace-nowrap",
-							`type-${event.eventType}`,
-						)}
-						style={TAG_STYLE_PROPERTIES as React.CSSProperties}
+					<EventTypeTag
+						eventType={event.eventType}
+						className="px-2 sm:px-2.5 py-0.5 rounded-full whitespace-nowrap"
 					>
 						{isOfficial
 							? `${types[event.eventType]}` + ` ${event.eventType}`
 							: event.eventType}
-					</span>
-					<span
-						className={cn(
-							"text-[9px] font-semibold text-text-muted bg-bg-main px-2 py-0.5",
-							"rounded-full border border-border-color/60 uppercase",
-							"tracking-wider",
-						)}
-					>
-						{event.game === "ALL" ? "TCG, VGC, GO" : event.game}
-					</span>
-					{isOfficial && (
-						<span
-							className={cn(
-								"text-[9px] font-semibold text-text-muted bg-bg-main px-2",
-								"py-0.5 rounded-full border border-border-color/60 uppercase",
-								"tracking-wider",
-							)}
-						>
-							Official
-						</span>
-					)}
+					</EventTypeTag>
+					<MetaPill>{gameLabel}</MetaPill>
+					{isOfficial && <MetaPill>Official</MetaPill>}
 				</div>
 
 				{/* Time & Cost Info */}
@@ -278,33 +186,10 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 
 				{/* Description & Prizes (No nested card structures) */}
 				{description && (
-					<div
-						className={cn(
-							"text-xs leading-relaxed text-text-muted border-l-2",
-							"border-border-color/80 pl-3 mt-1.5",
-						)}
-					>
-						{description}
-					</div>
+					<DescriptionNote className="mt-1.5">{description}</DescriptionNote>
 				)}
 
-				{event.prizes && (
-					<div
-						className={cn(
-							"text-xs leading-relaxed text-text-muted pl-3 border-l-2",
-							"border-amber-500/40 mt-1 flex gap-1.5 items-start",
-						)}
-					>
-						<span
-							className={cn(
-								"text-amber-600 dark:text-amber-400 font-bold shrink-0",
-							)}
-						>
-							Prizes:
-						</span>
-						<span>{event.prizes}</span>
-					</div>
-				)}
+				{event.prizes && <PrizesNote prizes={event.prizes} className="mt-1" />}
 
 				{/* Action Button */}
 				{link && (
@@ -319,6 +204,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 				)}
 			</div>
 		);
-	});
+	},
+);
 
 export default EventCard;

@@ -11,20 +11,3 @@ export interface EventCardProps {
 	leagueMap: Record<number, League>;
 	types: EventTypeMap;
 }
-
-/**
- * Additional visual states that can be forced on event cards.
- * @param state {string} - The visual state to apply to the event card.
- * Can be one of 'default', 'hover', 'focus', 'active', 'disabled', 'loading', 'error', or 'success'.
- */
-export interface EventCardAdditionalProps {
-	state?:
-		| "default"
-		| "hover"
-		| "focus"
-		| "active"
-		| "disabled"
-		| "loading"
-		| "error"
-		| "success";
-}
