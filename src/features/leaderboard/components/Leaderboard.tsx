@@ -1,7 +1,6 @@
 import React from "react";
 import { cn } from "#/lib/utils";
 import type { LeaderboardPosition } from "#/types/domain";
-import { useLeaderboard } from "../hooks/useLeaderboard";
 import {
 	LeaderboardPodium,
 	type LeaderboardRanking as LeaderboardPodiumRanking,
@@ -21,7 +20,6 @@ const SKELETON_ROW_KEYS = [
 	"skeleton-7",
 	"skeleton-8",
 ];
-const EMPTY_PLAYERS: LeaderboardPosition[] = [];
 
 const COLUMN_COUNT = 3;
 
@@ -32,8 +30,7 @@ const PODIUM_STYLES: Record<number, string> = {
 };
 
 export interface LeaderboardProps {
-	season?: string;
-	players?: LeaderboardPosition[];
+	players: LeaderboardPosition[];
 	isLoading?: boolean;
 }
 
@@ -50,15 +47,9 @@ const LeaderboardMetrics: React.FC<{ player: LeaderboardPosition }> = ({
 );
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
-	season,
-	players: propPlayers,
-	isLoading: propIsLoading,
+	players: rawPlayers,
+	isLoading = false,
 }) => {
-	const { data: fetchedPlayers = EMPTY_PLAYERS, isLoading: queryIsLoading } =
-		useLeaderboard(season, propPlayers !== undefined);
-
-	const rawPlayers = propPlayers ?? fetchedPlayers;
-
 	const sortedPlayers: LeaderboardPosition[] = React.useMemo(() => {
 		return [...rawPlayers].sort((a, b) => {
 			const cpDiff = (b.cp ?? 0) - (a.cp ?? 0);
@@ -67,7 +58,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 		});
 	}, [rawPlayers]);
 
-	const isLoading = propIsLoading ?? queryIsLoading;
 	const podiumRankings = React.useMemo<LeaderboardPodiumRanking[]>(
 		() =>
 			sortedPlayers.slice(0, 3).map((player, index) => ({
@@ -131,7 +121,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 
 					<tbody className="divide-y divide-border-color/50">
 						{isLoading ? (
-							SKELETON_ROW_KEYS.map((key) => <SkeletonRow key={key} isGlobal />)
+							SKELETON_ROW_KEYS.map((key) => <SkeletonRow key={key} />)
 						) : sortedPlayers.length === 0 ? (
 							<tr>
 								<td
