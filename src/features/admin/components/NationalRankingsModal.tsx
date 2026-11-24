@@ -2,13 +2,10 @@ import { Plus, Trash2 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { cn } from "#/lib/utils";
+import type { Top20PlayerInput } from "../admin.functions";
 import { closeButtonClass, ModalOverlay } from "./AdminDialog";
 
-export interface Top20PlayerInput {
-	name: string;
-	cp: number;
-	playerId?: number;
-}
+export type { Top20PlayerInput };
 
 export interface NationalRankingsEntry extends Top20PlayerInput {
 	tempId: string;

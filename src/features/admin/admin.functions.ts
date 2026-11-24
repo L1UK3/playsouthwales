@@ -14,7 +14,6 @@ import {
 import { authMiddleware } from "#/features/auth/auth.middleware";
 import { isMonthKey } from "#/lib/month";
 import { isValidCalendarDate } from "#/lib/recurrence";
-import type { Top20PlayerInput } from "./components/NationalRankingsModal";
 
 /** A one-off event id, or `"<seriesId>:<YYYY-MM-DD>"` for a series occurrence. */
 export type EventId = number | string;
@@ -48,6 +47,13 @@ export interface EventSubmitInput {
 	prizes?: string;
 	entryFee?: string;
 	isRecurring?: boolean;
+}
+
+/** One row of the National Rankings as entered by an admin. */
+export interface Top20PlayerInput {
+	name: string;
+	cp: number;
+	playerId?: number;
 }
 
 /** Splits an event id into the stored row id and, for occurrences, the date. */
