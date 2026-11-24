@@ -30,7 +30,7 @@ const FALLBACK_MAP_ID = "DEMO_MAP_ID";
  * @property showInfoWindow - Whether to show the info window for the selected league.
  * @property focusOffsetY - Pixels to show a selected league above the map's centre.
  */
-export interface LeagueMapProps {
+interface LeagueMapProps {
 	leagues: League[];
 	selectedLeagueId: number | null;
 	onLeagueSelect: (id: number | null) => void;

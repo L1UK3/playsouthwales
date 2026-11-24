@@ -20,7 +20,7 @@ interface LeagueSheetProps {
  * LeagueSheet shows a selected league's details and next events in a bottom
  * sheet over the mobile map.
  */
-export const LeagueSheet: React.FC<LeagueSheetProps> = ({
+const LeagueSheet: React.FC<LeagueSheetProps> = ({
 	league,
 	leagueMap,
 	onClose,

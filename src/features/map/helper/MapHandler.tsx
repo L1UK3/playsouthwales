@@ -49,7 +49,7 @@ interface MapHandlerProps {
  * The map rebuilds when the colour scheme changes, which remounts this component.
  * It then restores the saved camera, so a theme switch keeps the current view.
  */
-export const MapHandler: React.FC<MapHandlerProps> = ({
+const MapHandler: React.FC<MapHandlerProps> = ({
 	selectedLeague,
 	defaultCenter,
 	defaultZoom,

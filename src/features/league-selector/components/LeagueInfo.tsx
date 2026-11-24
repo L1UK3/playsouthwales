@@ -17,7 +17,7 @@ interface LeagueInfoProps {
  * LeagueInfo lists a league's location, directions, accessibility notes, and
  * external links. LeagueCard and the mobile map sheet both use it.
  */
-export const LeagueInfo: React.FC<LeagueInfoProps> = ({ league }) => (
+const LeagueInfo: React.FC<LeagueInfoProps> = ({ league }) => (
 	<div className="flex flex-col gap-2.5 mt-0.5">
 		{DETAILS.map(({ key, label }) =>
 			league[key] ? (

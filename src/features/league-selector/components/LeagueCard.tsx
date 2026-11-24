@@ -6,7 +6,7 @@ import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import LeagueInfo from "./LeagueInfo";
 
-export interface LeagueCardProps {
+interface LeagueCardProps {
 	league: League;
 	selectedLeagueID: number | null;
 	onLeagueSelect: (id: number) => void;

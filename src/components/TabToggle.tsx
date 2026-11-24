@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "#/lib/utils";
 
-export interface TabToggleProps {
+interface TabToggleProps {
 	tabs: { to: string; label: string }[];
 	activeTab: string;
 }
