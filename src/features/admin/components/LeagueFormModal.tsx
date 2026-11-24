@@ -1,8 +1,8 @@
 ﻿import type React from "react";
-import { useState } from "react";
 import { cn } from "#/lib/utils";
 import type { League } from "#/types/domain";
 import { FormDialog } from "./AdminDialog";
+import { Field, TextArea, TextInput, useFormDraft } from "./FormField";
 
 export interface LeagueFormModalProps {
 	isOpen: boolean;
@@ -13,66 +13,55 @@ export interface LeagueFormModalProps {
 	initialData?: League | null;
 }
 
+/** The form's editable state: every control holds a string. */
+function toDraft(league?: League | null) {
+	return {
+		leagueId: league?.leagueId ? String(league.leagueId) : "",
+		name: league?.name ?? "",
+		location: league?.location ?? "",
+		latitude: league?.latitude ? String(league.latitude) : "",
+		longitude: league?.longitude ? String(league.longitude) : "",
+		brandColor: league?.brandColor ?? "#ff0000",
+		logo: league?.logo ?? "",
+		website: league?.website ?? "",
+		eventLink: league?.eventLink ?? "",
+		socialLink: league?.socialLink ?? "",
+		directions: league?.directions ?? "",
+		accessibility: league?.accessibility ?? "",
+	};
+}
+
 export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 	isOpen,
 	onClose,
 	onSubmit,
 	initialData,
 }) => {
-	const [leagueId, setLeagueId] = useState(
-		initialData?.leagueId ? String(initialData.leagueId) : "",
-	);
-	const [name, setName] = useState(initialData?.name ?? "");
-	const [location, setLocation] = useState(initialData?.location ?? "");
-	const [latitude, setLatitude] = useState(
-		initialData?.latitude ? String(initialData.latitude) : "",
-	);
-	const [longitude, setLongitude] = useState(
-		initialData?.longitude ? String(initialData.longitude) : "",
-	);
-	const [brandColor, setBrandColor] = useState(
-		initialData?.brandColor ?? "#ff0000",
-	);
-	const [logo, setLogo] = useState(initialData?.logo ?? "");
-	const [website, setWebsite] = useState(initialData?.website ?? "");
-	const [eventLink, setEventLink] = useState(initialData?.eventLink ?? "");
-	const [socialLink, setSocialLink] = useState(initialData?.socialLink ?? "");
-	const [directions, setDirections] = useState(initialData?.directions ?? "");
-	const [accessibility, setAccessibility] = useState(
-		initialData?.accessibility ?? "",
-	);
+	const { draft, bind } = useFormDraft(() => toDraft(initialData));
 
-	// Preserve the isChampionshipSeries flag from initialData — this is not editable via the form
-	const isChampionshipSeries = initialData?.isChampionshipSeries ?? false;
-
-	const isChampionshipLeague = isChampionshipSeries;
-
-	const errors: Record<string, string> = {};
+	// Not editable via the form: preserved from initialData.
+	const championship = initialData?.isChampionshipSeries ?? false;
 
 	if (!isOpen) return null;
 
-	const handleSubmit = () =>
-		onSubmit({
-			leagueId: leagueId ? parseInt(leagueId, 10) : undefined,
-			id: leagueId ? parseInt(leagueId, 10) : undefined,
-			name,
-			location,
-			latitude: latitude ? parseFloat(latitude) : undefined,
-			longitude: longitude ? parseFloat(longitude) : undefined,
-			brandColor,
-			logo,
-			website,
-			eventLink,
-			socialLink,
-			directions: directions || undefined,
-			accessibility: accessibility || undefined,
-			isChampionshipSeries,
+	const handleSubmit = () => {
+		const leagueId = draft.leagueId ? parseInt(draft.leagueId, 10) : undefined;
+		return onSubmit({
+			...draft,
+			leagueId,
+			id: leagueId,
+			latitude: draft.latitude ? parseFloat(draft.latitude) : undefined,
+			longitude: draft.longitude ? parseFloat(draft.longitude) : undefined,
+			directions: draft.directions || undefined,
+			accessibility: draft.accessibility || undefined,
+			isChampionshipSeries: championship,
 		});
+	};
 
 	return (
 		<FormDialog
 			title={
-				isChampionshipLeague
+				championship
 					? initialData
 						? "Edit Championship Series"
 						: "Add Championship Series"
@@ -80,192 +69,90 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 						? "Edit League / Store"
 						: "Add New League / Store"
 			}
-			championship={isChampionshipLeague}
+			championship={championship}
 			maxWidth="max-w-162.5"
 			submitLabel={
 				initialData
 					? "Save Changes"
-					: isChampionshipLeague
+					: championship
 						? "Create Series"
 						: "Create League"
 			}
 			onClose={onClose}
 			onSubmit={handleSubmit}
 		>
-			{/* League ID Field */}
-			<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-				<label
-					htmlFor="leagueIdField"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					{isChampionshipLeague
+			<Field
+				id="leagueIdField"
+				wide
+				label={
+					championship
 						? "Series ID (Official ID - can be skipped)"
-						: "League ID (Official League ID - can be skipped if not known/not applicable)"}
-				</label>
-				<input
+						: "League ID (Official League ID - can be skipped if not known/not applicable)"
+				}
+			>
+				<TextInput
 					type="number"
 					id="leagueIdField"
 					placeholder=""
-					value={leagueId}
-					onChange={(e) => setLeagueId(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-					)}
+					{...bind("leagueId")}
 				/>
-			</div>
+			</Field>
 
-			{/* League Name */}
-			<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-				<label
-					htmlFor="leagueName"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					{isChampionshipLeague ? "Series Name" : "League Name"}{" "}
-					<span className="text-primary text-[11px] font-semibold">*</span>
-				</label>
-				<input
+			<Field
+				id="leagueName"
+				wide
+				required
+				label={championship ? "Series Name" : "League Name"}
+			>
+				<TextInput
 					type="text"
 					id="leagueName"
 					placeholder=""
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.name &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("name")}
 					required
 				/>
-			</div>
+			</Field>
 
-			{/* Location */}
-			<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-				<label
-					htmlFor="leagueLocation"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					{isChampionshipLeague ? "Venue / Region" : "Address"}
-				</label>
-				<input
+			<Field
+				id="leagueLocation"
+				wide
+				label={championship ? "Venue / Region" : "Address"}
+			>
+				<TextInput
 					type="text"
 					id="leagueLocation"
-					placeholder={isChampionshipLeague ? "e.g. Cardiff, Wales" : ""}
-					value={location}
-					onChange={(e) => setLocation(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-					)}
+					placeholder={championship ? "e.g. Cardiff, Wales" : ""}
+					{...bind("location")}
 				/>
-			</div>
+			</Field>
 
 			{/* TODO: Implement automatic location detection, when an address is entered in the above field */}
-			{/* Latitude */}
-			<div className="flex flex-col gap-1.5 relative">
-				<label
-					htmlFor="leagueLatitude"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					Latitude
-				</label>
-				<input
+			<Field id="leagueLatitude" label="Latitude">
+				<TextInput
 					type="number"
 					step="any"
 					id="leagueLatitude"
 					placeholder="e.g. 51.4816"
-					value={latitude}
-					onChange={(e) => setLatitude(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.latitude &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("latitude")}
 				/>
-			</div>
+			</Field>
 
-			{/* Longitude */}
-			<div className="flex flex-col gap-1.5 relative">
-				<label
-					htmlFor="leagueLongitude"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					Longitude
-				</label>
-				<input
+			<Field id="leagueLongitude" label="Longitude">
+				<TextInput
 					type="number"
 					step="any"
 					id="leagueLongitude"
 					placeholder="e.g. -3.1791"
-					value={longitude}
-					onChange={(e) => setLongitude(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.longitude &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("longitude")}
 				/>
-			</div>
+			</Field>
 
-			{/* Brand Color */}
-			<div className="flex flex-col gap-1.5 relative">
-				<label
-					htmlFor="leagueBrandColor"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					Brand Color
-				</label>
+			<Field id="leagueBrandColor" label="Brand Color">
 				<div className="flex items-center gap-3">
 					<input
 						type="color"
 						id="leagueBrandColor"
-						value={brandColor}
-						onChange={(e) => setBrandColor(e.target.value)}
+						{...bind("brandColor")}
 						className={cn(
 							"p-0.5 w-11 h-11 rounded-md border border-border-color",
 							"cursor-pointer bg-transparent focus:outline-none",
@@ -273,208 +160,74 @@ export const LeagueFormModal: React.FC<LeagueFormModalProps> = ({
 							"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
 						)}
 					/>
-					<input
+					<TextInput
 						type="text"
 						placeholder="#FF0000"
 						maxLength={7}
-						value={brandColor}
-						onChange={(e) => setBrandColor(e.target.value)}
-						className={cn(
-							"py-3 px-3.5 rounded-md border border-border-color",
-							"text-sm bg-bg-card text-text-main w-full",
-							"transition-[background-color,border-color] duration-150",
-							"ease-out focus:outline-none focus:border-secondary",
-							"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						)}
+						{...bind("brandColor")}
 						style={{ flex: 1 }}
 					/>
 				</div>
-			</div>
+			</Field>
 
-			{/* Logo URL */}
-			<div className="flex flex-col gap-1.5 relative">
-				<label
-					htmlFor="leagueLogo"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					Logo Image URL
-				</label>
-				<input
+			<Field id="leagueLogo" label="Logo Image URL">
+				<TextInput
 					type="url"
 					id="leagueLogo"
 					placeholder="https://example.com/logo.png"
-					value={logo}
-					onChange={(e) => setLogo(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.logo &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("logo")}
 				/>
-			</div>
+			</Field>
 
-			{/* Website URL */}
-			<div className="flex flex-col gap-1.5 relative">
-				<label
-					htmlFor="leagueWebsite"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					Official Website URL
-				</label>
-				<input
+			<Field id="leagueWebsite" label="Official Website URL">
+				<TextInput
 					type="url"
 					id="leagueWebsite"
 					placeholder="https://example.com"
-					value={website}
-					onChange={(e) => setWebsite(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.website &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("website")}
 				/>
-			</div>
+			</Field>
 
-			{/* TCG Link */}
-			<div className="flex flex-col gap-1.5 relative">
-				<label
-					htmlFor="leagueEventLink"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					TCG Event Page URL
-				</label>
-				<input
+			<Field id="leagueEventLink" label="TCG Event Page URL">
+				<TextInput
 					type="url"
 					id="leagueEventLink"
 					placeholder="https://events.example.com/…"
-					value={eventLink}
-					onChange={(e) => setEventLink(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.eventLink &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("eventLink")}
 				/>
-			</div>
+			</Field>
 
-			{/* Social Link */}
-			<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-				<label
-					htmlFor="leagueSocialLink"
-					className={cn(
-						"text-[13px] font-bold text-text-main flex justify-between",
-						"items-center",
-					)}
-				>
-					Social Media URL (e.g. Facebook)
-				</label>
-				<input
+			<Field
+				id="leagueSocialLink"
+				wide
+				label="Social Media URL (e.g. Facebook)"
+			>
+				<TextInput
 					type="url"
 					id="leagueSocialLink"
 					placeholder="https://facebook.com/…"
-					value={socialLink}
-					onChange={(e) => setSocialLink(e.target.value)}
-					className={cn(
-						"py-3 px-3.5 rounded-md border border-border-color text-sm",
-						"bg-bg-card text-text-main w-full",
-						"transition-[background-color,border-color] duration-150",
-						"ease-out focus:outline-none focus:border-secondary",
-						"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)]",
-						errors.socialLink &&
-							cn(
-								"border-red-500!",
-								"focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]!",
-							),
-					)}
+					{...bind("socialLink")}
 				/>
-			</div>
+			</Field>
 
-			{/* Directions — hidden for championship series */}
-			{!isChampionshipLeague && (
-				<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-					<label
-						htmlFor="leagueDirections"
-						className={cn(
-							"text-[13px] font-bold text-text-main flex",
-							"justify-between items-center",
-						)}
-					>
-						Directions
-					</label>
-					<textarea
-						id="leagueDirections"
-						placeholder="Describe how to get to the store, parking information, public transport details, etc."
-						value={directions}
-						onChange={(e) => setDirections(e.target.value)}
-						className={cn(
-							"py-3 px-3.5 rounded-md border border-border-color",
-							"text-sm bg-bg-card text-text-main w-full",
-							"transition-[background-color,border-color] duration-150",
-							"ease-out focus:outline-none focus:border-secondary",
-							"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
-							"min-h-20",
-						)}
-					/>
-				</div>
-			)}
-
-			{/* Accessibility — hidden for championship series */}
-			{!isChampionshipLeague && (
-				<div className="flex flex-col gap-1.5 relative sm:col-span-2">
-					<label
-						htmlFor="leagueAccessibility"
-						className={cn(
-							"text-[13px] font-bold text-text-main flex",
-							"justify-between items-center",
-						)}
-					>
-						Accessibility Info
-					</label>
-					<textarea
-						id="leagueAccessibility"
-						placeholder="Describe wheelchair access, steps, lighting, sound, or other accessibility accommodations."
-						value={accessibility}
-						onChange={(e) => setAccessibility(e.target.value)}
-						className={cn(
-							"py-3 px-3.5 rounded-md border border-border-color",
-							"text-sm bg-bg-card text-text-main w-full",
-							"transition-[background-color,border-color] duration-150",
-							"ease-out focus:outline-none focus:border-secondary",
-							"focus:shadow-[0_0_0_3px_rgba(49,104,177,0.15)] resize-y",
-							"min-h-20",
-						)}
-					/>
-				</div>
+			{/* Directions and accessibility are hidden for championship series */}
+			{!championship && (
+				<>
+					<Field id="leagueDirections" wide label="Directions">
+						<TextArea
+							id="leagueDirections"
+							placeholder="Describe how to get to the store, parking information, public transport details, etc."
+							{...bind("directions")}
+						/>
+					</Field>
+					<Field id="leagueAccessibility" wide label="Accessibility Info">
+						<TextArea
+							id="leagueAccessibility"
+							placeholder="Describe wheelchair access, steps, lighting, sound, or other accessibility accommodations."
+							{...bind("accessibility")}
+						/>
+					</Field>
+				</>
 			)}
 		</FormDialog>
 	);
