@@ -12,7 +12,6 @@ type LeagueRow = WithoutNulls<typeof leagues.$inferSelect>;
 export type League = Omit<LeagueRow, "id" | "isChampionshipSeries"> & {
 	leagueId: number;
 	isChampionshipSeries?: boolean;
-	format?: string;
 };
 
 type EventRow = WithoutNulls<typeof events.$inferSelect>;
@@ -37,12 +36,6 @@ export interface LeaderboardPosition {
 	position: number;
 	name: string;
 	cp?: number;
-	wins?: number;
-	losses?: number;
-	draws?: number;
-	attendance?: number;
-	points?: number;
-	userId?: number;
 }
 
 export type LeagueMap = Record<number, League>;

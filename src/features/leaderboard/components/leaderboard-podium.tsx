@@ -37,7 +37,7 @@ export const LeaderboardPodium = ({
 
 				return (
 					<li
-						key={player.userId ?? `${player.name}-${player.position}`}
+						key={player.position}
 						aria-label={`Rank ${player.position}: ${player.name}, ${points}`}
 						className={cn(
 							"flex flex-col items-center min-[993px]:h-full",

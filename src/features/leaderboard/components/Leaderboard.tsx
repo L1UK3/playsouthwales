@@ -109,9 +109,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 								const renderCutoff = rank === TOP_CUTOFF_POSITION;
 
 								return (
-									<React.Fragment
-										key={player.userId ?? `${rank}-${player.name}`}
-									>
+									<React.Fragment key={player.position}>
 										{renderCutoff ? (
 											<tr className="bg-bg-main/30">
 												<td
