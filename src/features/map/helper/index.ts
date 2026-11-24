@@ -26,9 +26,6 @@ export function mapLeaguesToMarkers(leagues: League[]): MarkerData[] {
 				name: league.name,
 				brandColor: league.brandColor ?? DEFAULT_BRAND_COLOR,
 				logo: league.logo,
-				location: league.location,
-				website: league.website,
-				eventLink: league.eventLink,
 			},
 		];
 	});
