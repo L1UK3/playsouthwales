@@ -7,7 +7,7 @@ These files are the light and dark style templates for the leagues map. You add 
 - **[light.json](light.json)**: Warm paper land, soft blue water, and white roads. It matches the site's light theme.
 - **[dark.json](dark.json)**: Slate land, deep navy water, and muted grey roads. It matches the site's dark theme.
 
-Both templates hide businesses, other points of interest, and land parcels, so league markers stand out. They keep town names, parks, and railway stations to help players find each venue. The colours come from the design tokens in `update/src/styles.css`.
+Both templates hide businesses, other points of interest, and land parcels, so league markers stand out. They keep town names, parks, and railway stations to help players find each venue. The colours come from the design tokens in `src/styles.css`.
 
 ## Set up the styles
 
@@ -16,7 +16,7 @@ Both templates hide businesses, other points of interest, and land parcels, so l
 3. Repeat step 2 with `dark.json` and name it `Play South Wales dark`.
 4. Open **Map management** and click **Create Map ID**. Choose the **JavaScript** map type and **Vector** rendering.
 5. In the Map ID's **Map styles** section, click **Edit** next to light mode and pick the light style. Do the same for dark mode with the dark style.
-6. Copy the Map ID into `VITE_GOOGLE_MAPS_MAP_ID` in `update/.env.local` and in your deployment environment variables.
+6. Copy the Map ID into `VITE_GOOGLE_MAPS_MAP_ID` in `.env.local` and in your deployment environment variables.
 
 The console's JSON editor only accepts this format: an object with a `variant` and a `styles` list. It rejects the older array format of `featureType` and `stylers` rules.
 
