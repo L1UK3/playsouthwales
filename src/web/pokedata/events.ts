@@ -1,3 +1,5 @@
+import { env } from "cloudflare:workers";
+
 const _API_URL: string = "https://pokedata.ovh/events/api/";
 
 const _COORDS: { [key: string]: number | string } = {
@@ -30,36 +32,46 @@ const _URLS: string[] = [
 ];
 
 interface _PokedataEvent {
-    guid: string;
-    name: string;
-    date: string;
-    time: string;
-    league: string;
-    type: string;
-    product: string;
-    shop: string | null;
-    street_address: string | null;
-    city: string | null;
-    state: string | null;
-    pokemon_url: string | null;
-    cost: string;
-    event_website: string;
-    third_party_registration_website: string;
+	guid: string;
+	name: string;
+	date: string;
+	time: string;
+	league: string;
+	type: string;
+	product: string;
+	shop: string | null;
+	street_address: string | null;
+	city: string | null;
+	state: string | null;
+	pokemon_url: string | null;
+	cost: string;
+	event_website: string;
+	third_party_registration_website: string;
 }
 
-async function _getPokedataEvents(): Promise<_PokedataEvent[]> {
-    const events: _PokedataEvent[] = [];
+/**
+ * Fetch championship points data from the Pokedata API.
+ * Server-only: reads the POKEDATA_KEY secret from the Worker environment.
+ * @returns The parsed JSON response from the Pokedata API.
+ */
+async function _getEvents(URL: string): Promise<_PokedataEvent[]> {
+	const response = await fetch(`${URL}`, {
+		method: "GET",
+		headers: { accept: "application/json", "content-type": "application/json" },
+		body: JSON.stringify({
+			APIKEY: env.POKEDATA_KEY,
+		}),
+	});
 
-    for (const url of _URLS) {
-        const response = await fetch(url);
-        if (!response.ok) {
-            console.error(`Failed to fetch events from ${url}: ${response.statusText}`);
-            continue;
-        }
+	if (!response.ok) {
+		throw new Error(`Pokedata API request failed: ${response.status}`);
+	}
 
-        const data: _PokedataEvent[] = await response.json();
-        events.push(...data);
-    }
+	const eventData = (await response.json()) as _PokedataEvent[];
 
-    return events;
+	return eventData.map((event: _PokedataEvent) => ({
+		...event,
+		type: _EVENT_TYPE_MAP[event.type] || event.type,
+		product: _GAME_MAP[event.product] || event.product,
+	}));
 }
