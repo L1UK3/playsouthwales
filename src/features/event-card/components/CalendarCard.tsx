@@ -19,12 +19,11 @@ export interface CalendarCardProps extends EventCardProps {
  */
 const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 	({ event, leagueMap, types, isOtherMonth }) => {
-		const { league, leagueName, storeColor, cardClasses, stateFlags } =
-			useEventCard(event, leagueMap, undefined, "calendar");
+		const { league, leagueName, storeColor, cardClasses, isDateMarker } =
+			useEventCard(event, leagueMap, "calendar");
 
 		const logo = league?.logo ?? null;
-		const isReleaseEvent = stateFlags.isReleaseCard;
-		const displayName = isReleaseEvent && event.name ? event.name : leagueName;
+		const displayName = isDateMarker && event.name ? event.name : leagueName;
 
 		return (
 			<div
@@ -49,7 +48,7 @@ const CalendarCard: React.FC<CalendarCardProps> = React.memo(
 							"border-border-color shrink-0 size-3 @min-[700px]:size-4",
 						)}
 					/>
-				) : isReleaseEvent ? null : (
+				) : isDateMarker ? null : (
 					<div
 						className={cn(
 							"rounded-full bg-bg-card shrink-0 size-3 @min-[700px]:size-4",

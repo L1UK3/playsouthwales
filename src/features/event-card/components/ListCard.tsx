@@ -1,6 +1,6 @@
 /* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4 */
 /* Hallmark · component: card · genre: modern-minimal · theme: custom (design.md)
- * states: default · hover · focus · active · disabled · loading · error · success
+ * states: default · hover · active
  * contrast: pass (46–50)
  */
 import React from "react";
@@ -12,14 +12,11 @@ import {
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
 import { useEventCard } from "../hooks/useEventCard";
-import type {
-	EventCardAdditionalProps,
-	EventCardProps,
-} from "../types/EventCard.types";
+import type { EventCardProps } from "../types/EventCard.types";
 import { getEntryFeeLabel } from "../utils/EventCard.utils";
 
 /**
- * ListCardProps interface extends EventCardProps and EventCardAdditionalProps to include additional properties specific to the ListCard component.
+ * ListCardProps interface extends EventCardProps to include additional properties specific to the ListCard component.
  * @param isExpanded {boolean} - Whether the card is expanded to show additional details.
  * @param onToggle {function} - Callback function invoked when the card is toggled (expanded/collapsed).
  * @param onEdit {function} - Callback function invoked when the edit button is clicked.
@@ -27,9 +24,7 @@ import { getEntryFeeLabel } from "../utils/EventCard.utils";
  * @param onExclude {function} - Callback function invoked when the exclude button is clicked.
  * @param onUnexclude {function} - Callback function invoked when the unexclude button is clicked.
  */
-export interface ListCardProps
-	extends EventCardProps,
-		EventCardAdditionalProps {
+export interface ListCardProps extends EventCardProps {
 	isExpanded?: boolean;
 	onToggle?: (id: number | string) => void;
 	onEdit?: (event: ScheduleEvent) => void;
@@ -40,7 +35,7 @@ export interface ListCardProps
 
 /**
  * ListCard component represents a single event entry within a list view.
- * Redesigned with a soft tone, proper keyboard accessibility, and 8-state support.
+ * Redesigned with a soft tone and proper keyboard accessibility.
  * @param event {Event} - The event object containing event details.
  * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
  * @param types {EventTypeMap} - A mapping of event types to their corresponding properties.
@@ -50,7 +45,6 @@ export interface ListCardProps
  * @param onDelete {function} - Callback function invoked when the delete button is clicked.
  * @param onExclude {function} - Callback function invoked when the exclude button is clicked.
  * @param onUnexclude {function} - Callback function invoked when the unexclude button is clicked.
- * @param state {EventCardAdditionalProps['state']} - The current visual state of the card.
  * @returns A React component rendering the event card with appropriate styles, states, and accessibility features.
  */
 const ListCard: React.FC<ListCardProps> = React.memo(
@@ -64,7 +58,6 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 		onDelete,
 		onExclude,
 		onUnexclude,
-		state,
 	}) => {
 		const {
 			description,
@@ -72,12 +65,9 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			leagueName,
 			storeColor,
 			isChampionship,
-			stateFlags,
 			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, state, "list");
-		const { isLoading, isError, isDisabled: isStateDisabled } = stateFlags;
-		const isDisabled = isStateDisabled || event.isExcluded;
+		} = useEventCard(event, leagueMap, "list");
 
 		// Keyboard press handler for toggle
 		const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -87,54 +77,11 @@ const ListCard: React.FC<ListCardProps> = React.memo(
 			}
 		};
 
-		// Loading state (Skeleton row)
-		if (isLoading) {
-			return (
-				<div
-					className={cn(
-						"py-3 px-4 flex items-center justify-between gap-4 rounded-xl",
-						"border border-border-color/40 bg-bg-card shadow-sm animate-pulse",
-						"w-full",
-					)}
-				>
-					<div className="flex items-center gap-4 grow">
-						<div className="h-4 w-10 bg-bg-main rounded shrink-0" />
-						<div className="flex flex-col gap-1.5 grow">
-							<div className="h-4 w-1/3 bg-bg-main rounded" />
-							<div className="h-3.5 w-1/4 bg-bg-main rounded" />
-						</div>
-					</div>
-					<div className="h-5 w-12 bg-bg-main rounded-full" />
-				</div>
-			);
-		}
-
-		// Error state row
-		if (isError) {
-			return (
-				<div
-					className={cn(
-						"py-3 px-4 rounded-xl border-2 border-red-500/20 bg-red-500/1",
-						"shadow-sm flex items-center justify-between w-full",
-					)}
-				>
-					<div
-						className={cn(
-							"flex items-center gap-2 text-red-600 dark:text-red-400",
-							"font-bold text-xs",
-						)}
-					>
-						<span>Failed to load event</span>
-					</div>
-				</div>
-			);
-		}
-
 		return (
 			// biome-ignore lint/a11y/useSemanticElements: the card contains nested interactive controls, so it cannot be a <button>
 			<div
 				role="button"
-				tabIndex={isDisabled && state === "disabled" ? -1 : 0}
+				tabIndex={0}
 				className={cardClasses}
 				style={{ "--store-color": storeColor } as React.CSSProperties}
 				onClick={() => onToggle?.(event.id)}

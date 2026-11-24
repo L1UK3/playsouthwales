@@ -1,36 +1,30 @@
 import { useMemo } from "react";
+import { isDateMarkerType } from "#/lib/event-types";
 import { cn } from "#/lib/utils";
 import type { League, ScheduleEvent } from "#/types/domain";
 import {
-	ACTIVE_STATE_CLASSES,
+	ACTIVE_CLASSES,
 	CARD_BASE_CLASSES,
-	FOCUS_RING_CLASSES,
-	HOVER_TRANSITION_CLASSES,
-	INACTIVE_ACTIVE_CLASSES,
-	INACTIVE_HOVER_CLASSES,
+	HOVER_CLASSES,
 } from "../constants/EventCard.constants";
-import type { EventCardAdditionalProps } from "../types/EventCard.types";
 import {
 	getCardStyles,
 	getLeagueInfo,
-	getStateFlags,
 	getStoreColor,
 } from "../utils/EventCard.utils";
 import { getEventDescription } from "../utils/getEventDescription";
 
 /**
  * Custom React hook that resolves and memoizes event card metadata, store colors,
- * interactive state flags, and computed CSS classes based on Vercel's React best practices.
+ * and computed CSS classes based on Vercel's React best practices.
  * @param event {Event} - The event object containing event details.
  * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
- * @param state {EventCardAdditionalProps['state']} - The current state of the card.
  * @param cardType {'list' | 'schedule' | 'calendar'} - The type of card being rendered.
- * @returns An object containing league info, store color, state flags, and computed CSS classes.
+ * @returns An object containing league info, store color, and computed CSS classes.
  */
 export function useEventCard(
 	event: ScheduleEvent,
 	leagueMap: Record<number, League>,
-	state?: EventCardAdditionalProps["state"],
 	cardType?: "list" | "schedule" | "calendar",
 ) {
 	return useMemo(() => {
@@ -38,7 +32,7 @@ export function useEventCard(
 		const storeColor = getStoreColor(event, league);
 		const isChampionship = league?.isChampionshipSeries ?? false;
 
-		const stateFlags = getStateFlags(state, event);
+		const isDateMarker = isDateMarkerType(event.eventType);
 		const cardStyles = cardType
 			? getCardStyles(event.eventType, isChampionship)
 			: "";
@@ -51,47 +45,24 @@ export function useEventCard(
 
 		let cardClasses = "";
 		if (cardType === "list") {
-			const isStateDisabled = stateFlags.isDisabled;
-			const isDisabled = isStateDisabled || event.isExcluded;
-			const isHover = stateFlags.isHover;
-			const isFocus = stateFlags.isFocus;
-			const isActive = stateFlags.isActive;
-
 			cardClasses = cn(
 				"rounded-xl overflow-hidden cursor-pointer",
 				CARD_BASE_CLASSES,
 				cardStyles,
-				stateFlags.isSuccess &&
-					"border-2 border-emerald-500/30 bg-emerald-500/[0.01]",
-				isHover
-					? [HOVER_TRANSITION_CLASSES, "translate-x-0.5"]
-					: [INACTIVE_HOVER_CLASSES, "hover:translate-x-0.5"],
-				isFocus && FOCUS_RING_CLASSES,
-				isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
+				HOVER_CLASSES,
+				"hover:translate-x-0.5",
+				ACTIVE_CLASSES,
 				event.isExcluded &&
 					"opacity-55 grayscale-[30%] border-dashed border-red-500/20",
-				isDisabled &&
-					state === "disabled" &&
-					"opacity-40 pointer-events-none cursor-not-allowed",
 			);
 		} else if (cardType === "schedule") {
-			const isDisabled = stateFlags.isDisabled;
-			const isHover = stateFlags.isHover;
-			const isFocus = stateFlags.isFocus;
-			const isActive = stateFlags.isActive;
-			const isReleaseCard = stateFlags.isReleaseCard;
-
 			cardClasses = cn(
 				"flex flex-col gap-3 p-4 rounded-xl",
 				CARD_BASE_CLASSES,
 				cardStyles,
-				stateFlags.isSuccess &&
-					"border-2 border-emerald-500/30 bg-emerald-500/[0.01]",
-				isHover ? HOVER_TRANSITION_CLASSES : INACTIVE_HOVER_CLASSES,
-				isFocus && FOCUS_RING_CLASSES,
-				isActive ? ACTIVE_STATE_CLASSES : INACTIVE_ACTIVE_CLASSES,
-				isDisabled && "opacity-55 pointer-events-none cursor-not-allowed",
-				isReleaseCard &&
+				HOVER_CLASSES,
+				ACTIVE_CLASSES,
+				isDateMarker &&
 					cn(
 						"bg-bg-card-release border-2 border-black",
 						"shadow-[0_0_8px_rgba(0,0,0,0.15)]",
@@ -107,9 +78,9 @@ export function useEventCard(
 			leagueName,
 			storeColor,
 			isChampionship,
-			stateFlags,
+			isDateMarker,
 			cardClasses,
 			isOfficial,
 		};
-	}, [event, leagueMap, state, cardType]);
+	}, [event, leagueMap, cardType]);
 }

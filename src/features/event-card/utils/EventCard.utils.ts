@@ -2,7 +2,6 @@
 
 import { cn } from "#/lib/utils";
 import type { League, ScheduleEvent } from "#/types/domain";
-import type { EventCardAdditionalProps } from "../types/EventCard.types";
 
 /**
  * Extract league information and computed store color.
@@ -36,32 +35,6 @@ export function getStoreColor(
 		? "var(--color-special-day-border)"
 		: (league?.brandColor ??
 				`hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
-}
-
-/**
- * Resolve component state flags.
- * @param state {EventCardAdditionalProps['state']} - The current state of the card.
- * @param event {Event} - The event object containing event details.
- * @returns {stateFlags} - An object containing flags for each state.
- */
-export function getStateFlags(
-	state: EventCardAdditionalProps["state"],
-	event: ScheduleEvent,
-) {
-	const stateFlags = {
-		isHover: state === "hover",
-		isFocus: state === "focus",
-		isActive: state === "active",
-		isDisabled: state === "disabled",
-		isLoading: state === "loading",
-		isError: state === "error",
-		isSuccess: state === "success",
-		isReleaseCard:
-			event.eventType === "RELEASE" ||
-			event.eventType === "LEGALITY" ||
-			event.eventType === "REGULATION",
-	};
-	return stateFlags;
 }
 
 /** Format plain GBP amounts while preserving descriptive entry fees. */

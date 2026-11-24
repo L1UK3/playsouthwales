@@ -1,6 +1,6 @@
 /* Hallmark · pre-emit critique: P5 H5 E5 S4 R5 V4 */
 /* Hallmark · component: card · genre: modern-minimal · theme: custom (design.md)
- * states: default · hover · focus · active · disabled · loading · error · success
+ * states: default · hover · active
  * contrast: pass (46–50)
  */
 import React from "react";
@@ -10,10 +10,7 @@ import {
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
 import { useEventCard } from "../hooks/useEventCard";
-import type {
-	EventCardAdditionalProps,
-	EventCardProps,
-} from "../types/EventCard.types";
+import type { EventCardProps } from "../types/EventCard.types";
 import { getEntryFeeLabel } from "../utils/EventCard.utils";
 
 /**
@@ -22,82 +19,27 @@ import { getEntryFeeLabel } from "../utils/EventCard.utils";
  * @param event {Event} - The event object containing event details.
  * @param leagueMap {Record<number, League>} - A mapping of league IDs to League objects.
  * @param types {EventTypeMap} - A mapping of event types to their corresponding properties.
- * @param state {EventCardAdditionalProps['state']} - The current state of the card.
  * @returns A React component rendering the event card with appropriate styles and states.
  */
-const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
-	React.memo(({ event, leagueMap, types, state }) => {
+const EventCard: React.FC<EventCardProps> = React.memo(
+	({ event, leagueMap, types }) => {
 		const {
 			description,
 			league,
 			leagueName,
 			storeColor,
 			isChampionship,
-			stateFlags,
+			isDateMarker,
 			cardClasses,
 			isOfficial,
-		} = useEventCard(event, leagueMap, state, "schedule");
-		const { isLoading, isError, isReleaseCard } = stateFlags;
+		} = useEventCard(event, leagueMap, "schedule");
 		const links = [event?.ticketLink, league?.website]
 			.map((value) => value?.trim())
 			.filter((value): value is string => Boolean(value));
 
 		const link = links[0] ?? null;
 
-		// Loading state (Skeleton layout)
-		if (isLoading) {
-			return (
-				<div
-					className={cn(
-						"flex flex-col gap-3 p-4 rounded-xl border border-border-color/40",
-						"bg-bg-card shadow-sm animate-pulse w-full max-w-sm",
-					)}
-				>
-					<div className="flex items-center gap-3">
-						<div className="size-9 rounded-lg bg-bg-main shrink-0" />
-						<div className="flex flex-col gap-1.5 grow">
-							<div className="h-3 w-16 bg-bg-main rounded" />
-							<div className="h-4 w-32 bg-bg-main rounded" />
-						</div>
-					</div>
-					<div className="flex gap-2 mt-1">
-						<div className="h-5 w-20 bg-bg-main rounded-full" />
-						<div className="h-5 w-12 bg-bg-main rounded-full" />
-					</div>
-					<div className="h-3 w-full bg-bg-main rounded mt-1.5" />
-					<div className="h-3 w-3/4 bg-bg-main rounded" />
-					<div className="h-9 w-full bg-bg-main rounded-md mt-3" />
-				</div>
-			);
-		}
-
-		// Error state fallback banner inside card
-		if (isError) {
-			return (
-				<div
-					className={cn(
-						"flex flex-col gap-2 p-4 rounded-xl border-2 border-red-500/20",
-						"bg-red-500/2 shadow-sm w-full max-w-sm",
-					)}
-				>
-					<div
-						className={cn(
-							"flex items-center gap-2 text-red-600 dark:text-red-400",
-							"font-bold text-sm",
-						)}
-					>
-						<span></span>
-						<span>Failed to load event details</span>
-					</div>
-					<p className="text-xs text-text-muted leading-relaxed">
-						Something went wrong while retrieving info for this event. Please
-						try again.
-					</p>
-				</div>
-			);
-		}
-
-		if (isReleaseCard) {
+		if (isDateMarker) {
 			return (
 				<div
 					className={cardClasses}
@@ -319,6 +261,7 @@ const EventCard: React.FC<EventCardProps & EventCardAdditionalProps> =
 				)}
 			</div>
 		);
-	});
+	},
+);
 
 export default EventCard;
