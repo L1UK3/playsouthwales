@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "258ec065-c26c-418d-95ba-62b24c55564b",
+  "id": "20b8a36f-ea83-442c-bcfb-329f77926cb5",
   "prevIds": [
-    "59076eb0-86be-4a25-8605-c963be212117"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -27,406 +27,436 @@
       "entityType": "tables"
     },
     {
+      "table": "events",
+      "name": "id",
       "type": "integer",
       "notNull": false,
       "autoincrement": true,
       "default": null,
       "generated": null,
-      "name": "id",
-      "entityType": "columns",
-      "table": "events"
+      "entityType": "columns"
     },
     {
+      "table": "events",
+      "name": "leagueId",
       "type": "integer",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "leagueId",
-      "entityType": "columns",
-      "table": "events"
+      "entityType": "columns"
     },
     {
-      "type": "text",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
+      "table": "events",
       "name": "pokedataGuid",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
-      "notNull": true,
+      "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "name",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "date",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
-      "notNull": false,
+      "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "startTime",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
-      "notNull": true,
+      "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "eventType",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "game",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
-      "notNull": false,
+      "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "ticketLink",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "description",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
       "name": "prizes",
-      "entityType": "columns",
-      "table": "events"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "entryFee",
-      "entityType": "columns",
-      "table": "events"
+      "entityType": "columns"
     },
     {
+      "table": "events",
+      "name": "entryFee",
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
+      "name": "isRecurring",
       "type": "integer",
       "notNull": true,
       "autoincrement": false,
       "default": "false",
       "generated": null,
-      "name": "isRecurring",
-      "entityType": "columns",
-      "table": "events"
+      "entityType": "columns"
     },
     {
+      "table": "events",
+      "name": "excludedDates",
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": "'[]'",
       "generated": null,
-      "name": "excludedDates",
-      "entityType": "columns",
-      "table": "events"
+      "entityType": "columns"
     },
     {
+      "table": "leagues",
+      "name": "id",
       "type": "integer",
       "notNull": false,
       "autoincrement": true,
       "default": null,
       "generated": null,
-      "name": "id",
-      "entityType": "columns",
-      "table": "leagues"
+      "entityType": "columns"
     },
     {
+      "table": "leagues",
+      "name": "name",
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "name",
-      "entityType": "columns",
-      "table": "leagues"
+      "entityType": "columns"
     },
     {
-      "type": "text",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
+      "table": "leagues",
       "name": "logo",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "website",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "socialLink",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "eventLink",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "brandColor",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "location",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "directions",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "accessibility",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
-      "type": "real",
+      "type": "text",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
       "name": "latitude",
-      "entityType": "columns",
-      "table": "leagues"
-    },
-    {
       "type": "real",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "longitude",
-      "entityType": "columns",
-      "table": "leagues"
+      "entityType": "columns"
     },
     {
+      "table": "leagues",
+      "name": "longitude",
+      "type": "real",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "leagues",
+      "name": "isChampionshipSeries",
       "type": "integer",
       "notNull": true,
       "autoincrement": false,
       "default": "false",
       "generated": null,
-      "name": "isChampionshipSeries",
-      "entityType": "columns",
-      "table": "leagues"
+      "entityType": "columns"
     },
     {
+      "table": "players",
+      "name": "id",
       "type": "integer",
       "notNull": false,
       "autoincrement": true,
       "default": null,
       "generated": null,
-      "name": "id",
-      "entityType": "columns",
-      "table": "players"
+      "entityType": "columns"
     },
     {
+      "table": "players",
+      "name": "name",
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "name",
-      "entityType": "columns",
-      "table": "players"
+      "entityType": "columns"
     },
     {
+      "table": "players",
+      "name": "playerId",
       "type": "integer",
       "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "playerId",
-      "entityType": "columns",
-      "table": "players"
+      "entityType": "columns"
     },
     {
+      "table": "players",
+      "name": "cp",
       "type": "integer",
       "notNull": true,
       "autoincrement": false,
       "default": "0",
       "generated": null,
-      "name": "cp",
-      "entityType": "columns",
-      "table": "players"
+      "entityType": "columns"
     },
     {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
+      "table": "players",
       "name": "season",
-      "entityType": "columns",
-      "table": "players"
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
     },
     {
+      "table": "regs",
+      "name": "id",
       "type": "integer",
       "notNull": false,
       "autoincrement": true,
       "default": null,
       "generated": null,
-      "name": "id",
-      "entityType": "columns",
-      "table": "regs"
+      "entityType": "columns"
     },
     {
-      "type": "text",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
+      "table": "regs",
       "name": "name",
-      "entityType": "columns",
-      "table": "regs"
-    },
-    {
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "regs",
       "name": "date",
-      "entityType": "columns",
-      "table": "regs"
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
     },
     {
+      "table": "sets",
+      "name": "id",
       "type": "integer",
       "notNull": false,
       "autoincrement": true,
       "default": null,
       "generated": null,
-      "name": "id",
-      "entityType": "columns",
-      "table": "sets"
+      "entityType": "columns"
     },
     {
-      "type": "text",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
+      "table": "sets",
       "name": "code",
-      "entityType": "columns",
-      "table": "sets"
-    },
-    {
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "sets",
       "name": "name",
-      "entityType": "columns",
-      "table": "sets"
-    },
-    {
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "sets",
       "name": "releaseDate",
-      "entityType": "columns",
-      "table": "sets"
-    },
-    {
       "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "legalDate",
-      "entityType": "columns",
-      "table": "sets"
+      "entityType": "columns"
     },
     {
+      "table": "sets",
+      "name": "legalDate",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "events",
+      "name": "events_leagueId_idx",
+      "columns": [
+        {
+          "value": "leagueId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "entityType": "indexes"
+    },
+    {
+      "table": "events",
+      "name": "events_date_idx",
+      "columns": [
+        {
+          "value": "date",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "origin": "manual",
+      "entityType": "indexes"
+    },
+    {
+      "table": "events",
+      "name": "fk_events_leagueId_leagues_id_fk",
       "columns": [
         "leagueId"
       ],
@@ -437,100 +467,70 @@
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
       "nameExplicit": false,
-      "name": "fk_events_leagueId_leagues_id_fk",
-      "entityType": "fks",
-      "table": "events"
+      "entityType": "fks"
     },
     {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
-      "name": "events_pk",
       "table": "events",
-      "entityType": "pks"
-    },
-    {
+      "name": "events_pk",
       "columns": [
         "id"
       ],
       "nameExplicit": false,
-      "name": "leagues_pk",
+      "entityType": "pks"
+    },
+    {
       "table": "leagues",
-      "entityType": "pks"
-    },
-    {
+      "name": "leagues_pk",
       "columns": [
         "id"
       ],
       "nameExplicit": false,
-      "name": "players_pk",
+      "entityType": "pks"
+    },
+    {
       "table": "players",
-      "entityType": "pks"
-    },
-    {
+      "name": "players_pk",
       "columns": [
         "id"
       ],
       "nameExplicit": false,
-      "name": "regs_pk",
+      "entityType": "pks"
+    },
+    {
       "table": "regs",
-      "entityType": "pks"
-    },
-    {
+      "name": "regs_pk",
       "columns": [
         "id"
       ],
       "nameExplicit": false,
-      "name": "sets_pk",
-      "table": "sets",
       "entityType": "pks"
     },
     {
+      "table": "sets",
+      "name": "sets_pk",
       "columns": [
-        {
-          "value": "leagueId",
-          "isExpression": false
-        }
+        "id"
       ],
-      "isUnique": false,
-      "where": null,
-      "origin": "manual",
-      "name": "events_leagueId_idx",
-      "entityType": "indexes",
-      "table": "events"
+      "nameExplicit": false,
+      "entityType": "pks"
     },
     {
-      "columns": [
-        {
-          "value": "date",
-          "isExpression": false
-        }
-      ],
-      "isUnique": false,
-      "where": null,
-      "origin": "manual",
-      "name": "events_date_idx",
-      "entityType": "indexes",
-      "table": "events"
-    },
-    {
+      "table": "events",
+      "name": "events_pokedataGuid_unique",
       "columns": [
         "pokedataGuid"
       ],
       "nameExplicit": false,
-      "name": "events_pokedataGuid_unique",
-      "entityType": "uniques",
-      "table": "events"
+      "entityType": "uniques"
     },
     {
+      "table": "sets",
+      "name": "sets_code_unique",
       "columns": [
         "code"
       ],
       "nameExplicit": false,
-      "name": "sets_code_unique",
-      "entityType": "uniques",
-      "table": "sets"
+      "entityType": "uniques"
     }
   ],
   "renames": []

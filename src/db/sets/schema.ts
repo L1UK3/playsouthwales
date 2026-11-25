@@ -1,3 +1,4 @@
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const sets = sqliteTable("sets", {
 	id: integer().primaryKey({ autoIncrement: true }),
