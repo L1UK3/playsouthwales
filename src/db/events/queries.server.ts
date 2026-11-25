@@ -5,6 +5,8 @@ import { expandRecurring } from "#/lib/recurrence";
 import type { ScheduleData, ScheduleEvent } from "#/types/domain";
 import { getDb } from "../client.server";
 import { queryLeagues } from "../leagues/queries.server";
+import { queryRegs } from "../regs/queries.server";
+import { querySets } from "../sets/queries.server";
 import { withoutNulls } from "../utils";
 import { type EventValues, events } from "./schema";
 
@@ -45,11 +47,63 @@ export async function querySchedule(
 	month: string,
 	includeExcluded: boolean,
 ): Promise<ScheduleData> {
-	const [allLeagues, monthEvents] = await Promise.all([
+	const [allLeagues, monthEvents, monthSets, monthRegs] = await Promise.all([
 		queryLeagues(),
 		queryMonthEvents(month, includeExcluded),
+		querySets(month),
+		queryRegs(month),
 	]);
-	return { leagues: allLeagues, types: EVENT_TYPE_LABELS, events: monthEvents };
+
+	const markers: ScheduleEvent[] = [];
+	for (const s of monthSets) {
+		if (s.releaseDate.startsWith(month)) {
+			markers.push({
+				id: `release-${s.code}`,
+				name: s.name,
+				date: s.releaseDate,
+				startTime: "",
+				leagueId: -1,
+				eventType: "RELEASE",
+				game: "TCG",
+				description: `Official English release date for ${s.name} (${s.code}).`,
+				entryFee: "",
+			});
+		}
+		if (s.legalDate.startsWith(month)) {
+			markers.push({
+				id: `legality-${s.code}`,
+				name: s.name,
+				date: s.legalDate,
+				startTime: "",
+				leagueId: -1,
+				eventType: "LEGALITY",
+				game: "TCG",
+				description: `Official standard legality date for ${s.name} (${s.code}).`,
+				entryFee: "",
+			});
+		}
+	}
+	for (const r of monthRegs) {
+		if (r.date.startsWith(month)) {
+			markers.push({
+				id: `reg-${r.name.toLowerCase().replace(/\s+/g, "-")}`,
+				name: r.name,
+				date: r.date,
+				startTime: "",
+				leagueId: -1,
+				eventType: "REGULATION",
+				game: "VGC",
+				description: `Official VGC regulation date for ${r.name}.`,
+				entryFee: "",
+			});
+		}
+	}
+
+	return {
+		leagues: allLeagues,
+		types: EVENT_TYPE_LABELS,
+		events: sortEventsForSchedule([...monthEvents, ...markers]),
+	};
 }
 
 export async function insertEvent(values: EventValues): Promise<void> {
