@@ -4,8 +4,6 @@ What still needs doing before the new app replaces the old stack.
 
 ## Missing features
 
-- [x] Write a small SQLite seed outside `migrations/`, with dates relative to today, so contributors can see the calendar working without production data (`scripts/seed-d1.mjs`, `npm run db:seed:local`).
-
 - TCG set and VGC regulation markers (`useSetLegality`, `useRegs`).
 
 - `useTop20Players` and the `/players/top20` call have no replacement. The
