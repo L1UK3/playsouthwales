@@ -16,6 +16,10 @@ Before editing files for a substantial task:
 
 Issues are tracked in GitHub Issues for `L1UK3/playsouthwales` via the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
+### Branch naming
+
+Type-prefixed names for standalone branches; `<feature>/main` and `<feature>/<part>` for feature trees. See `docs/agents/branching.md`.
+
 ### Triage labels
 
 Vocabulary: `needs-triage`, `question` (needs info), `bug` (needs reproduction), `ready`, `in-progress`, `on-hold`, `wontfix`. See `docs/agents/triage-labels.md`.

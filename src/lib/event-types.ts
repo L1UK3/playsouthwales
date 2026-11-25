@@ -11,9 +11,9 @@ export const EVENT_TYPE_LABELS: EventTypeMap = {
 	REGIONAL: "📍",
 	INTERNATIONAL: "INT",
 	WORLDS: "🌍",
-	LEGALITY: "Set Legal",
-	RELEASE: "Set Release",
-	REGULATION: "Reg Legal",
+	LEGALITY: "LEGAL",
+	RELEASE: "NEW SET",
+	REGULATION: "VGC REG",
 };
 
 const TYPE_RANK: Record<string, number> = {
