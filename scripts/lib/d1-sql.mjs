@@ -3,9 +3,6 @@
 // objects keyed by the column names in src/db/*/schema.ts; this module owns
 // how those rows become SQLite text.
 
-/** The three D1 tables, children first so deletes never trip a foreign key. */
-const TABLES_CHILD_FIRST = ["players", "events", "leagues"];
-
 /** The season rolls over in July. Mirrors currentSeason() in src/features/rankings/season.ts. */
 function defaultSeason(now = new Date()) {
 	return now.getUTCMonth() + 1 >= 7
@@ -40,17 +37,20 @@ function insert(table, row) {
 }
 
 /**
- * Builds a script that empties every table, restarts autoincrement ids so a
- * re-run gives the same ids, then inserts `rows` (table name -> row objects,
- * inserted in key order, so list parent tables first).
+ * Builds a script that empties the tables named in `rows`, restarts their
+ * autoincrement ids so a re-run gives the same ids, then inserts `rows`
+ * (table name -> row objects, inserted in key order, so list parent tables
+ * first). Tables are emptied in reverse key order, children first, so deletes
+ * never trip a foreign key. Tables left out of `rows` are not touched.
  *
  * Returns the script and its individual statements, so callers can check
  * statement sizes against D1 limits.
  */
 export function replaceAllSql(header, rows) {
+	const tablesChildFirst = Object.keys(rows).reverse();
 	const statements = [
-		...TABLES_CHILD_FIRST.map((table) => `DELETE FROM \`${table}\`;`),
-		`DELETE FROM \`sqlite_sequence\` WHERE \`name\` IN (${TABLES_CHILD_FIRST.map(sqlValue).join(", ")});`,
+		...tablesChildFirst.map((table) => `DELETE FROM \`${table}\`;`),
+		`DELETE FROM \`sqlite_sequence\` WHERE \`name\` IN (${tablesChildFirst.map(sqlValue).join(", ")});`,
 	];
 	for (const [table, tableRows] of Object.entries(rows)) {
 		for (const row of tableRows) statements.push(insert(table, row));
