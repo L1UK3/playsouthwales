@@ -151,7 +151,7 @@ const EventCard: React.FC<EventCardProps> = React.memo(
 				<div className="flex flex-wrap gap-1.5 items-center">
 					<EventTypeTag
 						eventType={event.eventType}
-						className="px-2.5 py-0.5 rounded-full"
+						className="px-2 sm:px-2.5 py-0.5 rounded-full whitespace-nowrap"
 					>
 						{isOfficial
 							? `${types[event.eventType]}` + ` ${event.eventType}`
