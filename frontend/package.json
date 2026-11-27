@@ -16,7 +16,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@clerk/react": "^6.17.6",
+        "@clerk/react": "^6.19.5",
         "@clerk/tanstack-react-start": "^1.6.5",
         "@clerk/themes": "^2.4.57",
         "@clerk/ui": "^1.44.4",
