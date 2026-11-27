@@ -1,11 +1,11 @@
-import type React from "react";
-import { useMemo, useRef, lazy, Suspense } from "react";
-import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
-import { getLocalDateString } from "@calendar/utils/getLocalDateString";
-import type { CellData } from "@calendar/types/CellData";
 import Cell from "@calendar/components/Cell";
+import type { CellData } from "@calendar/types/CellData";
+import { getLocalDateString } from "@calendar/utils/getLocalDateString";
+import type React from "react";
+import { lazy, Suspense, useMemo, useRef } from "react";
+import type { Event } from "@/types/Event";
 import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 const ActiveMarkerOverlay = lazy(() => import("./ActiveMarkerOverlay"));
 

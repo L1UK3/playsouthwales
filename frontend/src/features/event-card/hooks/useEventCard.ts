@@ -1,22 +1,22 @@
 import { useMemo } from "react";
-import { getEventDescription } from "../utils/getEventDescription";
 import type { Event } from "@/types/Event";
 import type { League } from "@/types/League";
 import {
-	getLeagueInfo,
-	getStoreColor,
-	getStateFlags,
-	getCardStyles,
-} from "../utils/EventCard.utils";
-import type { EventCardAdditionalProps } from "../types/EventCard.types";
-import {
+	ACTIVE_STATE_CLASSES,
 	CARD_BASE_CLASSES,
 	FOCUS_RING_CLASSES,
-	ACTIVE_STATE_CLASSES,
-	INACTIVE_ACTIVE_CLASSES,
 	HOVER_TRANSITION_CLASSES,
+	INACTIVE_ACTIVE_CLASSES,
 	INACTIVE_HOVER_CLASSES,
 } from "../constants/EventCard.constants";
+import type { EventCardAdditionalProps } from "../types/EventCard.types";
+import {
+	getCardStyles,
+	getLeagueInfo,
+	getStateFlags,
+	getStoreColor,
+} from "../utils/EventCard.utils";
+import { getEventDescription } from "../utils/getEventDescription";
 
 /**
  * Custom React hook that resolves and memoizes event card metadata, store colors,

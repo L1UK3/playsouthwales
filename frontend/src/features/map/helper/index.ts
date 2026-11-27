@@ -1,5 +1,5 @@
-import type { League } from "@/types/League";
 import type { MarkerData } from "@map/types/markerData";
+import type { League } from "@/types/League";
 
 export function mapLeaguesToMarkers(leagues: League[]): MarkerData[] {
 	return leagues

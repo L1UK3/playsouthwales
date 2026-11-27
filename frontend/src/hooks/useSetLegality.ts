@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { loadSetLegality } from "@services/api";
+import { useQuery } from "@tanstack/react-query";
 
 export function useSetLegality() {
 	return useQuery<any[]>({

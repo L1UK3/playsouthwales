@@ -1,10 +1,11 @@
 /* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
-import React from "react";
-import { Trophy } from "lucide-react";
-import { useDocumentMetadata, useTop20Players } from "@/hooks";
+
 import Leaderboard from "@leaderboard/components/Leaderboard";
+import { Trophy } from "lucide-react";
+import React from "react";
 import backgroundImage from "@/assets/images/worlds-banner.png";
 import type { LeaderboardPosition } from "@/features/leaderboard/types/LeaderboardPosition";
+import { useDocumentMetadata, useTop20Players } from "@/hooks";
 
 function getTop20SeasonLabel(date = new Date()) {
 	const seasonYear =

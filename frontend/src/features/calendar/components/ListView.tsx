@@ -1,10 +1,9 @@
-import type React from "react";
-import { useState, useMemo, useCallback } from "react";
-
 import ListEventGroup from "@calendar/components/ListEventGroup";
+import type React from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
 import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 /**
  * Properties for the ListView component.

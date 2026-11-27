@@ -1,13 +1,14 @@
 /* Hallmark · component: league sheet · genre: modern-minimal · theme: custom (design.md) */
-import type React from "react";
-import { Link } from "@tanstack/react-router";
-import type { League } from "@/types/League";
+
 import { LEAGUE_SHEET_EVENT_LIMIT } from "@constants";
-import { useEventTypeMap } from "@/hooks";
+import { Link } from "@tanstack/react-router";
+import type React from "react";
 import { EventCard } from "@/features/event-card";
 import LeagueInfo from "@/features/league-selector/components/LeagueInfo";
-import MapSheet from "./MapSheet";
+import { useEventTypeMap } from "@/hooks";
+import type { League } from "@/types/League";
 import useLeagueUpcomingEvents from "../hooks/useLeagueUpcomingEvents";
+import MapSheet from "./MapSheet";
 
 interface LeagueSheetProps {
 	league: League;

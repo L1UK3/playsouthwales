@@ -1,19 +1,19 @@
-import type React from "react";
-import { useRef } from "react";
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from "@constants";
 import {
-	APIProvider,
-	Map,
 	AdvancedMarker,
+	APIProvider,
 	CollisionBehavior,
 	ColorScheme,
+	Map,
 } from "@vis.gl/react-google-maps";
-import type { League } from "@/types/League";
-import { DEFAULT_CENTER, DEFAULT_ZOOM } from "@constants";
+import type React from "react";
+import { useRef } from "react";
 import { useSettings } from "@/context/SettingsContext";
+import type { League } from "@/types/League";
 import MapHandler, { type CameraSnapshot } from "../helper/MapHandler";
+import useMarker from "../hooks/useMarker";
 import InfoBox from "./InfoBox";
 import LeagueMarker from "./LeagueMarker";
-import useMarker from "../hooks/useMarker";
 
 /**
  * Google's demo Map ID, which shows Google's default map style. Set

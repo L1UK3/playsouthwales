@@ -1,6 +1,6 @@
 import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
 import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 /**
  * Common properties for all event card components (ScheduleCard, ListCard, CalendarCard).

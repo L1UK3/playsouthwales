@@ -4,17 +4,16 @@
  * contrast: pass (46–50)
  */
 import React from "react";
-
-import { useEventCard } from "../hooks/useEventCard";
-import { getEntryFeeLabel } from "../utils/EventCard.utils";
-import type {
-	EventCardProps,
-	EventCardAdditionalProps,
-} from "../types/EventCard.types";
 import {
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
+import { useEventCard } from "../hooks/useEventCard";
+import type {
+	EventCardAdditionalProps,
+	EventCardProps,
+} from "../types/EventCard.types";
+import { getEntryFeeLabel } from "../utils/EventCard.utils";
 
 /**
  * EventCard component displays information about a single event.

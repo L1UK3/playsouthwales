@@ -1,7 +1,7 @@
 /* Hallmark ◆ genre: modern-minimal ◆ component: Card ◆ design-system: design.md ◆ designed-as-app */
 import React from "react";
-import type { EventCardProps } from "../types/EventCard.types";
 import { useEventCard } from "../hooks/useEventCard";
+import type { EventCardProps } from "../types/EventCard.types";
 
 /**
  * Additional props for the CalendarCard component.

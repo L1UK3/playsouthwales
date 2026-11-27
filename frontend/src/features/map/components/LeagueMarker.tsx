@@ -1,6 +1,7 @@
 /* Hallmark · component: map marker · genre: modern-minimal · theme: custom (design.md) */
-import type React from "react";
+
 import type { MarkerData } from "@map/types/markerData";
+import type React from "react";
 
 /**
  * Height in pixels of a selected marker: a 36px badge plus an 8px tail, scaled

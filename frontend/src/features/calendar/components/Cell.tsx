@@ -1,10 +1,9 @@
 import React from "react";
-
-import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
-import type { EventTypeMap } from "@/types/EventTypeMap";
 import { CalendarCard } from "@/features/event-card";
 import { useSortEvents } from "@/hooks/useSortEvents";
+import type { Event } from "@/types/Event";
+import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 export interface CellProps {
 	day: number;

@@ -1,12 +1,11 @@
+import { getLocalDateString } from "@calendar/utils/getLocalDateString";
 import type React from "react";
 import { useMemo } from "react";
-
-import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
-import type { EventTypeMap } from "@/types/EventTypeMap";
-import { getLocalDateString } from "@calendar/utils/getLocalDateString";
 import { ListCard } from "@/features/event-card";
 import { useSortEvents } from "@/hooks/useSortEvents";
+import type { Event } from "@/types/Event";
+import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 /**
  * Properties for the ListEventGroup component.

@@ -1,11 +1,11 @@
+import activeMarkerUrl from "@assets/ActiveMarker/activeMarker.glb?url";
+import { getParams } from "@calendar/utils/getParams";
 import type React from "react";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import activeMarkerUrl from "@assets/ActiveMarker/activeMarker.glb?url";
 // import { playMarkerPop } from '@calendar/utils/playMarkerPop';
 import { useSettings } from "@/context/SettingsContext";
-import { getParams } from "@calendar/utils/getParams";
 
 /**
  * Properties for the ActiveMarkerOverlay component.

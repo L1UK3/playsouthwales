@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { loadEvents, loadWeeklyEvents } from "@services/api";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import type { Event } from "@/types/Event";
 

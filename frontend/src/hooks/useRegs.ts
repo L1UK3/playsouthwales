@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { loadRegs } from "@services/api";
+import { useQuery } from "@tanstack/react-query";
 
 export function useRegs() {
 	return useQuery<any[]>({

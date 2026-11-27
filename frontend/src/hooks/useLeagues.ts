@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { loadLeagues } from "@services/api";
+import { useQuery } from "@tanstack/react-query";
 import type { League } from "@/types/League";
 
 export function useLeagues() {

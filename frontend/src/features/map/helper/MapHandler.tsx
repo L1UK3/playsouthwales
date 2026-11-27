@@ -1,6 +1,6 @@
+import { useMap } from "@vis.gl/react-google-maps";
 import type React from "react";
 import { useEffect } from "react";
-import { useMap } from "@vis.gl/react-google-maps";
 import type { League } from "@/types/League";
 
 /** Zoom level the camera uses when it focuses on a selected league. */

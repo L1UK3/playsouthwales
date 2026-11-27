@@ -1,7 +1,8 @@
 /* Hallmark · component: bottom sheet · genre: modern-minimal · theme: custom (design.md) */
+
+import { X } from "lucide-react";
 import type React from "react";
 import { useEffect, useId, useRef } from "react";
-import { X } from "lucide-react";
 
 interface MapSheetProps {
 	/** Heading text, also used as the sheet's accessible name. */

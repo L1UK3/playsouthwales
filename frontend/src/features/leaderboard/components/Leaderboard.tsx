@@ -1,11 +1,11 @@
 import React from "react";
-import { RankBadge } from "./RankBadge";
+import { useLeaderboard } from "../hooks/useLeaderboard";
+import type { LeaderboardPosition } from "../types/LeaderboardPosition";
 import {
 	LeaderboardPodium,
 	type LeaderboardRanking as LeaderboardPodiumRanking,
 } from "./leaderboard-podium";
-import { useLeaderboard } from "../hooks/useLeaderboard";
-import type { LeaderboardPosition } from "../types/LeaderboardPosition";
+import { RankBadge } from "./RankBadge";
 import { SkeletonRow } from "./SkeletonRow";
 
 export const TOP_CUTOFF_THRESHOLD = 20;

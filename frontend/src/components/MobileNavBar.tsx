@@ -1,8 +1,8 @@
-import type React from "react";
-import { Link, useLocation } from "@tanstack/react-router";
-import { useAuth, SignInButton } from "@clerk/react";
+import { SignInButton, useAuth } from "@clerk/react";
 import { neobrutalism } from "@clerk/themes";
-import { Calendar, MapPin, Trophy, ShieldAlert } from "lucide-react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { Calendar, MapPin, ShieldAlert, Trophy } from "lucide-react";
+import type React from "react";
 
 const CLERK_SIGN_IN_APPEARANCE = {
 	elements: {

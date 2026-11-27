@@ -1,5 +1,5 @@
-import type { Event } from "@/types/Event";
 import React from "react";
+import type { Event } from "@/types/Event";
 
 /** Matches backend `app/services/event_hierarchy.py` schedule ordering. */
 const EVENT_TYPE_PRIORITY: Record<string, number> = {

@@ -1,26 +1,27 @@
 /* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
-import { MONTH_NAMES } from "@/constants";
-import {
-	useEvents,
-	useEventTypeMap,
-	useLeagues,
-	useDocumentMetadata,
-	useSetLegality,
-} from "@/hooks";
+
 import {
 	CalendarView,
 	createLeagueMap,
-	filterAndGroupEvents,
 	Filters,
+	filterAndGroupEvents,
 	getLocalDateString,
 	ListView,
 	NavBar,
 	SelectedDaySection,
 } from "@calendar";
 import { useCallback, useMemo, useState } from "react";
-import type { Event } from "@/types/Event";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import { MONTH_NAMES } from "@/constants";
+import {
+	useDocumentMetadata,
+	useEvents,
+	useEventTypeMap,
+	useLeagues,
+	useSetLegality,
+} from "@/hooks";
 import { useRegs } from "@/hooks/useRegs";
+import type { Event } from "@/types/Event";
 
 export type ViewMode = "calendar" | "list";
 

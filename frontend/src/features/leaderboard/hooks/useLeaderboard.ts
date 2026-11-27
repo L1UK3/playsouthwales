@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { loadTop20Players } from "@services/api";
+import { useQuery } from "@tanstack/react-query";
 import type { LeaderboardPosition } from "../types/LeaderboardPosition";
 
 export function useLeaderboard(season?: string, skip = false) {

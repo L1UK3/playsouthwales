@@ -6,16 +6,16 @@
 import React from "react";
 
 import type { Event } from "@/types/Event";
-import type {
-	EventCardProps,
-	EventCardAdditionalProps,
-} from "../types/EventCard.types";
-import { useEventCard } from "../hooks/useEventCard";
-import { getEntryFeeLabel } from "../utils/EventCard.utils";
 import {
 	TAG_BASE_CLASSES,
 	TAG_STYLE_PROPERTIES,
 } from "../constants/EventCard.constants";
+import { useEventCard } from "../hooks/useEventCard";
+import type {
+	EventCardAdditionalProps,
+	EventCardProps,
+} from "../types/EventCard.types";
+import { getEntryFeeLabel } from "../utils/EventCard.utils";
 
 /**
  * ListCardProps interface extends EventCardProps and EventCardAdditionalProps to include additional properties specific to the ListCard component.

@@ -1,6 +1,6 @@
-import type { League } from "@/types/League";
-import type { Event } from "@/types/Event";
 import { API_BASE_URL } from "@/constants";
+import type { Event } from "@/types/Event";
+import type { League } from "@/types/League";
 
 export interface Top20Response {
 	season: string;

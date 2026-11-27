@@ -1,11 +1,11 @@
-import type React from "react";
 import { Calendar } from "lucide-react";
-import type { Event } from "@/types/Event";
-import type { League } from "@/types/League";
-import type { EventTypeMap } from "@/types/EventTypeMap";
-import Footer from "@/layouts/Footer";
-import { useSortEvents } from "@/hooks/useSortEvents";
+import type React from "react";
 import { EventCard } from "@/features/event-card";
+import { useSortEvents } from "@/hooks/useSortEvents";
+import Footer from "@/layouts/Footer";
+import type { Event } from "@/types/Event";
+import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 /**
  * Properties for the SelectedDaySection component.

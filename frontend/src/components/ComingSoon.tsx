@@ -1,5 +1,5 @@
-﻿import type React from "react";
-import { Link } from "@tanstack/react-router";
+﻿import { Link } from "@tanstack/react-router";
+import type React from "react";
 
 export interface ComingSoonProps {
 	message?: string;

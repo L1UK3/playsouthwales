@@ -1,26 +1,31 @@
 /* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
-import {
-	EventFormModal,
-	LeagueFormModal,
-	LeaderboardFormModal,
-	NationalRankingsModal,
-} from "@/features/admin";
-import {
-	useLeagues,
-	useEventTypeMap,
-	useEvents,
-	useDocumentMetadata,
-} from "@/hooks";
-import LeagueSelector from "@/features/league-selector";
-import { useCallback, useState, useMemo } from "react";
-import SuspenseLoader from "@/components/SuspenseLoader";
+
 import {
 	createLeagueMap,
 	filterAndGroupEvents,
 	ListView,
 	NavBar,
 } from "@calendar";
+import { useAuth } from "@clerk/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useMemo, useState } from "react";
+import SuspenseLoader from "@/components/SuspenseLoader";
 import { MONTH_NAMES } from "@/constants";
+import {
+	EventFormModal,
+	LeaderboardFormModal,
+	LeagueFormModal,
+	NationalRankingsModal,
+} from "@/features/admin";
+import type { LeaderboardEntry } from "@/features/admin/components/LeaderboardFormModal";
+import LeagueSelector from "@/features/league-selector";
+import {
+	useDocumentMetadata,
+	useEvents,
+	useEventTypeMap,
+	useLeagues,
+} from "@/hooks";
+import type { Top20PlayerInput } from "@/services/api";
 import {
 	createEvent,
 	createLeague,
@@ -29,16 +34,12 @@ import {
 	loadLocalLeaderboard,
 	loadTop20Players,
 	updateEvent,
-	updateLeague,
 	updateLeaderboard,
+	updateLeague,
 	updateTop20Players,
 } from "@/services/api";
-import type { Top20PlayerInput } from "@/services/api";
-import type { League } from "@/types/League";
 import type { Event } from "@/types/Event";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@clerk/react";
-import type { LeaderboardEntry } from "@/features/admin/components/LeaderboardFormModal";
+import type { League } from "@/types/League";
 
 const AdminPage: React.FC = () => {
 	useDocumentMetadata({

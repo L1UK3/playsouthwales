@@ -1,9 +1,9 @@
+import Header from "@layouts/Header";
+import { Outlet } from "@tanstack/react-router";
 import type React from "react";
 import { Suspense } from "react";
-import { Outlet } from "@tanstack/react-router";
-import SuspenseLoader from "@/components/SuspenseLoader";
-import Header from "@layouts/Header";
 import MobileNavBar from "@/components/MobileNavBar";
+import SuspenseLoader from "@/components/SuspenseLoader";
 
 export const RootComponent: React.FC = () => {
 	return (

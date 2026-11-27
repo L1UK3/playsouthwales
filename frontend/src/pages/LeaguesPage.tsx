@@ -1,14 +1,15 @@
 /* Hallmark — genre: modern-minimal — macrostructure: Workbench — design-system: design.md — designed-as-app */
-import LeagueSelector from "@/features/league-selector";
-import { useLeagues, useDocumentMetadata, useMediaQuery } from "@/hooks";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { List } from "lucide-react";
+
+import { createLeagueMap } from "@calendar/utils/dataProcessing";
 import { LeagueMap } from "@map";
 import LeagueSheet from "@map/components/LeagueSheet";
 import MapSheet from "@map/components/MapSheet";
-import { createLeagueMap } from "@calendar/utils/dataProcessing";
-import { MOBILE_MAP_QUERY } from "@/constants";
+import { List } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import { MOBILE_MAP_QUERY } from "@/constants";
+import LeagueSelector from "@/features/league-selector";
+import { useDocumentMetadata, useLeagues, useMediaQuery } from "@/hooks";
 
 /**
  * Share of the map's height to show a selected league above the centre on

@@ -1,7 +1,6 @@
 import type React from "react";
-
-import type { League } from "@/types/League";
 import type { EventTypeMap } from "@/types/EventTypeMap";
+import type { League } from "@/types/League";
 
 /**
  * Properties for the Filters component, enabling users to refine the list of displayed events.

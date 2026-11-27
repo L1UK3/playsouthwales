@@ -1,13 +1,13 @@
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import "@/assets/styles/global.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, useAuth } from "@clerk/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import { SettingsProvider } from "./context/SettingsContext";
-import { Analytics } from "@vercel/analytics/react";
 
 // Create a new router instance
 const router = createRouter({
