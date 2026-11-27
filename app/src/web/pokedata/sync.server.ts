@@ -1,5 +1,10 @@
-import { insertPokedataEvents, queryLeagues } from "#/db/queries.server";
+import {
+	insertPokedataEvents,
+	queryLeagues,
+	updatePlayerCp,
+} from "#/db/queries.server";
 import type { EventValues } from "#/db/schema";
+import { getChampionshipPoints } from "./championship_points";
 import { getAllEvents, toEventValues } from "./events";
 
 /**
@@ -20,4 +25,12 @@ export async function syncPokedataEvents(): Promise<void> {
 	}
 
 	await insertPokedataEvents(rows);
+}
+
+/** Store each player's championship points from Pokedata. */
+export async function syncChampionshipPoints(): Promise<void> {
+	const players = await getChampionshipPoints();
+	await updatePlayerCp(
+		players.map(({ name, points }) => ({ name, cp: points })),
+	);
 }
