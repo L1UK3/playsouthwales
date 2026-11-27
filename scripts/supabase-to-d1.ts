@@ -155,9 +155,13 @@ function requiredText(value: string, fallback: string, context: string): string 
 	return fallback;
 }
 
-function convert(data: { leagues?: any; events?: any; weekly_events?: any; welsh_players?: any; }): { sql: string; counts: { [k: string]: number; }; } {
-	const rows = { leagues: [], events: [], players: [] };
-	const leagueIds = new Set();
+function convert(data: Export): { sql: string; counts: Record<string, number> } {
+	const rows: { leagues: Row[]; events: Row[]; players: Row[] } = {
+		leagues: [],
+		events: [],
+		players: [],
+	};
+	const leagueIds = new Set<unknown>();
 
 	for (const l of data.leagues) {
 		leagueIds.add(l.id);
@@ -181,7 +185,7 @@ function convert(data: { leagues?: any; events?: any; weekly_events?: any; welsh
 		}
 	}
 
-	const eventSources = [
+	const eventSources: [string, SourceRow[], boolean][] = [
 		["events", data.events, false],
 		["weekly_events", data.weekly_events, true],
 	];
@@ -192,7 +196,7 @@ function convert(data: { leagues?: any; events?: any; weekly_events?: any; welsh
 				warn(`${context}: skipped, league ${e.leagueId} does not exist`);
 				continue;
 			}
-			const row = {
+			const row: Row = {
 				leagueId: e.leagueId,
 				name: e.name,
 				date: e.date,
@@ -255,7 +259,7 @@ const { sql, counts } = convert(data);
 const outFile = join(args.out, "import.sql");
 await writeFile(outFile, sql);
 
-const source = {
+const source: Record<string, number> = {
 	leagues: data.leagues.length,
 	events: data.events.length + data.weekly_events.length,
 	players: data.welsh_players.length,
