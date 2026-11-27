@@ -12,7 +12,8 @@
 
 import { execSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
+import { dirname, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { parseSeason, replaceAllSql } from "./lib/d1-sql.ts";
 
@@ -26,6 +27,12 @@ const { values: args } = parseArgs({
 });
 
 const season = parseSeason(args.season);
+
+// Resolved from this file so wrangler finds the app config from any directory.
+const wranglerConfig = relative(
+	process.cwd(),
+	fileURLToPath(new URL("../wrangler.jsonc", import.meta.url)),
+);
 
 function formatDate(date: Date): string {
 	const y = date.getUTCFullYear();
@@ -281,19 +288,19 @@ async function main() {
 
 	if (args.local) {
 		console.log("\nApplying seed to local D1 via wrangler...");
-		execSync(`npx wrangler d1 execute playsouthwales --local --file="${args.out}"`, {
+		execSync(`npx wrangler d1 execute playsouthwales --local -c "${wranglerConfig}" --file="${args.out}"`, {
 			stdio: "inherit",
 		});
 		console.log("Successfully seeded local D1 database.");
 	} else if (args.remote) {
 		console.log("\nApplying seed to remote D1 via wrangler...");
-		execSync(`npx wrangler d1 execute playsouthwales --remote --file="${args.out}"`, {
+		execSync(`npx wrangler d1 execute playsouthwales --remote -c "${wranglerConfig}" --file="${args.out}"`, {
 			stdio: "inherit",
 		});
 		console.log("Successfully seeded remote D1 database.");
 	} else {
 		console.log("\nTo apply this seed to your local D1:");
-		console.log(`  npx wrangler d1 execute playsouthwales --local --file="${args.out}"`);
+		console.log(`  npx wrangler d1 execute playsouthwales --local -c "${wranglerConfig}" --file="${args.out}"`);
 		console.log("Or run:");
 		console.log("  npm run db:seed:local");
 	}
