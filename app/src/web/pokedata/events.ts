@@ -92,10 +92,8 @@ function _unwrapEvents(payload: unknown): PokedataEvent[] {
  * Fetch event data from the Pokedata API, retrying failed requests.
  * @returns The events, or an empty list once every attempt has failed.
  */
-export async function getEvents(
-	URL: string,
-	{ maxRetries = 3, retryDelayMs = 2000 } = {},
-): Promise<PokedataEvent[]> {
+export async function getEvents(URL: string): Promise<PokedataEvent[]> {
+	const maxRetries = 3;
 	for (let attempt = 1; attempt <= maxRetries; attempt++) {
 		try {
 			const response = await fetch(URL, {
@@ -113,7 +111,7 @@ export async function getEvents(
 				`Pokedata events attempt ${attempt}/${maxRetries} failed: ${error}`,
 			);
 			if (attempt < maxRetries) {
-				await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+				await new Promise((resolve) => setTimeout(resolve, 2000));
 			}
 		}
 	}
