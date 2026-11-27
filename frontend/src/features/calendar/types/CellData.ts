@@ -8,9 +8,9 @@
  * @property {string} dateKey - A unique string identifier for the date (typically ISO format YYYY-MM-DD).
  */
 export interface CellData {
-    day: number;
-    month: number;
-    year: number;
-    isOtherMonth: boolean;
-    dateKey: string;
+	day: number;
+	month: number;
+	year: number;
+	isOtherMonth: boolean;
+	dateKey: string;
 }

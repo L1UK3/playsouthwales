@@ -1,6 +1,6 @@
-import type { Event } from '@/types/Event';
-import type { League } from '@/types/League';
-import type { EventTypeMap } from '@/types/EventTypeMap';
+import type { Event } from "@/types/Event";
+import type { League } from "@/types/League";
+import type { EventTypeMap } from "@/types/EventTypeMap";
 
 /**
  * Common properties for all event card components (ScheduleCard, ListCard, CalendarCard).
@@ -9,9 +9,9 @@ import type { EventTypeMap } from '@/types/EventTypeMap';
  * @param types {EventTypeMap} - A mapping of event types to their corresponding properties.
  */
 export interface EventCardProps {
-    event: Event;
-    leagueMap: Record<number, League>;
-    types: EventTypeMap;
+	event: Event;
+	leagueMap: Record<number, League>;
+	types: EventTypeMap;
 }
 
 /**
@@ -20,13 +20,13 @@ export interface EventCardProps {
  * Can be one of 'default', 'hover', 'focus', 'active', 'disabled', 'loading', 'error', or 'success'.
  */
 export interface EventCardAdditionalProps {
-    state?:
-        | 'default'
-        | 'hover'
-        | 'focus'
-        | 'active'
-        | 'disabled'
-        | 'loading'
-        | 'error'
-        | 'success';
+	state?:
+		| "default"
+		| "hover"
+		| "focus"
+		| "active"
+		| "disabled"
+		| "loading"
+		| "error"
+		| "success";
 }

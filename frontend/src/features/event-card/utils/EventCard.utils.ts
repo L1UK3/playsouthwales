@@ -1,8 +1,8 @@
 // Shared utilities for EventCard components
 
-import type { Event } from '@/types/Event';
-import type { League } from '@/types/League';
-import type { EventCardAdditionalProps } from '../types/EventCard.types';
+import type { Event } from "@/types/Event";
+import type { League } from "@/types/League";
+import type { EventCardAdditionalProps } from "../types/EventCard.types";
 
 /**
  * Extract league information and computed store color.
@@ -11,15 +11,13 @@ import type { EventCardAdditionalProps } from '../types/EventCard.types';
  * @returns {{ league: League | null, leagueName: string }} - An object containing the league and its name.
  */
 export function getLeagueInfo(
-    event: Event,
-    leagueMap: Record<number, League>
+	event: Event,
+	leagueMap: Record<number, League>,
 ): { league: League | null; leagueName: string } {
-    const league =
-        event.leagueId && event.leagueId !== -1
-            ? leagueMap[event.leagueId]
-            : null;
-    const leagueName = league?.name ?? event.leagueName ?? 'Unknown League';
-    return { league, leagueName };
+	const league =
+		event.leagueId && event.leagueId !== -1 ? leagueMap[event.leagueId] : null;
+	const leagueName = league?.name ?? event.leagueName ?? "Unknown League";
+	return { league, leagueName };
 }
 
 /**
@@ -29,12 +27,12 @@ export function getLeagueInfo(
  * @returns {string} - The computed store color as a CSS variable or HSL value.
  */
 export function getStoreColor(event: Event, league: League | null): string {
-    return event.eventType === 'LEGALITY' ||
-        event.eventType === 'RELEASE' ||
-        event.eventType === 'REGULATION'
-        ? 'border-special-day-border'
-        : (league?.brandColor ??
-              `hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
+	return event.eventType === "LEGALITY" ||
+		event.eventType === "RELEASE" ||
+		event.eventType === "REGULATION"
+		? "border-special-day-border"
+		: (league?.brandColor ??
+				`hsl(${((event.leagueId ?? 0) * 137) % 360}, 65%, 55%)`);
 }
 
 /**
@@ -44,38 +42,38 @@ export function getStoreColor(event: Event, league: League | null): string {
  * @returns {stateFlags} - An object containing flags for each state.
  */
 export function getStateFlags(
-    state: EventCardAdditionalProps['state'],
-    event: Event
+	state: EventCardAdditionalProps["state"],
+	event: Event,
 ) {
-    const stateFlags = {
-        isHover: state === 'hover',
-        isFocus: state === 'focus',
-        isActive: state === 'active',
-        isDisabled: state === 'disabled',
-        isLoading: state === 'loading',
-        isError: state === 'error',
-        isSuccess: state === 'success',
-        isReleaseCard:
-            event.eventType === 'RELEASE' ||
-            event.eventType === 'LEGALITY' ||
-            event.eventType === 'REGULATION',
-    };
-    return stateFlags;
+	const stateFlags = {
+		isHover: state === "hover",
+		isFocus: state === "focus",
+		isActive: state === "active",
+		isDisabled: state === "disabled",
+		isLoading: state === "loading",
+		isError: state === "error",
+		isSuccess: state === "success",
+		isReleaseCard:
+			event.eventType === "RELEASE" ||
+			event.eventType === "LEGALITY" ||
+			event.eventType === "REGULATION",
+	};
+	return stateFlags;
 }
 
 /** Format plain GBP amounts while preserving descriptive entry fees. */
 export function getEntryFeeLabel(entryFee?: string | null): string {
-    const raw = entryFee?.trim();
-    if (!raw) return '£0.00';
+	const raw = entryFee?.trim();
+	if (!raw) return "£0.00";
 
-    // Fees are free text: do not reinterpret ranges, other currencies or notes.
-    const match = /^(?:£\s*)?(\d+(?:\.\d{1,2})?)$/.exec(raw);
-    if (!match) return entryFee!;
+	// Fees are free text: do not reinterpret ranges, other currencies or notes.
+	const match = /^(?:£\s*)?(\d+(?:\.\d{1,2})?)$/.exec(raw);
+	if (!match) return entryFee!;
 
-    const amount = Number(match[1]);
-    return Number.isFinite(amount) && amount < 1e21
-        ? `£${amount.toFixed(2)}`
-        : entryFee!;
+	const amount = Number(match[1]);
+	return Number.isFinite(amount) && amount < 1e21
+		? `£${amount.toFixed(2)}`
+		: entryFee!;
 }
 
 /**
@@ -85,30 +83,30 @@ export function getEntryFeeLabel(entryFee?: string | null): string {
  * @returns {string} - The Tailwind styling classes for the card.
  */
 export function getCardStyles(
-    eventType: string,
-    isChampionship: boolean
+	eventType: string,
+	isChampionship: boolean,
 ): string {
-    const isCup = eventType === 'CUP';
-    const isChallenge = eventType === 'CHALLENGE';
-    const isPrerelease = eventType === 'PRE-RELEASE';
+	const isCup = eventType === "CUP";
+	const isChallenge = eventType === "CHALLENGE";
+	const isPrerelease = eventType === "PRE-RELEASE";
 
-    let theme: 'gold' | 'silver' | 'purple' | 'default' = 'default';
-    if (isChampionship || isCup) {
-        theme = 'gold';
-    } else if (isChallenge) {
-        theme = 'silver';
-    } else if (isPrerelease) {
-        theme = 'purple';
-    }
+	let theme: "gold" | "silver" | "purple" | "default" = "default";
+	if (isChampionship || isCup) {
+		theme = "gold";
+	} else if (isChallenge) {
+		theme = "silver";
+	} else if (isPrerelease) {
+		theme = "purple";
+	}
 
-    switch (theme) {
-        case 'gold':
-            return 'border-2 border-(--store-color) bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5';
-        case 'silver':
-            return 'border-2 border-(--store-color) bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white';
-        case 'purple':
-            return 'border-2 border-(--store-color) bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white';
-        default:
-            return 'border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]';
-    }
+	switch (theme) {
+		case "gold":
+			return "border-2 border-(--store-color) bg-linear-to-br from-yellow-600/[0.5] to-transparent shadow-md shadow-amber-500/5";
+		case "silver":
+			return "border-2 border-(--store-color) bg-linear-to-br from-slate-500/[0.5] to-transparent shadow-md shadow-slate-400/5 text-white";
+		case "purple":
+			return "border-2 border-(--store-color) bg-linear-to-br from-purple-600/[0.5] to-transparent shadow-md shadow-purple-500/5 text-white";
+		default:
+			return "border-2 border-(--store-color) bg-solid-gold shadow-[0_0_8px_color-mix(in_oklch,var(--store-color)_15%,transparent)]";
+	}
 }

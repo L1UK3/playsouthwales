@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * Properties for the NavBar component, providing navigation controls for the calendar and list views.
@@ -12,13 +12,13 @@ import React from 'react';
  * @property onToggleViewMode - Callback to switch between calendar and list view modes.
  */
 export interface NavBarProps {
-    monthName: string;
-    year: number;
-    viewMode?: 'calendar' | 'list';
-    onGoToToday: () => void;
-    onPrevMonth: () => void;
-    onNextMonth: () => void;
-    onToggleViewMode?: () => void;
+	monthName: string;
+	year: number;
+	viewMode?: "calendar" | "list";
+	onGoToToday: () => void;
+	onPrevMonth: () => void;
+	onNextMonth: () => void;
+	onToggleViewMode?: () => void;
 }
 
 /**
@@ -28,49 +28,49 @@ export interface NavBarProps {
  * @returns JSX.Element
  */
 const NavBar: React.FC<NavBarProps> = ({
-    monthName,
-    year,
-    viewMode,
-    onGoToToday,
-    onPrevMonth,
-    onNextMonth,
-    onToggleViewMode,
+	monthName,
+	year,
+	viewMode,
+	onGoToToday,
+	onPrevMonth,
+	onNextMonth,
+	onToggleViewMode,
 }) => {
-    return (
-        <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-between sm:items-center">
-            <h2 className="text-base sm:text-lg font-bold text-text-darker m-0 shrink-0 text-center sm:text-left">
-                {monthName} {year}
-            </h2>
-            <div className="flex items-center gap-1.5 justify-center sm:justify-end w-full sm:w-auto">
-                <button
-                    className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
-                    onClick={onGoToToday}
-                >
-                    Today
-                </button>
-                <button
-                    className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
-                    onClick={onPrevMonth}
-                >
-                    &larr;
-                </button>
-                <button
-                    className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
-                    onClick={onNextMonth}
-                >
-                    &rarr;
-                </button>
-                {viewMode && onToggleViewMode && (
-                    <button
-                        className="btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold cursor-pointer flex-1 sm:flex-initial"
-                        onClick={onToggleViewMode}
-                    >
-                        {viewMode === 'calendar' ? 'List' : 'Calendar'}
-                    </button>
-                )}
-            </div>
-        </div>
-    );
+	return (
+		<div className="flex flex-col gap-2.5 sm:flex-row sm:justify-between sm:items-center">
+			<h2 className="text-base sm:text-lg font-bold text-text-darker m-0 shrink-0 text-center sm:text-left">
+				{monthName} {year}
+			</h2>
+			<div className="flex items-center gap-1.5 justify-center sm:justify-end w-full sm:w-auto">
+				<button
+					className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
+					onClick={onGoToToday}
+				>
+					Today
+				</button>
+				<button
+					className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
+					onClick={onPrevMonth}
+				>
+					&larr;
+				</button>
+				<button
+					className="btn btn-secondary py-1.5 px-3.5 text-xs sm:text-sm cursor-pointer flex-1 sm:flex-initial"
+					onClick={onNextMonth}
+				>
+					&rarr;
+				</button>
+				{viewMode && onToggleViewMode && (
+					<button
+						className="btn btn-primary py-1.5 px-3.5 text-xs sm:text-sm font-bold cursor-pointer flex-1 sm:flex-initial"
+						onClick={onToggleViewMode}
+					>
+						{viewMode === "calendar" ? "List" : "Calendar"}
+					</button>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default NavBar;

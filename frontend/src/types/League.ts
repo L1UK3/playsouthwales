@@ -31,21 +31,21 @@
  * @property {number} [longitude] - Optional geographic longitude for mapping.
  */
 export interface League {
-    directions?: string;
-    accessibility?: string;
-    id?: number;
-    leagueId: number;
-    name: string;
-    logo?: string;
-    website?: string;
-    socialLink?: string;
-    eventLink?: string;
-    brandColor?: string;
-    webLink?: string;
-    location?: string;
-    latitude?: number;
-    longitude?: number;
-    hasStandings?: boolean;
-    isChampionshipSeries?: boolean;
-    format?: string;
+	directions?: string;
+	accessibility?: string;
+	id?: number;
+	leagueId: number;
+	name: string;
+	logo?: string;
+	website?: string;
+	socialLink?: string;
+	eventLink?: string;
+	brandColor?: string;
+	webLink?: string;
+	location?: string;
+	latitude?: number;
+	longitude?: number;
+	hasStandings?: boolean;
+	isChampionshipSeries?: boolean;
+	format?: string;
 }

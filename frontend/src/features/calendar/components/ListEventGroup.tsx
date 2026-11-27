@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 
-import type { Event } from '@/types/Event';
-import type { League } from '@/types/League';
-import type { EventTypeMap } from '@/types/EventTypeMap';
-import { getLocalDateString } from '@calendar/utils/getLocalDateString';
-import { ListCard } from '@/features/event-card';
-import { useSortEvents } from '@/hooks/useSortEvents';
+import type { Event } from "@/types/Event";
+import type { League } from "@/types/League";
+import type { EventTypeMap } from "@/types/EventTypeMap";
+import { getLocalDateString } from "@calendar/utils/getLocalDateString";
+import { ListCard } from "@/features/event-card";
+import { useSortEvents } from "@/hooks/useSortEvents";
 
 /**
  * Properties for the ListEventGroup component.
@@ -17,16 +17,16 @@ import { useSortEvents } from '@/hooks/useSortEvents';
  * @property onToggleEvent - Callback function triggered when an event card is clicked to toggle its expansion.
  */
 export interface ListEventGroupProps {
-    dateKey: string;
-    eventsForDay: Event[];
-    leagueMap: Record<number, League>;
-    types: EventTypeMap;
-    expandedEventId: number | string | null;
-    onToggleEvent: (eventId: number | string) => void;
-    onEdit?: (event: Event) => void;
-    onDelete?: (event: Event) => void;
-    onExclude?: (event: Event) => void;
-    onUnexclude?: (event: Event) => void;
+	dateKey: string;
+	eventsForDay: Event[];
+	leagueMap: Record<number, League>;
+	types: EventTypeMap;
+	expandedEventId: number | string | null;
+	onToggleEvent: (eventId: number | string) => void;
+	onEdit?: (event: Event) => void;
+	onDelete?: (event: Event) => void;
+	onExclude?: (event: Event) => void;
+	onUnexclude?: (event: Event) => void;
 }
 
 /**
@@ -36,62 +36,62 @@ export interface ListEventGroupProps {
  * @returns JSX.Element
  */
 const ListEventGroup: React.FC<ListEventGroupProps> = ({
-    dateKey,
-    eventsForDay,
-    leagueMap,
-    types,
-    expandedEventId,
-    onToggleEvent,
-    onEdit,
-    onDelete,
-    onExclude,
-    onUnexclude,
+	dateKey,
+	eventsForDay,
+	leagueMap,
+	types,
+	expandedEventId,
+	onToggleEvent,
+	onEdit,
+	onDelete,
+	onExclude,
+	onUnexclude,
 }) => {
-    const dateText = new Date(dateKey + 'T00:00:00').toLocaleDateString(
-        undefined,
-        {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        }
-    );
+	const dateText = new Date(dateKey + "T00:00:00").toLocaleDateString(
+		undefined,
+		{
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		},
+	);
 
-    const sortedEvents = useSortEvents(eventsForDay);
+	const sortedEvents = useSortEvents(eventsForDay);
 
-    const isToday = useMemo(
-        () => dateKey === getLocalDateString(new Date()),
-        [dateKey]
-    );
+	const isToday = useMemo(
+		() => dateKey === getLocalDateString(new Date()),
+		[dateKey],
+	);
 
-    return (
-        <div
-            className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0"
-            id={`date-${dateKey}`}
-        >
-            <div
-                className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? 'border-l-4! border-l-today-border!' : ''}`}
-            >
-                {dateText}
-            </div>
-            <div className="flex flex-col gap-3">
-                {sortedEvents.map((event) => (
-                    <ListCard
-                        key={event.id}
-                        event={event}
-                        leagueMap={leagueMap}
-                        types={types}
-                        isExpanded={expandedEventId === event.id}
-                        onToggle={onToggleEvent}
-                        onEdit={onEdit}
-                        onDelete={onDelete}
-                        onExclude={onExclude}
-                        onUnexclude={onUnexclude}
-                    />
-                ))}
-            </div>
-        </div>
-    );
+	return (
+		<div
+			className="bg-bg-card rounded-2xl shadow-main overflow-hidden mb-6 border-3 border-border-color last:mb-0"
+			id={`date-${dateKey}`}
+		>
+			<div
+				className={`bg-bg-day-header p-5 font-bold text-lg text-text-main border-b border-border-color ${isToday ? "border-l-4! border-l-today-border!" : ""}`}
+			>
+				{dateText}
+			</div>
+			<div className="flex flex-col gap-3">
+				{sortedEvents.map((event) => (
+					<ListCard
+						key={event.id}
+						event={event}
+						leagueMap={leagueMap}
+						types={types}
+						isExpanded={expandedEventId === event.id}
+						onToggle={onToggleEvent}
+						onEdit={onEdit}
+						onDelete={onDelete}
+						onExclude={onExclude}
+						onUnexclude={onUnexclude}
+					/>
+				))}
+			</div>
+		</div>
+	);
 };
 
 export default ListEventGroup;

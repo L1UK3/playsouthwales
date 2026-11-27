@@ -27,20 +27,20 @@
  * @property {string} [entryFee] - Optional cost associated with participating in the event.
  */
 export interface Event {
-    id: number | string;
-    name: string;
-    date: string;
-    startTime?: string;
-    leagueId: number;
-    leagueName?: string;
-    ticketLink?: string;
-    eventType: string;
-    game: string;
-    description?: string;
-    prizes?: string;
-    entryFee?: string;
-    isRecurring?: boolean;
-    recurringEventId?: number;
-    excludedDates?: string[];
-    isExcluded?: boolean;
+	id: number | string;
+	name: string;
+	date: string;
+	startTime?: string;
+	leagueId: number;
+	leagueName?: string;
+	ticketLink?: string;
+	eventType: string;
+	game: string;
+	description?: string;
+	prizes?: string;
+	entryFee?: string;
+	isRecurring?: boolean;
+	recurringEventId?: number;
+	excludedDates?: string[];
+	isExcluded?: boolean;
 }

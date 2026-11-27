@@ -1,14 +1,14 @@
-import type { League } from '@/types/League';
-import type { Event } from '@/types/Event';
-import { API_BASE_URL } from '@/constants';
+import type { League } from "@/types/League";
+import type { Event } from "@/types/Event";
+import { API_BASE_URL } from "@/constants";
 
 export interface Top20Response {
-    season: string;
-    availableSeasons: string[];
-    players: Record<
-        string,
-        { name: string; cp?: number; playerId?: number; userId?: number }
-    >;
+	season: string;
+	availableSeasons: string[];
+	players: Record<
+		string,
+		{ name: string; cp?: number; playerId?: number; userId?: number }
+	>;
 }
 
 /**
@@ -20,28 +20,28 @@ export interface Top20Response {
  * @returns {Promise<Event[]>} A promise that resolves to an array of Event objects.
  */
 export async function loadEvents(
-    month?: number,
-    year?: number,
-    leagueId?: number
+	month?: number,
+	year?: number,
+	leagueId?: number,
 ): Promise<Event[]> {
-    try {
-        const queryParams = new URLSearchParams();
-        if (month !== undefined) queryParams.append('month', String(month));
-        if (year !== undefined) queryParams.append('year', String(year));
-        if (leagueId !== undefined)
-            queryParams.append('leagueId', String(leagueId));
+	try {
+		const queryParams = new URLSearchParams();
+		if (month !== undefined) queryParams.append("month", String(month));
+		if (year !== undefined) queryParams.append("year", String(year));
+		if (leagueId !== undefined)
+			queryParams.append("leagueId", String(leagueId));
 
-        const response = await fetch(
-            `${API_BASE_URL}/events?${queryParams.toString()}`
-        );
-        if (!response.ok) {
-            throw new Error('Failed to fetch events: ' + response.statusText);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        throw error;
-    }
+		const response = await fetch(
+			`${API_BASE_URL}/events?${queryParams.toString()}`,
+		);
+		if (!response.ok) {
+			throw new Error("Failed to fetch events: " + response.statusText);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching events:", error);
+		throw error;
+	}
 }
 
 /**
@@ -49,18 +49,16 @@ export async function loadEvents(
  * @returns {Promise<Event[]>} A promise that resolves to an array of weekly Event objects.
  */
 export async function loadWeeklyEvents(): Promise<Event[]> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/weekly-events`);
-        if (!response.ok) {
-            throw new Error(
-                'Failed to fetch weekly events: ' + response.statusText
-            );
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching weekly events:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(`${API_BASE_URL}/weekly-events`);
+		if (!response.ok) {
+			throw new Error("Failed to fetch weekly events: " + response.statusText);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching weekly events:", error);
+		throw error;
+	}
 }
 
 /**
@@ -70,18 +68,16 @@ export async function loadWeeklyEvents(): Promise<Event[]> {
  * @returns {Promise<Event[]>} A promise that resolves to an array of Event objects.
  */
 export async function loadEventsByLeagueId(leagueId: number): Promise<Event[]> {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/events?leagueId=${leagueId}`
-        );
-        if (!response.ok) {
-            throw new Error('Failed to fetch events: ' + response.statusText);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(`${API_BASE_URL}/events?leagueId=${leagueId}`);
+		if (!response.ok) {
+			throw new Error("Failed to fetch events: " + response.statusText);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching events:", error);
+		throw error;
+	}
 }
 
 /**
@@ -89,16 +85,16 @@ export async function loadEventsByLeagueId(leagueId: number): Promise<Event[]> {
  * @returns {Promise<League[]>} A promise that resolves to an array of League objects.
  */
 export async function loadLeagues(): Promise<League[]> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/leagues`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch leagues: ' + response.statusText);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching leagues:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(`${API_BASE_URL}/leagues`);
+		if (!response.ok) {
+			throw new Error("Failed to fetch leagues: " + response.statusText);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching leagues:", error);
+		throw error;
+	}
 }
 
 /**
@@ -107,24 +103,24 @@ export async function loadLeagues(): Promise<League[]> {
  * @returns {Promise<Event>} A promise that resolves to the created Event object.
  */
 export async function createEvent(
-    event: Omit<Event, 'id'>,
-    token: string
+	event: Omit<Event, "id">,
+	token: string,
 ): Promise<Event> {
-    const response = await fetch(`${API_BASE_URL}/events`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(event),
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error ?? 'Failed to create event: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/events`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify(event),
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error ?? "Failed to create event: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
@@ -134,25 +130,25 @@ export async function createEvent(
  * @returns {Promise<Event>} A promise that resolves to the updated Event object.
  */
 export async function updateEvent(
-    id: number | string,
-    event: Partial<Event>,
-    token: string
+	id: number | string,
+	event: Partial<Event>,
+	token: string,
 ): Promise<Event> {
-    const response = await fetch(`${API_BASE_URL}/events/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(event),
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error ?? 'Failed to update event: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/events/${id}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify(event),
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error ?? "Failed to update event: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
@@ -161,29 +157,29 @@ export async function updateEvent(
  * @returns {Promise<void>} A promise that resolves when the event is successfully deleted.
  */
 export async function deleteEvent(
-    id: number | string,
-    token: string,
-    excludeDate?: string
+	id: number | string,
+	token: string,
+	excludeDate?: string,
 ): Promise<void> {
-    const queryParams = new URLSearchParams();
-    if (excludeDate) {
-        queryParams.append('excludeDate', excludeDate);
-    }
-    const response = await fetch(
-        `${API_BASE_URL}/events/${id}?${queryParams.toString()}`,
-        {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error ?? 'Failed to delete event: ' + response.statusText
-        );
-    }
+	const queryParams = new URLSearchParams();
+	if (excludeDate) {
+		queryParams.append("excludeDate", excludeDate);
+	}
+	const response = await fetch(
+		`${API_BASE_URL}/events/${id}?${queryParams.toString()}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	);
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error ?? "Failed to delete event: " + response.statusText,
+		);
+	}
 }
 
 /**
@@ -192,26 +188,26 @@ export async function deleteEvent(
  * @returns {Promise<League>} A promise that resolves to the created League object.
  */
 export async function createLeague(
-    league: Omit<League, 'leagueId'>,
-    token: string
+	league: Omit<League, "leagueId">,
+	token: string,
 ): Promise<League> {
-    const response = await fetch(`${API_BASE_URL}/leagues`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(league),
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to create league: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/leagues`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify(league),
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to create league: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
@@ -221,27 +217,27 @@ export async function createLeague(
  * @returns {Promise<League>} A promise that resolves to the updated League object.
  */
 export async function updateLeague(
-    id: number,
-    league: Partial<League>,
-    token: string
+	id: number,
+	league: Partial<League>,
+	token: string,
 ): Promise<League> {
-    const response = await fetch(`${API_BASE_URL}/leagues/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(league),
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to update league: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/leagues/${id}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify(league),
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to update league: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
@@ -250,20 +246,20 @@ export async function updateLeague(
  * @returns {Promise<void>} A promise that resolves when the league is successfully deleted.
  */
 export async function deleteLeague(id: number, token: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/leagues/${id}`, {
-        method: 'DELETE',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to delete league: ' + response.statusText
-        );
-    }
+	const response = await fetch(`${API_BASE_URL}/leagues/${id}`, {
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to delete league: " + response.statusText,
+		);
+	}
 }
 
 /**
@@ -271,27 +267,25 @@ export async function deleteLeague(id: number, token: string): Promise<void> {
  * @returns {Promise<any[]>} A promise that resolves to an array of top 20 player objects.
  */
 export async function loadTop20Players(
-    season?: string
+	season?: string,
 ): Promise<Top20Response> {
-    try {
-        const queryParams = new URLSearchParams();
-        if (season) {
-            queryParams.append('season', season);
-        }
+	try {
+		const queryParams = new URLSearchParams();
+		if (season) {
+			queryParams.append("season", season);
+		}
 
-        const response = await fetch(
-            `${API_BASE_URL}/players/top20${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
-        );
-        if (!response.ok) {
-            throw new Error(
-                'Failed to fetch top 20 players: ' + response.statusText
-            );
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching top 20 players:', error);
-        throw error;
-    }
+		const response = await fetch(
+			`${API_BASE_URL}/players/top20${queryParams.toString() ? `?${queryParams.toString()}` : ""}`,
+		);
+		if (!response.ok) {
+			throw new Error("Failed to fetch top 20 players: " + response.statusText);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching top 20 players:", error);
+		throw error;
+	}
 }
 
 /**
@@ -300,18 +294,18 @@ export async function loadTop20Players(
  * @returns {Promise<any[]>} A promise that resolves to an array of leaderboard entries.
  */
 export async function loadLocalLeaderboard(leagueId: number): Promise<any> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/leaderboard/${leagueId}`);
-        if (!response.ok) {
-            throw new Error(
-                'Failed to fetch local leaderboard: ' + response.statusText
-            );
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching local leaderboard:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(`${API_BASE_URL}/leaderboard/${leagueId}`);
+		if (!response.ok) {
+			throw new Error(
+				"Failed to fetch local leaderboard: " + response.statusText,
+			);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching local leaderboard:", error);
+		throw error;
+	}
 }
 
 /**
@@ -322,33 +316,33 @@ export async function loadLocalLeaderboard(leagueId: number): Promise<any> {
  * @returns {Promise<any>} A promise resolving to the API response.
  */
 export async function updateLeaderboard(
-    leagueId: number,
-    data: any[],
-    token: string
+	leagueId: number,
+	data: any[],
+	token: string,
 ): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/leaderboard/${leagueId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ data }),
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to update leaderboard: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/leaderboard/${leagueId}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify({ data }),
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to update leaderboard: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 export interface Top20PlayerInput {
-    name: string;
-    cp: number;
-    playerId?: number;
+	name: string;
+	cp: number;
+	playerId?: number;
 }
 
 /**
@@ -358,26 +352,26 @@ export interface Top20PlayerInput {
  * @returns {Promise<any>} A promise resolving to the API response.
  */
 export async function updateTop20Players(
-    players: Top20PlayerInput[],
-    token: string
+	players: Top20PlayerInput[],
+	token: string,
 ): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/players/top20`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ players }),
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to update national rankings: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/players/top20`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify({ players }),
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to update national rankings: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
@@ -385,60 +379,58 @@ export async function updateTop20Players(
  * @returns {Promise<any[]>} A promise resolving to TCG set legality records.
  */
 export async function loadSetLegality(): Promise<any[]> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/sets`);
-        if (!response.ok) {
-            throw new Error(
-                'Failed to fetch set legality: ' + response.statusText
-            );
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching set legality:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(`${API_BASE_URL}/sets`);
+		if (!response.ok) {
+			throw new Error("Failed to fetch set legality: " + response.statusText);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching set legality:", error);
+		throw error;
+	}
 }
 
 /**
  * Triggers sync of official events from pokedata.ovh.
  */
 export async function syncPokedata(token: string): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/events/sync-pokedata`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to sync pokedata: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/events/sync-pokedata`, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to sync pokedata: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
  * Triggers sync of upcoming sets legality from Bulbapedia.
  */
 export async function syncSets(token: string): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/events/sync-sets`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(
-            errData.error?.message ??
-                errData.error ??
-                'Failed to sync sets: ' + response.statusText
-        );
-    }
-    return await response.json();
+	const response = await fetch(`${API_BASE_URL}/events/sync-sets`, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	if (!response.ok) {
+		const errData = await response.json().catch(() => ({}));
+		throw new Error(
+			errData.error?.message ??
+				errData.error ??
+				"Failed to sync sets: " + response.statusText,
+		);
+	}
+	return await response.json();
 }
 
 /**
@@ -446,16 +438,16 @@ export async function syncSets(token: string): Promise<any> {
  * @returns {Promise<any[]>} A promise resolving to VGC regulation records.
  */
 export async function loadRegs(): Promise<any[]> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/regs`);
-        if (!response.ok) {
-            throw new Error(
-                'Failed to fetch VGC regulations: ' + response.statusText
-            );
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching VGC regulations:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(`${API_BASE_URL}/regs`);
+		if (!response.ok) {
+			throw new Error(
+				"Failed to fetch VGC regulations: " + response.statusText,
+			);
+		}
+		return await response.json();
+	} catch (error) {
+		console.error("Error fetching VGC regulations:", error);
+		throw error;
+	}
 }
