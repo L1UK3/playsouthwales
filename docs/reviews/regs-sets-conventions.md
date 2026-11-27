@@ -25,7 +25,7 @@ branch.
 | 5 | both | `src/db/*/markers.ts` | Drop the hard-coded `description` and rely on `getEventDescription` defaults |
 | 6 | both | `src/db/*/queries.server.ts` | Give every exported function a one-line JSDoc in the same voice |
 | 7 | both | `src/db/*/queries.server.ts` | Remove the unused no-month branch and `insertReg` / `insertSet` |
-| 8 | both | `scripts/seed-d1.mjs` | Number the seed sections 4 (sets) and 5 (regs), and update the header comment |
+| 8 | both | `scripts/seed-d1.ts` | Number the seed sections 4 (sets) and 5 (regs), and update the header comment |
 | 9 | both | `tests/*-markers.test.ts` | One test layout: `make<Row>` factory, full-shape `deepEqual`, same `describe` names |
 | 10 | merge | `src/db/events/queries.server.ts` and others | How to resolve the three known conflicts when the branches meet |
 | 11 | merge | `migrations/` | Generate the merge migration after both branches land |
@@ -120,7 +120,7 @@ Update the full-shape assertions in `tests/set-markers.test.ts`.
 | `insertX` | none | none |
 
 Target: every exported function gets one line in the noun-phrase voice used in
-`src/db/utils.ts` and `scripts/lib/d1-sql.mjs`, naming the month as
+`src/db/utils.ts` and `scripts/lib/d1-sql.ts`, naming the month as
 `` `month` (YYYY-MM) ``. For example:
 
 - `/** The VGC regulation date markers for \`month\` (YYYY-MM). */`
@@ -152,7 +152,7 @@ Use the same comment voice for both ("plus one … near/around today"). The
 rows object lists tables parent-first and ends `sets: sampleSets,
 regs: sampleRegs`. `replaceAllSql` clears them in reverse key order. Log
 lines: `  - N sets` then `  - N regulations`. The header comment at the top of
-`scripts/seed-d1.mjs` still lists only leagues, events and players. Add sets
+`scripts/seed-d1.ts` still lists only leagues, events and players. Add sets
 and regulations there once.
 
 Each sets row writes `format: "Standard"`, which equals the column default.
@@ -197,7 +197,7 @@ from the same edit made on both sides. Resolve them like this:
   };
   ```
 
-- `scripts/seed-d1.mjs`: see item 8.
+- `scripts/seed-d1.ts`: see item 8.
 
 `src/web/pokedata/events.ts` was reformatted on both branches with identical
 content (blob `10bc0e0`), so it merges cleanly.
