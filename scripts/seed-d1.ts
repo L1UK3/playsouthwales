@@ -1,20 +1,20 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S npx tsx
 // Development seed for local D1 database.
 // Generates leagues, weekly recurring events, one-off events, and players with
 // dates relative to today, so contributors can see the calendar populated without
 // production data.
 //
 // Usage:
-//   node scripts/seed-d1.mjs                   # writes to .seed/seed.sql
-//   node scripts/seed-d1.mjs --local           # writes and applies to local D1
-//   node scripts/seed-d1.mjs --remote          # writes and applies to remote D1
+//   npx tsx scripts/seed-d1.ts                   # writes to .seed/seed.sql
+//   npx tsx scripts/seed-d1.ts --local           # writes and applies to local D1
+//   npx tsx scripts/seed-d1.ts --remote          # writes and applies to remote D1
 //   npm run db:seed:local                      # shortcut for --local
 
 import { execSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { parseArgs } from "node:util";
-import { parseSeason, replaceAllSql } from "./lib/d1-sql.mjs";
+import { parseSeason, replaceAllSql } from "./lib/d1-sql.ts";
 
 const { values: args } = parseArgs({
 	options: {
@@ -27,14 +27,14 @@ const { values: args } = parseArgs({
 
 const season = parseSeason(args.season);
 
-function formatDate(date) {
+function formatDate(date: Date): string {
 	const y = date.getUTCFullYear();
 	const m = String(date.getUTCMonth() + 1).padStart(2, "0");
 	const d = String(date.getUTCDate()).padStart(2, "0");
 	return `${y}-${m}-${d}`;
 }
 
-function addDays(base, days) {
+function addDays(base: Date, days: number): Date {
 	const res = new Date(base);
 	res.setUTCDate(res.getUTCDate() + days);
 	return res;

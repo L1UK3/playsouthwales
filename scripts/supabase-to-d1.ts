@@ -1,14 +1,14 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S npx tsx
 // Export production data from Supabase and convert it into a SQLite script for
 // the D1 schema in src/db/schema.ts.
 //
 // Usage:
 //   SUPABASE_URL=https://<ref>.supabase.co \
 //   SUPABASE_SECRET_KEY=<sb_secret_... key, or the legacy service_role JWT> \
-//   node scripts/supabase-to-d1.mjs
+//   npx tsx scripts/supabase-to-d1.ts
 //
 //   # Re-convert an earlier export without contacting Supabase:
-//   node scripts/supabase-to-d1.mjs --from .supabase-export
+//   npx tsx scripts/supabase-to-d1.ts --from .supabase-export
 //
 // Options:
 //   --out <dir>   where the raw JSON and import.sql go (default .supabase-export)
@@ -26,7 +26,11 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { parseSeason, replaceAllSql } from "./lib/d1-sql.mjs";
+import { parseSeason, type Row, replaceAllSql } from "./lib/d1-sql.ts";
+
+// Supabase rows are untyped JSON from PostgREST.
+type SourceRow = Record<string, any>;
+type Export = Record<(typeof SOURCE_TABLES)[number], SourceRow[]>;
 
 // Supabase used the pokedata GUID as events.id. D1 assigns new integer ids and
 // keeps the GUID here so the pokedata sync can still spot events it has seen.
@@ -43,7 +47,7 @@ const SOURCE_TABLES = [
 	"events",
 	"weekly_events",
 	"welsh_players",
-];
+] as const;
 
 const { values: args } = parseArgs({
 	options: {
@@ -55,21 +59,25 @@ const { values: args } = parseArgs({
 
 const fallbackSeason = parseSeason(args.season);
 
-const warnings = [];
-const warn = (message) => warnings.push(message);
+const warnings: string[] = [];
+const warn = (message: string) => warnings.push(message);
 
 // ---------------------------------------------------------------- export ---
 
 // New sb_secret_ keys go in the apikey header only; legacy service_role keys
 // are JWTs and also go in Authorization.
-function authHeaders(key) {
+function authHeaders(key: string): Record<string, string> {
 	return key.startsWith("eyJ")
 		? { apikey: key, Authorization: `Bearer ${key}` }
 		: { apikey: key };
 }
 
-async function fetchTable(baseUrl, key, table) {
-	const rows = [];
+async function fetchTable(
+	baseUrl: string,
+	key: string,
+	table: string,
+): Promise<SourceRow[]> {
+	const rows: SourceRow[] = [];
 	for (let offset = 0; ; offset += PAGE_SIZE) {
 		const url = `${baseUrl}/rest/v1/${table}?select=*&order=id.asc&offset=${offset}&limit=${PAGE_SIZE}`;
 		const res = await fetch(url, {
@@ -80,13 +88,13 @@ async function fetchTable(baseUrl, key, table) {
 				`GET ${table} failed: ${res.status} ${await res.text()}`,
 			);
 		}
-		const page = await res.json();
+		const page = (await res.json()) as SourceRow[];
 		rows.push(...page);
 		if (page.length < PAGE_SIZE) return rows;
 	}
 }
 
-async function exportFromSupabase(outDir) {
+async function exportFromSupabase(outDir: string): Promise<Export> {
 	const baseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, "");
 	const key =
 		process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -95,7 +103,7 @@ async function exportFromSupabase(outDir) {
 			"Set SUPABASE_URL and SUPABASE_SECRET_KEY, or pass --from <dir>.",
 		);
 	}
-	const data = {};
+	const data = {} as Export;
 	for (const table of SOURCE_TABLES) {
 		data[table] = await fetchTable(baseUrl, key, table);
 		await writeFile(
@@ -107,8 +115,8 @@ async function exportFromSupabase(outDir) {
 	return data;
 }
 
-async function readExport(dir) {
-	const data = {};
+async function readExport(dir: string): Promise<Export> {
+	const data = {} as Export;
 	for (const table of SOURCE_TABLES) {
 		data[table] = JSON.parse(await readFile(join(dir, `${table}.json`), "utf8"));
 	}
@@ -120,7 +128,7 @@ async function readExport(dir) {
 // Postgres text[] arrives from PostgREST as a JSON array; the plain-text
 // events.excludedDates column may hold JSON, a Postgres array literal, or a
 // comma-separated list.
-function toDateList(value, context) {
+function toDateList(value: string | any[] | null | undefined, context: string): string {
 	if (value === null || value === undefined || value === "") return "[]";
 	if (Array.isArray(value)) return JSON.stringify(value.map(String));
 	const text = String(value).trim();
@@ -141,15 +149,19 @@ function toDateList(value, context) {
 	return JSON.stringify(list);
 }
 
-function requiredText(value, fallback, context) {
+function requiredText(value: string, fallback: string, context: string): string {
 	if (typeof value === "string" && value.trim() !== "") return value;
 	warn(`${context}: missing value, using "${fallback}"`);
 	return fallback;
 }
 
-function convert(data) {
-	const rows = { leagues: [], events: [], players: [] };
-	const leagueIds = new Set();
+function convert(data: Export): { sql: string; counts: Record<string, number> } {
+	const rows: { leagues: Row[]; events: Row[]; players: Row[] } = {
+		leagues: [],
+		events: [],
+		players: [],
+	};
+	const leagueIds = new Set<unknown>();
 
 	for (const l of data.leagues) {
 		leagueIds.add(l.id);
@@ -173,7 +185,7 @@ function convert(data) {
 		}
 	}
 
-	const eventSources = [
+	const eventSources: [string, SourceRow[], boolean][] = [
 		["events", data.events, false],
 		["weekly_events", data.weekly_events, true],
 	];
@@ -184,7 +196,7 @@ function convert(data) {
 				warn(`${context}: skipped, league ${e.leagueId} does not exist`);
 				continue;
 			}
-			const row = {
+			const row: Row = {
 				leagueId: e.leagueId,
 				name: e.name,
 				date: e.date,
@@ -222,7 +234,7 @@ function convert(data) {
 	}
 
 	const { sql, statements } = replaceAllSql(
-		["Generated by scripts/supabase-to-d1.mjs. Replaces all rows."],
+		["Generated by scripts/supabase-to-d1.ts. Replaces all rows."],
 		rows,
 	);
 	for (const s of statements) {
@@ -247,7 +259,7 @@ const { sql, counts } = convert(data);
 const outFile = join(args.out, "import.sql");
 await writeFile(outFile, sql);
 
-const source = {
+const source: Record<string, number> = {
 	leagues: data.leagues.length,
 	events: data.events.length + data.weekly_events.length,
 	players: data.welsh_players.length,
