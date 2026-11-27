@@ -27,14 +27,14 @@ const { values: args } = parseArgs({
 
 const season = parseSeason(args.season);
 
-function formatDate(date) {
+function formatDate(date: Date): string {
 	const y = date.getUTCFullYear();
 	const m = String(date.getUTCMonth() + 1).padStart(2, "0");
 	const d = String(date.getUTCDate()).padStart(2, "0");
 	return `${y}-${m}-${d}`;
 }
 
-function addDays(base, days) {
+function addDays(base: Date, days: number): Date {
 	const res = new Date(base);
 	res.setUTCDate(res.getUTCDate() + days);
 	return res;
