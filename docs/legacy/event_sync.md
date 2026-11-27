@@ -57,12 +57,12 @@ The backend parses the virtual ID, locates the weekly template record, and appen
 
 Supabase stores schema definitions and table constraints. Follow these steps to apply database updates:
 
-1. Create a new SQL migration file in [supabase/migrations/](file:///d:/Projects/playsouthwales/supabase/migrations/):
+1. Create a new SQL migration file in [supabase/migrations/](../../supabase/migrations/):
     ```sql
     -- Example: supabase/migrations/20260905120000_add_event_notes.sql
     ALTER TABLE events ADD COLUMN note text;
     ```
 2. Open your Supabase Dashboard and navigate to the **SQL Editor**.
 3. Paste the contents of your migration script and click **Run**.
-4. Update the corresponding Pydantic models in [backend/app/models.py](file:///d:/Projects/playsouthwales/backend/app/models.py).
-5. Update matching TypeScript interfaces in [frontend/src/types/](file:///d:/Projects/playsouthwales/frontend/src/types/).
+4. Update the corresponding Pydantic models in [backend/app/models.py](../../backend/app/models.py).
+5. Update matching TypeScript interfaces in [frontend/src/types/](../../frontend/src/types/).

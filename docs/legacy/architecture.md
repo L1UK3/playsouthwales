@@ -52,7 +52,7 @@ To cancel a recurring event on a specific holiday without affecting the rest of 
 
 Tournament legality schedules for card expansions and video game regulations update infrequently. In early versions, background workers scraped Bulbapedia on every run, introducing latency and fragility when HTML structures changed.
 
-The system now bundles legality schedules directly inside [backend/app/data/](file:///d:/Projects/playsouthwales/backend/app/data/) as `sets.json` and `regs.json`. The backend serves these static files instantly with zero database overhead and complete reliability.
+The system now bundles legality schedules directly inside [backend/app/data/](../../backend/app/data/) as `sets.json` and `regs.json`. The backend serves these static files instantly with zero database overhead and complete reliability.
 
 ### 3. Background scheduler lifecycle
 
@@ -67,4 +67,4 @@ The scheduler maintains two distinct schedules:
 
 User authentication relies on Clerk JSON Web Tokens (JWT). The React client acquires a session token from Clerk and includes it within the `Authorization: Bearer <token>` header for administrative requests.
 
-The backend [require_auth](file:///d:/Projects/playsouthwales/backend/app/auth.py) dependency decodes and verifies the token against Clerk public keys. The dependency verifies issuer URLs, token expiration, and authorized parties before granting access to mutation endpoints.
+The backend [require_auth](../../backend/app/auth.py) dependency decodes and verifies the token against Clerk public keys. The dependency verifies issuer URLs, token expiration, and authorized parties before granting access to mutation endpoints.

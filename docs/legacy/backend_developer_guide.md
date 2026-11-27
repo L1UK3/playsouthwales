@@ -11,8 +11,8 @@ This guide explains how to add API routes, define Pydantic validation schemas, i
 FastAPI separates routes into public and protected router modules.
 
 1. Select the appropriate router module:
-    - Public endpoints: [backend/app/routers/public.py](file:///d:/Projects/playsouthwales/backend/app/routers/public.py)
-    - Administrative endpoints: [backend/app/routers/protected.py](file:///d:/Projects/playsouthwales/backend/app/routers/protected.py)
+    - Public endpoints: [backend/app/routers/public.py](../../backend/app/routers/public.py)
+    - Administrative endpoints: [backend/app/routers/protected.py](../../backend/app/routers/protected.py)
 
 2. Define your endpoint handler. Inject the Supabase client using the `get_supabase` dependency:
 
@@ -42,7 +42,7 @@ FastAPI separates routes into public and protected router modules.
 
 ## Add data validation models
 
-Define request and response schemas in [backend/app/models.py](file:///d:/Projects/playsouthwales/backend/app/models.py) using Pydantic v2:
+Define request and response schemas in [backend/app/models.py](../../backend/app/models.py) using Pydantic v2:
 
 ```python
 from pydantic import BaseModel, ConfigDict, Field
@@ -60,7 +60,7 @@ Always use `ConfigDict(populate_by_name=True)` when accepting camelCase properti
 
 ## Add business logic services
 
-Place database interactions in the [backend/app/services/](file:///d:/Projects/playsouthwales/backend/app/services/) directory to keep routers lightweight:
+Place database interactions in the [backend/app/services/](../../backend/app/services/) directory to keep routers lightweight:
 
 ```python
 # backend/app/services/custom.py
@@ -74,7 +74,7 @@ async def get_league_by_id(db: Client, league_id: int) -> dict:
     return response.data[0]
 ```
 
-Handle database errors by raising custom exceptions defined in [backend/app/exceptions.py](file:///d:/Projects/playsouthwales/backend/app/exceptions.py).
+Handle database errors by raising custom exceptions defined in [backend/app/exceptions.py](../../backend/app/exceptions.py).
 
 ## Manage dependencies and run checks
 

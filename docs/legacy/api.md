@@ -32,22 +32,22 @@ Requests lacking a valid bearer token return HTTP status `401 Unauthorized`.
 
 ## Protected endpoints
 
-Protected routes enforce authorization via the [require_auth](file:///d:/Projects/playsouthwales/backend/app/auth.py) dependency.
+Protected routes enforce authorization via the [require_auth](../../backend/app/auth.py) dependency.
 
 | Method   | Endpoint                        | Description                               | Request body                                                                            |
 | :------- | :------------------------------ | :---------------------------------------- | :-------------------------------------------------------------------------------------- |
-| `POST`   | `/api/events`                   | Create a single calendar event            | [`EventCreate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `PATCH`  | `/api/events/{id}`              | Partially update an existing event        | [`EventUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
-| `PUT`    | `/api/events/{id}`              | Update an existing event                  | [`EventUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload       |
+| `POST`   | `/api/events`                   | Create a single calendar event            | [`EventCreate`](../../backend/app/models.py) payload       |
+| `PATCH`  | `/api/events/{id}`              | Partially update an existing event        | [`EventUpdate`](../../backend/app/models.py) payload       |
+| `PUT`    | `/api/events/{id}`              | Update an existing event                  | [`EventUpdate`](../../backend/app/models.py) payload       |
 | `DELETE` | `/api/events/{id}`              | Delete an event or date occurrence        | Query param: `excludeDate` (`YYYY-MM-DD`)                                               |
 | `POST`   | `/api/events/sync-pokedata`     | Trigger manual Pokédata tournament scrape | None                                                                                    |
 | `POST`   | `/api/events/sync-championship` | Trigger manual Championship Series sync   | None                                                                                    |
-| `POST`   | `/api/leagues`                  | Create a new gaming league                | [`LeagueCreate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `PATCH`  | `/api/leagues/{id}`             | Partially update a gaming league          | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
-| `PUT`    | `/api/leagues/{id}`             | Update a gaming league                    | [`LeagueUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload      |
+| `POST`   | `/api/leagues`                  | Create a new gaming league                | [`LeagueCreate`](../../backend/app/models.py) payload      |
+| `PATCH`  | `/api/leagues/{id}`             | Partially update a gaming league          | [`LeagueUpdate`](../../backend/app/models.py) payload      |
+| `PUT`    | `/api/leagues/{id}`             | Update a gaming league                    | [`LeagueUpdate`](../../backend/app/models.py) payload      |
 | `DELETE` | `/api/leagues/{id}`             | Delete an existing league                 | None                                                                                    |
-| `PUT`    | `/api/leaderboard/{id}`         | Upsert league standings leaderboard       | [`LeaderboardUpdate`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload |
-| `PUT`    | `/api/players/top20`            | Declaratively update national rankings    | [`Top20Update`](file:///d:/Projects/playsouthwales/backend/app/models.py) payload        |
+| `PUT`    | `/api/leaderboard/{id}`         | Upsert league standings leaderboard       | [`LeaderboardUpdate`](../../backend/app/models.py) payload |
+| `PUT`    | `/api/players/top20`            | Declaratively update national rankings    | [`Top20Update`](../../backend/app/models.py) payload        |
 
 ## Discord bot HTTP notifier endpoints
 

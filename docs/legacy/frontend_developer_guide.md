@@ -10,7 +10,7 @@ This guide explains how to add routes with TanStack Router, fetch API data with 
 
 The application uses TanStack Router file-based routing with code splitting.
 
-1. Create a page component in [frontend/src/pages/](file:///d:/Projects/playsouthwales/frontend/src/pages/):
+1. Create a page component in [frontend/src/pages/](../../frontend/src/pages/):
 
     ```tsx
     // src/pages/AboutPage.tsx
@@ -29,7 +29,7 @@ The application uses TanStack Router file-based routing with code splitting.
     }
     ```
 
-2. Register the route in [frontend/src/routes/](file:///d:/Projects/playsouthwales/frontend/src/routes/):
+2. Register the route in [frontend/src/routes/](../../frontend/src/routes/):
 
     ```tsx
     // src/routes/about.lazy.tsx
@@ -45,7 +45,7 @@ Vite automatically rebuilds `src/routeTree.gen.ts` whenever you add or modify ro
 
 ## Fetch data with TanStack Query
 
-Define asynchronous API fetch functions in [frontend/src/services/api.ts](file:///d:/Projects/playsouthwales/frontend/src/services/api.ts).
+Define asynchronous API fetch functions in [frontend/src/services/api.ts](../../frontend/src/services/api.ts).
 
 1. Write an API request helper:
 
@@ -133,7 +133,7 @@ export function AdminActionButton() {
 
 ## Apply design system tokens
 
-Style all interface elements using Tailwind CSS v4 and the modern-minimal design tokens defined in [frontend/design.md](file:///d:/Projects/playsouthwales/frontend/design.md):
+Style all interface elements using Tailwind CSS v4 and the modern-minimal design tokens defined in [frontend/design.md](../../frontend/design.md):
 
 - **Backgrounds**: `bg-[var(--color-paper)]` for pages and `bg-[var(--color-paper-2)]` for cards.
 - **Text**: `text-[var(--color-ink)]` for primary headers and `text-[var(--color-ink-2)]` for muted copy.
