@@ -162,9 +162,7 @@ export async function queryPokedataGuids(): Promise<Set<string>> {
  * Inserts imported events atomically, one statement per row to stay under
  * D1's bound parameter limit. Rows whose guid already exists are skipped.
  */
-export async function insertPokedataEvents(
-	rows: EventValues[],
-): Promise<void> {
+export async function insertPokedataEvents(rows: EventValues[]): Promise<void> {
 	const db = getDb();
 	const [first, ...rest] = rows.map((row) =>
 		db
