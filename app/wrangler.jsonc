@@ -1,5 +1,5 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
+	"$schema": "../node_modules/wrangler/config-schema.json",
 	"name": "playsouthwales",
 	"compatibility_date": "2026-11-01",
 	"compatibility_flags": [
