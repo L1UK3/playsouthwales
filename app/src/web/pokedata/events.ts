@@ -71,21 +71,11 @@ export function cleanText(text: string | null | undefined): string {
 }
 
 /**
- * Pull the event list out of a Pokedata response, which is either the list
- * itself or an object with an `events` list.
- * @returns The events, or an empty list when the payload has another shape.
+ * Pokedata returns either the event list or an object with an `events` list.
  */
 function _unwrapEvents(payload: unknown): PokedataEvent[] {
-	const events =
-		payload !== null && typeof payload === "object" && !Array.isArray(payload)
-			? (payload as { events?: unknown }).events
-			: payload;
-
-	if (!Array.isArray(events)) {
-		console.warn(`Unexpected Pokedata events payload: ${typeof events}`);
-		return [];
-	}
-	return events as PokedataEvent[];
+	if (Array.isArray(payload)) return payload;
+	return (payload as { events?: PokedataEvent[] } | null)?.events ?? [];
 }
 
 /**
