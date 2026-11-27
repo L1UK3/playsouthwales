@@ -28,7 +28,13 @@ async function _getChampionshipPoints() {
 		headers: { accept: "application/json", "content-type": "application/json" },
 		body: JSON.stringify({
 			APIKEY: env.POKEDATA_KEY,
-			players: await _fetchPlayerData(),
+			players: (await _fetchPlayerData()).map((name) => ({
+				name,
+				game: "tcg",
+				division: "master",
+				product: "tcg",
+				country: "GBR",
+			})),
 		}),
 	});
 
