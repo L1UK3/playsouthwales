@@ -11,7 +11,7 @@ import { getAllEvents, toEventValues } from "./events";
  * Import new Pokedata events into D1. Events already imported, and events
  * whose league is not in the leagues table, are skipped.
  */
-export async function syncPokedataEvents(): Promise<void> {
+async function _syncEvents(): Promise<void> {
 	const [pokedataEvents, leagues] = await Promise.all([
 		getAllEvents(),
 		queryLeagues(),
@@ -28,9 +28,14 @@ export async function syncPokedataEvents(): Promise<void> {
 }
 
 /** Store each player's championship points from Pokedata. */
-export async function syncChampionshipPoints(): Promise<void> {
+async function _syncChampionshipPoints(): Promise<void> {
 	const players = await getChampionshipPoints();
 	await updatePlayerCp(
 		players.map(({ name, points }) => ({ name, cp: points })),
 	);
+}
+
+/** Sync Pokedata events and championship points at the same time. */
+export async function syncPokedata(): Promise<void> {
+	await Promise.all([_syncEvents(), _syncChampionshipPoints()]);
 }
