@@ -127,7 +127,7 @@ export function toEventValues(
 	event: PokedataEvent,
 	leagueId: number,
 ): EventValues {
-	const eventType = event.type?.trim() ?? "";
+	const eventType = event.type.trim();
 	const ticketLink = event.Third_party_registration_website?.trim();
 
 	return {
