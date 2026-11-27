@@ -3,7 +3,7 @@
 # Runs on every container start, so each step must be idempotent.
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 
 # Docker-in-Docker starts alongside the container, so wait for the daemon.
 for _ in $(seq 1 30); do
