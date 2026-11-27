@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S npx tsx
 // Development seed for local D1 database.
 // Generates leagues, weekly recurring events, one-off events, and players with
 // dates relative to today, so contributors can see the calendar populated without

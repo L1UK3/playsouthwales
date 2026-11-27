@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S npx tsx
 // Export production data from Supabase and convert it into a SQLite script for
 // the D1 schema in src/db/schema.ts.
 //
