@@ -37,6 +37,7 @@
     "db:migrate:local": "wrangler d1 migrations apply playsouthwales --local",
     "db:migrate:remote": "wrangler d1 migrations apply playsouthwales --remote",
     "db:studio": "drizzle-kit studio",
+    "db:seed:local": "tsx scripts/seed-d1.ts --local",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
