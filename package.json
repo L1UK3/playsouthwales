@@ -41,7 +41,7 @@
     "cf-typegen": "npm run cf-typegen -w app"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.5",
+    "@biomejs/biome": "2.6.8",
     "@tanstack/intent": "0.5.6",
     "supabase": "^3.4.0"
   },
