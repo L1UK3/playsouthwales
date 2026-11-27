@@ -1,5 +1,5 @@
 /* Hallmark · component: league sheet · genre: modern-minimal · theme: custom (design.md) */
-import React from "react";
+import type React from "react";
 import { Link } from "@tanstack/react-router";
 import type { League } from "@/types/League";
 import { LEAGUE_SHEET_EVENT_LIMIT } from "@constants";

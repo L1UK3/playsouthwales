@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import type React from "react";
+import { useMemo } from "react";
 
 import type { Event } from "@/types/Event";
 import type { League } from "@/types/League";

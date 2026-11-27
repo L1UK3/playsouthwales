@@ -1,4 +1,5 @@
-import React, { createContext, use, useState, useEffect } from "react";
+import type React from "react";
+import { createContext, use, useState, useEffect } from "react";
 
 interface Settings {
 	highContrast: boolean;

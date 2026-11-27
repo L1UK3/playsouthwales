@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useAuth, SignInButton } from "@clerk/react";
 import { neobrutalism } from "@clerk/themes";

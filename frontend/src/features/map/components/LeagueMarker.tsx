@@ -1,5 +1,5 @@
 /* Hallmark · component: map marker · genre: modern-minimal · theme: custom (design.md) */
-import React from "react";
+import type React from "react";
 import type { MarkerData } from "@map/types/markerData";
 
 /**

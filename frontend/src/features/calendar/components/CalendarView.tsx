@@ -1,4 +1,5 @@
-import React, { useMemo, useRef, lazy, Suspense } from "react";
+import type React from "react";
+import { useMemo, useRef, lazy, Suspense } from "react";
 import type { Event } from "@/types/Event";
 import type { League } from "@/types/League";
 import { getLocalDateString } from "@calendar/utils/getLocalDateString";

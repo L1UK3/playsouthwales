@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import * as React from "react";
+import type * as React from "react";
 import { RankBadge } from "./RankBadge";
 
 type PodiumSize = "sm" | "default" | "lg";

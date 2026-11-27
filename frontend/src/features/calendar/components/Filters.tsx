@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import type { League } from "@/types/League";
 import type { EventTypeMap } from "@/types/EventTypeMap";

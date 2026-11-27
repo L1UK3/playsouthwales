@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { useMap } from "@vis.gl/react-google-maps";
 import type { League } from "@/types/League";
 

@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { useLocation, Link } from "@tanstack/react-router";
 import { SignInButton, UserButton, useAuth } from "@clerk/react";
 import TabToggle from "@/components/TabToggle";

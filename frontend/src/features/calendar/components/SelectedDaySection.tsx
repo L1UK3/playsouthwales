@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Calendar } from "lucide-react";
 import type { Event } from "@/types/Event";
 import type { League } from "@/types/League";
