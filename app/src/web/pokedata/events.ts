@@ -47,6 +47,27 @@ interface _PokedataEvent {
 	Third_party_registration_website?: string | null;
 }
 
+const _TEXT_REPLACEMENTS: [string, string][] = [
+	["Pok\ufffdmon", "Pok\u00e9mon"],
+	["Pok\u01e3mon", "Pok\u00e9mon"],
+	["Pok\u01f8mon", "Pok\u00e9mon"],
+	["\ufffd", "\u00a3"],
+];
+
+/**
+ * Repair the mis-encoded characters Pokedata sends and collapse whitespace.
+ * @returns The cleaned text, or an empty string when there is none.
+ */
+export function cleanText(text: string | null | undefined): string {
+	if (!text) return "";
+
+	let cleaned = text;
+	for (const [bad, good] of _TEXT_REPLACEMENTS) {
+		cleaned = cleaned.replaceAll(bad, good);
+	}
+	return cleaned.split(/\s+/).filter(Boolean).join(" ");
+}
+
 /**
  * Pull the event list out of a Pokedata response, which is either the list
  * itself or an object with an `events` list.
