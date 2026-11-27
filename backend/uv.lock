@@ -230,7 +230,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "bs4", specifier = ">=0.0.2" },
-    { name = "clerk-backend-api", specifier = ">=6.0.1" },
+    { name = "clerk-backend-api", specifier = ">=7.1.1" },
     { name = "discord-py", specifier = ">=2.7.1" },
     { name = "fastapi", specifier = ">=0.138.1" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -437,7 +437,7 @@ wheels = [
 
 [[package]]
 name = "clerk-backend-api"
-version = "7.0.0"
+version = "7.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
@@ -446,9 +446,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyjwt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/48/de97a14a8fcc9da3f37ed2d6320be489f4dd076e640c9bac60482f620e59/clerk_backend_api-7.0.0.tar.gz", hash = "sha256:2ff8eab7a75d7ff527cadfaf4ebba53ee5316ac1f7bc22f0d0d6f1b8033082f0", size = 291950, upload-time = "2026-08-11T13:50:25.109Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f8/9d/7107a3671a56ea9bfcd33729e15cabf759037827c17d946a3848183e200e/clerk_backend_api-7.1.1.tar.gz", hash = "sha256:05359cb6bbbb7e991f05674e880fac23483a90dbada0aa3b99cbe0c96a583fd5", size = 345867, upload-time = "2026-11-19T15:50:58.992Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/11/ba1731756d7e8bce06ac3428604629600cde7c17f1b8415277f62f18657c/clerk_backend_api-7.0.0-py3-none-any.whl", hash = "sha256:8df8639dcdaa600dbd1a26878ecaeb6dcc724b2d21247eb6abef4cbd73be9eb5", size = 598066, upload-time = "2026-08-11T13:50:23.67Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/29/a19235315c8c5b91eb1c39ee814aac46e09793ce74cce47af337efc33258/clerk_backend_api-7.1.1-py3-none-any.whl", hash = "sha256:b97ed11dc75819551d0a9967e1fa6672a3a9d2672e8d292ebb34cdd3089fd075", size = 723873, upload-time = "2026-11-19T15:50:57.142Z" },
 ]
 
 [[package]]
