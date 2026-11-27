@@ -1,0 +1,21 @@
+{
+	"$schema": "../node_modules/wrangler/config-schema.json",
+	"name": "playsouthwales",
+	"compatibility_date": "2026-11-01",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"main": "@tanstack/react-start/server-entry",
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "playsouthwales",
+			"database_name": "playsouthwales",
+			"database_id": "2b952936-404e-4cad-b01f-842e891bcd2b",
+			"migrations_dir": "migrations",
+			"migrations_pattern": "migrations/*/migration.sql"
+		}
+	]
+}
