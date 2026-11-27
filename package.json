@@ -38,7 +38,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply playsouthwales --remote -c app/wrangler.jsonc",
     "db:studio": "drizzle-kit studio --config app/drizzle.config.ts",
     "db:seed:local": "tsx app/scripts/seed-d1.ts --local",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types -c app/wrangler.jsonc app/worker-configuration.d.ts"
   },
   "dependencies": {
     "@clerk/tanstack-react-start": "1.7.14",
