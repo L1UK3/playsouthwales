@@ -25,7 +25,7 @@
 	},
 
 	"onCreateCommand": "cp -n frontend/.env.example frontend/.env; cp -n backend/.env.example backend/.env",
-	"postStartCommand": "bash .devcontainer/start-services.sh",
+	"postStartCommand": "bash .devcontainer/old/start-services.sh",
 	"forwardPorts": [
 		5173,
 		5000,
