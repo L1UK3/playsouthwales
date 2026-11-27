@@ -66,23 +66,41 @@ function _unwrapEvents(payload: unknown): _PokedataEvent[] {
 }
 
 /**
- * Fetch event data from the Pokedata API.
- * @returns The parsed JSON response from the Pokedata API.
+ * Fetch event data from the Pokedata API, retrying failed requests.
+ * @returns The events, or an empty list once every attempt has failed.
  */
-export async function getEvents(URL: string): Promise<_PokedataEvent[]> {
-	const response = await fetch(URL, {
-		headers: { accept: "application/json" },
-	});
+export async function getEvents(
+	URL: string,
+	{ maxRetries = 3, retryDelayMs = 2000 } = {},
+): Promise<_PokedataEvent[]> {
+	for (let attempt = 1; attempt <= maxRetries; attempt++) {
+		try {
+			const response = await fetch(URL, {
+				headers: { accept: "application/json" },
+				signal: AbortSignal.timeout(15_000),
+			});
 
-	if (!response.ok) {
-		throw new Error(`Pokedata API request failed: ${response.status}`);
+			if (!response.ok) {
+				throw new Error(`Pokedata API request failed: ${response.status}`);
+			}
+
+			const eventData = _unwrapEvents(await response.json());
+
+			return eventData.map((event: _PokedataEvent) => ({
+				...event,
+				type: _EVENT_TYPE_MAP[event.type] || event.type,
+				product: _GAME_MAP[event.product ?? "tcg"] || event.product,
+			}));
+		} catch (error) {
+			console.warn(
+				`Pokedata events attempt ${attempt}/${maxRetries} failed: ${error}`,
+			);
+			if (attempt < maxRetries) {
+				await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+			}
+		}
 	}
 
-	const eventData = _unwrapEvents(await response.json());
-
-	return eventData.map((event: _PokedataEvent) => ({
-		...event,
-		type: _EVENT_TYPE_MAP[event.type] || event.type,
-		product: _GAME_MAP[event.product ?? "tcg"] || event.product,
-	}));
+	console.error(`Pokedata events failed after ${maxRetries} attempts`);
+	return [];
 }
