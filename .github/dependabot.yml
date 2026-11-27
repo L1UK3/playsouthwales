@@ -30,3 +30,8 @@ updates:
     directory: "/frontend"
     schedule:
       interval: weekly
+
+  - package-ecosystem: "uv"
+    directory: "/backend"
+    schedule:
+      interval: weekly
