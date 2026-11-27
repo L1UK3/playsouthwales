@@ -5,10 +5,10 @@
 // Usage:
 //   SUPABASE_URL=https://<ref>.supabase.co \
 //   SUPABASE_SECRET_KEY=<sb_secret_... key, or the legacy service_role JWT> \
-//   npx tsx scripts/supabase-to-d1.ts
+//   npx tsx app/scripts/supabase-to-d1.ts
 //
 //   # Re-convert an earlier export without contacting Supabase:
-//   npx tsx scripts/supabase-to-d1.ts --from .supabase-export
+//   npx tsx app/scripts/supabase-to-d1.ts --from .supabase-export
 //
 // Options:
 //   --out <dir>   where the raw JSON and import.sql go (default .supabase-export)
@@ -17,8 +17,8 @@
 //                 current season, as in src/features/rankings/season.ts)
 //
 // Then apply it:
-//   wrangler d1 execute playsouthwales --local  --file=.supabase-export/import.sql
-//   wrangler d1 execute playsouthwales --remote --file=.supabase-export/import.sql
+//   wrangler d1 execute playsouthwales --local  -c app/wrangler.jsonc --file=.supabase-export/import.sql
+//   wrangler d1 execute playsouthwales --remote -c app/wrangler.jsonc --file=.supabase-export/import.sql
 //
 // import.sql starts by deleting every row in the three D1 tables (leagues,
 // events, players), so it is a full replace and is safe to run again.
