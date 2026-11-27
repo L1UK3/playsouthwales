@@ -43,36 +43,9 @@
     "db:seed:local": "tsx app/scripts/seed-d1.ts --local",
     "cf-typegen": "wrangler types -c app/wrangler.jsonc app/worker-configuration.d.ts"
   },
-  "dependencies": {
-    "@clerk/tanstack-react-start": "1.7.14",
-    "@tailwindcss/vite": "^4.1.18",
-    "@tanstack/react-router": "1.170.46",
-    "@tanstack/react-start": "1.169.5",
-    "@vis.gl/react-google-maps": "^1.10.2",
-    "drizzle-orm": "^1.0.0-rc.5",
-    "lucide-react": "^1.73.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.18",
-    "three": "^0.187.0"
-  },
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
-    "@cloudflare/vite-plugin": "^1.26.0",
-    "@tanstack/devtools-vite": "^0.8.1",
-    "@tanstack/intent": "0.5.6",
-    "@tanstack/react-devtools": "0.10.14",
-    "@tanstack/react-router-devtools": "1.167.3",
-    "@types/node": "^26.6.6",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@types/three": "^0.187.0",
-    "@vitejs/plugin-react": "^6.3.0",
-    "drizzle-kit": "^1.0.0-rc.5",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.8",
-    "wrangler": "^4.70.0"
+    "@tanstack/intent": "0.5.6"
   },
   "intent": {
     "skills": [
