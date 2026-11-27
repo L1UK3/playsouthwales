@@ -24,9 +24,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "dev": "vite dev --port 3000",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "vite dev app --port 3000",
+    "build": "vite build app",
+    "preview": "vite preview app",
     "format": "biome format --write",
     "lint": "biome lint --write",
     "check": "biome check --write",
