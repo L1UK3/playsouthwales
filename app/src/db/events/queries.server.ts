@@ -148,3 +148,19 @@ export async function deleteEvent(id: number): Promise<boolean> {
 		.returning({ id: events.id });
 	return rows.length > 0;
 }
+
+/**
+ * Inserts imported events atomically, one statement per row to stay under
+ * D1's bound parameter limit. Rows whose guid already exists are skipped.
+ */
+export async function insertPokedataEvents(rows: EventValues[]): Promise<void> {
+	const db = getDb();
+	const [first, ...rest] = rows.map((row) =>
+		db
+			.insert(events)
+			.values(row)
+			.onConflictDoNothing({ target: events.pokedataGuid }),
+	);
+	if (!first) return;
+	await db.batch([first, ...rest]);
+}
