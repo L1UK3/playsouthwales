@@ -5,9 +5,9 @@
 // production data.
 //
 // Usage:
-//   npx tsx scripts/seed-d1.ts                   # writes to .seed/seed.sql
-//   npx tsx scripts/seed-d1.ts --local           # writes and applies to local D1
-//   npx tsx scripts/seed-d1.ts --remote          # writes and applies to remote D1
+//   npx tsx app/scripts/seed-d1.ts               # writes to .seed/seed.sql
+//   npx tsx app/scripts/seed-d1.ts --local       # writes and applies to local D1
+//   npx tsx app/scripts/seed-d1.ts --remote      # writes and applies to remote D1
 //   npm run db:seed:local                      # shortcut for --local
 
 import { execSync } from "node:child_process";
