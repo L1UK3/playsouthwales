@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 import { queryRankings } from "#/db/queries.server";
 
-interface _PokedataPlayer {
+export interface PokedataPlayer {
 	guid: string;
 	name: string;
 	points: number;
@@ -22,7 +22,7 @@ async function _fetchPlayerData(): Promise<string[]> {
  * Server-only: reads the POKEDATA_KEY secret from the Worker environment.
  * @returns The parsed JSON response from the Pokedata API.
  */
-async function _getChampionshipPoints() {
+export async function getChampionshipPoints(): Promise<PokedataPlayer[]> {
 	const response = await fetch("https://pokedata.ovh/2027/api/", {
 		method: "POST",
 		headers: { accept: "application/json", "content-type": "application/json" },
@@ -42,5 +42,5 @@ async function _getChampionshipPoints() {
 		throw new Error(`Pokedata API request failed: ${response.status}`);
 	}
 
-	return response.json();
+	return (await response.json()) as PokedataPlayer[];
 }
