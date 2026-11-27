@@ -32,7 +32,7 @@
     "check": "biome check --write",
     "typecheck": "tsc --noEmit -p app",
     "test": "tsx --tsconfig app/tsconfig.json --test \"app/tests/**/*.test.ts\" \"app/src/**/*.test.ts\"",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "npm run build && wrangler deploy -c app/dist/server/wrangler.json",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply playsouthwales --local",
     "db:migrate:remote": "wrangler d1 migrations apply playsouthwales --remote",
