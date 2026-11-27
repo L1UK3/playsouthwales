@@ -33,10 +33,10 @@
     "typecheck": "tsc --noEmit -p app",
     "test": "tsx --tsconfig app/tsconfig.json --test \"app/tests/**/*.test.ts\" \"app/src/**/*.test.ts\"",
     "deploy": "npm run build && wrangler deploy -c app/dist/server/wrangler.json",
-    "db:generate": "drizzle-kit generate",
+    "db:generate": "drizzle-kit generate --config app/drizzle.config.ts",
     "db:migrate:local": "wrangler d1 migrations apply playsouthwales --local",
     "db:migrate:remote": "wrangler d1 migrations apply playsouthwales --remote",
-    "db:studio": "drizzle-kit studio",
+    "db:studio": "drizzle-kit studio --config app/drizzle.config.ts",
     "db:seed:local": "tsx scripts/seed-d1.ts --local",
     "cf-typegen": "wrangler types"
   },
