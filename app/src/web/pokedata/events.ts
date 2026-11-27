@@ -1,3 +1,5 @@
+import type { EventValues } from "#/db/events/schema";
+
 const _API_URL: string = "https://pokedata.ovh/events/api/";
 
 const _COORDS: { [key: string]: number | string } = {
@@ -29,7 +31,7 @@ const _URLS: string[] = [
 	`${_API_URL}_go/cups/challenges/${_COORDS_TO_STRING}`,
 ];
 
-interface _PokedataEvent {
+export interface PokedataEvent {
 	guid: string;
 	name: string;
 	date: string;
@@ -73,7 +75,7 @@ export function cleanText(text: string | null | undefined): string {
  * itself or an object with an `events` list.
  * @returns The events, or an empty list when the payload has another shape.
  */
-function _unwrapEvents(payload: unknown): _PokedataEvent[] {
+function _unwrapEvents(payload: unknown): PokedataEvent[] {
 	const events =
 		payload !== null && typeof payload === "object" && !Array.isArray(payload)
 			? (payload as { events?: unknown }).events
@@ -83,7 +85,7 @@ function _unwrapEvents(payload: unknown): _PokedataEvent[] {
 		console.warn(`Unexpected Pokedata events payload: ${typeof events}`);
 		return [];
 	}
-	return events as _PokedataEvent[];
+	return events as PokedataEvent[];
 }
 
 /**
@@ -93,7 +95,7 @@ function _unwrapEvents(payload: unknown): _PokedataEvent[] {
 export async function getEvents(
 	URL: string,
 	{ maxRetries = 3, retryDelayMs = 2000 } = {},
-): Promise<_PokedataEvent[]> {
+): Promise<PokedataEvent[]> {
 	for (let attempt = 1; attempt <= maxRetries; attempt++) {
 		try {
 			const response = await fetch(URL, {
@@ -105,13 +107,7 @@ export async function getEvents(
 				throw new Error(`Pokedata API request failed: ${response.status}`);
 			}
 
-			const eventData = _unwrapEvents(await response.json());
-
-			return eventData.map((event: _PokedataEvent) => ({
-				...event,
-				type: _EVENT_TYPE_MAP[event.type] || event.type,
-				product: _GAME_MAP[event.product ?? "tcg"] || event.product,
-			}));
+			return _unwrapEvents(await response.json());
 		} catch (error) {
 			console.warn(
 				`Pokedata events attempt ${attempt}/${maxRetries} failed: ${error}`,
@@ -124,4 +120,28 @@ export async function getEvents(
 
 	console.error(`Pokedata events failed after ${maxRetries} attempts`);
 	return [];
+}
+
+/**
+ * Build the D1 events row for a Pokedata event.
+ * @returns The row to insert, linked to the given league.
+ */
+export function toEventValues(
+	event: PokedataEvent,
+	leagueId: number,
+): EventValues {
+	const eventType = event.type?.trim() ?? "";
+	const ticketLink = event.Third_party_registration_website?.trim();
+
+	return {
+		pokedataGuid: event.guid,
+		leagueId,
+		name: cleanText(event.name),
+		date: cleanText(event.date),
+		startTime: cleanText(event.time) || null,
+		eventType: cleanText(_EVENT_TYPE_MAP[eventType] ?? eventType),
+		game: _GAME_MAP[(event.product ?? "").toLowerCase()] ?? "TCG",
+		ticketLink: ticketLink || null,
+		entryFee: cleanText(event.cost) || null,
+	};
 }
