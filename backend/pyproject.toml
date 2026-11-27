@@ -14,7 +14,7 @@ dependencies = [
     "pytest-cov>=7.1.0",
     "python-dotenv>=1.2.2",
     "requests>=2.34.2",
-    "supabase>=2.31.0",
+    "supabase>=2.34.1",
     "uvicorn[standard]>=0.54.0",
 ]
 
