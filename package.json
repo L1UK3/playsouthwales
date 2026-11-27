@@ -19,6 +19,9 @@
   },
   "author": "Luke Enness",
   "type": "module",
+  "workspaces": [
+    "app"
+  ],
   "imports": {
     "#/*": "./app/src/*"
   },
