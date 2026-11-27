@@ -1,5 +1,5 @@
 // Shared SQL emission for scripts that write a full-replace D1 import file
-// (seed-d1.mjs, supabase-to-d1.mjs). Both scripts describe rows as plain
+// (seed-d1.ts, supabase-to-d1.ts). Both scripts describe rows as plain
 // objects keyed by the column names in src/db/*/schema.ts; this module owns
 // how those rows become SQLite text.
 
