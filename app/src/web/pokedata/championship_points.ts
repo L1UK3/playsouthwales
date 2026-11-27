@@ -23,7 +23,7 @@ async function _fetchPlayerData(): Promise<string[]> {
  * @returns The parsed JSON response from the Pokedata API.
  */
 async function _getChampionshipPoints() {
-	const response = await fetch("https://pokedata.ovh/2026/api/", {
+	const response = await fetch("https://pokedata.ovh/2027/api/", {
 		method: "POST",
 		headers: { accept: "application/json", "content-type": "application/json" },
 		body: JSON.stringify({
