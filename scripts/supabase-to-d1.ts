@@ -26,7 +26,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { parseSeason, replaceAllSql } from "./lib/d1-sql.mjs";
+import { parseSeason, replaceAllSql } from "./lib/d1-sql.js";
 
 // Supabase used the pokedata GUID as events.id. D1 assigns new integer ids and
 // keeps the GUID here so the pokedata sync can still spot events it has seen.
