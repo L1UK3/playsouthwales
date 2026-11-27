@@ -14,7 +14,7 @@ import { execSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { parseArgs } from "node:util";
-import { parseSeason, replaceAllSql } from "./lib/d1-sql.js";
+import { parseSeason, replaceAllSql } from "./lib/d1-sql.ts";
 
 const { values: args } = parseArgs({
 	options: {

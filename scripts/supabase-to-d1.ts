@@ -26,7 +26,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { parseSeason, type Row, replaceAllSql } from "./lib/d1-sql.js";
+import { parseSeason, type Row, replaceAllSql } from "./lib/d1-sql.ts";
 
 // Supabase rows are untyped JSON from PostgREST.
 type SourceRow = Record<string, any>;
