@@ -123,6 +123,15 @@ export async function getEvents(
 }
 
 /**
+ * Fetch the TCG, VGC and GO event feeds around South Wales.
+ * @returns Every event across the feeds.
+ */
+export async function getAllEvents(): Promise<PokedataEvent[]> {
+	const feeds = await Promise.all(_URLS.map((URL) => getEvents(URL)));
+	return feeds.flat();
+}
+
+/**
  * Build the D1 events row for a Pokedata event.
  * @returns The row to insert, linked to the given league.
  */
