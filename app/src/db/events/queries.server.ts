@@ -1,4 +1,4 @@
-import { and, eq, gte, lt } from "drizzle-orm";
+import { and, eq, gte, isNotNull, lt } from "drizzle-orm";
 import { EVENT_TYPE_LABELS, sortEventsForSchedule } from "#/lib/event-types";
 import { shiftMonth } from "#/lib/month";
 import { expandRecurring } from "#/lib/recurrence";
@@ -147,4 +147,31 @@ export async function deleteEvent(id: number): Promise<boolean> {
 		.where(eq(events.id, id))
 		.returning({ id: events.id });
 	return rows.length > 0;
+}
+
+/** Returns the Pokedata guids of every event already imported. */
+export async function queryPokedataGuids(): Promise<Set<string>> {
+	const rows = await getDb()
+		.select({ guid: events.pokedataGuid })
+		.from(events)
+		.where(isNotNull(events.pokedataGuid));
+	return new Set(rows.flatMap((row) => (row.guid ? [row.guid] : [])));
+}
+
+/**
+ * Inserts imported events atomically, one statement per row to stay under
+ * D1's bound parameter limit. Rows whose guid already exists are skipped.
+ */
+export async function insertPokedataEvents(
+	rows: EventValues[],
+): Promise<void> {
+	const db = getDb();
+	const [first, ...rest] = rows.map((row) =>
+		db
+			.insert(events)
+			.values(row)
+			.onConflictDoNothing({ target: events.pokedataGuid }),
+	);
+	if (!first) return;
+	await db.batch([first, ...rest]);
 }
