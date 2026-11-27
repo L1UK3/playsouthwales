@@ -1,5 +1,3 @@
-import { env } from "cloudflare:workers";
-
 const _API_URL: string = "https://pokedata.ovh/events/api/";
 
 const _COORDS: { [key: string]: number | string } = {
@@ -50,17 +48,12 @@ interface _PokedataEvent {
 }
 
 /**
- * Fetch championship points data from the Pokedata API.
- * Server-only: reads the POKEDATA_KEY secret from the Worker environment.
+ * Fetch event data from the Pokedata API.
  * @returns The parsed JSON response from the Pokedata API.
  */
-async function _getEvents(URL: string): Promise<_PokedataEvent[]> {
-	const response = await fetch(`${URL}`, {
-		method: "GET",
-		headers: { accept: "application/json", "content-type": "application/json" },
-		body: JSON.stringify({
-			APIKEY: env.POKEDATA_KEY,
-		}),
+export async function getEvents(URL: string): Promise<_PokedataEvent[]> {
+	const response = await fetch(URL, {
+		headers: { accept: "application/json" },
 	});
 
 	if (!response.ok) {
