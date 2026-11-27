@@ -48,6 +48,24 @@ interface _PokedataEvent {
 }
 
 /**
+ * Pull the event list out of a Pokedata response, which is either the list
+ * itself or an object with an `events` list.
+ * @returns The events, or an empty list when the payload has another shape.
+ */
+function _unwrapEvents(payload: unknown): _PokedataEvent[] {
+	const events =
+		payload !== null && typeof payload === "object" && !Array.isArray(payload)
+			? (payload as { events?: unknown }).events
+			: payload;
+
+	if (!Array.isArray(events)) {
+		console.warn(`Unexpected Pokedata events payload: ${typeof events}`);
+		return [];
+	}
+	return events as _PokedataEvent[];
+}
+
+/**
  * Fetch event data from the Pokedata API.
  * @returns The parsed JSON response from the Pokedata API.
  */
@@ -60,7 +78,7 @@ export async function getEvents(URL: string): Promise<_PokedataEvent[]> {
 		throw new Error(`Pokedata API request failed: ${response.status}`);
 	}
 
-	const eventData = (await response.json()) as _PokedataEvent[];
+	const eventData = _unwrapEvents(await response.json());
 
 	return eventData.map((event: _PokedataEvent) => ({
 		...event,
