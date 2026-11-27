@@ -26,9 +26,11 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { parseSeason, replaceAllSql } from "./lib/d1-sql.js";
+import { parseSeason, type Row, replaceAllSql } from "./lib/d1-sql.js";
 
-type Export = Record<(typeof SOURCE_TABLES)[number], any[]>
+// Supabase rows are untyped JSON from PostgREST.
+type SourceRow = Record<string, any>;
+type Export = Record<(typeof SOURCE_TABLES)[number], SourceRow[]>;
 
 // Supabase used the pokedata GUID as events.id. D1 assigns new integer ids and
 // keeps the GUID here so the pokedata sync can still spot events it has seen.
@@ -45,7 +47,7 @@ const SOURCE_TABLES = [
 	"events",
 	"weekly_events",
 	"welsh_players",
-];
+] as const;
 
 const { values: args } = parseArgs({
 	options: {
@@ -64,14 +66,18 @@ const warn = (message: string) => warnings.push(message);
 
 // New sb_secret_ keys go in the apikey header only; legacy service_role keys
 // are JWTs and also go in Authorization.
-function authHeaders(key: string): { apikey: string; Authorization: string; } | { apikey: string; Authorization?: undefined; } {
+function authHeaders(key: string): Record<string, string> {
 	return key.startsWith("eyJ")
 		? { apikey: key, Authorization: `Bearer ${key}` }
 		: { apikey: key };
 }
 
-async function fetchTable(baseUrl: string, key: string, table: string) {
-	const rows = [];
+async function fetchTable(
+	baseUrl: string,
+	key: string,
+	table: string,
+): Promise<SourceRow[]> {
+	const rows: SourceRow[] = [];
 	for (let offset = 0; ; offset += PAGE_SIZE) {
 		const url = `${baseUrl}/rest/v1/${table}?select=*&order=id.asc&offset=${offset}&limit=${PAGE_SIZE}`;
 		const res = await fetch(url, {
@@ -82,13 +88,13 @@ async function fetchTable(baseUrl: string, key: string, table: string) {
 				`GET ${table} failed: ${res.status} ${await res.text()}`,
 			);
 		}
-		const page = await res.json();
+		const page = (await res.json()) as SourceRow[];
 		rows.push(...page);
 		if (page.length < PAGE_SIZE) return rows;
 	}
 }
 
-async function exportFromSupabase(outDir: string): Promise<{}> {
+async function exportFromSupabase(outDir: string): Promise<Export> {
 	const baseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, "");
 	const key =
 		process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -97,7 +103,7 @@ async function exportFromSupabase(outDir: string): Promise<{}> {
 			"Set SUPABASE_URL and SUPABASE_SECRET_KEY, or pass --from <dir>.",
 		);
 	}
-	const data = {};
+	const data = {} as Export;
 	for (const table of SOURCE_TABLES) {
 		data[table] = await fetchTable(baseUrl, key, table);
 		await writeFile(
@@ -109,8 +115,8 @@ async function exportFromSupabase(outDir: string): Promise<{}> {
 	return data;
 }
 
-async function readExport(dir: string): Promise<{}> {
-	const data = {};
+async function readExport(dir: string): Promise<Export> {
+	const data = {} as Export;
 	for (const table of SOURCE_TABLES) {
 		data[table] = JSON.parse(await readFile(join(dir, `${table}.json`), "utf8"));
 	}
