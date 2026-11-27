@@ -28,6 +28,8 @@ import { join } from "node:path";
 import { parseArgs } from "node:util";
 import { parseSeason, replaceAllSql } from "./lib/d1-sql.js";
 
+type Export = Record<(typeof SOURCE_TABLES)[number], any[]>
+
 // Supabase used the pokedata GUID as events.id. D1 assigns new integer ids and
 // keeps the GUID here so the pokedata sync can still spot events it has seen.
 // weekly_events ids were plain sequence numbers, so they are not kept.
@@ -55,20 +57,20 @@ const { values: args } = parseArgs({
 
 const fallbackSeason = parseSeason(args.season);
 
-const warnings = [];
-const warn = (message) => warnings.push(message);
+const warnings: string[] = [];
+const warn = (message: string) => warnings.push(message);
 
 // ---------------------------------------------------------------- export ---
 
 // New sb_secret_ keys go in the apikey header only; legacy service_role keys
 // are JWTs and also go in Authorization.
-function authHeaders(key) {
+function authHeaders(key: string): { apikey: string; Authorization: string; } | { apikey: string; Authorization?: undefined; } {
 	return key.startsWith("eyJ")
 		? { apikey: key, Authorization: `Bearer ${key}` }
 		: { apikey: key };
 }
 
-async function fetchTable(baseUrl, key, table) {
+async function fetchTable(baseUrl: string, key: string, table: string) {
 	const rows = [];
 	for (let offset = 0; ; offset += PAGE_SIZE) {
 		const url = `${baseUrl}/rest/v1/${table}?select=*&order=id.asc&offset=${offset}&limit=${PAGE_SIZE}`;
@@ -86,7 +88,7 @@ async function fetchTable(baseUrl, key, table) {
 	}
 }
 
-async function exportFromSupabase(outDir) {
+async function exportFromSupabase(outDir: string): Promise<{}> {
 	const baseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, "");
 	const key =
 		process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -107,7 +109,7 @@ async function exportFromSupabase(outDir) {
 	return data;
 }
 
-async function readExport(dir) {
+async function readExport(dir: string): Promise<{}> {
 	const data = {};
 	for (const table of SOURCE_TABLES) {
 		data[table] = JSON.parse(await readFile(join(dir, `${table}.json`), "utf8"));
@@ -120,7 +122,7 @@ async function readExport(dir) {
 // Postgres text[] arrives from PostgREST as a JSON array; the plain-text
 // events.excludedDates column may hold JSON, a Postgres array literal, or a
 // comma-separated list.
-function toDateList(value, context) {
+function toDateList(value: string | any[] | null | undefined, context: string): string {
 	if (value === null || value === undefined || value === "") return "[]";
 	if (Array.isArray(value)) return JSON.stringify(value.map(String));
 	const text = String(value).trim();
@@ -141,13 +143,13 @@ function toDateList(value, context) {
 	return JSON.stringify(list);
 }
 
-function requiredText(value, fallback, context) {
+function requiredText(value: string, fallback: string, context: string): string {
 	if (typeof value === "string" && value.trim() !== "") return value;
 	warn(`${context}: missing value, using "${fallback}"`);
 	return fallback;
 }
 
-function convert(data) {
+function convert(data: { leagues?: any; events?: any; weekly_events?: any; welsh_players?: any; }): { sql: string; counts: { [k: string]: number; }; } {
 	const rows = { leagues: [], events: [], players: [] };
 	const leagueIds = new Set();
 
