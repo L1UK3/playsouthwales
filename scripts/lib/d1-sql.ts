@@ -3,8 +3,8 @@
 // objects keyed by the column names in src/db/*/schema.ts; this module owns
 // how those rows become SQLite text.
 
-type SqlScalar = string | number | boolean | null | undefined
-type Row = Record<string, SqlScalar>
+export type SqlScalar = string | number | boolean | null | undefined;
+export type Row = Record<string, SqlScalar>;
 
 /** The three D1 tables, children first so deletes never trip a foreign key. */
 const TABLES_CHILD_FIRST = ["players", "events", "leagues"];
