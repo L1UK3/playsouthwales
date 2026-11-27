@@ -33,18 +33,18 @@ interface _PokedataEvent {
 	guid: string;
 	name: string;
 	date: string;
-	time: string;
+	time?: string | null;
 	league: string;
 	type: string;
-	product: string;
-	shop: string | null;
-	street_address: string | null;
-	city: string | null;
-	state: string | null;
-	pokemon_url: string | null;
-	cost: string;
-	event_website: string;
-	third_party_registration_website: string;
+	product?: string | null;
+	shop?: string | null;
+	street_address?: string | null;
+	city?: string | null;
+	state?: string | null;
+	pokemon_url?: string | null;
+	cost?: string | null;
+	Event_website?: string | null;
+	Third_party_registration_website?: string | null;
 }
 
 /**
@@ -65,6 +65,6 @@ export async function getEvents(URL: string): Promise<_PokedataEvent[]> {
 	return eventData.map((event: _PokedataEvent) => ({
 		...event,
 		type: _EVENT_TYPE_MAP[event.type] || event.type,
-		product: _GAME_MAP[event.product] || event.product,
+		product: _GAME_MAP[event.product ?? "tcg"] || event.product,
 	}));
 }
