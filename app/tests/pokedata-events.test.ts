@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
-import { cleanText, toEventValues } from "#/web/pokedata/events";
+import { afterEach, describe, it } from "node:test";
+import { cleanText, getEvents, toEventValues } from "#/web/pokedata/events";
 
 describe("cleanText", () => {
 	const cases: [string | null | undefined, string][] = [
@@ -68,5 +68,47 @@ describe("toEventValues", () => {
 		assert.equal(row.startTime, null);
 		assert.equal(row.ticketLink, null);
 		assert.equal(row.entryFee, null);
+	});
+});
+
+describe("getEvents", () => {
+	const realFetch = globalThis.fetch;
+	const options = { retryDelayMs: 0 };
+
+	afterEach(() => {
+		globalThis.fetch = realFetch;
+	});
+
+	function stubFetch(...responses: (Response | Error)[]): () => number {
+		let calls = 0;
+		globalThis.fetch = async () => {
+			const response = responses[Math.min(calls++, responses.length - 1)];
+			if (response instanceof Error) throw response;
+			return response;
+		};
+		return () => calls;
+	}
+
+	it("retries a failed request, then returns its events", async () => {
+		const calls = stubFetch(
+			new TypeError("network down"),
+			Response.json([{ guid: "event-1" }]),
+		);
+		const events = await getEvents("https://example.com/api", options);
+		assert.deepEqual(events, [{ guid: "event-1" }]);
+		assert.equal(calls(), 2);
+	});
+
+	it("returns no events after the last retry fails", async () => {
+		const calls = stubFetch(new Response(null, { status: 500 }));
+		const events = await getEvents("https://example.com/api", options);
+		assert.deepEqual(events, []);
+		assert.equal(calls(), 3);
+	});
+
+	it("reads events wrapped in an events key", async () => {
+		stubFetch(Response.json({ events: [{ guid: "event-1" }] }));
+		const events = await getEvents("https://example.com/api", options);
+		assert.deepEqual(events, [{ guid: "event-1" }]);
 	});
 });
