@@ -22,9 +22,6 @@
   "workspaces": [
     "app"
   ],
-  "imports": {
-    "#/*": "./app/src/*"
-  },
   "main": "index.js",
   "scripts": {
     "dev": "npm run dev -w app",
