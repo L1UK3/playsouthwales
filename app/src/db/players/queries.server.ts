@@ -1,25 +1,16 @@
 import { eq } from "drizzle-orm";
 import { rankPlayers } from "#/features/rankings/ranking";
-import type { LeaderboardPosition } from "#/types/domain";
 import { getDb } from "../client.server";
 import { players } from "./schema";
 
-export async function queryRankings(): Promise<LeaderboardPosition[]> {
+/** National Rankings, for one season when `season` is given. */
+export async function queryRankings(season?: number) {
 	const rows = await getDb()
-		.select({ name: players.name, cp: players.cp })
-		.from(players);
-
-	return rankPlayers(rows);
-}
-
-/** Every player's row for one season, unranked. */
-export async function querySeasonPlayers(
-	season: number,
-): Promise<{ name: string; playerId: number | null; cp: number }[]> {
-	return getDb()
 		.select({ name: players.name, playerId: players.playerId, cp: players.cp })
 		.from(players)
-		.where(eq(players.season, season));
+		.where(season === undefined ? undefined : eq(players.season, season));
+
+	return rankPlayers(rows);
 }
 
 /** Sets each named player's championship points in one batch. */

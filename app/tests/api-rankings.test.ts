@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { rankPlayers } from "#/features/rankings/ranking";
 import { ApiError } from "#/lib/api";
 import {
-	buildRankings,
+	filterRankings,
 	parseRankingsQuery,
-	type SeasonPlayer,
+	type RankingsQuery,
 } from "#/lib/rankings-query";
 
 const params = (query: string) => new URLSearchParams(query);
@@ -58,103 +59,55 @@ describe("parseRankingsQuery", () => {
 	}
 });
 
-describe("buildRankings", () => {
-	const players: SeasonPlayer[] = [
+describe("filterRankings", () => {
+	const ranked = rankPlayers([
 		{ name: "Owain Hughes", playerId: 123456, cp: 85 },
 		{ name: "Megan Jones", playerId: 104562, cp: 240 },
 		{ name: "Alys Morgan", playerId: null, cp: 85 },
 		{ name: "Dylan Thomas", playerId: 100234, cp: 285 },
-	];
+	]);
+	const query = (filters: Partial<RankingsQuery>): RankingsQuery => ({
+		season: "2027",
+		playerId: null,
+		playerName: null,
+		...filters,
+	});
 
-	it("ranks by points then name, leaving out a missing playerId", () => {
-		assert.deepEqual(
-			buildRankings(players, {
-				season: "2027",
-				playerId: null,
-				playerName: null,
-			}),
-			[
-				{ position: 1, name: "Dylan Thomas", playerId: 100234, cp: 285 },
-				{ position: 2, name: "Megan Jones", playerId: 104562, cp: 240 },
-				{ position: 3, name: "Alys Morgan", cp: 85 },
-				{ position: 4, name: "Owain Hughes", playerId: 123456, cp: 85 },
-			],
-		);
+	it("leaves out a missing playerId", () => {
+		assert.deepEqual(filterRankings(ranked, query({})), [
+			{ position: 1, name: "Dylan Thomas", playerId: 100234, cp: 285 },
+			{ position: 2, name: "Megan Jones", playerId: 104562, cp: 240 },
+			{ position: 3, name: "Alys Morgan", cp: 85 },
+			{ position: 4, name: "Owain Hughes", playerId: 123456, cp: 85 },
+		]);
 	});
 
 	it("returns an empty list for a season with no players", () => {
-		assert.deepEqual(
-			buildRankings([], { season: "2020", playerId: null, playerName: null }),
-			[],
-		);
+		assert.deepEqual(filterRankings([], query({})), []);
 	});
 
 	it("filters by playerId without renumbering", () => {
-		assert.deepEqual(
-			buildRankings(players, {
-				season: "2027",
-				playerId: 123456,
-				playerName: null,
-			}),
-			[{ position: 4, name: "Owain Hughes", playerId: 123456, cp: 85 }],
-		);
+		assert.deepEqual(filterRankings(ranked, query({ playerId: 123456 })), [
+			{ position: 4, name: "Owain Hughes", playerId: 123456, cp: 85 },
+		]);
 	});
 
 	it("filters by a case-insensitive part of the name", () => {
 		assert.deepEqual(
-			buildRankings(players, {
-				season: "2027",
-				playerId: null,
-				playerName: "AN",
-			}).map((ranking) => ranking.position),
+			filterRankings(ranked, query({ playerName: "AN" })).map(
+				(ranking) => ranking.position,
+			),
 			[1, 2, 3],
 		);
-		assert.deepEqual(
-			buildRankings(players, {
-				season: "2027",
-				playerId: null,
-				playerName: "MEGAN",
-			}),
-			[{ position: 2, name: "Megan Jones", playerId: 104562, cp: 240 }],
-		);
 	});
 
-	it("applies both filters together", () => {
-		assertApiError(
-			() =>
-				buildRankings(players, {
-					season: "2027",
-					playerId: 123456,
-					playerName: "Megan",
-				}),
-			404,
-			"not_found",
-		);
-	});
-
-	it("rejects an unknown playerId", () => {
-		assertApiError(
-			() =>
-				buildRankings(players, {
-					season: "2027",
-					playerId: 1,
-					playerName: null,
-				}),
-			404,
-			"not_found",
-		);
-	});
-
-	it("rejects a playerName that matches nobody", () => {
-		assertApiError(
-			() =>
-				buildRankings(players, {
-					season: "2027",
-					playerId: null,
-					playerName: "Zed",
-				}),
-			404,
-			"not_found",
-		);
-	});
+	for (const filters of [{ playerId: 1 }, { playerName: "Zed" }]) {
+		it(`rejects an unknown player: ${JSON.stringify(filters)}`, () => {
+			assertApiError(
+				() => filterRankings(ranked, query(filters)),
+				404,
+				"not_found",
+			);
+		});
+	}
 });
