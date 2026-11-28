@@ -2,7 +2,7 @@ import handler from "@tanstack/react-start/server-entry";
 import {
 	postDailyDigest,
 	postWeeklyDigest,
-} from "#/integrations/discord/digest.server";
+} from "#/integrations/digest.server";
 import { syncPokedata } from "#/web/sync.server";
 
 /** Cron expressions, matching `triggers.crons` in wrangler.jsonc. */
