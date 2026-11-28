@@ -9,6 +9,11 @@
 	"observability": {
 		"enabled": true
 	},
+	"triggers": {
+		"crons": [
+			"0 * * * *"
+		]
+	},
 	"d1_databases": [
 		{
 			"binding": "playsouthwales",
