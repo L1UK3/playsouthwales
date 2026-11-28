@@ -12,6 +12,16 @@ export async function queryRankings(): Promise<LeaderboardPosition[]> {
 	return rankPlayers(rows);
 }
 
+/** Every player's row for one season, unranked. */
+export async function querySeasonPlayers(
+	season: number,
+): Promise<{ name: string; playerId: number | null; cp: number }[]> {
+	return getDb()
+		.select({ name: players.name, playerId: players.playerId, cp: players.cp })
+		.from(players)
+		.where(eq(players.season, season));
+}
+
 /** Sets each named player's championship points in one batch. */
 export async function updatePlayerCp(
 	points: { name: string; cp: number }[],
