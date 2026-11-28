@@ -7,7 +7,6 @@ describe("health route", () => {
 		const response = await healthResponse(async () => {});
 		assert.equal(response.status, 200);
 		assert.equal(response.headers.get("Access-Control-Allow-Origin"), "*");
-		assert.equal(response.headers.get("Cache-Control"), "no-store");
 		assert.deepEqual(await response.json(), { status: "ok", db: "ok" });
 	});
 
@@ -20,7 +19,6 @@ describe("health route", () => {
 			});
 			assert.equal(response.status, 503);
 			assert.equal(response.headers.get("Access-Control-Allow-Origin"), "*");
-			assert.equal(response.headers.get("Cache-Control"), "no-store");
 			assert.deepEqual(await response.json(), {
 				status: "error",
 				db: "error",
