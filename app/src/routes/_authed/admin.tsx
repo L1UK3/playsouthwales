@@ -13,6 +13,10 @@ import {
 import ActiveLeaguePanel from "#/features/admin/components/ActiveLeaguePanel";
 import EventFormModal from "#/features/admin/components/EventFormModal";
 import LeagueFormModal from "#/features/admin/components/LeagueFormModal";
+import {
+	type ConfirmTarget,
+	confirmMessage,
+} from "#/features/admin/confirmMessage";
 import ListView from "#/features/calendar/components/ListView";
 import NavBar from "#/features/calendar/components/NavBar";
 import LeagueSelector from "#/features/league-selector/components/LeagueSelector";
@@ -86,11 +90,19 @@ function AdminPage() {
 			window.alert(error instanceof Error ? error.message : "Save failed");
 		});
 
-	/** Runs an event-id server function for the clicked event. */
+	/**
+	 * Runs an event-id server function for the clicked event, once the admin
+	 * confirms it; cancelling does nothing.
+	 */
 	const onEvent =
-		(action: (input: { data: { id: ScheduleEvent["id"] } }) => Promise<void>) =>
-		(event: ScheduleEvent) =>
+		(
+			action: (input: { data: { id: ScheduleEvent["id"] } }) => Promise<void>,
+			target: (event: ScheduleEvent) => ConfirmTarget,
+		) =>
+		(event: ScheduleEvent) => {
+			if (!window.confirm(confirmMessage(target(event)))) return;
 			commitOrAlert(() => action({ data: { id: event.id } }));
+		};
 
 	return (
 		<div className="flex animate-swipe-up flex-col gap-5 py-4 sm:py-6">
@@ -124,11 +136,16 @@ function AdminPage() {
 					showAdminControls
 					onAdd={() => setModal({ kind: "league" })}
 					onEdit={(league: League) => setModal({ kind: "league", league })}
-					onDelete={(league: League) =>
+					onDelete={(league: League) => {
+						const message = confirmMessage({
+							action: "delete-league",
+							name: league.name,
+						});
+						if (!window.confirm(message)) return;
 						commitOrAlert(() =>
 							handleDeleteLeague({ data: { leagueId: league.leagueId } }),
-						)
-					}
+						);
+					}}
 					columns={4}
 					showInfo={false}
 				/>
@@ -157,9 +174,21 @@ function AdminPage() {
 						onEdit={(event: ScheduleEvent) =>
 							setModal({ kind: "event", event })
 						}
-						onDelete={onEvent(handleDeleteEvent)}
-						onExclude={onEvent(handleExcludeEvent)}
-						onUnexclude={onEvent(handleUnexcludeEvent)}
+						onDelete={onEvent(handleDeleteEvent, (event) => ({
+							action: "delete-event",
+							name: event.name,
+							isRecurring: event.isRecurring,
+						}))}
+						onExclude={onEvent(handleExcludeEvent, (event) => ({
+							action: "exclude",
+							name: event.name,
+							date: event.date,
+						}))}
+						onUnexclude={onEvent(handleUnexcludeEvent, (event) => ({
+							action: "unexclude",
+							name: event.name,
+							date: event.date,
+						}))}
 					/>
 				</ActiveLeaguePanel>
 			) : (
