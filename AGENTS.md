@@ -27,3 +27,19 @@ Vocabulary: `needs-triage`, `question` (needs info), `bug` (needs reproduction),
 ### Domain docs
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## Repository layout
+
+The TanStack Start app and the legacy stack it replaces live side by side while the migration runs. Each folder has its own tooling; use the one listed for the folder you are changing.
+
+| Folder | What it is | Tooling |
+| --- | --- | --- |
+| `app/` | TanStack Start app on Cloudflare Workers and D1. npm workspace `@playsouthwales/app` | Run npm scripts from the root (`npm run dev`, `npm test`, `npm run typecheck`). Biome |
+| `frontend/` | Legacy Vite + React frontend | Not an npm workspace: it has its own `package-lock.json`, so run `npm ci` and its scripts inside `frontend/`. Format with Biome from the root config (`npm run format`). Do not add it to the root `workspaces`; its dependencies clash with `app/` |
+| `backend/` | Legacy FastAPI backend | Python 3.14 with uv, inside `backend/`: `uv sync`, `uv run ruff check .`, `uv run ruff format .`, `uv run pytest`. Biome does not cover it |
+| `supabase/` | Legacy Supabase config, migrations and seed | Supabase CLI from the repo root: `npx supabase start` |
+| `docker/`, `docker-compose.yml` | Legacy dev services for `frontend/` and `backend/` | `docker compose up` from the repo root |
+| `.devcontainer/app/`, `.devcontainer/old/` | Dev containers for `app/` and for the legacy stack | |
+| `docs/legacy/` | Docs for the legacy stack | |
+
+`frontend/` still has Biome lint errors, so its CI job checks formatting and import order only (`biome ci frontend --linter-enabled=false`). Running `npm run check` from the root lints `frontend/` too and will report them.

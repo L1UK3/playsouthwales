@@ -1,0 +1,53 @@
+{
+  "name": "@playsouthwales/app",
+  "version": "2.0.0",
+  "private": true,
+  "description": "The TanStack Start app for playsouthwales, deployed as a Cloudflare Worker",
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test \"tests/**/*.test.ts\" \"src/**/*.test.ts\"",
+    "deploy": "npm run build && wrangler deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply playsouthwales --local",
+    "db:migrate:remote": "wrangler d1 migrations apply playsouthwales --remote",
+    "db:studio": "drizzle-kit studio",
+    "db:seed:local": "tsx scripts/seed-d1.ts --local",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@clerk/tanstack-react-start": "1.7.21",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-router": "1.170.46",
+    "@tanstack/react-start": "1.169.7",
+    "@vis.gl/react-google-maps": "^1.10.2",
+    "drizzle-orm": "^1.0.0-rc.6",
+    "lucide-react": "^1.79.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.18",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.70.1",
+    "@tanstack/devtools-vite": "^0.8.7",
+    "@tanstack/react-devtools": "0.10.15",
+    "@tanstack/react-router-devtools": "1.167.4",
+    "@types/node": "^26.6.7",
+    "@types/react": "^19.3.2",
+    "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "drizzle-kit": "^1.0.0-rc.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "wrangler": "^4.168.0"
+  }
+}
