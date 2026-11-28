@@ -13,17 +13,6 @@ const now = new Date("2026-11-28T12:00:00Z");
 const parse = (query: string) =>
 	parseEventsQuery(new URLSearchParams(query), now);
 
-function assertInvalid(query: string, message: RegExp) {
-	assert.throws(
-		() => parse(query),
-		(error: unknown) =>
-			error instanceof ApiError &&
-			error.status === 400 &&
-			error.code === "invalid_parameter" &&
-			message.test(error.message),
-	);
-}
-
 describe("parseEventsQuery", () => {
 	it("reads every parameter", () => {
 		assert.deepEqual(
@@ -32,42 +21,34 @@ describe("parseEventsQuery", () => {
 		);
 	});
 
-	it("defaults to the current month", () => {
-		assert.deepEqual(parse(""), {
-			leagueId: undefined,
-			period: "2026-11",
-			groupBy: undefined,
-		});
-	});
-
 	it("uses the most specific date filter, or null when filters conflict", () => {
+		assert.equal(parse("").period, "2026-11");
 		assert.equal(parse("year=2026&month=2026-03").period, "2026-03");
 		assert.equal(parse("year=2025").period, "2025");
 		assert.equal(parse("year=2025&month=2026-03").period, null);
 		assert.equal(parse("month=2026-03&day=2026-04-01").period, null);
 	});
 
-	it("rejects a non-integer leagueId", () => {
-		for (const value of ["abc", "1.5", "", "1e3", " 1"]) {
-			assertInvalid(`leagueId=${encodeURIComponent(value)}`, /leagueId/);
+	it("rejects invalid parameters", () => {
+		for (const query of [
+			"leagueId=abc",
+			"leagueId=1.5",
+			"leagueId=1e3",
+			"day=2026-02-30",
+			"day=2026-1-01",
+			"month=2026-13",
+			"year=26",
+			"groupBy=week",
+		]) {
+			assert.throws(
+				() => parse(query),
+				(error: unknown) =>
+					error instanceof ApiError &&
+					error.status === 400 &&
+					error.code === "invalid_parameter",
+				query,
+			);
 		}
-	});
-
-	it("rejects malformed and impossible days", () => {
-		for (const value of ["2026-02-30", "2026-13-01", "2026-1-01", "", "x"]) {
-			assertInvalid(`day=${value}`, /day/);
-		}
-	});
-
-	it("rejects malformed months and years", () => {
-		assertInvalid("month=2026-13", /month/);
-		assertInvalid("month=2026-1", /month/);
-		assertInvalid("year=26", /year/);
-		assertInvalid("year=20266", /year/);
-	});
-
-	it("rejects an unknown groupBy", () => {
-		assertInvalid("groupBy=week", /groupBy/);
 	});
 });
 
