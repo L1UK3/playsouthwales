@@ -1,0 +1,11 @@
+﻿.git
+.github
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.db
+.pytest_cache
+.vscode
+.python-version
