@@ -8,7 +8,7 @@ import {
 	FOOTER,
 	formatDay,
 	nextWeek,
-} from "./digest";
+} from "../src/integrations/discord/digest";
 
 const LEAGUES = { 1: "Cardiff Dragon Guild", 2: "Mana Haven Cardiff" };
 
