@@ -29,8 +29,6 @@ export interface ApiEvent {
 	recurringEventId?: number;
 }
 
-export type GroupedEvents = Record<string, ApiEvent[]>;
-
 function invalid(name: string, expected: string): never {
 	throw new ApiError(
 		400,
@@ -102,27 +100,19 @@ export function toApiEvent(event: ScheduleEvent): ApiEvent {
 	return result;
 }
 
-function groupKey(event: ApiEvent, groupBy: GroupBy): string {
-	switch (groupBy) {
-		case "league":
-			return String(event.leagueId);
-		case "day":
-			return event.date;
-		case "month":
-			return event.date.slice(0, 7);
-		case "year":
-			return event.date.slice(0, 4);
-	}
-}
+const DATE_KEY_LENGTH = { day: 10, month: 7, year: 4 };
 
 /** Groups events by key, keeping their order within each group. */
 export function groupEvents(
 	events: ApiEvent[],
 	groupBy: GroupBy,
-): GroupedEvents {
-	const grouped: GroupedEvents = {};
+): Record<string, ApiEvent[]> {
+	const grouped: Record<string, ApiEvent[]> = {};
 	for (const event of events) {
-		const key = groupKey(event, groupBy);
+		const key =
+			groupBy === "league"
+				? String(event.leagueId)
+				: event.date.slice(0, DATE_KEY_LENGTH[groupBy]);
 		grouped[key] ??= [];
 		grouped[key].push(event);
 	}
