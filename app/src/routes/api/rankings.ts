@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryRankings } from "#/db/queries.server";
+import { querySeasonPlayers } from "#/db/queries.server";
+import { handle, json, preflight } from "#/lib/api";
+import { buildRankings, parseRankingsQuery } from "#/lib/rankings-query";
 
 export const Route = createFileRoute("/api/rankings")({
 	server: {
 		handlers: {
-			GET: async () => {
-				const rankings = await queryRankings();
-				return Response.json({ rankings });
-			},
+			GET: ({ request }) =>
+				handle(async () => {
+					const query = parseRankingsQuery(new URL(request.url).searchParams);
+					const players = await querySeasonPlayers(Number(query.season));
+					return json({
+						season: query.season,
+						rankings: buildRankings(players, query),
+					});
+				}),
+			OPTIONS: () => preflight(),
 		},
 	},
 });
