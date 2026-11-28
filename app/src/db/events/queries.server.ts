@@ -1,6 +1,6 @@
 import { and, eq, gte, lt } from "drizzle-orm";
 import { EVENT_TYPE_LABELS, sortEventsForSchedule } from "#/lib/event-types";
-import { shiftMonth } from "#/lib/month";
+import { eventDateKey, shiftMonth } from "#/lib/month";
 import { expandRecurring } from "#/lib/recurrence";
 import type { ScheduleData, ScheduleEvent } from "#/types/domain";
 import { getDb } from "../client.server";
@@ -41,6 +41,51 @@ async function queryMonthEvents(
 		...oneOff.map(withoutNulls),
 		...expandRecurring(weekly.map(withoutNulls), month, includeExcluded),
 	]);
+}
+
+/**
+ * Events dated in `period` (`YYYY-MM-DD`, `YYYY-MM` or `YYYY`), with weekly
+ * events expanded into their occurrences and excluded dates left out.
+ */
+export async function queryEventsInPeriod(
+	period: string,
+	leagueId?: number,
+): Promise<ScheduleEvent[]> {
+	const months =
+		period.length === 4
+			? Array.from({ length: 12 }, (_, i) => shiftMonth(`${period}-01`, i))
+			: [period.slice(0, 7)];
+	const from = `${months[0]}-01`;
+	const to = `${shiftMonth(months[months.length - 1], 1)}-01`;
+	const league =
+		leagueId === undefined ? undefined : eq(events.leagueId, leagueId);
+
+	const db = getDb();
+	const [oneOff, weekly] = await Promise.all([
+		db
+			.select()
+			.from(events)
+			.where(
+				and(
+					eq(events.isRecurring, false),
+					gte(events.date, from),
+					lt(events.date, to),
+					league,
+				),
+			),
+		db
+			.select()
+			.from(events)
+			.where(and(eq(events.isRecurring, true), lt(events.date, to), league)),
+	]);
+
+	const series = weekly.map(withoutNulls);
+	return sortEventsForSchedule(
+		[
+			...oneOff.map(withoutNulls),
+			...months.flatMap((month) => expandRecurring(series, month, false)),
+		].filter((event) => eventDateKey(event).startsWith(period)),
+	);
 }
 
 export async function querySchedule(
