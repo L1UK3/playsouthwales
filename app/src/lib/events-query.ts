@@ -1,35 +1,16 @@
 /**
- * Query parsing, date ranges, response shapes and grouping for
- * `GET /api/events`, kept free of database imports so tests can load it.
- * The contract is documented in src/routes/api/api.md.
+ * Query parsing, response shape and grouping for `GET /api/events`, kept free
+ * of database imports so tests can load it. The contract is documented in
+ * src/routes/api/api.md.
  */
 
 import { ApiError } from "#/lib/api";
-import {
-	currentMonthKey,
-	eventDateKey,
-	isMonthKey,
-	shiftMonth,
-} from "#/lib/month";
+import { currentMonthKey, eventDateKey, isMonthKey } from "#/lib/month";
 import { isValidCalendarDate } from "#/lib/recurrence";
 import type { ScheduleEvent } from "#/types/domain";
 
-export const GROUP_BY_KEYS = ["league", "day", "month", "year"] as const;
-export type GroupBy = (typeof GROUP_BY_KEYS)[number];
-
-export interface EventsQuery {
-	leagueId?: number;
-	day?: string;
-	month?: string;
-	year?: string;
-	groupBy?: GroupBy;
-}
-
-/** Days from `from` (inclusive) to `to` (exclusive), both `YYYY-MM-DD`. */
-export interface DateRange {
-	from: string;
-	to: string;
-}
+const GROUP_BY = ["league", "day", "month", "year"] as const;
+type GroupBy = (typeof GROUP_BY)[number];
 
 /** An event in the public API shape. */
 export interface ApiEvent {
@@ -50,110 +31,52 @@ export interface ApiEvent {
 
 export type GroupedEvents = Record<string, ApiEvent[]>;
 
-function invalid(message: string): ApiError {
-	return new ApiError(400, "invalid_parameter", message);
-}
-
-/** Reads and validates the query string, throwing a 400 ApiError on bad input. */
-export function parseEventsQuery(params: URLSearchParams): EventsQuery {
-	const query: EventsQuery = {};
-
-	const leagueId = params.get("leagueId");
-	if (leagueId !== null) {
-		const id = Number(leagueId);
-		if (!/^-?\d+$/.test(leagueId) || !Number.isSafeInteger(id)) {
-			throw invalid("Invalid leagueId: expected an integer");
-		}
-		query.leagueId = id;
-	}
-
-	const day = params.get("day");
-	if (day !== null) {
-		if (!isValidCalendarDate(day)) {
-			throw invalid("Invalid day: expected a real date as YYYY-MM-DD");
-		}
-		query.day = day;
-	}
-
-	const month = params.get("month");
-	if (month !== null) {
-		if (!isMonthKey(month)) {
-			throw invalid("Invalid month: expected YYYY-MM");
-		}
-		query.month = month;
-	}
-
-	const year = params.get("year");
-	if (year !== null) {
-		if (!/^\d{4}$/.test(year)) throw invalid("Invalid year: expected YYYY");
-		query.year = year;
-	}
-
-	const groupBy = params.get("groupBy");
-	if (groupBy !== null) {
-		if (!(GROUP_BY_KEYS as readonly string[]).includes(groupBy)) {
-			throw invalid(`Invalid groupBy: expected ${GROUP_BY_KEYS.join(", ")}`);
-		}
-		query.groupBy = groupBy as GroupBy;
-	}
-
-	return query;
-}
-
-function nextDay(day: string): string {
-	const date = new Date(`${day}T00:00:00Z`);
-	date.setUTCDate(date.getUTCDate() + 1);
-	return date.toISOString().slice(0, 10);
-}
-
-function monthRange(month: string): DateRange {
-	return { from: `${month}-01`, to: `${shiftMonth(month, 1)}-01` };
+function invalid(name: string, expected: string): never {
+	throw new ApiError(
+		400,
+		"invalid_parameter",
+		`Invalid ${name}: expected ${expected}`,
+	);
 }
 
 /**
- * The days the query covers. Each of `day`, `month` and `year` narrows the
- * range, so combined filters intersect and may cover no days at all (`null`).
- * With no date filter the range is the current month, because weekly events
- * can't be expanded over an unbounded range.
+ * Reads and validates the query string, throwing a 400 ApiError on bad input.
+ * `period` is the `YYYY-MM-DD`, `YYYY-MM` or `YYYY` that every returned date
+ * starts with: the most specific date filter, or the current month when there
+ * is none, because weekly events can't be expanded over an unbounded range.
+ * It is `null` when the date filters don't overlap.
  */
-export function eventsDateRange(
-	query: EventsQuery,
-	now = new Date(),
-): DateRange | null {
-	const ranges: DateRange[] = [];
-	if (query.day) ranges.push({ from: query.day, to: nextDay(query.day) });
-	if (query.month) ranges.push(monthRange(query.month));
-	if (query.year) {
-		ranges.push({
-			from: `${query.year}-01-01`,
-			to: `${Number(query.year) + 1}-01-01`,
-		});
-	}
-	if (ranges.length === 0) ranges.push(monthRange(currentMonthKey(now)));
+export function parseEventsQuery(params: URLSearchParams, now = new Date()) {
+	const leagueId = params.get("leagueId");
+	const day = params.get("day");
+	const month = params.get("month");
+	const year = params.get("year");
+	const groupBy = params.get("groupBy");
 
-	const from = ranges
-		.map((r) => r.from)
-		.sort()
-		.at(-1);
-	const to = ranges.map((r) => r.to).sort()[0];
-	return from && to && from < to ? { from, to } : null;
-}
-
-/** Every `YYYY-MM` month that overlaps the range, in order. */
-export function monthsInRange(range: DateRange): string[] {
-	const months: string[] = [];
-	for (
-		let month = range.from.slice(0, 7);
-		`${month}-01` < range.to;
-		month = shiftMonth(month, 1)
+	if (
+		leagueId !== null &&
+		!(/^-?\d+$/.test(leagueId) && Number.isSafeInteger(Number(leagueId)))
 	) {
-		months.push(month);
+		invalid("leagueId", "an integer");
 	}
-	return months;
-}
+	if (day !== null && !isValidCalendarDate(day)) {
+		invalid("day", "a real date as YYYY-MM-DD");
+	}
+	if (month !== null && !isMonthKey(month)) invalid("month", "YYYY-MM");
+	if (year !== null && !/^\d{4}$/.test(year)) invalid("year", "YYYY");
+	if (groupBy !== null && !GROUP_BY.includes(groupBy as GroupBy)) {
+		invalid("groupBy", GROUP_BY.join(", "));
+	}
 
-export function isInRange(date: string, range: DateRange): boolean {
-	return date >= range.from && date < range.to;
+	const period = day ?? month ?? year ?? currentMonthKey(now);
+	const overlaps = [month, year].every(
+		(f) => f === null || period.startsWith(f),
+	);
+	return {
+		leagueId: leagueId === null ? undefined : Number(leagueId),
+		period: overlaps ? period : null,
+		groupBy: (groupBy ?? undefined) as GroupBy | undefined,
+	};
 }
 
 /** Maps a schedule event to the public shape, leaving out empty optionals. */

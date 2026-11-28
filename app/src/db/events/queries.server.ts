@@ -1,7 +1,6 @@
-import { and, eq, gte, lt, type SQL } from "drizzle-orm";
+import { and, eq, gte, lt } from "drizzle-orm";
 import { EVENT_TYPE_LABELS, sortEventsForSchedule } from "#/lib/event-types";
-import { type DateRange, isInRange, monthsInRange } from "#/lib/events-query";
-import { shiftMonth } from "#/lib/month";
+import { eventDateKey, shiftMonth } from "#/lib/month";
 import { expandRecurring } from "#/lib/recurrence";
 import type { ScheduleData, ScheduleEvent } from "#/types/domain";
 import { getDb } from "../client.server";
@@ -45,17 +44,23 @@ async function queryMonthEvents(
 }
 
 /**
- * Events whose day falls in the range, with weekly events expanded into
- * their occurrences and excluded dates left out. Markers are not included.
+ * Events dated in `period` (`YYYY-MM-DD`, `YYYY-MM` or `YYYY`), with weekly
+ * events expanded into their occurrences and excluded dates left out.
  */
-export async function queryEventsInRange(
-	range: DateRange,
+export async function queryEventsInPeriod(
+	period: string,
 	leagueId?: number,
 ): Promise<ScheduleEvent[]> {
-	const db = getDb();
-	const league: SQL | undefined =
+	const months =
+		period.length === 4
+			? Array.from({ length: 12 }, (_, i) => shiftMonth(`${period}-01`, i))
+			: [period.slice(0, 7)];
+	const from = `${months[0]}-01`;
+	const to = `${shiftMonth(months[months.length - 1], 1)}-01`;
+	const league =
 		leagueId === undefined ? undefined : eq(events.leagueId, leagueId);
 
+	const db = getDb();
 	const [oneOff, weekly] = await Promise.all([
 		db
 			.select()
@@ -63,25 +68,24 @@ export async function queryEventsInRange(
 			.where(
 				and(
 					eq(events.isRecurring, false),
-					gte(events.date, range.from),
-					lt(events.date, range.to),
+					gte(events.date, from),
+					lt(events.date, to),
 					league,
 				),
 			),
 		db
 			.select()
 			.from(events)
-			.where(
-				and(eq(events.isRecurring, true), lt(events.date, range.to), league),
-			),
+			.where(and(eq(events.isRecurring, true), lt(events.date, to), league)),
 	]);
 
 	const series = weekly.map(withoutNulls);
-	const occurrences = monthsInRange(range)
-		.flatMap((month) => expandRecurring(series, month, false))
-		.filter((event) => isInRange(event.date, range));
-
-	return sortEventsForSchedule([...oneOff.map(withoutNulls), ...occurrences]);
+	return sortEventsForSchedule(
+		[
+			...oneOff.map(withoutNulls),
+			...months.flatMap((month) => expandRecurring(series, month, false)),
+		].filter((event) => eventDateKey(event).startsWith(period)),
+	);
 }
 
 export async function querySchedule(

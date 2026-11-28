@@ -1,13 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { findLeague } from "#/db/leagues/queries.server";
-import { queryEventsInRange } from "#/db/queries.server";
+import { queryEventsInPeriod } from "#/db/queries.server";
 import { ApiError, handle, json, preflight } from "#/lib/api";
-import {
-	eventsDateRange,
-	groupEvents,
-	parseEventsQuery,
-	toApiEvent,
-} from "#/lib/events-query";
+import { groupEvents, parseEventsQuery, toApiEvent } from "#/lib/events-query";
 
 export const Route = createFileRoute("/api/events")({
 	server: {
@@ -22,9 +17,10 @@ export const Route = createFileRoute("/api/events")({
 						throw new ApiError(404, "not_found", "Unknown league");
 					}
 
-					const range = eventsDateRange(query);
-					const events = range
-						? (await queryEventsInRange(range, query.leagueId)).map(toApiEvent)
+					const events = query.period
+						? (await queryEventsInPeriod(query.period, query.leagueId)).map(
+								toApiEvent,
+							)
 						: [];
 					return json({
 						events: query.groupBy ? groupEvents(events, query.groupBy) : events,

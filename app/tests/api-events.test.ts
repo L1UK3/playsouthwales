@@ -3,15 +3,15 @@ import { describe, it } from "node:test";
 import { ApiError } from "#/lib/api";
 import {
 	type ApiEvent,
-	eventsDateRange,
 	groupEvents,
-	monthsInRange,
 	parseEventsQuery,
 	toApiEvent,
 } from "#/lib/events-query";
 import { expandRecurring } from "#/lib/recurrence";
 
-const parse = (query: string) => parseEventsQuery(new URLSearchParams(query));
+const now = new Date("2026-11-28T12:00:00Z");
+const parse = (query: string) =>
+	parseEventsQuery(new URLSearchParams(query), now);
 
 function assertInvalid(query: string, message: RegExp) {
 	assert.throws(
@@ -28,18 +28,23 @@ describe("parseEventsQuery", () => {
 	it("reads every parameter", () => {
 		assert.deepEqual(
 			parse("leagueId=3&day=2026-11-21&month=2026-11&year=2026&groupBy=day"),
-			{
-				leagueId: 3,
-				day: "2026-11-21",
-				month: "2026-11",
-				year: "2026",
-				groupBy: "day",
-			},
+			{ leagueId: 3, period: "2026-11-21", groupBy: "day" },
 		);
 	});
 
-	it("returns an empty query with no parameters", () => {
-		assert.deepEqual(parse(""), {});
+	it("defaults to the current month", () => {
+		assert.deepEqual(parse(""), {
+			leagueId: undefined,
+			period: "2026-11",
+			groupBy: undefined,
+		});
+	});
+
+	it("uses the most specific date filter, or null when filters conflict", () => {
+		assert.equal(parse("year=2026&month=2026-03").period, "2026-03");
+		assert.equal(parse("year=2025").period, "2025");
+		assert.equal(parse("year=2025&month=2026-03").period, null);
+		assert.equal(parse("month=2026-03&day=2026-04-01").period, null);
 	});
 
 	it("rejects a non-integer leagueId", () => {
@@ -63,57 +68,6 @@ describe("parseEventsQuery", () => {
 
 	it("rejects an unknown groupBy", () => {
 		assertInvalid("groupBy=week", /groupBy/);
-	});
-});
-
-describe("eventsDateRange", () => {
-	const now = new Date("2026-11-28T12:00:00Z");
-
-	it("defaults to the current month", () => {
-		assert.deepEqual(eventsDateRange({}, now), {
-			from: "2026-11-01",
-			to: "2026-12-01",
-		});
-	});
-
-	it("covers a single day, month or year", () => {
-		assert.deepEqual(eventsDateRange({ day: "2026-12-31" }, now), {
-			from: "2026-12-31",
-			to: "2027-01-01",
-		});
-		assert.deepEqual(eventsDateRange({ month: "2026-12" }, now), {
-			from: "2026-12-01",
-			to: "2027-01-01",
-		});
-		assert.deepEqual(eventsDateRange({ year: "2026" }, now), {
-			from: "2026-01-01",
-			to: "2027-01-01",
-		});
-	});
-
-	it("intersects combined filters", () => {
-		assert.deepEqual(eventsDateRange({ year: "2026", month: "2026-03" }, now), {
-			from: "2026-03-01",
-			to: "2026-04-01",
-		});
-		assert.equal(
-			eventsDateRange({ year: "2025", month: "2026-03" }, now),
-			null,
-		);
-		assert.equal(
-			eventsDateRange({ month: "2026-03", day: "2026-04-01" }, now),
-			null,
-		);
-	});
-
-	it("lists the months a range overlaps", () => {
-		assert.deepEqual(
-			monthsInRange({ from: "2026-01-01", to: "2027-01-01" }).length,
-			12,
-		);
-		assert.deepEqual(monthsInRange({ from: "2026-12-31", to: "2027-01-01" }), [
-			"2026-12",
-		]);
 	});
 });
 
