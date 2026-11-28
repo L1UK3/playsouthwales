@@ -28,7 +28,7 @@
     "@tanstack/react-start": "1.169.7",
     "@vis.gl/react-google-maps": "^1.10.2",
     "drizzle-orm": "^1.0.0-rc.6",
-    "lucide-react": "^1.73.0",
+    "lucide-react": "^1.79.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.18",
