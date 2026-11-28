@@ -6,7 +6,7 @@ import { syncPokedata } from "#/web/sync.server";
  * in wrangler.jsonc syncs Pokedata events and championship points.
  */
 export default {
-	fetch: handler.fetch,
+	fetch: (request) => handler.fetch(request),
 	scheduled(_controller, _env, ctx) {
 		ctx.waitUntil(syncPokedata());
 	},
