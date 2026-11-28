@@ -54,18 +54,12 @@ function invalid(message: string): ApiError {
 	return new ApiError(400, "invalid_parameter", message);
 }
 
-function single(params: URLSearchParams, name: string): string | undefined {
-	const values = params.getAll(name);
-	if (values.length > 1) throw invalid(`${name} must be given at most once`);
-	return values[0];
-}
-
 /** Reads and validates the query string, throwing a 400 ApiError on bad input. */
 export function parseEventsQuery(params: URLSearchParams): EventsQuery {
 	const query: EventsQuery = {};
 
-	const leagueId = single(params, "leagueId");
-	if (leagueId !== undefined) {
+	const leagueId = params.get("leagueId");
+	if (leagueId !== null) {
 		const id = Number(leagueId);
 		if (!/^-?\d+$/.test(leagueId) || !Number.isSafeInteger(id)) {
 			throw invalid("Invalid leagueId: expected an integer");
@@ -73,30 +67,30 @@ export function parseEventsQuery(params: URLSearchParams): EventsQuery {
 		query.leagueId = id;
 	}
 
-	const day = single(params, "day");
-	if (day !== undefined) {
+	const day = params.get("day");
+	if (day !== null) {
 		if (!isValidCalendarDate(day)) {
 			throw invalid("Invalid day: expected a real date as YYYY-MM-DD");
 		}
 		query.day = day;
 	}
 
-	const month = single(params, "month");
-	if (month !== undefined) {
+	const month = params.get("month");
+	if (month !== null) {
 		if (!isMonthKey(month)) {
 			throw invalid("Invalid month: expected YYYY-MM");
 		}
 		query.month = month;
 	}
 
-	const year = single(params, "year");
-	if (year !== undefined) {
+	const year = params.get("year");
+	if (year !== null) {
 		if (!/^\d{4}$/.test(year)) throw invalid("Invalid year: expected YYYY");
 		query.year = year;
 	}
 
-	const groupBy = single(params, "groupBy");
-	if (groupBy !== undefined) {
+	const groupBy = params.get("groupBy");
+	if (groupBy !== null) {
 		if (!(GROUP_BY_KEYS as readonly string[]).includes(groupBy)) {
 			throw invalid(`Invalid groupBy: expected ${GROUP_BY_KEYS.join(", ")}`);
 		}

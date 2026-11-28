@@ -64,10 +64,6 @@ describe("parseEventsQuery", () => {
 	it("rejects an unknown groupBy", () => {
 		assertInvalid("groupBy=week", /groupBy/);
 	});
-
-	it("rejects a repeated parameter", () => {
-		assertInvalid("month=2026-11&month=2026-12", /month/);
-	});
 });
 
 describe("eventsDateRange", () => {
